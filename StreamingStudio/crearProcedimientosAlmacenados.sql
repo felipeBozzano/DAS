@@ -991,7 +991,7 @@ BEGIN
 END
 go
 
-/* ---- PEGARLE A LA API DEL PUBLICISTA PARA CARGAR EL REPORTE */
+/* PEGARLE A LA API DEL PUBLICISTA PARA CARGAR EL REPORTE */
 /* Enviar_Reporte */
 
 
@@ -1025,7 +1025,7 @@ BEGIN
 END
 go
 
-/* ---- PEGARLE A LA API DE PLATAFORMA PARA CARGAR EL REPORTE */
+/* PEGARLE A LA API DE PLATAFORMA PARA CARGAR EL REPORTE */
 /* Enviar_Reporte */
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1086,7 +1086,7 @@ go
 /* Crear_Detalle_Factura */
 /* Finalizar_Factura */
 /* Obtener_Datos_de_Publicista */
-/* ---- PEGARLE A LA API DEL PUBLICISTA PARA CARGAR LA FACTURA */
+/* PEGARLE A LA API DEL PUBLICISTA PARA CARGAR LA FACTURA */
 /* Enviar_Factura */
 
 
@@ -1118,7 +1118,7 @@ go
 /* Crear_Detalle_Factura */
 /* Finalizar_Factura */
 /* Obtener_Datos_de_Plataforma */
-/* ---- PEGARLE A LA API DE LA PLATAFORMA PARA CARGAR LA FACTURA */
+/* PEGARLE A LA API DE LA PLATAFORMA PARA CARGAR LA FACTURA */
 /* Enviar_Factura */
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1146,6 +1146,24 @@ go
 /* PEGARLE A LA API DE LA PLATAFORMA PARA OBTENER LA URL DE LOGIN Y EL CÓDIGO DE TRANSACCIÓN. */
 /* Comenzar_Federacion */
 /* PEGARLE A LA API PARA CONSULTAR EL TOKEN DEL USUARIO */
+/* Finalizar_Federacion */
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* ---------------------------------------- TERMINAR FEDERACIONES PENDIENTES ---------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+CREATE OR ALTER PROCEDURE Consultar_Federaciones_Pendientes
+AS
+BEGIN
+    SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_usuario, email_interno
+    FROM dbo.Transaccion
+    WHERE token IS NULL
+      AND fecha_baja IS NOT NULL
+END
+go
+
+/* POR CADA FEDERACION PENDIENTE */
+/* PEGARLE A LA API DE LA PLATAFORMA PARA OBTENER LA URL DE LOGIN Y EL CÓDIGO DE TRANSACCIÓN. */
 /* Finalizar_Federacion */
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1220,17 +1238,190 @@ go
 
 /* POR CADA PUBLICISTA */
 /* Obtener_Datos_de_Publicista */
+/* PEGARLE A LA API PARA CONSEGUIR LAS PUBLICIDADES DE LOS PUBLICISTAS */
+
+CREATE OR ALTER PROCEDURE Obtener_Datos_de_Publicidades
+AS
+BEGIN
+    SELECT id_publicista,
+           id_publicidad,
+           codigo_publicidad,
+           url_de_imagen,
+           url_de_publicidad
+    FROM dbo.Publicidad
+    WHERE DAY(fecha_de_baja) >= DAY(GETDATE())
+END
+go
+
+/* CONVERTIR AMBOS RESULTADOS EN HASHSET Y VER CUALES SON LAS PUBLICIDADES QUE ESTAN EN STREAMING STUDIO Y EN EL
+   PUBLICISTA */
+/* VERIFICAR CUALES SON LAS PUBLICIDADES QUE NECESITAN SER ACTUALIZADAS */
+
+CREATE OR ALTER PROCEDURE Actualizar_Publicidades @id_publicidad INT,
+                                                  @url_de_imagen VARCHAR(255),
+                                                  @url_de_publicidad VARCHAR(255)
+AS
+BEGIN
+    UPDATE dbo.Publicidad
+    SET url_de_imagen     = @url_de_imagen,
+        url_de_publicidad = @url_de_publicidad
+    WHERE id_publicidad = @id_publicidad
+END
+go
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* -------------------------------------------- ACTUALIZAR MAS VISTOS ----------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+CREATE OR ALTER PROCEDURE Obtener_Contenido_mas_Visto_Actual
+AS
+BEGIN
+    SELECT id_contenido
+    FROM dbo.Contenido
+    WHERE mas_visto = 1
+END
+go
+
+CREATE OR ALTER PROCEDURE Obtener_Contenido_mas_Visto_del_Mes_Anterior
+AS
+BEGIN
+    DECLARE @PrimerDiaMesAnterior AS DATE = DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)
+    DECLARE @UltimoDiaMesAnterior AS DATE = EOMONTH(DATEADD(MONTH, -1, GETDATE()))
+    SELECT TOP 100 id_contenido, COUNT(id_clic)
+    FROM dbo.Clic
+    WHERE fecha BETWEEN @PrimerDiaMesAnterior AND @UltimoDiaMesAnterior
+    GROUP BY id_contenido
+    ORDER BY COUNT(id_clic) DESC
+END
+go
+
+/* CONVERTIR AMBOS RESULTADOS EN HASHSET Y VER CUALES SON LOS CONTENIDOS MAS VISTOS DEL MES ANTERIOR QUE NO ESTÁN
+   DENTRO DE LOS CONTENIDOS MAS VISTOS ACTUALES */
+
+CREATE OR ALTER PROCEDURE Actualizar_Contenido_mas_Visto @id_contenido INT,
+                                                         @mas_visto BIT
+AS
+BEGIN
+    UPDATE dbo.Contenido
+    SET mas_visto = @mas_visto
+    WHERE id_contenido = @id_contenido
+END
+go
+
+/* VER CUALES SON LOS CONTENIDOS MAS VISTOS ACTUALES QUE NO ESTÁN DENTRO DE LOS CONTENIDOS MAS VISTOS ACTUALES */
+/* Actualizar_Contenido_mas_Visto */
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ------------------------------------------------ MOSTRAR HOME ---------------------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-CREATE OR ALTER PROCEDURE Obtener_Contenido_Registrado_por_Plataforma @id_plataforma INT
+CREATE OR ALTER PROCEDURE Obtener_Publicidades_Activas
 AS
 BEGIN
-    SELECT id_contenido, reciente, destacado, id_en_plataforma
-    FROM dbo.Catalogo
-    WHERE id_plataforma = @id_plataforma
+    SELECT id_banner, url_de_imagen, url_de_publicidad, grado_de_exclusividad
+    FROM dbo.Publicidad P
+             JOIN dbo.Exclusividad E ON P.id_exclusividad = E.id_exclusividad
+    WHERE CONVERT(DATE, fecha_de_baja, 23) > CONVERT(DATE, CURRENT_TIMESTAMP, 23)
+      AND CONVERT(DATE, fecha_de_alta, 23) <= CONVERT(DATE, CURRENT_TIMESTAMP, 23)
+    ORDER BY id_banner DESC
 END
 go
+
+CREATE OR ALTER PROCEDURE Obtener_Contenido_Destacado @id_cliente INT = NULL
+AS
+BEGIN
+    SELECT Ca.id_contenido, url_imagen
+    FROM dbo.Catalogo Ca
+             JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+    WHERE destacado = 1
+      AND id_plataforma IN (IIF(@id_cliente IS NOT NULL,
+                                (SELECT id_plataforma FROM dbo.Federacion WHERE id_cliente = @id_cliente),
+                                (SELECT id_plataforma from dbo.Catalogo)))
+      AND valido = 1
+END
+go
+
+CREATE OR ALTER PROCEDURE Obtener_Contenido_Reciente @id_cliente INT = NULL
+AS
+BEGIN
+    SELECT Ca.id_contenido, url_imagen
+    FROM dbo.Catalogo Ca
+             JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+    WHERE reciente = 1
+      AND id_plataforma IN (IIF(@id_cliente IS NOT NULL,
+                                (SELECT id_plataforma FROM dbo.Federacion WHERE id_cliente = @id_cliente),
+                                (SELECT id_plataforma from dbo.Catalogo)))
+      AND valido = 1
+END
+go
+
+CREATE OR ALTER PROCEDURE Obtener_Contenido_mas_Visto @id_cliente INT = NULL
+AS
+BEGIN
+    SELECT Ca.id_contenido, url_imagen
+    FROM dbo.Catalogo Ca
+             JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+    WHERE mas_visto = 1
+      AND id_plataforma IN (IIF(@id_cliente IS NOT NULL,
+                                (SELECT id_plataforma FROM dbo.Federacion WHERE id_cliente = @id_cliente),
+                                (SELECT id_plataforma from dbo.Catalogo)))
+      AND valido = 1
+END
+go
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------ BUSCAR CONTENIDO POR FILTROS ------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+CREATE OR ALTER PROCEDURE Buscar_Contenido_por_Filtros @id_cliente INT,
+                                                       @titulo VARCHAR(255) = NULL,
+                                                       @reciente BIT = NULL,
+                                                       @destacado BIT = NULL,
+                                                       @clasificacion VARCHAR(255) = NULL,
+                                                       @mas_visto BIT = NULL,
+                                                       @genero VARCHAR(255) = NULL
+AS
+BEGIN
+    SELECT Ca.id_contenido, url_imagen
+    FROM dbo.Catalogo Ca
+             JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+    WHERE valido = 1
+      AND id_plataforma IN (SELECT id_plataforma FROM dbo.Federacion WHERE id_cliente = @id_cliente)
+      AND (@titulo IS NULL
+        OR Co.titulo LIKE '%' + @titulo + '%')
+      AND (@reciente IS NULL
+        OR Ca.reciente = @reciente)
+      AND (@destacado IS NULL
+        OR Ca.destacado = @destacado)
+      AND (@clasificacion IS NULL
+        OR Co.clasificacion = @clasificacion)
+      AND (@mas_visto IS NULL
+        OR Co.mas_visto = @mas_visto)
+      AND (@genero IS NULL OR
+           EXISTS (SELECT 1
+                   FROM dbo.Genero_Contenido Gc
+                            JOIN Genero G ON Gc.id_genero = G.id_genero
+                   WHERE Gc.id_contenido = Ca.id_contenido
+                     AND G.descripcion IN (SELECT value FROM STRING_SPLIT(@genero, ','))))
+END
+go
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------ CONSULTAR URL DE CONTENIDO A REPRODUCIR ------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+CREATE OR ALTER PROCEDURE Obtener_Datos_del_Contenido @id_contenido INT,
+                                                      @id_plataforma INT
+AS
+BEGIN
+    SELECT token_de_servicio, id_en_plataforma
+    FROM dbo.Catalogo C
+             JOIN dbo.Plataforma_de_Streaming P ON C.id_plataforma = P.id_plataforma
+    WHERE C.id_contenido = @id_contenido
+      AND C.id_plataforma = @id_plataforma
+      AND valido = 1
+END
+go
+
+/* PEGARLE A LA API DE LA PLATAFORMA DE STREAMING PARA OBTENER LA URL DE REPRODUCCION DE CONTENIDO */
