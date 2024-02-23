@@ -39,13 +39,13 @@ go
 
 CREATE OR ALTER TRIGGER Desvincular_Federaciones
     ON dbo.Cliente_Usuario
-    AFTER UPDATE
+    FOR UPDATE
     AS
 BEGIN
-    DELETE
-    FROM dbo.Federacion
-    WHERE Federacion.id_cliente = deleted.id_cliente
-      AND deleted.valido = 0
+    DELETE f
+    FROM dbo.Federacion f
+             JOIN inserted i ON f.id_cliente = i.id_cliente
+    WHERE i.valido = 0;
 END
 go
 

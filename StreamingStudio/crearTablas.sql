@@ -128,7 +128,7 @@ CREATE TABLE [Factura_Publicista]
 CREATE TABLE [Exclusividad]
 (
     [id_exclusividad]       INT IDENTITY (1,1) PRIMARY KEY,
-    [grado_de_exclusividad] VARCHAR(255) NOT NULL,
+    [grado_de_exclusividad] SMALLINT NOT NULL,
     [costo]                 FLOAT        NOT NULL,
     [descripcion]           VARCHAR(255) NOT NULL
 );
@@ -282,8 +282,8 @@ CREATE TABLE [Preferencia]
 
 CREATE TABLE [Tipo_Usuario]
 (
-    [id_tipo_usuario] SMALLINT IDENTITY (1,1) PRIMARY KEY,
-    [descripcion]     INT NOT NULL
+    [id_tipo_usuario] SMALLINT PRIMARY KEY,
+    [descripcion]     VARCHAR(255) NOT NULL
 )
 
 CREATE TABLE [Transaccion]
