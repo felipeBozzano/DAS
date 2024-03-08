@@ -204,7 +204,7 @@ CREATE TABLE [Tipo_de_Fee]
     [id_tipo_de_fee]    SMALLINT IDENTITY(1,1) PRIMARY KEY,
     [tipo_de_fee]       VARCHAR(1) NOT NULL,
     [descripcion]       VARCHAR(255) NOT NULL
-)
+);
 
 CREATE TABLE [Fee]
 (

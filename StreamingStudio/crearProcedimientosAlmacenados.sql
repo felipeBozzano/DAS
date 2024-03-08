@@ -920,7 +920,7 @@ AS
 BEGIN
     INSERT INTO Tipo_de_Fee (tipo_de_fee, descripcion)
     VALUES (@tipo_de_fee, @descripcion);
-END;
+END
 go
 
 CREATE PROCEDURE Editar_Tipo_de_Fee @id_tipo_de_fee SMALLINT,
@@ -932,7 +932,7 @@ BEGIN
     SET tipo_de_fee = @tipo_de_fee,
         descripcion = @descripcion
     WHERE id_tipo_de_fee = @id_tipo_de_fee;
-END;
+END
 go
 
 CREATE PROCEDURE Eliminar_Tipo_de_Fee @id_tipo_de_fee SMALLINT
@@ -941,46 +941,72 @@ BEGIN
     DELETE
     FROM Tipo_de_Fee
     WHERE id_tipo_de_fee = @id_tipo_de_fee;
-END;
+END
 go
 
 /* Fee */
 
--- Procedimiento para insertar filas en la tabla Fee
-CREATE PROCEDURE Crear_Fee
-    @id_fee SMALLINT,
-    @monto FLOAT,
-    @tipo_de_fee SMALLINT
+CREATE PROCEDURE Crear_Fee @id_fee SMALLINT,
+                           @monto FLOAT,
+                           @tipo_de_fee SMALLINT
 AS
 BEGIN
     INSERT INTO Fee (id_fee, monto, fecha_alta, fecha_baja, tipo_de_fee)
     VALUES (@id_fee, @monto, GETDATE(), NULL, @tipo_de_fee);
-END;
+END
 go
 
-CREATE PROCEDURE Editar_Fee
-    @id_fee SMALLINT,
-    @monto FLOAT,
-    @tipo_de_fee SMALLINT
+CREATE PROCEDURE Editar_Fee @id_fee SMALLINT,
+                            @monto FLOAT,
+                            @tipo_de_fee SMALLINT
 AS
 BEGIN
     UPDATE Fee
-    SET monto = @monto,
+    SET monto       = @monto,
         tipo_de_fee = @tipo_de_fee
     WHERE id_fee = @id_fee;
-END;
+END
 go
 
-CREATE PROCEDURE Eliminar_Fee
-@id_fee SMALLINT
+CREATE PROCEDURE Eliminar_Fee @id_fee SMALLINT
 AS
 BEGIN
-    DELETE FROM Fee
+    DELETE
+    FROM Fee
     WHERE id_fee = @id_fee;
-END;
+END
+go
+
+CREATE PROCEDURE Dar_de_Baja_Fee @id_fee SMALLINT
+AS
+BEGIN
+    UPDATE Fee
+    SET fecha_baja = GETDATE()
+    WHERE id_fee = @id_fee;
+END
 go
 
 /* Fee_Plataforma */
+
+CREATE PROCEDURE Crear_Fee_Plataforma @id_plataforma SMALLINT,
+                                      @id_fee SMALLINT
+AS
+BEGIN
+    INSERT INTO Fee_Plataforma (id_plataforma, id_fee)
+    VALUES (@id_plataforma, @id_fee);
+END
+go
+
+CREATE PROCEDURE Eliminar_Fee_Plataforma @id_plataforma SMALLINT,
+                                         @id_fee SMALLINT
+AS
+BEGIN
+    DELETE
+    FROM Fee_Plataforma
+    WHERE id_plataforma = @id_plataforma
+      AND id_fee = @id_fee;
+END
+go
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1000,6 +1026,8 @@ BEGIN
 END
 go
 
+/* POR CADA PUBLICISTA REPETIR EL SIGUIENTE CICLO*/
+
 /* Crear_Reporte */
 /* Crear_Reporte_Publicista */
 /* Crear_Detalle_Reporte */
@@ -1008,7 +1036,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Datos_de_Publicista @id_publicista INT
 AS
 BEGIN
-    SELECT nombre_de_fantasia, razón_social, token_de_servicio, url_de_reportes
+    SELECT nombre_de_fantasia, razón_social, token_de_servicio, url_api
     FROM dbo.Publicista
     WHERE id_publicista = @id_publicista
 END
@@ -1017,7 +1045,7 @@ go
 /* PEGARLE A LA API DEL PUBLICISTA PARA CARGAR EL REPORTE */
 /* Enviar_Reporte */
 
-
+/* FIN DE CICLO DE PUBLICISTAS */
 
 CREATE OR ALTER PROCEDURE Obtener_Estadisticas_para_Plataformas
 AS
@@ -1027,12 +1055,14 @@ BEGIN
              JOIN dbo.Catalogo Co ON Cc.id_contenido = Co.id_contenido AND Cc.id_plataforma = Co.id_plataforma
     WHERE Cc.id_contenido IS NOT NULL
       AND Cc.id_plataforma IS NOT NULL
-      AND Co.valido = 1
+      AND Co.fecha_de_baja IS NULL
       AND Cc.fecha BETWEEN DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)
         AND DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
     GROUP BY Cc.id_plataforma, Cc.id_contenido, Co.id_en_plataforma
 END
 go
+
+/* POR CADA PLATAFORMA DE STREAMING REPETIR EL SIGUIENTE CICLO*/
 
 /* Crear_Reporte */
 /* Crear_Reporte_Plataforma */
@@ -1042,7 +1072,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Datos_de_Plataforma @id_plataforma INT
 AS
 BEGIN
-    SELECT nombre_de_fantasia, razón_social, token_de_servicio, url_de_reportes, fee_de_federacion, fee_de_registro
+    SELECT nombre_de_fantasia, razón_social, token_de_servicio, url_api
     FROM dbo.Plataforma_de_Streaming
     WHERE id_plataforma = @id_plataforma
 END
@@ -1050,6 +1080,8 @@ go
 
 /* PEGARLE A LA API DE PLATAFORMA PARA CARGAR EL REPORTE */
 /* Enviar_Reporte */
+
+/* FIN DE CICLO DE PLATAFORMAS DE STREAMING */
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ------------------------------------------ OBTENER Y ENVIAR FACTURAS --------------------------------------------- */
