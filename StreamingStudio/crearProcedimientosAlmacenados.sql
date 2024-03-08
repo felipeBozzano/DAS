@@ -1094,7 +1094,6 @@ BEGIN
     DECLARE @UltimoDiaMesAnterior AS DATE = EOMONTH(DATEADD(MONTH, -1, GETDATE()))
     SELECT id_publicista,
            id_publicidad,
-           id_exclusividad,
            id_banner,
            codigo_publicidad,
            CASE
@@ -1123,18 +1122,10 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Costo_de_Banner @id_banner INT
 AS
 BEGIN
-    SELECT tamaño_de_banner, costo
-    FROM dbo.Banner
+    SELECT costo
+    FROM dbo.Costo_Banner cb
+             JOIN dbo.Tipo_Banner tp ON tp.id_tipo_banner = cb.id_tipo_banner
     WHERE id_banner = @id_banner
-END
-go
-
-CREATE OR ALTER PROCEDURE Obtener_Costo_de_Exclusividad @id_exclusividad INT
-AS
-BEGIN
-    SELECT descripcion, costo
-    FROM dbo.Exclusividad
-    WHERE id_exclusividad = @id_exclusividad
 END
 go
 
@@ -1151,9 +1142,7 @@ AS
 BEGIN
     SELECT id_plataforma, tipo_usuario, count(id_cliente) AS cantidad_de_federaciones
     FROM dbo.Federacion
-    WHERE fecha_alta BETWEEN DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)
-        AND DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
-      AND facturada = 0
+    WHERE facturada = 0
     GROUP BY id_plataforma, tipo_usuario
 END
 go
@@ -1164,9 +1153,12 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Fees_de_Plataforma @id_plataforma INT
 AS
 BEGIN
-    SELECT fee_de_federacion, fee_de_registro
-    FROM dbo.Plataforma_de_Streaming
-    WHERE id_plataforma = @id_plataforma
+    SELECT f.monto, tp.tipo_de_fee
+    FROM dbo.Fee_Plataforma fp
+             JOIN dbo.Fee f ON fp.id_fee = f.id_fee
+             JOIN dbo.Tipo_de_Fee tp ON f.tipo_de_fee = tp.id_tipo_de_fee
+    WHERE fp.id_plataforma = @id_plataforma
+      AND f.fecha_baja IS NOT NULL
 END
 go
 
@@ -1210,7 +1202,7 @@ go
 CREATE OR ALTER PROCEDURE Consultar_Federaciones_Pendientes
 AS
 BEGIN
-    SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_usuario, email_interno
+    SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_usuario
     FROM dbo.Transaccion
     WHERE token IS NULL
       AND fecha_baja IS NOT NULL
@@ -1230,7 +1222,7 @@ AS
 BEGIN
     SELECT id_plataforma, id_contenido, reciente, destacado, id_en_plataforma
     FROM dbo.Catalogo
-    WHERE valido = 1
+    WHERE fecha_de_baja  IS NULL
 END
 go
 
@@ -1244,8 +1236,7 @@ CREATE OR ALTER PROCEDURE Dar_de_Baja_Item_en_Catalogo @id_contenido INT,
 AS
 BEGIN
     UPDATE dbo.Catalogo
-    SET fecha_de_baja = CURRENT_TIMESTAMP,
-        valido        = 0
+    SET fecha_de_baja = CURRENT_TIMESTAMP
     WHERE id_contenido = @id_contenido
       AND id_plataforma = @id_plataforma
 END
@@ -1259,8 +1250,7 @@ CREATE OR ALTER PROCEDURE Activar_Item_en_Catalogo @id_contenido INT,
 AS
 BEGIN
     UPDATE dbo.Catalogo
-    SET fecha_de_alta = CURRENT_TIMESTAMP,
-        valido        = 1
+    SET fecha_de_alta = CURRENT_TIMESTAMP
     WHERE id_contenido = @id_contenido
       AND id_plataforma = @id_plataforma
 END
@@ -1283,7 +1273,7 @@ BEGIN
         id_en_plataforma = @id_en_plataforma
     WHERE id_contenido = @id_contenido
       AND id_plataforma = @id_plataforma
-      AND valido = 1
+      AND fecha_de_baja IS NULL
 END
 go
 
@@ -1374,9 +1364,8 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Publicidades_Activas
 AS
 BEGIN
-    SELECT id_banner, url_de_imagen, url_de_publicidad, grado_de_exclusividad
+    SELECT id_banner, url_de_imagen, url_de_publicidad
     FROM dbo.Publicidad P
-             JOIN dbo.Exclusividad E ON P.id_exclusividad = E.id_exclusividad
     WHERE CONVERT(DATE, fecha_de_baja, 23) > CONVERT(DATE, CURRENT_TIMESTAMP, 23)
       AND CONVERT(DATE, fecha_de_alta, 23) <= CONVERT(DATE, CURRENT_TIMESTAMP, 23)
     ORDER BY id_banner DESC
@@ -1393,7 +1382,7 @@ BEGIN
       AND id_plataforma IN (IIF(@id_cliente IS NOT NULL,
                                 (SELECT id_plataforma FROM dbo.Federacion WHERE id_cliente = @id_cliente),
                                 (SELECT id_plataforma from dbo.Catalogo)))
-      AND valido = 1
+      AND fecha_de_baja IS NULL
 END
 go
 
@@ -1407,7 +1396,7 @@ BEGIN
       AND id_plataforma IN (IIF(@id_cliente IS NOT NULL,
                                 (SELECT id_plataforma FROM dbo.Federacion WHERE id_cliente = @id_cliente),
                                 (SELECT id_plataforma from dbo.Catalogo)))
-      AND valido = 1
+      AND fecha_de_baja IS NULL
 END
 go
 
@@ -1421,7 +1410,7 @@ BEGIN
       AND id_plataforma IN (IIF(@id_cliente IS NOT NULL,
                                 (SELECT id_plataforma FROM dbo.Federacion WHERE id_cliente = @id_cliente),
                                 (SELECT id_plataforma from dbo.Catalogo)))
-      AND valido = 1
+      AND fecha_de_baja IS NULL
 END
 go
 
@@ -1441,7 +1430,7 @@ BEGIN
     SELECT Ca.id_contenido, url_imagen
     FROM dbo.Catalogo Ca
              JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
-    WHERE valido = 1
+    WHERE fecha_de_baja IS NULL
       AND id_plataforma IN (SELECT id_plataforma FROM dbo.Federacion WHERE id_cliente = @id_cliente)
       AND (@titulo IS NULL
         OR Co.titulo LIKE '%' + @titulo + '%')
