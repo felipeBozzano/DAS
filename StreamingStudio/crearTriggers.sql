@@ -49,11 +49,43 @@ BEGIN
 END
 go
 
-/*
- -)AGREGAR TRIGGER QUE SI UNA PLATAFORMA DE STREAMING SE ELIMINA, ELIMINE TODAS LAS FEDERACIONES DE ESA PLATAFORMA.
- -)AGREGAR TRIGGER PARA QUE SI UNA FEDERACION SE FACTURA (CAMBIA FACTURADA A 1) ENTONCES LA TRANSACCION ASOCIADA A ESA
-   FEDERACION (EN LA TABLA TRANSACCIONES) TAMBIEN CAMBIE SU ESTADO DE FACTURADA A 1.
- */
+
+/*AGREGAR TRIGGER QUE SI UNA PLATAFORMA DE STREAMING SE ELIMINA, ELIMINE TODAS LAS FEDERACIONES DE ESA PLATAFORMA.*/
+
+CREATE OR ALTER TRIGGER Eliminar_Federaciones
+    ON dbo.Plataforma_de_Streaming
+    AFTER UPDATE
+BEGIN
+    DELETE 
+    FROM Federacion f
+        JOIN inserted i ON i.id_plataforma = f.id_plataforma
+    WHERE i.valido = 0;
+END
+
+/*AGREGAR TRIGGER PARA QUE SI UNA FEDERACION SE FACTURA (CAMBIA FACTURADA A 1) ENTONCES LA TRANSACCION ASOCIADA A ESA
+   FEDERACION (EN LA TABLA TRANSACCIONES) TAMBIEN CAMBIE SU ESTADO DE FACTURADA A 1.*/
+
+CREATE OR ALTER TRIGGER Facturar_Transacciones
+    ON dbo.Federacion
+    AFTER UPDATE
+BEGIN
+    UPDATE Transacion
+    SET facturada = 1
+        JOIN inserted i ON i.id_plataforma = t.id_plataforma AND i.id_cliente = t.id_cliente
+    WHERE t.fecha_alta = (
+                            SELECT MAX(fecha_alta)
+                            FROM Transacciones
+                            WHERE id_plataforma = t.id_plataforma
+                                AND id_cliente = t.id_cliente
+                        )
+
+-- CREATE TRIGGER actualizar_facturada_transaccion AFTER UPDATE ON Plataforma_de_Streaming
+-- FOR EACH ROW
+-- BEGIN
+--     IF NEW.facturada = 1 THEN
+--         UPDATE Transaccion SET facturada = 1 WHERE id_plataforma = NEW.id_plataforma;
+--     END IF;
+-- END;
 
 /*CREATE OR ALTER TRIGGER Verificar_Federacion
     ON dbo.Transaccion
