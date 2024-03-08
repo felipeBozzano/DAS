@@ -131,42 +131,57 @@ go
 CREATE OR ALTER PROCEDURE Comenzar_Federacion @id_plataforma INT,
                                               @id_cliente INT,
                                               @codigo_de_transaccion VARCHAR(255),
+                                              @url_login_registro_plataforma VARCHAR(255),
+                                              @url_redireccion_propia VARCHAR(255),
                                               @tipo_usuario SMALLINT
 AS
 BEGIN
+    DECLARE @facturada BIT;
+    SET @facturada = (SELECT IIF(EXISTS (SELECT 1
+                                        FROM dbo.Transaccion
+                                        WHERE id_plataforma = @id_plataforma
+                                          and id_cliente = @id_cliente
+                                          and facturada = 1), 1, 0))
     INSERT INTO dbo.Transaccion(id_plataforma, id_cliente, fecha_alta, codigo_de_transaccion,
                                 url_login_registro_plataforma, url_redireccion_propia, tipo_usuario, token, fecha_baja,
                                 facturada)
-    VALUES (@id_plataforma, @id_cliente, getdate(), @codigo_de_transaccion)
+    VALUES (@id_plataforma, @id_cliente, GETDATE(), @codigo_de_transaccion, @url_login_registro_plataforma,
+            @url_redireccion_propia, @tipo_usuario, NULL, NULL, @facturada)
 END
 go
 
 CREATE OR ALTER PROCEDURE Interrumpir_Federacion @id_plataforma INT,
-                                                 @id_cliente INT,
-                                                 @codigo_de_transaccion VARCHAR(255)
+                                                 @id_cliente INT
 AS
 BEGIN
+    DECLARE @max_fecha_alta DATETIME;
+    SET @max_fecha_alta = (SELECT MAX(fecha_alta)
+                           FROM dbo.Transaccion
+                           WHERE id_plataforma = @id_plataforma
+                             AND id_cliente = @id_cliente)
     UPDATE Transaccion
     SET fecha_baja = CURRENT_TIMESTAMP
     WHERE id_plataforma = @id_plataforma
       and id_cliente = @id_cliente
-      and codigo_de_transaccion = @codigo_de_transaccion
+      and fecha_alta = @max_fecha_alta
 END
 go
 
 CREATE OR ALTER PROCEDURE Finalizar_Federacion @id_plataforma INT,
                                                @id_cliente INT,
-                                               @codigo_de_transaccion VARCHAR(255),
-                                               @token VARCHAR(255),
-                                               @email_externo VARCHAR(255)
+                                               @token VARCHAR(255)
 AS
 BEGIN
+    DECLARE @max_fecha_alta DATETIME;
+    SET @max_fecha_alta = (SELECT MAX(fecha_alta)
+                           FROM dbo.Transaccion
+                           WHERE id_plataforma = @id_plataforma
+                             AND id_cliente = @id_cliente)
     UPDATE Transaccion
-    SET token         = @token,
-        email_externo = @email_externo
+    SET token = @token
     WHERE id_plataforma = @id_plataforma
       and id_cliente = @id_cliente
-      and codigo_de_transaccion = @codigo_de_transaccion
+      and fecha_alta = @max_fecha_alta
 END
 go
 
