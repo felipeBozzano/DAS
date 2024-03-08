@@ -69,16 +69,13 @@ CREATE OR ALTER PROCEDURE Añadir_Plataforma_de_Streaming @nombre_de_fantasia VA
                                                          @razón_social VARCHAR(255),
                                                          @url_imagen VARCHAR(255),
                                                          @token_de_servicio VARCHAR(255),
-                                                         @url_de_reportes VARCHAR(255),
-                                                         @url_de_sesion VARCHAR(255),
-                                                         @fee_de_federeacion FLOAT,
-                                                         @fee_de_registro FLOAT
+                                                         @url_api VARCHAR(255),
+                                                         @valido BIT
 AS
 BEGIN
     INSERT INTO dbo.Plataforma_de_Streaming(nombre_de_fantasia, razón_social, url_imagen, token_de_servicio,
-                                            url_de_reportes, url_de_sesion, fee_de_federacion, fee_de_registro)
-    VALUES (@nombre_de_fantasia, @razón_social, @url_imagen, @token_de_servicio, @url_de_reportes, @url_de_sesion,
-            @fee_de_federeacion, @fee_de_registro)
+                                            url_api, valido)
+    VALUES (@nombre_de_fantasia, @razón_social, @url_imagen, @token_de_servicio, @url_api, @valido)
 END
 go
 
@@ -87,10 +84,8 @@ CREATE OR ALTER PROCEDURE Editar_Plataforma_de_Streaming @id_plataforma INT,
                                                          @razón_social VARCHAR(255),
                                                          @url_imagen VARCHAR(255),
                                                          @token_de_servicio VARCHAR(255),
-                                                         @url_de_reportes VARCHAR(255),
-                                                         @url_de_sesion VARCHAR(255),
-                                                         @fee_de_federeacion FLOAT,
-                                                         @fee_de_registro FLOAT
+                                                         @url_api VARCHAR(255),
+                                                         @valido BIT
 AS
 BEGIN
     UPDATE Plataforma_de_Streaming
@@ -98,10 +93,8 @@ BEGIN
         razón_social       = @razón_social,
         url_imagen         = @url_imagen,
         token_de_servicio  = @token_de_servicio,
-        url_de_reportes    = @url_de_reportes,
-        url_de_sesion      = @url_de_sesion,
-        fee_de_federacion  = @fee_de_federeacion,
-        fee_de_registro    = @fee_de_registro
+        url_api            = @url_api,
+        valido             = @valido
     WHERE id_plataforma = @id_plataforma
 END
 go
@@ -118,8 +111,17 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Url_de_Sesion @id_plataforma INT
 AS
 BEGIN
-    SELECT url_de_sesion
+    SELECT url_api
     FROM dbo.Plataforma_de_Streaming
+    WHERE id_plataforma = @id_plataforma
+END
+go
+
+CREATE OR ALTER PROCEDURE Dar_de_Baja_Plataforma_de_Streaming @id_plataforma INT
+AS
+BEGIN
+    UPDATE Plataforma_de_Streaming
+    SET valido = 0
     WHERE id_plataforma = @id_plataforma
 END
 go
@@ -132,10 +134,10 @@ CREATE OR ALTER PROCEDURE Comenzar_Federacion @id_plataforma INT,
                                               @tipo_usuario SMALLINT
 AS
 BEGIN
-    INSERT INTO dbo.Transaccion(id_plataforma, id_cliente, codigo_de_transaccion, token, tipo_usuario, fecha_alta,
-                                fecha_baja, email_interno, email_externo, facturada)
-    VALUES (@id_plataforma, @id_cliente, @codigo_de_transaccion, NULL, @tipo_usuario, CURRENT_TIMESTAMP, NULL,
-            (SELECT email FROM dbo.Cliente_Usuario WHERE id_cliente = @id_cliente), NULL, 0)
+    INSERT INTO dbo.Transaccion(id_plataforma, id_cliente, fecha_alta, codigo_de_transaccion,
+                                url_login_registro_plataforma, url_redireccion_propia, tipo_usuario, token, fecha_baja,
+                                facturada)
+    VALUES (@id_plataforma, @id_cliente, getdate(), @codigo_de_transaccion)
 END
 go
 

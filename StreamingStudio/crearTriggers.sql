@@ -9,10 +9,8 @@ BEGIN
     INSERT INTO dbo.Federacion
     SELECT id_plataforma,
            id_cliente,
-           codigo_de_transaccion,
            token,
            tipo_usuario,
-           fecha_alta,
            IIF(EXISTS(SELECT 1
                       FROM dbo.Transaccion
                       WHERE Transaccion.id_plataforma = inserted.id_plataforma
@@ -50,34 +48,46 @@ END
 go
 
 
-/*AGREGAR TRIGGER QUE SI UNA PLATAFORMA DE STREAMING SE ELIMINA, ELIMINE TODAS LAS FEDERACIONES DE ESA PLATAFORMA.*/
+/*SI UNA PLATAFORMA DE STREAMING SE ELIMINA, ELIMINE TODAS LAS FEDERACIONES DE ESA PLATAFORMA.*/
 
 CREATE OR ALTER TRIGGER Eliminar_Federaciones
     ON dbo.Plataforma_de_Streaming
     AFTER UPDATE
+    AS
 BEGIN
-    DELETE 
-    FROM Federacion f
-        JOIN inserted i ON i.id_plataforma = f.id_plataforma
+    DELETE f
+    FROM dbo.Federacion f
+             JOIN inserted i ON i.id_plataforma = f.id_plataforma
     WHERE i.valido = 0;
 END
+go
 
-/*AGREGAR TRIGGER PARA QUE SI UNA FEDERACION SE FACTURA (CAMBIA FACTURADA A 1) ENTONCES LA TRANSACCION ASOCIADA A ESA
-   FEDERACION (EN LA TABLA TRANSACCIONES) TAMBIEN CAMBIE SU ESTADO DE FACTURADA A 1.*/
+/*SI UNA FEDERACION SE FACTURA (CAMBIA FACTURADA A 1) ENTONCES LA TRANSACCION ASOCIADA A ESA
+  FEDERACION (EN LA TABLA TRANSACCIONES) TAMBIEN CAMBIE SU ESTADO DE FACTURADA A 1.*/
 
 CREATE OR ALTER TRIGGER Facturar_Transacciones
     ON dbo.Federacion
     AFTER UPDATE
+    AS
 BEGIN
-    UPDATE Transacion
+    WITH Federacion_Facturada AS (SELECT i.id_plataforma, i.id_cliente
+                                  FROM inserted i
+                                    JOIN deleted d ON i.id_cliente = d.id_cliente and i.id_plataforma = d.id_plataforma
+                                  WHERE i.facturada = 1 and d.facturada = 0)
+    UPDATE dbo.Transaccion
     SET facturada = 1
-        JOIN inserted i ON i.id_plataforma = t.id_plataforma AND i.id_cliente = t.id_cliente
-    WHERE t.fecha_alta = (
-                            SELECT MAX(fecha_alta)
-                            FROM Transacciones
-                            WHERE id_plataforma = t.id_plataforma
-                                AND id_cliente = t.id_cliente
-                        )
+    FROM dbo.Transaccion t
+    WHERE EXISTS(SELECT 1
+                 FROM Federacion_Facturada f
+                 WHERE t.id_plataforma = f.id_plataforma
+                   AND t.id_cliente = f.id_cliente)
+      AND t.fecha_alta = (SELECT MAX(fecha_alta)
+                          FROM dbo.Transaccion
+                          WHERE id_plataforma = t.id_plataforma
+                            AND id_cliente = t.id_cliente)
+END
+go
+
 
 -- CREATE TRIGGER actualizar_facturada_transaccion AFTER UPDATE ON Plataforma_de_Streaming
 -- FOR EACH ROW
