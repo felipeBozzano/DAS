@@ -138,10 +138,10 @@ AS
 BEGIN
     DECLARE @facturada BIT;
     SET @facturada = (SELECT IIF(EXISTS (SELECT 1
-                                        FROM dbo.Transaccion
-                                        WHERE id_plataforma = @id_plataforma
-                                          and id_cliente = @id_cliente
-                                          and facturada = 1), 1, 0))
+                                         FROM dbo.Transaccion
+                                         WHERE id_plataforma = @id_plataforma
+                                           and id_cliente = @id_cliente
+                                           and facturada = 1), 1, 0))
     INSERT INTO dbo.Transaccion(id_plataforma, id_cliente, fecha_alta, codigo_de_transaccion,
                                 url_login_registro_plataforma, url_redireccion_propia, tipo_usuario, token, fecha_baja,
                                 facturada)
@@ -198,62 +198,24 @@ BEGIN
 END
 go
 
-/* Exclusividad */
-
-CREATE OR ALTER PROCEDURE Crear_Exclusividad @grado_de_exclusividad VARCHAR(255),
-                                             @costo FLOAT,
-                                             @descripcion VARCHAR(255)
-AS
-BEGIN
-    INSERT INTO dbo.Exclusividad(grado_de_exclusividad, costo, descripcion)
-    VALUES (@grado_de_exclusividad, @costo, @descripcion)
-END
-go
-
-CREATE OR ALTER PROCEDURE Editar_Exclusividad @id_exclusividad INT,
-                                              @grado_de_exclusividad VARCHAR(255),
-                                              @costo FLOAT,
-                                              @descripcion VARCHAR(255)
-AS
-BEGIN
-    UPDATE dbo.Exclusividad
-    SET grado_de_exclusividad = @grado_de_exclusividad,
-        costo                 = @costo,
-        descripcion           = @descripcion
-    WHERE id_exclusividad = @id_exclusividad
-END
-go
-
-CREATE OR ALTER PROCEDURE Eliminar_Exclusividado @id_exclusividad INT
-AS
-BEGIN
-    DELETE
-    FROM dbo.Exclusividad
-    WHERE id_exclusividad = @id_exclusividad
-END
-go
-
 /* Banner */
 
 CREATE OR ALTER PROCEDURE Crear_Banner @tamaño_de_banner VARCHAR(255),
-                                       @costo FLOAT,
                                        @descripcion VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Banner(tamaño_de_banner, costo, descripcion)
-    VALUES (@tamaño_de_banner, @costo, @descripcion)
+    INSERT INTO dbo.Banner(tamaño_de_banner, descripcion)
+    VALUES (@tamaño_de_banner, @descripcion)
 END
 go
 
 CREATE OR ALTER PROCEDURE Editar_Banner @id_banner INT,
                                         @tamaño_de_banner VARCHAR(255),
-                                        @costo FLOAT,
                                         @descripcion VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Banner
     SET tamaño_de_banner = @tamaño_de_banner,
-        costo            = @costo,
         descripcion      = @descripcion
     WHERE id_banner = @id_banner
 END
@@ -268,6 +230,72 @@ BEGIN
 END
 go
 
+/* Tipo_Banner */
+
+CREATE PROCEDURE Crear_Tipo_Banner @costo FLOAT,
+                                   @exclusividad BIT,
+                                   @descripcion VARCHAR(255)
+AS
+BEGIN
+    INSERT INTO Tipo_Banner (costo, exclusividad, fecha_alta, fecha_baja, descripcion)
+    VALUES (@costo, @exclusividad, GETDATE(), NULL, @descripcion);
+END
+go
+
+CREATE PROCEDURE Editar_Tipo_Banner @id_tipo_banner SMALLINT,
+                                    @costo FLOAT,
+                                    @exclusividad BIT,
+                                    @descripcion VARCHAR(255)
+AS
+BEGIN
+    UPDATE Tipo_Banner
+    SET costo        = @costo,
+        exclusividad = @exclusividad,
+        descripcion  = @descripcion
+    WHERE id_tipo_banner = @id_tipo_banner;
+END
+go
+
+CREATE PROCEDURE Eliminar_Tipo_Banner @id_tipo_banner SMALLINT
+AS
+BEGIN
+    DELETE
+    FROM Tipo_Banner
+    WHERE id_tipo_banner = @id_tipo_banner;
+END
+go
+
+CREATE PROCEDURE Dar_de_Baja_Tipo_Banner @id_tipo_banner SMALLINT
+AS
+BEGIN
+    UPDATE Tipo_Banner
+    SET fecha_baja = GETDATE()
+    WHERE id_tipo_banner = @id_tipo_banner;
+END
+go
+
+/* Costo_Banner */
+
+CREATE PROCEDURE Crear_Costo_Banner @id_tipo_banner SMALLINT,
+                                    @id_banner SMALLINT
+AS
+BEGIN
+    INSERT INTO Costo_Banner (id_tipo_banner, id_banner)
+    VALUES (@id_tipo_banner, @id_banner);
+END
+go
+
+CREATE PROCEDURE Eliminar_Costo_Banner @id_tipo_banner SMALLINT,
+                                       @id_banner SMALLINT
+AS
+BEGIN
+    DELETE
+    FROM Costo_Banner
+    WHERE id_tipo_banner = @id_tipo_banner
+      AND id_banner = @id_banner;
+END
+go
+
 /* Publicista */
 
 CREATE OR ALTER PROCEDURE Registrar_Publicista @nombre_de_fantasia VARCHAR(255),
@@ -275,11 +303,11 @@ CREATE OR ALTER PROCEDURE Registrar_Publicista @nombre_de_fantasia VARCHAR(255),
                                                @email VARCHAR(255),
                                                @contraseña VARCHAR(255),
                                                @token_de_servicio VARCHAR(255),
-                                               @url_de_reportes VARCHAR(255)
+                                               @url_api VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Publicista(nombre_de_fantasia, razón_social, email, contraseña, token_de_servicio, url_de_reportes)
-    VALUES (@nombre_de_fantasia, @razón_social, @email, @contraseña, @token_de_servicio, @url_de_reportes)
+    INSERT INTO dbo.Publicista(nombre_de_fantasia, razón_social, email, contraseña, token_de_servicio, url_api)
+    VALUES (@nombre_de_fantasia, @razón_social, @email, @contraseña, @token_de_servicio, @url_api)
 END
 go
 
@@ -289,7 +317,7 @@ CREATE OR ALTER PROCEDURE Editar_Publicista @id_publicista INT,
                                             @email VARCHAR(255),
                                             @contraseña VARCHAR(255),
                                             @token_de_servicio VARCHAR(255),
-                                            @url_de_reportes VARCHAR(255)
+                                            @url_api VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Publicista
@@ -298,7 +326,7 @@ BEGIN
         email              = @email,
         contraseña         = @contraseña,
         token_de_servicio  = @token_de_servicio,
-        url_de_reportes    = @url_de_reportes
+        url_api            = @url_api
     WHERE id_publicista = @id_publicista
 END
 go
@@ -315,7 +343,6 @@ go
 /* Publicidad */
 
 CREATE OR ALTER PROCEDURE Registrar_Publicidad @id_publicista VARCHAR(255),
-                                               @id_exclusividad VARCHAR(255),
                                                @id_banner VARCHAR(255),
                                                @codigo_publicidad VARCHAR(255),
                                                @url_de_imagen VARCHAR(255),
@@ -324,32 +351,28 @@ CREATE OR ALTER PROCEDURE Registrar_Publicidad @id_publicista VARCHAR(255),
                                                @fecha_de_baja DATE
 AS
 BEGIN
-    INSERT INTO dbo.Publicidad(id_publicista, id_exclusividad, id_banner, codigo_publicidad, url_de_imagen,
+    INSERT INTO dbo.Publicidad(id_publicista, id_banner, codigo_publicidad, url_de_imagen,
                                url_de_publicidad, fecha_de_alta, fecha_de_baja)
-    VALUES (@id_publicista, @id_exclusividad, @id_banner, @codigo_publicidad, @url_de_imagen, @url_de_publicidad,
-            @fecha_de_alta, @fecha_de_baja)
+    VALUES (@id_publicista, @id_banner, @codigo_publicidad, @url_de_imagen, @url_de_publicidad, @fecha_de_alta,
+            @fecha_de_baja)
 END
 go
 
 CREATE OR ALTER PROCEDURE Editar_Publicidad @id_publicidad INT,
                                             @id_publicista VARCHAR(255),
-                                            @id_exclusividad VARCHAR(255),
                                             @id_banner VARCHAR(255),
                                             @codigo_publicidad VARCHAR(255),
                                             @url_de_imagen VARCHAR(255),
                                             @url_de_publicidad VARCHAR(255),
-                                            @fecha_de_alta DATE,
                                             @fecha_de_baja DATE
 AS
 BEGIN
     UPDATE dbo.Publicidad
     SET id_publicista     = @id_publicista,
-        id_exclusividad   = @id_exclusividad,
         id_banner         = @id_banner,
         codigo_publicidad = @codigo_publicidad,
         url_de_imagen     = @url_de_imagen,
         url_de_publicidad = @url_de_publicidad,
-        fecha_de_alta     = @fecha_de_alta,
         fecha_de_baja     = @fecha_de_baja
     WHERE id_publicidad = @id_publicidad
 END
@@ -473,50 +496,6 @@ BEGIN
     FROM dbo.Detalle_Factura
     WHERE id_factura = @id_factura
       AND id_detalle = @id_detalle
-END
-go
-
-/* Factura_Publicista */
-
-CREATE OR ALTER PROCEDURE Crear_Factura_Publicista @id_publicista INT,
-                                                   @id_factura INT
-AS
-BEGIN
-    INSERT INTO dbo.Factura_Publicista(id_publicista, id_factura)
-    VALUES (@id_publicista, @id_factura)
-END
-go
-
-CREATE OR ALTER PROCEDURE Eliminar_Factura_Publicista @id_publicista INT,
-                                                      @id_factura INT
-AS
-BEGIN
-    DELETE
-    FROM dbo.Factura_Publicista
-    WHERE id_publicista = @id_publicista
-      AND id_factura = @id_factura
-END
-go
-
-/* Factura_Plataforma */
-
-CREATE OR ALTER PROCEDURE Crear_Factura_Plataforma @id_factura INT,
-                                                   @id_plataforma INT
-AS
-BEGIN
-    INSERT INTO dbo.Factura_Plataforma(id_factura, id_plataforma)
-    VALUES (@id_factura, @id_plataforma)
-END
-go
-
-CREATE OR ALTER PROCEDURE Eliminar_Factura_Plataforma @id_factura INT,
-                                                      @id_plataforma INT
-AS
-BEGIN
-    DELETE
-    FROM dbo.Factura_Plataforma
-    WHERE id_factura = @id_factura
-      AND id_plataforma = @id_plataforma
 END
 go
 
@@ -731,8 +710,8 @@ CREATE OR ALTER PROCEDURE Agregar_Item_al_Catalogo @id_contenido INT,
 AS
 BEGIN
     INSERT INTO dbo.Catalogo(id_contenido, id_plataforma, reciente, destacado, id_en_plataforma, fecha_de_alta,
-                             fecha_de_baja, valido)
-    VALUES (@id_contenido, @id_plataforma, @reciente, @destacado, @id_en_plataforma, @fecha_de_alta, NULL, 1)
+                             fecha_de_baja)
+    VALUES (@id_contenido, @id_plataforma, @reciente, @destacado, @id_en_plataforma, @fecha_de_alta, NULL)
 END
 go
 
@@ -896,50 +875,6 @@ BEGIN
 END
 go
 
-/* Reporte_Publicista */
-
-CREATE OR ALTER PROCEDURE Crear_Reporte_Publicista @id_publicista INT,
-                                                   @id_reporte INT
-AS
-BEGIN
-    INSERT INTO dbo.Reporte_Publicista(id_publicista, id_reporte)
-    VALUES (@id_publicista, @id_reporte)
-END
-go
-
-CREATE OR ALTER PROCEDURE Eliminar_Reporte_Publicista @id_publicista INT,
-                                                      @id_reporte INT
-AS
-BEGIN
-    DELETE
-    FROM dbo.Reporte_Publicista
-    WHERE id_publicista = @id_publicista
-      AND id_reporte = @id_reporte
-END
-go
-
-/* Reporte_Plataforma */
-
-CREATE OR ALTER PROCEDURE Crear_Reporte_Plataforma @id_reporte INT,
-                                                   @id_plataforma INT
-AS
-BEGIN
-    INSERT INTO dbo.Reporte_Plataforma(id_reporte, id_plataforma)
-    VALUES (@id_reporte, @id_plataforma)
-END
-go
-
-CREATE OR ALTER PROCEDURE Eliminar_Reporte_Plataforma @id_reporte INT,
-                                                      @id_plataforma INT
-AS
-BEGIN
-    DELETE
-    FROM dbo.Reporte_Plataforma
-    WHERE id_reporte = @id_reporte
-      AND id_plataforma = @id_plataforma
-END
-go
-
 /* Detalle_Reporte */
 
 CREATE OR ALTER PROCEDURE Crear_Detalle_Reporte @id_reporte INT,
@@ -976,6 +911,77 @@ BEGIN
       AND id_detalle = @id_detalle
 END
 go
+
+/* Tipo_de_Fee */
+
+CREATE PROCEDURE Crear_Tipo_de_Fee @tipo_de_fee VARCHAR(1),
+                                   @descripcion VARCHAR(255)
+AS
+BEGIN
+    INSERT INTO Tipo_de_Fee (tipo_de_fee, descripcion)
+    VALUES (@tipo_de_fee, @descripcion);
+END;
+go
+
+CREATE PROCEDURE Editar_Tipo_de_Fee @id_tipo_de_fee SMALLINT,
+                                    @tipo_de_fee VARCHAR(1),
+                                    @descripcion VARCHAR(255)
+AS
+BEGIN
+    UPDATE Tipo_de_Fee
+    SET tipo_de_fee = @tipo_de_fee,
+        descripcion = @descripcion
+    WHERE id_tipo_de_fee = @id_tipo_de_fee;
+END;
+go
+
+CREATE PROCEDURE Eliminar_Tipo_de_Fee @id_tipo_de_fee SMALLINT
+AS
+BEGIN
+    DELETE
+    FROM Tipo_de_Fee
+    WHERE id_tipo_de_fee = @id_tipo_de_fee;
+END;
+go
+
+/* Fee */
+
+-- Procedimiento para insertar filas en la tabla Fee
+CREATE PROCEDURE Crear_Fee
+    @id_fee SMALLINT,
+    @monto FLOAT,
+    @tipo_de_fee SMALLINT
+AS
+BEGIN
+    INSERT INTO Fee (id_fee, monto, fecha_alta, fecha_baja, tipo_de_fee)
+    VALUES (@id_fee, @monto, GETDATE(), NULL, @tipo_de_fee);
+END;
+go
+
+CREATE PROCEDURE Editar_Fee
+    @id_fee SMALLINT,
+    @monto FLOAT,
+    @tipo_de_fee SMALLINT
+AS
+BEGIN
+    UPDATE Fee
+    SET monto = @monto,
+        tipo_de_fee = @tipo_de_fee
+    WHERE id_fee = @id_fee;
+END;
+go
+
+CREATE PROCEDURE Eliminar_Fee
+@id_fee SMALLINT
+AS
+BEGIN
+    DELETE FROM Fee
+    WHERE id_fee = @id_fee;
+END;
+go
+
+/* Fee_Plataforma */
+
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ----------------------------------- OBTENER Y ENVIAR REPORTES DE ESTADISTICAS ------------------------------------ */
