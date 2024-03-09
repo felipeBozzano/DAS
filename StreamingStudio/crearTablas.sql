@@ -18,8 +18,8 @@ DROP TABLE IF EXISTS dbo.Genero
 DROP TABLE IF EXISTS dbo.Contenido
 DROP TABLE IF EXISTS dbo.Clasificacion
 DROP TABLE IF EXISTS dbo.Fee_Plataforma
-DROP TABLE IF EXISTS dbo.Tipo_de_Fee
 DROP TABLE IF EXISTS dbo.Fee
+DROP TABLE IF EXISTS dbo.Tipo_de_Fee
 DROP TABLE IF EXISTS dbo.Plataforma_de_Streaming
 DROP TABLE IF EXISTS dbo.Cliente_Usuario
 DROP TABLE IF EXISTS dbo.Publicidad
