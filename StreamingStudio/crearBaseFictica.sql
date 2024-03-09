@@ -130,31 +130,29 @@ VALUES (1, 1),
 go
 
 -- Crear 3 Plataformas de Streaming
-INSERT INTO Plataforma_de_Streaming (nombre_de_fantasia, razón_social, url_imagen, token_de_servicio, url_de_reportes,
-                                     url_de_sesion, fee_de_federacion, fee_de_registro)
-VALUES ('Plataforma1', N'Razón Social 1', 'url_imagen1.jpg', 'token1', 'url_reportes1', 'url_sesion1', 0.1, 0.05),
-       ('Plataforma2', N'Razón Social 2', 'url_imagen2.jpg', 'token2', 'url_reportes2', 'url_sesion2', 0.12, 0.06),
-       ('Plataforma3', N'Razón Social 3', 'url_imagen3.jpg', 'token3', 'url_reportes3', 'url_sesion3', 0.15, 0.07);
+INSERT INTO Plataforma_de_Streaming (nombre_de_fantasia, razón_social, url_imagen, token_de_servicio, url_api, valido)
+VALUES ('Plataforma1', N'Razón Social 1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'token1', 'https://www.urlapi1.com', 1),
+       ('Plataforma2', N'Razón Social 2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'token2', 'https://www.urlapi2.com', 1),
+       ('Plataforma3', N'Razón Social 3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'token3', 'https://www.urlapi3.com', 1);
 go
 
-INSERT INTO Catalogo (id_contenido, id_plataforma, reciente, destacado, id_en_plataforma, fecha_de_alta, fecha_de_baja,
-                      valido)
+INSERT INTO Catalogo (id_contenido, id_plataforma, reciente, destacado, id_en_plataforma, fecha_de_alta, fecha_de_baja)
 VALUES
     -- Plataforma 1
-    (1, 1, 1, 1, 'P1_C1', GETDATE(), NULL, 1),
-    (2, 1, 1, 0, 'S1_C2', GETDATE(), NULL, 1),
-    (3, 1, 0, 1, 'P2_C1', GETDATE(), NULL, 1),
-    (4, 1, 0, 0, 'S2_C2', GETDATE(), NULL, 1),
+    (1, 1, 1, 1, 'P1_C1', GETDATE(), NULL),
+    (2, 1, 1, 0, 'S1_C2', GETDATE(), NULL),
+    (3, 1, 0, 1, 'P2_C1', GETDATE(), NULL),
+    (4, 1, 0, 0, 'S2_C2', GETDATE(), NULL),
     -- Plataforma 2
-    (5, 2, 1, 1, 'P3_C1', GETDATE(), NULL, 1),
-    (6, 2, 1, 0, 'S3_C2', GETDATE(), NULL, 1),
-    (7, 2, 0, 1, 'P4_C1', GETDATE(), NULL, 1),
-    (8, 2, 0, 0, 'S4_C2', GETDATE(), NULL, 1),
+    (5, 2, 1, 1, 'P3_C1', GETDATE(), NULL),
+    (6, 2, 1, 0, 'S3_C2', GETDATE(), NULL),
+    (7, 2, 0, 1, 'P4_C1', GETDATE(), NULL),
+    (8, 2, 0, 0, 'S4_C2', GETDATE(), NULL),
     -- Plataforma 3
-    (1, 3, 1, 1, 'P1_C3', GETDATE(), NULL, 1),
-    (2, 3, 1, 0, 'S1_C4', GETDATE(), NULL, 1),
-    (5, 3, 0, 1, 'P3_C1', GETDATE(), NULL, 1),
-    (6, 3, 0, 0, 'S3_C2', GETDATE(), NULL, 1);
+    (1, 3, 1, 1, 'P1_C3', GETDATE(), NULL),
+    (2, 3, 1, 0, 'S1_C4', GETDATE(), NULL),
+    (5, 3, 0, 1, 'P3_C1', GETDATE(), NULL),
+    (6, 3, 0, 0, 'S3_C2', GETDATE(), NULL);
 go
 
 -- Insertar los tipos de usuario "Registrado" y "Nuevo"
