@@ -1,18 +1,5 @@
 USE StreamingStudio;
 
-DROP PROCEDURE Añadir_Plataforma_de_Streaming
-DROP PROCEDURE Comenzar_Federacion
-DROP PROCEDURE Crear_Usuario
-DROP PROCEDURE Desvincular_Federacion
-DROP PROCEDURE Editar_Plataforma_de_Streaming
-DROP PROCEDURE Editar_Usuario
-DROP PROCEDURE Eliminar_Plataforma_de_Streaming
-DROP PROCEDURE Eliminar_Usuario
-DROP PROCEDURE Finalizar_Federacion
-DROP PROCEDURE Interrumpir_Federacion
-DROP PROCEDURE Validar_Usuario
-go
-
 /* Cliente_Usuario */
 
 CREATE OR ALTER PROCEDURE Crear_Usuario @usuario VARCHAR(255),
