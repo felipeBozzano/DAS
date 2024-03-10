@@ -1,64 +1,97 @@
 USE StreamingStudio
 go
 
+/*
+    FINALIZAR UNA FEDERACIÓN IMPLICA OBTENER EL TOKEN ÚNICO DE USUARIO DE LA PLATAFORMA DE STREAMING.
+    UNA VEZ QUE SE OBTIENE EL TOKEN, EN LA TABLA TRANSACCIÓN SE ACTUALIZA EL REGISTRO VINCULADO A ESA FEDERACIÓN
+    DONDE ACTUALIZAMOS EL CAMPO TOKEN.
+    SI EL CAMPO TOKEN ES ACTUALIZADO, ENTONCES SE DISPARA EL TRIGGER QUE CREA UN REGISTRO EN LA TABLA FEDERACIÓN.
+*/
+
 CREATE OR ALTER TRIGGER Registrar_Federacion
     ON dbo.Transaccion
     AFTER UPDATE
     AS
 BEGIN
-    INSERT INTO dbo.Federacion
+    WITH Federacion_Terminada AS (SELECT i.id_plataforma, i.id_cliente, i.token, i.tipo_usuario, i.facturada
+                                  FROM inserted i
+                                           JOIN deleted d ON i.id_cliente = d.id_cliente
+                                  WHERE i.token IS NOT NULL
+                                    and d.token IS NULL
+                                    and i.fecha_baja IS NULL
+                                    and d.fecha_baja IS NULL)
+    INSERT
+    INTO dbo.Federacion
     SELECT id_plataforma,
            id_cliente,
            token,
            tipo_usuario,
-           IIF(EXISTS(SELECT 1
-                      FROM dbo.Transaccion
-                      WHERE Transaccion.id_plataforma = inserted.id_plataforma
-                        AND Transaccion.id_cliente = inserted.id_cliente
-                        AND Transaccion.facturada = 1), 1, 0)
-    FROM inserted
-    WHERE inserted.fecha_baja IS NULL
-      AND inserted.token IS NOT NULL
+           facturada
+    FROM Federacion_Terminada
 END
 go
+
+/*
+    DESVINCULAR UNA FEDERACIÓN, IMPLICA ELIMINAR EL REGISTRO QUE UNE AL USUARIO CON LA PLATAFORMA DE STREAMING A LA
+    CUAL ESTABA FEDERADO.
+    AL ELIMINAR DICHA FEDERACIÓN, SE DISPARA ESTE TRIGGER EN LA TABLA TRANSACCIÓN QUE BUSCA EL REGISTRO ASOCIADO A LA
+    FEDERACIÓN, Y ACTUALIZA SU FECHA DE BAJA A LA HORA ACTUAL.
+ */
 
 CREATE OR ALTER TRIGGER Dar_de_Baja_Transaccion
     ON dbo.Federacion
     AFTER DELETE
     AS
 BEGIN
-    UPDATE dbo.Transaccion
-    SET fecha_baja = CURRENT_TIMESTAMP
-    WHERE id_cliente = (SELECT id_cliente FROM deleted)
-      AND id_plataforma = (SELECT id_plataforma FROM deleted)
-      AND codigo_de_transaccion = (SELECT codigo_de_transaccion FROM deleted)
+    UPDATE Transaccion
+    SET fecha_baja = GETDATE()
+    FROM dbo.Transaccion AS t
+             JOIN deleted AS d ON t.id_plataforma = d.id_plataforma AND t.id_cliente = d.id_cliente
+    WHERE fecha_alta = (SELECT MAX(fecha_alta)
+                        FROM dbo.Transaccion AS tt
+                        WHERE tt.id_plataforma = d.id_plataforma
+                          AND tt.id_cliente = d.id_cliente);
 END
 go
+
+/*
+    CUANDO UN USUARIO DECIDE DAR DE BAJA SU CUENTA, EL SISTEMA ACTUALIZA EL CAMPO VALIDO = 0.
+    ESA SITUACION DISPARA ESTE TRIGGER QUE ELIMINA TODAS LAS FEDERACIONES ASOCIADAS A DICHO USUARIO.
+ */
 
 CREATE OR ALTER TRIGGER Desvincular_Federaciones
     ON dbo.Cliente_Usuario
     FOR UPDATE
     AS
 BEGIN
+    WITH Usuario_Dado_de_Baja AS (SELECT i.id_cliente
+                                  FROM inserted i
+                                           JOIN deleted d ON i.id_cliente = d.id_cliente
+                                  WHERE i.valido = 0
+                                    and d.valido = 1)
     DELETE f
     FROM dbo.Federacion f
-             JOIN inserted i ON f.id_cliente = i.id_cliente
-    WHERE i.valido = 0;
+             JOIN Usuario_Dado_de_Baja u ON f.id_cliente = u.id_cliente
 END
 go
 
-
-/*SI UNA PLATAFORMA DE STREAMING SE ELIMINA, ELIMINE TODAS LAS FEDERACIONES DE ESA PLATAFORMA.*/
+/*
+    SI UNA PLATAFORMA DE STREAMING SE ELIMINA, ELIMINE TODAS LAS FEDERACIONES DE ESA PLATAFORMA.
+ */
 
 CREATE OR ALTER TRIGGER Eliminar_Federaciones
     ON dbo.Plataforma_de_Streaming
     AFTER UPDATE
     AS
 BEGIN
+    WITH Plataforma_Dada_de_Baja AS (SELECT i.id_plataforma
+                                     FROM inserted i
+                                              JOIN deleted d ON i.id_plataforma = d.id_plataforma
+                                     WHERE i.valido = 0
+                                       and d.valido = 1)
     DELETE f
     FROM dbo.Federacion f
-             JOIN inserted i ON i.id_plataforma = f.id_plataforma
-    WHERE i.valido = 0;
+             JOIN Plataforma_Dada_de_Baja p ON p.id_plataforma = f.id_plataforma
 END
 go
 
@@ -72,8 +105,10 @@ CREATE OR ALTER TRIGGER Facturar_Transacciones
 BEGIN
     WITH Federacion_Facturada AS (SELECT i.id_plataforma, i.id_cliente
                                   FROM inserted i
-                                    JOIN deleted d ON i.id_cliente = d.id_cliente and i.id_plataforma = d.id_plataforma
-                                  WHERE i.facturada = 1 and d.facturada = 0)
+                                           JOIN deleted d
+                                                ON i.id_cliente = d.id_cliente and i.id_plataforma = d.id_plataforma
+                                  WHERE i.facturada = 1
+                                    and d.facturada = 0)
     UPDATE dbo.Transaccion
     SET facturada = 1
     FROM dbo.Transaccion t

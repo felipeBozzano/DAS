@@ -1,7 +1,7 @@
 USE StreamingStudio;
 
 -- Crear 10 usuarios
-INSERT INTO dbo.Cliente_Usuario (usuario, contraseña, email, nombre, apellido, valido)
+INSERT INTO Cliente_Usuario (usuario, contraseña, email, nombre, apellido, valido)
 VALUES ('usuario1', N'contraseña1', 'usuario1@example.com', 'Juan', N'Pérez', 1),
        ('usuario2', N'contraseña2', 'usuario2@example.com', N'María', N'Gómez', 1),
        ('usuario3', N'contraseña3', 'usuario3@example.com', 'Carlos', N'López', 1),
@@ -136,6 +136,7 @@ VALUES ('Plataforma1', N'Razón Social 1', 'https://www.urlimagen1.com/imagenes/
        ('Plataforma3', N'Razón Social 3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'token3', 'https://www.urlapi3.com', 1);
 go
 
+-- Llenar Catálogo
 INSERT INTO Catalogo (id_contenido, id_plataforma, reciente, destacado, id_en_plataforma, fecha_de_alta, fecha_de_baja)
 VALUES
     -- Plataforma 1
@@ -161,37 +162,115 @@ VALUES (1, N'Nuevo'),
        (2, N'Registrado');
 go
 
--- Crear 6 Banners
-INSERT INTO Banner (tamaño_de_banner, costo, descripcion)
-VALUES ('20x20', 50.0, N'Descripción de Banner1'),
-       ('15x30', 45.0, N'Descripción de Banner2'),
-       ('20x20', 40.0, N'Descripción de Banner3'),
-       ('15x30', 35.0, N'Descripción de Banner4'),
-       ('20x20', 30.0, N'Descripción de Banner5'),
-       ('15x30', 25.0, N'Descripción de Banner6');
+-- Crear 2 Tipo_de_Fee
+INSERT INTO Tipo_Fee (tipo_de_fee, descripcion)
+VALUES (1, N'Fee de federación para usuario Nuevo'),
+       (2, N'Fee de federación para usuario Registrado');
 go
 
-INSERT INTO Exclusividad (grado_de_exclusividad, costo, descripcion)
-VALUES (1, 25.0, 'Pagina_Principal'),
-       (2, 30.0, 'En_Todas_Las_Paginas');
+-- Crear 4 Fee
+INSERT INTO Fee (monto, fecha_alta, fecha_baja, tipo_de_fee)
+VALUES (2.0, GETDATE(), NULL, 1),
+       (3.0, GETDATE(), NULL, 1),
+       (2.5, GETDATE(), NULL, 2),
+       (1.5, GETDATE(), NULL, 2);
 go
 
-INSERT INTO Publicista (nombre_de_fantasia, razón_social, email, contraseña, token_de_servicio, url_de_reportes)
-VALUES ('Publicista1', N'Razón Social 1', 'publicista1@email.com', N'contraseña1', 'token1', 'url_reportes1'),
-       ('Publicista2', N'Razón Social 2', 'publicista2@email.com', N'contraseña2', 'token2', 'url_reportes2'),
-       ('Publicista3', N'Razón Social 3', 'publicista3@email.com', N'contraseña3', 'token3', 'url_reportes3');
+-- Crear 6 Fee_Plataforma
+INSERT INTO Fee_Plataforma (id_plataforma, id_fee)
+VALUES (1, 1),
+       (1, 3),
+       (2, 2),
+       (2, 4),
+       (3, 1),
+       (3, 4);
+go
+
+-- Crear 4 Banners
+INSERT INTO Banner (tamaño_de_banner, descripcion)
+VALUES ('20x20', N'Descripción de Banner1'),
+       ('15x30', N'Descripción de Banner2'),
+       ('10x20', N'Descripción de Banner3'),
+       ('20x30', N'Descripción de Banner4')
+go
+
+-- Crear 6 Tipo_Banner
+INSERT INTO Tipo_Banner (costo, exclusividad, fecha_alta, fecha_baja, descripcion)
+VALUES (23.5, 1, GETDATE(), NULL, 'Banner Arriba Izquierda Exclusivo'),
+       (30.0, 1, GETDATE(), NULL, 'Banner Arriba Derecha Exclusivo'),
+       (15.5, 0, GETDATE(), NULL, 'Banner Arriba Izquierda NO Exclusivo'),
+       (20.0, 0, GETDATE(), NULL, 'Banner Arriba Derecha NO Exclusivo'),
+       (10.5, 0, GETDATE(), NULL, 'Banner Abajo Izquierda NO Exclusivo'),
+       (15.0, 0, GETDATE(), NULL, 'Banner Abajo Derecha NO Exclusivo');
+go
+
+-- Crear 6 Costo_Banner
+INSERT INTO Costo_Banner (id_tipo_banner, id_banner)
+VALUES (1, 1),
+       (3, 1),
+       (2, 2),
+       (4, 2),
+       (5, 3),
+       (6, 4);
+go
+
+-- Crear 3 Publicista
+INSERT INTO Publicista (nombre_de_fantasia, razón_social, email, contraseña, token_de_servicio, url_api)
+VALUES ('Publicista1', N'Razón Social 1', 'publicista1@email.com', N'contraseña1', 'token1', 'https://www.urlapi1.com'),
+       ('Publicista2', N'Razón Social 2', 'publicista2@email.com', N'contraseña2', 'token2', 'https://www.urlapi2.com'),
+       ('Publicista3', N'Razón Social 3', 'publicista3@email.com', N'contraseña3', 'token3', 'https://www.urlapi3.com');
 go
 
 -- Crear 9 Publicidades asignadas a Banners y Exclusividades
-INSERT INTO Publicidad (id_publicista, id_exclusividad, id_banner, codigo_publicidad, url_de_imagen, url_de_publicidad,
-                        fecha_de_alta, fecha_de_baja)
-VALUES (1, 1, 1, 'CP1', 'url_imagen_publicidad1.jpg', 'url_publicidad1', '2024-01-30', '2024-02-29'),
-       (2, 2, 2, 'CP2', 'url_imagen_publicidad2.jpg', 'url_publicidad2', '2024-01-31', '2024-03-01'),
-       (3, 1, 3, 'CP3', 'url_imagen_publicidad3.jpg', 'url_publicidad3', '2024-02-01', '2024-03-02'),
-       (1, 2, 4, 'CP4', 'url_imagen_publicidad4.jpg', 'url_publicidad4', '2024-02-02', '2024-03-03'),
-       (2, 1, 5, 'CP5', 'url_imagen_publicidad5.jpg', 'url_publicidad5', '2024-02-03', '2024-03-04'),
-       (3, 2, 6, 'CP6', 'url_imagen_publicidad6.jpg', 'url_publicidad6', '2024-02-04', '2024-03-05'),
-       (1, 1, 1, 'CP7', 'url_imagen_publicidad7.jpg', 'url_publicidad7', '2024-02-05', '2024-03-06'),
-       (2, 2, 2, 'CP8', 'url_imagen_publicidad8.jpg', 'url_publicidad8', '2024-02-06', '2024-03-07'),
-       (3, 1, 3, 'CP9', 'url_imagen_publicidad9.jpg', 'url_publicidad9', '2024-02-07', '2024-03-08');
+INSERT INTO Publicidad (id_publicista, id_banner, codigo_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta,
+                        fecha_de_baja)
+VALUES (1, 1, 'CP1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'https://www.urlpublicidad1.com/publicidad.jpg', '2024-01-30', '2024-02-29'),
+       (2, 2, 'CP2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'https://www.urlpublicidad2.com/publicidad.jpg', '2024-01-31', '2024-03-01'),
+       (3, 3, 'CP3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'https://www.urlpublicidad3.com/publicidad.jpg', '2024-02-01', '2024-03-02'),
+       (1, 4, 'CP4', 'https://www.urlimagen4.com/imagenes/imagen.jpg', 'https://www.urlpublicidad4.com/publicidad.jpg', '2024-02-02', '2024-03-03'),
+       (2, 1, 'CP5', 'https://www.urlimagen5.com/imagenes/imagen.jpg', 'https://www.urlpublicidad5.com/publicidad.jpg', '2024-02-03', '2024-03-04'),
+       (3, 2, 'CP6', 'https://www.urlimagen6.com/imagenes/imagen.jpg', 'https://www.urlpublicidad6.com/publicidad.jpg', '2024-02-04', '2024-03-05'),
+       (1, 3, 'CP7', 'https://www.urlimagen7.com/imagenes/imagen.jpg', 'https://www.urlpublicidad7.com/publicidad.jpg', '2024-02-05', '2024-03-06'),
+       (2, 4, 'CP8', 'https://www.urlimagen8.com/imagenes/imagen.jpg', 'https://www.urlpublicidad8.com/publicidad.jpg', '2024-02-06', '2024-03-07'),
+       (3, 1, 'CP9', 'https://www.urlimagen9.com/imagenes/imagen.jpg', 'https://www.urlpublicidad9.com/publicidad.jpg', '2024-02-07', '2024-03-08');
+go
+
+-- Crear 4 Estado_Factura
+INSERT INTO Estado_Factura (id_estado, descripcion)
+VALUES (0, 'Creada'),
+       (1, 'Finalizada'),
+       (2, 'Enviada'),
+       (-1, 'Cancelada');
+go
+
+-- Crear 4 Estado_Reporte
+INSERT INTO Estado_Reporte (id_estado, descripcion)
+VALUES (0, 'Creado'),
+       (1, 'Finalizado'),
+       (2, 'Enviado'),
+       (-1, 'Cancelado');
+go
+
+-- Crear Clics para publicidades y catalogo
+INSERT INTO Clic (id_cliente, id_publicidad, id_plataforma, id_contenido, fecha)
+VALUES (1, 1, NULL, NULL, GETDATE()),
+       (1, 2, NULL, NULL, GETDATE()),
+       (2, 1, NULL, NULL, GETDATE()),
+       (2, 1, NULL, NULL, GETDATE()),
+       (2, 3, NULL, NULL, GETDATE()),
+       (3, 4, NULL, NULL, GETDATE()),
+       (4, 5, NULL, NULL, GETDATE()),
+       (5, 6, NULL, NULL, GETDATE()),
+       (5, 6, NULL, NULL, GETDATE()),
+       (5, 7, NULL, NULL, GETDATE()),
+       (6, NULL, 1, 1, GETDATE()),
+       (7, NULL, 1, 3, GETDATE()),
+       (7, NULL, 2, 5, GETDATE()),
+       (8, NULL, 2, 7, GETDATE()),
+       (8, NULL, 3, 1, GETDATE()),
+       (8, NULL, 3, 2, GETDATE()),
+       (9, NULL, 3, 5, GETDATE()),
+       (10, NULL, 3, 6, GETDATE()),
+       (10, NULL, 2, 6, GETDATE()),
+       (10, NULL, 2, 6, GETDATE());
 go

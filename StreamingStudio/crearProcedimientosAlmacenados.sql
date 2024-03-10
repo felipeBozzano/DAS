@@ -113,6 +113,15 @@ BEGIN
 END
 go
 
+CREATE OR ALTER PROCEDURE Reactivar_Plataforma_de_Streaming @id_plataforma INT
+AS
+BEGIN
+    UPDATE dbo.Plataforma_de_Streaming
+    SET valido = 1
+    WHERE id_plataforma = @id_plataforma
+END
+go
+
 /* Transaccion */
 
 CREATE OR ALTER PROCEDURE Comenzar_Federacion @id_plataforma INT,
@@ -406,11 +415,19 @@ go
 
 /* Factura */
 
-CREATE OR ALTER PROCEDURE Crear_Factura
+CREATE OR ALTER PROCEDURE Crear_Factura_Plataforma @id_plataforma INT
 AS
 BEGIN
-    INSERT INTO dbo.Factura(total, fecha, estado)
-    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0)
+    INSERT INTO dbo.Factura(total, fecha, estado, id_publicista, id_plataforma)
+    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, NULL, @id_plataforma)
+END
+go
+
+CREATE OR ALTER PROCEDURE Crear_Factura_Publicista @id_publicista INT
+AS
+BEGIN
+    INSERT INTO dbo.Factura(total, fecha, estado, id_publicista, id_plataforma)
+    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, @id_publicista, NULL)
 END
 go
 
@@ -905,7 +922,7 @@ CREATE PROCEDURE Crear_Tipo_de_Fee @tipo_de_fee VARCHAR(1),
                                    @descripcion VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO Tipo_de_Fee (tipo_de_fee, descripcion)
+    INSERT INTO Tipo_Fee (tipo_de_fee, descripcion)
     VALUES (@tipo_de_fee, @descripcion);
 END
 go
@@ -915,7 +932,7 @@ CREATE PROCEDURE Editar_Tipo_de_Fee @id_tipo_de_fee SMALLINT,
                                     @descripcion VARCHAR(255)
 AS
 BEGIN
-    UPDATE Tipo_de_Fee
+    UPDATE Tipo_Fee
     SET tipo_de_fee = @tipo_de_fee,
         descripcion = @descripcion
     WHERE id_tipo_de_fee = @id_tipo_de_fee;
@@ -926,20 +943,19 @@ CREATE PROCEDURE Eliminar_Tipo_de_Fee @id_tipo_de_fee SMALLINT
 AS
 BEGIN
     DELETE
-    FROM Tipo_de_Fee
+    FROM Tipo_Fee
     WHERE id_tipo_de_fee = @id_tipo_de_fee;
 END
 go
 
 /* Fee */
 
-CREATE PROCEDURE Crear_Fee @id_fee SMALLINT,
-                           @monto FLOAT,
+CREATE PROCEDURE Crear_Fee @monto FLOAT,
                            @tipo_de_fee SMALLINT
 AS
 BEGIN
-    INSERT INTO Fee (id_fee, monto, fecha_alta, fecha_baja, tipo_de_fee)
-    VALUES (@id_fee, @monto, GETDATE(), NULL, @tipo_de_fee);
+    INSERT INTO Fee (monto, fecha_alta, fecha_baja, tipo_de_fee)
+    VALUES (@monto, GETDATE(), NULL, @tipo_de_fee);
 END
 go
 
@@ -1103,8 +1119,7 @@ BEGIN
 END
 go
 
-/* Crear_Factura */
-/* Crear_Factura_Plataforma */
+/* Crear_Factura_Publicista */
 
 CREATE OR ALTER PROCEDURE Obtener_Costo_de_Banner @id_banner INT
 AS
@@ -1134,7 +1149,6 @@ BEGIN
 END
 go
 
-/* Crear_Factura */
 /* Crear_Factura_Plataforma */
 
 CREATE OR ALTER PROCEDURE Obtener_Fees_de_Plataforma @id_plataforma INT
@@ -1143,9 +1157,9 @@ BEGIN
     SELECT f.monto, tp.tipo_de_fee
     FROM dbo.Fee_Plataforma fp
              JOIN dbo.Fee f ON fp.id_fee = f.id_fee
-             JOIN dbo.Tipo_de_Fee tp ON f.tipo_de_fee = tp.id_tipo_de_fee
+             JOIN dbo.Tipo_Fee tp ON f.tipo_de_fee = tp.id_tipo_de_fee
     WHERE fp.id_plataforma = @id_plataforma
-      AND f.fecha_baja IS NOT NULL
+      AND f.fecha_baja IS NULL
 END
 go
 
@@ -1155,9 +1169,52 @@ go
 /* PEGARLE A LA API DE LA PLATAFORMA PARA CARGAR LA FACTURA */
 /* Enviar_Factura */
 
+CREATE OR ALTER PROCEDURE Facturar_Federacion @id_plataforma INT
+AS
+BEGIN
+    UPDATE Federacion
+    SET facturada = 1
+    WHERE facturada = 0
+      AND id_plataforma = @id_plataforma
+END
+go
+
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ------------------------------------------ FEDERAR CLIENTE A PLATAFORMA ------------------------------------------ */
 /* ------------------------------------------------------------------------------------------------------------------ */
+
+CREATE OR ALTER PROCEDURE Buscar_Federacion @id_plataforma INT,
+                                            @id_cliente INT
+AS
+BEGIN
+    SELECT IIF(COUNT(*) > 0, 1, 0)
+    FROM dbo.Federacion
+    WHERE id_plataforma = @id_plataforma
+      AND id_cliente = @id_cliente
+END
+go
+
+/* SI EXISTE LA FEDERACION, TERMINAR EL FLUJO */
+
+CREATE OR ALTER PROCEDURE Verificar_Federacion_en_Curso @id_plataforma INT,
+                                                        @id_cliente INT
+AS
+BEGIN
+    DECLARE @max_fecha_alta DATETIME;
+    SET @max_fecha_alta = (SELECT MAX(fecha_alta)
+                           FROM dbo.Transaccion
+                           WHERE id_plataforma = @id_plataforma
+                             AND id_cliente = @id_cliente)
+    SELECT IIF(COUNT(*) > 0, 1, 0) AS existe_federacion
+    FROM dbo.Transaccion
+    WHERE id_plataforma = @id_plataforma
+      AND id_cliente = @id_cliente
+      AND fecha_baja IS NULL
+      AND fecha_alta = @max_fecha_alta
+END
+go
+
+/* SI HAY UNA FEDERACION EN CURSO, IR DIRECTAMENTE AL PUNTO 2 */
 
 CREATE OR ALTER PROCEDURE Obtener_Token_de_Servicio_de_Plataforma @id_plataforma INT
 AS
@@ -1168,18 +1225,9 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Tipo_de_Usuario @id_tipo_usuario SMALLINT
-AS
-BEGIN
-    SELECT descripcion
-    FROM dbo.Tipo_Usuario
-    WHERE id_tipo_usuario = @id_tipo_usuario
-END
-go
-
 /* PEGARLE A LA API DE LA PLATAFORMA PARA OBTENER LA URL DE LOGIN Y EL CÓDIGO DE TRANSACCIÓN. */
 /* Comenzar_Federacion */
-/* PEGARLE A LA API PARA CONSULTAR EL TOKEN DEL USUARIO */
+/* PUNTO 2 -- PEGARLE A LA API PARA CONSULTAR EL TOKEN DEL USUARIO */
 /* Finalizar_Federacion */
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1209,7 +1257,7 @@ AS
 BEGIN
     SELECT id_plataforma, id_contenido, reciente, destacado, id_en_plataforma
     FROM dbo.Catalogo
-    WHERE fecha_de_baja  IS NULL
+    WHERE fecha_de_baja IS NULL
 END
 go
 

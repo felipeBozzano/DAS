@@ -19,7 +19,7 @@ DROP TABLE IF EXISTS dbo.Contenido
 DROP TABLE IF EXISTS dbo.Clasificacion
 DROP TABLE IF EXISTS dbo.Fee_Plataforma
 DROP TABLE IF EXISTS dbo.Fee
-DROP TABLE IF EXISTS dbo.Tipo_de_Fee
+DROP TABLE IF EXISTS dbo.Tipo_Fee
 DROP TABLE IF EXISTS dbo.Plataforma_de_Streaming
 DROP TABLE IF EXISTS dbo.Cliente_Usuario
 DROP TABLE IF EXISTS dbo.Publicidad
@@ -199,7 +199,7 @@ CREATE TABLE [Publicidad]
             ON DELETE CASCADE
 );
 
-CREATE TABLE [Tipo_de_Fee]
+CREATE TABLE [Tipo_Fee]
 (
     [id_tipo_de_fee]    SMALLINT IDENTITY(1,1) PRIMARY KEY,
     [tipo_de_fee]       VARCHAR(1) NOT NULL,
@@ -208,14 +208,14 @@ CREATE TABLE [Tipo_de_Fee]
 
 CREATE TABLE [Fee]
 (
-    [id_fee]        SMALLINT PRIMARY KEY,
+    [id_fee]        SMALLINT IDENTITY(1,1) PRIMARY KEY,
     [monto]         FLOAT NOT NULL,
     [fecha_alta]    DATETIME NOT NULL,
     [fecha_baja]    DATETIME,
     [tipo_de_fee]   SMALLINT NOT NULL,
-    CONSTRAINT [FK_Fee.Tipo_de_Fee]
+    CONSTRAINT [FK_Fee.Tipo_Fee]
         FOREIGN KEY ([tipo_de_fee])
-            REFERENCES [Tipo_de_Fee] ([id_tipo_de_fee])
+            REFERENCES [Tipo_Fee] ([id_tipo_de_fee])
             ON UPDATE CASCADE
             ON DELETE CASCADE
 );
