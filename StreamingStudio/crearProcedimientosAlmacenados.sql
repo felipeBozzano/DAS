@@ -842,11 +842,19 @@ go
 
 /* Reporte */
 
-CREATE OR ALTER PROCEDURE Crear_Reporte
+CREATE OR ALTER PROCEDURE Crear_Reporte_Publicista @id_publicista INT
 AS
 BEGIN
-    INSERT INTO dbo.Reporte(total, fecha, estado)
-    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0)
+    INSERT INTO dbo.Reporte(total, fecha, estado, id_publicista, id_plataforma)
+    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, @id_publicista, NULL)
+END
+go
+
+CREATE OR ALTER PROCEDURE Crear_Reporte_Plataforma @id_plataforma SMALLINT
+AS
+BEGIN
+    INSERT INTO dbo.Reporte(total, fecha, estado, id_publicista, id_plataforma)
+    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, NULL, @id_plataforma)
 END
 go
 
@@ -1031,7 +1039,6 @@ go
 
 /* POR CADA PUBLICISTA REPETIR EL SIGUIENTE CICLO*/
 
-/* Crear_Reporte */
 /* Crear_Reporte_Publicista */
 /* Crear_Detalle_Reporte */
 /* Finalizar_Reporte */
@@ -1067,7 +1074,6 @@ go
 
 /* POR CADA PLATAFORMA DE STREAMING REPETIR EL SIGUIENTE CICLO*/
 
-/* Crear_Reporte */
 /* Crear_Reporte_Plataforma */
 /* Crear_Detalle_Reporte */
 /* Finalizar_Reporte */
@@ -1095,8 +1101,8 @@ AS
 BEGIN
     DECLARE @PrimerDiaMesAnterior AS DATE = DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)
     DECLARE @UltimoDiaMesAnterior AS DATE = EOMONTH(DATEADD(MONTH, -1, GETDATE()))
-    SELECT id_publicista,
-           id_publicidad,
+    SELECT id_publicidad,
+           id_publicista,
            id_banner,
            codigo_publicidad,
            CASE
@@ -1124,7 +1130,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Costo_de_Banner @id_banner INT
 AS
 BEGIN
-    SELECT costo
+    SELECT tp.costo
     FROM dbo.Costo_Banner cb
              JOIN dbo.Tipo_Banner tp ON tp.id_tipo_banner = cb.id_tipo_banner
     WHERE id_banner = @id_banner
