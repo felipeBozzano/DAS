@@ -667,12 +667,11 @@ go
 CREATE OR ALTER PROCEDURE Crear_Contenido @titulo VARCHAR(255),
                                           @descripcion VARCHAR(255),
                                           @url_imagen VARCHAR(255),
-                                          @clasificacion INT,
-                                          @mas_visto BIT
+                                          @clasificacion INT
 AS
 BEGIN
     INSERT INTO dbo.Contenido(titulo, descripcion, url_imagen, clasificacion, mas_visto)
-    VALUES (@titulo, @descripcion, @url_imagen, @clasificacion, @mas_visto)
+    VALUES (@titulo, @descripcion, @url_imagen, @clasificacion, 0)
 END
 go
 
@@ -715,7 +714,7 @@ AS
 BEGIN
     INSERT INTO dbo.Catalogo(id_contenido, id_plataforma, reciente, destacado, id_en_plataforma, fecha_de_alta,
                              fecha_de_baja)
-    VALUES (@id_contenido, @id_plataforma, @reciente, @destacado, @id_en_plataforma, @fecha_de_alta, NULL)
+    VALUES (@id_contenido, @id_plataforma, @reciente, @destacado, @id_en_plataforma, GETDATE(), NULL)
 END
 go
 
@@ -1118,7 +1117,9 @@ BEGIN
                WHEN fecha_de_alta > @PrimerDiaMesAnterior
                    AND fecha_de_baja > @UltimoDiaMesAnterior
                    THEN DATEDIFF(DAY, fecha_de_alta, @UltimoDiaMesAnterior)
-               END AS cantidad_de_dias
+               END                                                                                     AS cantidad_de_dias,
+           IIF(fecha_de_alta < @PrimerDiaMesAnterior, @PrimerDiaMesAnterior, fecha_de_alta)            AS fecha_inicio,
+           IIF(Publicidad.fecha_de_baja > @UltimoDiaMesAnterior, @UltimoDiaMesAnterior, fecha_de_baja) AS fecha_final
     FROM dbo.Publicidad
     WHERE fecha_de_alta <= @UltimoDiaMesAnterior
       AND fecha_de_baja >= @PrimerDiaMesAnterior
@@ -1246,11 +1247,13 @@ BEGIN
     SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_usuario
     FROM dbo.Transaccion
     WHERE token IS NULL
-      AND fecha_baja IS NOT NULL
+      AND fecha_baja IS NULL
 END
 go
 
 /* POR CADA FEDERACION PENDIENTE */
+
+/* Obtener_Token_de_Servicio_de_Plataforma */
 /* PEGARLE A LA API DE LA PLATAFORMA PARA OBTENER LA URL DE LOGIN Y EL CÓDIGO DE TRANSACCIÓN. */
 /* Finalizar_Federacion */
 
@@ -1261,11 +1264,21 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Catalogo_Actual
 AS
 BEGIN
-    SELECT id_plataforma, id_contenido, reciente, destacado, id_en_plataforma
+    SELECT id_plataforma, id_contenido, reciente, destacado, id_en_plataforma, fecha_de_baja
     FROM dbo.Catalogo
-    WHERE fecha_de_baja IS NULL
 END
 go
+
+CREATE OR ALTER PROCEDURE Obtener_Plataformas_de_Streaming_Activas
+AS
+BEGIN
+    SELECT id_plataforma
+    FROM dbo.Plataforma_de_Streaming
+    WHERE valido = 1
+END
+go
+
+/* POR CADA PLATAFORMA DE STREAMING VALIDA */
 
 /* Obtener_Token_de_Servicio_de_Plataforma */
 /* PEGARLE A LA API PARA CONSEGUIR EL CATÁLOGO DE LAS PLATAFORMAS */
@@ -1304,17 +1317,14 @@ go
 CREATE OR ALTER PROCEDURE Actualizar_Catalogo @id_contenido INT,
                                               @id_plataforma INT,
                                               @reciente BIT,
-                                              @destacado BIT,
-                                              @id_en_plataforma VARCHAR(255)
+                                              @destacado BIT
 AS
 BEGIN
     UPDATE dbo.Catalogo
-    SET reciente         = @reciente,
-        destacado        = @destacado,
-        id_en_plataforma = @id_en_plataforma
+    SET reciente  = @reciente,
+        destacado = @destacado
     WHERE id_contenido = @id_contenido
       AND id_plataforma = @id_plataforma
-      AND fecha_de_baja IS NULL
 END
 go
 
@@ -1326,7 +1336,7 @@ go
 /* Obtener_Datos_de_Publicista */
 /* PEGARLE A LA API PARA CONSEGUIR LAS PUBLICIDADES DE LOS PUBLICISTAS */
 
-CREATE OR ALTER PROCEDURE Obtener_Datos_de_Publicidades
+CREATE OR ALTER PROCEDURE Obtener_Datos_de_Publicidades_Activas
 AS
 BEGIN
     SELECT id_publicista,
@@ -1335,7 +1345,7 @@ BEGIN
            url_de_imagen,
            url_de_publicidad
     FROM dbo.Publicidad
-    WHERE DAY(fecha_de_baja) >= DAY(GETDATE())
+    WHERE fecha_de_baja >= CONVERT(DATE, GETDATE())
 END
 go
 
@@ -1373,9 +1383,10 @@ AS
 BEGIN
     DECLARE @PrimerDiaMesAnterior AS DATE = DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)
     DECLARE @UltimoDiaMesAnterior AS DATE = EOMONTH(DATEADD(MONTH, -1, GETDATE()))
-    SELECT TOP 100 id_contenido, COUNT(id_clic)
+    SELECT TOP 10 id_contenido
     FROM dbo.Clic
     WHERE fecha BETWEEN @PrimerDiaMesAnterior AND @UltimoDiaMesAnterior
+      AND id_publicidad IS NULL
     GROUP BY id_contenido
     ORDER BY COUNT(id_clic) DESC
 END
@@ -1384,18 +1395,25 @@ go
 /* CONVERTIR AMBOS RESULTADOS EN HASHSET Y VER CUALES SON LOS CONTENIDOS MAS VISTOS DEL MES ANTERIOR QUE NO ESTÁN
    DENTRO DE LOS CONTENIDOS MAS VISTOS ACTUALES */
 
-CREATE OR ALTER PROCEDURE Actualizar_Contenido_mas_Visto @id_contenido INT,
-                                                         @mas_visto BIT
+CREATE OR ALTER PROCEDURE Actualizar_a_Contenido_mas_Visto @id_contenido INT
 AS
 BEGIN
     UPDATE dbo.Contenido
-    SET mas_visto = @mas_visto
+    SET mas_visto = 1
     WHERE id_contenido = @id_contenido
 END
 go
 
 /* VER CUALES SON LOS CONTENIDOS MAS VISTOS ACTUALES QUE NO ESTÁN DENTRO DE LOS CONTENIDOS MAS VISTOS ACTUALES */
-/* Actualizar_Contenido_mas_Visto */
+
+CREATE OR ALTER PROCEDURE Quitar_de_Contenido_mas_Visto @id_contenido INT
+AS
+BEGIN
+    UPDATE dbo.Contenido
+    SET mas_visto = 0
+    WHERE id_contenido = @id_contenido
+END
+go
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1405,25 +1423,43 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Publicidades_Activas
 AS
 BEGIN
-    SELECT id_banner, url_de_imagen, url_de_publicidad
-    FROM dbo.Publicidad P
+    SELECT p.id_banner, tb.id_tipo_banner, p.url_de_imagen, p.url_de_publicidad
+    FROM dbo.Publicidad p
+        JOIN dbo.Costo_Banner cb ON p.id_banner = cb.id_banner
+        JOIN dbo.Tipo_Banner tb ON cb.id_tipo_banner = tb.id_tipo_banner
     WHERE CONVERT(DATE, fecha_de_baja, 23) > CONVERT(DATE, CURRENT_TIMESTAMP, 23)
       AND CONVERT(DATE, fecha_de_alta, 23) <= CONVERT(DATE, CURRENT_TIMESTAMP, 23)
-    ORDER BY id_banner DESC
+      AND tb.fecha_baja IS NULL
+    ORDER BY tb.id_tipo_banner DESC
 END
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Contenido_Destacado @id_cliente INT = NULL
 AS
 BEGIN
-    SELECT Ca.id_contenido, url_imagen
-    FROM dbo.Catalogo Ca
-             JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
-    WHERE destacado = 1
-      AND id_plataforma IN (IIF(@id_cliente IS NOT NULL,
-                                (SELECT id_plataforma FROM dbo.Federacion WHERE id_cliente = @id_cliente),
-                                (SELECT id_plataforma from dbo.Catalogo)))
-      AND fecha_de_baja IS NULL
+    IF @id_cliente IS NOT NULL AND EXISTS (SELECT 1 FROM dbo.Federacion WHERE id_cliente = @id_cliente)
+    BEGIN
+        WITH Plataformas_Disponibles AS (SELECT DISTINCT(P.id_plataforma)
+                                         FROM dbo.Plataforma_de_Streaming P
+                                                  LEFT JOIN dbo.Federacion F ON P.id_plataforma = F.id_plataforma
+                                         WHERE F.id_cliente = @id_cliente
+                                           AND p.valido = 1)
+        SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
+        FROM dbo.Catalogo Ca
+                 JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+        WHERE Ca.destacado = 1
+          AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
+          AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
+    END
+    ELSE
+    BEGIN
+        SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
+        FROM dbo.Catalogo Ca
+                 JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+        WHERE Ca.destacado = 1
+          AND Ca.id_plataforma IN (SELECT id_plataforma FROM dbo.Plataforma_de_Streaming WHERE valido = 1)
+          AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
+    END
 END
 go
 

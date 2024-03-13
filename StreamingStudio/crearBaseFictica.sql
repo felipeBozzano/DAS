@@ -140,20 +140,20 @@ go
 INSERT INTO Catalogo (id_contenido, id_plataforma, reciente, destacado, id_en_plataforma, fecha_de_alta, fecha_de_baja)
 VALUES
     -- Plataforma 1
-    (1, 1, 1, 1, 'P1_C1', GETDATE(), NULL),
-    (2, 1, 1, 0, 'S1_C2', GETDATE(), NULL),
-    (3, 1, 0, 1, 'P2_C1', GETDATE(), NULL),
-    (4, 1, 0, 0, 'S2_C2', GETDATE(), NULL),
+    (1, 1, 1, 1, 'P1_C1', '2024-03-10 00:14:47.770', NULL),
+    (2, 1, 1, 0, 'S1_C2', '2024-03-10 00:14:47.770', NULL),
+    (3, 1, 0, 1, 'P2_C1', '2024-03-10 00:14:47.770', NULL),
+    (4, 1, 0, 0, 'S2_C2', '2024-03-10 00:14:47.770', '2024-03-11 20:34:12.000'),
     -- Plataforma 2
-    (5, 2, 1, 1, 'P2_C1', GETDATE(), NULL),
-    (6, 2, 1, 0, 'S3_C2', GETDATE(), NULL),
-    (7, 2, 0, 1, 'P4_C1', GETDATE(), NULL),
-    (8, 2, 0, 0, 'S4_C2', GETDATE(), NULL),
+    (5, 2, 1, 1, 'P2_C1', '2024-03-10 00:14:47.770', NULL),
+    (6, 2, 1, 0, 'S3_C2', '2024-03-10 00:14:47.770', NULL),
+    (7, 2, 0, 1, 'P4_C1', '2024-03-10 00:14:47.770', NULL),
+    (8, 2, 0, 0, 'S4_C2', '2024-03-10 00:14:47.770', NULL),
     -- Plataforma 3
-    (1, 3, 1, 1, 'P1_C3', GETDATE(), NULL),
-    (2, 3, 1, 0, 'S1_C4', GETDATE(), NULL),
-    (5, 3, 0, 1, 'P3_C1', GETDATE(), NULL),
-    (6, 3, 0, 0, 'S3_C2', GETDATE(), NULL);
+    (1, 3, 1, 1, 'P1_C3', '2024-03-10 00:14:47.770', '2024-03-11 20:34:38.000'),
+    (2, 3, 1, 0, 'S1_C4', '2024-03-10 00:14:47.770', NULL),
+    (5, 3, 0, 1, 'P3_C1', '2024-03-10 00:14:47.770', NULL),
+    (6, 3, 0, 0, 'S3_C2', '2024-03-10 00:14:47.770', NULL);
 go
 
 -- Insertar los tipos de usuario "Registrado" y "Nuevo"
