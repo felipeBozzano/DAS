@@ -378,3 +378,32 @@ EXEC Quitar_de_Contenido_mas_Visto @id_contenido = 7;
 EXEC Obtener_Publicidades_Activas;
 
 EXEC Obtener_Contenido_Destacado @id_cliente = 1;
+EXEC Obtener_Contenido_Destacado @id_cliente = 6;
+EXEC Obtener_Contenido_Destacado;
+
+EXEC Obtener_Contenido_Reciente @id_cliente = 1;
+EXEC Obtener_Contenido_Reciente @id_cliente = 6;
+EXEC Obtener_Contenido_Reciente;
+
+EXEC Obtener_Contenido_mas_Visto @id_cliente = 1;
+EXEC Obtener_Contenido_mas_Visto @id_cliente = 6;
+EXEC Obtener_Contenido_mas_Visto;
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/*
+    PROBAMOS EL FLUJO PARA BUSCAR CONTENIDO POR FILTROS
+ */
+
+
+
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/*
+    PROBAMOS EL FLUJO PARA CONSULTAR URL DE CONTENIDO A REPRODUCIR
+ */
