@@ -398,6 +398,40 @@ EXEC Obtener_Contenido_mas_Visto;
     PROBAMOS EL FLUJO PARA BUSCAR CONTENIDO POR FILTROS
  */
 
+-- SERIES
+EXEC Buscar_Contenido_por_Filtros @id_cliente = 1, @clasificacion = 1;
+
+-- SERIES
+EXEC Buscar_Contenido_por_Filtros @id_cliente = 6, @clasificacion = 1;
+
+-- PELIS
+EXEC Buscar_Contenido_por_Filtros @id_cliente = 6, @clasificacion = 2;
+
+-- RECIENTE
+EXEC Buscar_Contenido_por_Filtros @id_cliente = 6, @reciente = 1;
+
+-- DESTACADO
+EXEC Buscar_Contenido_por_Filtros @destacado = 1;
+
+-- MAS VISTAS
+EXEC Buscar_Contenido_por_Filtros @id_cliente = 6, @mas_visto = 1;
+
+-- DRAMA
+EXEC Buscar_Contenido_por_Filtros @id_cliente = 6, @genero = "Acción";
+
+-- COMEDIA
+EXEC Buscar_Contenido_por_Filtros @id_cliente = 6, @genero = "Drama";
+
+-- ACCION
+EXEC Buscar_Contenido_por_Filtros @genero = "Drama,Comedia";
+
+EXEC Obtener_Informacion_de_Contenido @id_contenido = 1;
+EXEC Obtener_Generos @id_contenido = 1;
+EXEC Obtener_Directores @id_contenido = 1;
+EXEC Obtener_Actores @id_contenido = 1;
+EXEC Obtener_Informacion_de_Plataforma @id_cliente = 1, @id_contenido = 1;
+
+EXEC Obtener_Informacion_de_Plataforma @id_contenido = 4;
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -407,3 +441,5 @@ EXEC Obtener_Contenido_mas_Visto;
 /*
     PROBAMOS EL FLUJO PARA CONSULTAR URL DE CONTENIDO A REPRODUCIR
  */
+
+
