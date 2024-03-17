@@ -77,7 +77,7 @@ CREATE TABLE [Publicista]
 CREATE TABLE [Reporte]
 (
     [id_reporte]    INT IDENTITY (1,1) PRIMARY KEY,
-    [total]         FLOAT,
+    [total]         INT,
     [fecha]         DATE     NOT NULL,
     [estado]        SMALLINT NOT NULL,
     [id_publicista] SMALLINT,

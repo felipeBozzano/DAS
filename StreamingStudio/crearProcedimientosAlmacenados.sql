@@ -708,8 +708,7 @@ CREATE OR ALTER PROCEDURE Agregar_Item_al_Catalogo @id_contenido INT,
                                                    @id_plataforma INT,
                                                    @reciente BIT,
                                                    @destacado BIT,
-                                                   @id_en_plataforma VARCHAR(255),
-                                                   @fecha_de_alta DATETIME
+                                                   @id_en_plataforma VARCHAR(255)
 AS
 BEGIN
     INSERT INTO dbo.Catalogo(id_contenido, id_plataforma, reciente, destacado, id_en_plataforma, fecha_de_alta,
@@ -858,7 +857,7 @@ END
 go
 
 CREATE OR ALTER PROCEDURE Finalizar_Reporte @id_reporte INT,
-                                            @total VARCHAR(255)
+                                            @total INT
 AS
 BEGIN
     UPDATE dbo.Reporte

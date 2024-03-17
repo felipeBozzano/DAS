@@ -442,4 +442,3 @@ EXEC Obtener_Informacion_de_Plataforma @id_contenido = 4;
     PROBAMOS EL FLUJO PARA CONSULTAR URL DE CONTENIDO A REPRODUCIR
  */
 
-
