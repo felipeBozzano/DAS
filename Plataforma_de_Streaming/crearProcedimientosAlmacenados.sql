@@ -52,30 +52,102 @@ go
 
 /* Autorizacion */
 
-CREATE OR ALTER PROCEDURE Crear_Autorizacion
-CREATE OR ALTER PROCEDURE Editar_Autorizacion
-CREATE OR ALTER PROCEDURE Eliminar_Autorizacion
+CREATE OR ALTER PROCEDURE Crear_Autorizacion @id_cliente INT,
+                                             @url_de_redireccion VARCHAR(255)
+AS
+BEGIN
+    INSERT INTO dbo.Autorizacion(id_cliente, codigo_de_transaccion, estado, fecha_de_alta, token, url_de_redireccion)
+    VALUES (@id_cliente, (SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 8)), 0, GETDATE(), NULL, @url_de_redireccion)
+END
+go
+
+CREATE OR ALTER PROCEDURE Registrar_Autorizacion @id_cliente INT,
+                                                 @codigo_de_transaccion VARCHAR(255)
+AS
+BEGIN
+    UPDATE dbo.Autorizacion
+    SET token = (SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 10))
+    WHERE id_cliente = @id_cliente
+      AND codigo_de_transaccion = @codigo_de_transaccion
+END
+go
+
+CREATE OR ALTER PROCEDURE Eliminar_Autorizacion @id_cliente INT,
+                                                @codigo_de_transaccion VARCHAR(255)
+AS
+BEGIN
+    DELETE
+    FROM dbo.Autorizacion
+    WHERE id_cliente = @id_cliente
+      AND codigo_de_transaccion = @codigo_de_transaccion
+END
+go
+
+CREATE OR ALTER PROCEDURE Obtener_Codigo @id_cliente INT
+AS
+BEGIN
+    SELECT codigo_de_transaccion
+    FROM dbo.Autorizacion
+    WHERE id_cliente = @id_cliente
+END
+go
+
+CREATE OR ALTER PROCEDURE Obtener_Token @id_cliente INT,
+                                        @codigo_de_transaccion VARCHAR(255)
+AS
+BEGIN
+    SELECT token
+    FROM dbo.Autorizacion
+    WHERE id_cliente = @id_cliente
+      AND codigo_de_transaccion = @codigo_de_transaccion
+END
+go
 
 /* Sesion */
 
-CREATE OR ALTER PROCEDURE Crear_Sesion
-CREATE OR ALTER PROCEDURE Editar_Sesion
+CREATE OR ALTER PROCEDURE Crear_Sesion @id_cliente INT
+AS
+BEGIN
+    INSERT INTO dbo.Sesion (id_cliente, sesion, fecha_de_creacion, fecha_de_expiracion, fecha_de_uso)
+    VALUES (@id_cliente, (SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 6)), GETDATE(),
+            (SELECT DATEADD(HOUR, 1, GETDATE())), null)
+END
+go
+
+/* poner como pk, id_cliente y sesion. Buscar por esa PK cuando usamos la sesion */
+
+CREATE OR ALTER PROCEDURE Usar_Sesion @id_cliente INT,
+                                      @sesion VARCHAR(255)
+AS
+BEGIN
+    UPDATE dbo.Sesion
+    SET fecha_de_uso = GETDATE()
+    WHERE id_cliente = @id_cliente
+      AND fecha_de_creacion = (SELECT MAX(fecha_de_creacion)
+                               FROM dbo.Sesion
+                               WHERE fecha_de_uso IS NULL
+                                 AND id_cliente = @id_cliente)
+      AND fecha_de_uso IS NULL
+      AND fecha_de_expiracion > GETDATE()
+END
+go
+
 CREATE OR ALTER PROCEDURE Eliminar_Sesion
 
 /* Partner */
 
-CREATE OR ALTER PROCEDURE Crear_Partner
-CREATE OR ALTER PROCEDURE Editar_Partner
-CREATE OR ALTER PROCEDURE Eliminar_Partner
+    CREATE OR ALTER PROCEDURE Crear_Partner
+        CREATE OR ALTER PROCEDURE Editar_Partner
+            CREATE OR ALTER PROCEDURE Eliminar_Partner
 
 /* Factura */
 
-CREATE OR ALTER PROCEDURE Registrar_Factura
-AS
-BEGIN
-    INSERT INTO dbo.Factura(total, fecha, estado, id_publicista, id_plataforma)
-    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, NULL, @id_plataforma)
-END
+                CREATE OR ALTER PROCEDURE Registrar_Factura
+                AS
+                BEGIN
+                    INSERT INTO dbo.Factura(total, fecha, estado, id_publicista, id_plataforma)
+                    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, NULL, @id_plataforma)
+                END
 go
 
 /* Reporte */

@@ -51,10 +51,13 @@ CREATE TABLE [Cliente_Usuario]
 
 CREATE TABLE [Autorizacion]
 (
-    [id_cliente] INT,
-    [token]      VARCHAR(255),
-    [estado]     BIT NOT NULL,
-    PRIMARY KEY ([id_cliente], [token]),
+    [id_cliente]            INT,
+    [codigo_de_transaccion] VARCHAR(255),
+    [estado]                BIT      NOT NULL,
+    [fecha_de_alta]         DATETIME NOT NULL,
+    [token]                 VARCHAR(255),
+    [url_de_redireccion]    VARCHAR(255) NOT NULL,
+    PRIMARY KEY ([id_cliente], [codigo_de_transaccion]),
     CONSTRAINT [FK_Autorizacion.id_cliente]
         FOREIGN KEY ([id_cliente])
             REFERENCES [Cliente_Usuario] ([id_cliente])
@@ -62,16 +65,15 @@ CREATE TABLE [Autorizacion]
 
 CREATE TABLE [Sesion]
 (
-    [id_sesion]           INT IDENTITY (1,1) PRIMARY KEY,
     [id_cliente]          INT          NOT NULL,
-    [token]               VARCHAR(255) NOT NULL,
     [sesion]              VARCHAR(255) NOT NULL,
     [fecha_de_creacion]   DATETIME     NOT NULL,
     [fecha_de_expiracion] DATETIME     NOT NULL,
     [fecha_de_uso]        DATETIME,
-    CONSTRAINT [FK_Sesion.id_cliente.token]
-        FOREIGN KEY ([id_cliente], [token])
-            REFERENCES [Autorizacion] ([id_cliente], [token])
+    PRIMARY KEY ([id_cliente], [sesion]),
+    CONSTRAINT [FK_Sesion.id_cliente]
+        FOREIGN KEY ([id_cliente])
+            REFERENCES [Cliente_Usuario] ([id_cliente])
 );
 
 CREATE TABLE [Clasificacion]
