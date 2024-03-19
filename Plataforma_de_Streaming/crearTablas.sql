@@ -13,6 +13,7 @@ DROP TABLE IF EXISTS dbo.Reporte
 DROP TABLE IF EXISTS dbo.Partner
 DROP TABLE IF EXISTS dbo.Sesion
 DROP TABLE IF EXISTS dbo.Autorizacion
+DROP TABLE IF EXISTS dbo.Transaccion
 DROP TABLE IF EXISTS dbo.Cliente_Usuario
 
 CREATE TABLE [Reporte]
@@ -40,28 +41,40 @@ CREATE TABLE [Partner]
 
 CREATE TABLE [Cliente_Usuario]
 (
-    [id_cliente] INT IDENTITY (1,1) PRIMARY KEY,
-    [usuario]    VARCHAR(255)        NOT NULL,
-    [contraseña] VARCHAR(255)        NOT NULL,
-    [email]      VARCHAR(255) UNIQUE NOT NULL,
-    [nombre]     VARCHAR(255)        NOT NULL,
-    [apellido]   VARCHAR(255)        NOT NULL,
-    [valido]     BIT                 NOT NULL
+    [id_cliente] INT          NOT NULL,
+    [usuario]    VARCHAR(255) NOT NULL,
+    [contraseña] VARCHAR(255) NOT NULL,
+    [email]      VARCHAR(255) NOT NULL,
+    [nombre]     VARCHAR(255) NOT NULL,
+    [apellido]   VARCHAR(255) NOT NULL,
+    [valido]     BIT          NOT NULL,
+    PRIMARY KEY ([id_cliente])
+);
+
+CREATE TABLE [Transaccion]
+(
+    [codigo_de_transaccion] VARCHAR(255),
+    [fecha_de_alta]         DATETIME NOT NULL,
+    [url_de_redireccion]    VARCHAR(255),
+    PRIMARY KEY ([codigo_de_transaccion])
 );
 
 CREATE TABLE [Autorizacion]
 (
-    [id_cliente]            INT,
     [codigo_de_transaccion] VARCHAR(255),
-    [estado]                BIT      NOT NULL,
-    [fecha_de_alta]         DATETIME NOT NULL,
-    [token]                 VARCHAR(255),
-    [url_de_redireccion]    VARCHAR(255) NOT NULL,
-    PRIMARY KEY ([id_cliente], [codigo_de_transaccion]),
+    [id_cliente]            INT,
+    [token]                 VARCHAR(255) NOT NULL,
+    [fecha_de_alta]         DATETIME     NOT NULL,
+    [fecha_de_baja]         DATETIME,
+    PRIMARY KEY ([codigo_de_transaccion], [id_cliente]),
+    CONSTRAINT [FK_Autorizacion.codigo_de_transaccion]
+        FOREIGN KEY ([codigo_de_transaccion])
+            REFERENCES [Transaccion] ([codigo_de_transaccion]),
     CONSTRAINT [FK_Autorizacion.id_cliente]
         FOREIGN KEY ([id_cliente])
             REFERENCES [Cliente_Usuario] ([id_cliente])
 );
+
 
 CREATE TABLE [Sesion]
 (

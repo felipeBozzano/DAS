@@ -50,6 +50,16 @@ BEGIN
 END
 go
 
+/* Transaccion */
+
+CREATE OR ALTER PROCEDURE Crear_Transaccion @url_de_redireccion VARCHAR(255)
+AS
+BEGIN
+    INSERT INTO dbo.Transaccion(codigo_de_transaccion, fecha_de_alta, url_de_redireccion)
+    VALUES((SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 8)), GETDATE(), @url_de_redireccion)
+END
+go
+
 /* Autorizacion */
 
 CREATE OR ALTER PROCEDURE Crear_Autorizacion @id_cliente INT,
@@ -61,18 +71,7 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE Registrar_Autorizacion @id_cliente INT,
-                                                 @codigo_de_transaccion VARCHAR(255)
-AS
-BEGIN
-    UPDATE dbo.Autorizacion
-    SET token = (SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 10))
-    WHERE id_cliente = @id_cliente
-      AND codigo_de_transaccion = @codigo_de_transaccion
-END
-go
-
-CREATE OR ALTER PROCEDURE Eliminar_Autorizacion @id_cliente INT,
+CREATE OR ALTER PROCEDURE Desactualizar @id_cliente INT,
                                                 @codigo_de_transaccion VARCHAR(255)
 AS
 BEGIN

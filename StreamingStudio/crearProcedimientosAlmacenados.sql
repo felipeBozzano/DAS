@@ -1665,10 +1665,12 @@ go
 /* ------------------------------------ CONSULTAR URL DE CONTENIDO A REPRODUCIR ------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-/*
-    CREAR UN PROCEDIMIENTO QUE SE FIJE QUE EL CLIENTE ESTÉ FEDERADO CON LA PLATAFORMA ELEGIDA
-*/
+-- buscar federaion
 
 /* Obtener_Datos_de_Sesion */ --> ESTO ESTÁ CREADO, ES PARA OBTENER EL TOKEN_DE_SERVICIO Y LA URL_API DE LA PLATAFORMA
 
-/* PEGARLE A LA API DE LA PLATAFORMA DE STREAMING PARA OBTENER LA URL DE REPRODUCCION DE CONTENIDO */
+/* PEGARLE A LA API DE LA PLATAFORMA DE STREAMING PARA OBTENER LA SESION DEL USUARIO */
+
+-- PEGARLE A LA API DE LA PLATAFORMA DE STREAMING PARA OBTENER EL CONTENIDO
+
+
