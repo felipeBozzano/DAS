@@ -56,38 +56,42 @@ CREATE OR ALTER PROCEDURE Crear_Transaccion @url_de_redireccion VARCHAR(255)
 AS
 BEGIN
     INSERT INTO dbo.Transaccion(codigo_de_transaccion, fecha_de_alta, url_de_redireccion)
-    VALUES((SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 8)), GETDATE(), @url_de_redireccion)
+    VALUES ((SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 8)), GETDATE(), @url_de_redireccion)
 END
 go
+
+CREATE OR ALTER PROCEDURE Obtener_Codigo @codigo_de_transaccion INT
+AS
+BEGIN
+    SELECT CASE
+               WHEN EXISTS (SELECT 1
+                            FROM dbo.Transaccion
+                            WHERE codigo_de_transaccion = @codigo_de_transaccion) THEN 'true'
+               ELSE 'false'
+               END AS ExisteValor;
+END
+go
+
 
 /* Autorizacion */
 
 CREATE OR ALTER PROCEDURE Crear_Autorizacion @id_cliente INT,
-                                             @url_de_redireccion VARCHAR(255)
+                                             @codigo_de_transaccion VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Autorizacion(id_cliente, codigo_de_transaccion, estado, fecha_de_alta, token, url_de_redireccion)
-    VALUES (@id_cliente, (SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 8)), 0, GETDATE(), NULL, @url_de_redireccion)
+    INSERT INTO dbo.Autorizacion(codigo_de_transaccion, id_cliente, token, fecha_de_alta, fecha_de_baja)
+    VALUES (@codigo_de_transaccion, @id_cliente, (SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 8)), GETDATE(), NULL)
 END
 go
 
-CREATE OR ALTER PROCEDURE Desactualizar @id_cliente INT,
-                                                @codigo_de_transaccion VARCHAR(255)
+CREATE OR ALTER PROCEDURE Desautorizar @id_cliente INT,
+                                       @codigo_de_transaccion VARCHAR(255)
 AS
 BEGIN
-    DELETE
-    FROM dbo.Autorizacion
+    UPDATE Autorizacion
+    set fecha_de_baja = GETDATE()
     WHERE id_cliente = @id_cliente
       AND codigo_de_transaccion = @codigo_de_transaccion
-END
-go
-
-CREATE OR ALTER PROCEDURE Obtener_Codigo @id_cliente INT
-AS
-BEGIN
-    SELECT codigo_de_transaccion
-    FROM dbo.Autorizacion
-    WHERE id_cliente = @id_cliente
 END
 go
 
@@ -102,6 +106,16 @@ BEGIN
 END
 go
 
+CREATE OR ALTER PROCEDURE Obtener_Cliente @token VARCHAR(255)
+AS
+BEGIN
+    SELECT id_cliente
+    FROM dbo.Autorizacion
+    WHERE token = @token
+      AND fecha_de_baja IS NULL
+END
+go
+
 /* Sesion */
 
 CREATE OR ALTER PROCEDURE Crear_Sesion @id_cliente INT
@@ -113,6 +127,7 @@ BEGIN
 END
 go
 
+
 /* poner como pk, id_cliente y sesion. Buscar por esa PK cuando usamos la sesion */
 
 CREATE OR ALTER PROCEDURE Usar_Sesion @id_cliente INT,
@@ -122,40 +137,66 @@ BEGIN
     UPDATE dbo.Sesion
     SET fecha_de_uso = GETDATE()
     WHERE id_cliente = @id_cliente
-      AND fecha_de_creacion = (SELECT MAX(fecha_de_creacion)
-                               FROM dbo.Sesion
-                               WHERE fecha_de_uso IS NULL
-                                 AND id_cliente = @id_cliente)
+      AND sesion = @sesion
       AND fecha_de_uso IS NULL
       AND fecha_de_expiracion > GETDATE()
 END
 go
 
-CREATE OR ALTER PROCEDURE Eliminar_Sesion
 
 /* Partner */
 
-    CREATE OR ALTER PROCEDURE Crear_Partner
-        CREATE OR ALTER PROCEDURE Editar_Partner
-            CREATE OR ALTER PROCEDURE Eliminar_Partner
+CREATE PROCEDURE Crear_Partner @nombre VARCHAR(255),
+                               @token_de_servicio VARCHAR(255)
+AS
+BEGIN
+    INSERT INTO dbo.Partner (nombre, token_de_servicio)
+    VALUES (@nombre, @token_de_servicio);
+END
+GO
+
+CREATE PROCEDURE Editar_Partner @id_partner INT,
+                                @nombre VARCHAR(255),
+                                @token_de_servicio VARCHAR(255)
+AS
+BEGIN
+    UPDATE dbo.Partner
+    SET nombre            = @nombre,
+        token_de_servicio = @token_de_servicio
+    WHERE id_partner = @id_partner;
+END
+go
+
+CREATE PROCEDURE Eliminar_Partner @id_partner INT
+AS
+BEGIN
+    DELETE
+    FROM dbo.Partner
+    WHERE id_partner = @id_partner;
+END
+go
 
 /* Factura */
 
-                CREATE OR ALTER PROCEDURE Registrar_Factura
-                AS
-                BEGIN
-                    INSERT INTO dbo.Factura(total, fecha, estado, id_publicista, id_plataforma)
-                    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, NULL, @id_plataforma)
-                END
+CREATE OR ALTER PROCEDURE Registrar_Factura @totaL FLOAT,
+                                            @fecha DATE,
+                                            @descripcion VARCHAR
+AS
+BEGIN
+    INSERT INTO dbo.Factura(total, fecha, descripcion)
+    VALUES (@total, @fecha, @descripcion)
+END
 go
 
 /* Reporte */
 
-CREATE OR ALTER PROCEDURE Registrar_Reporte @id_publicista INT
+CREATE OR ALTER PROCEDURE Registrar_Reporte @totaL FLOAT,
+                                            @fecha DATE,
+                                            @descripcion VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Reporte(total, fecha, estado, id_publicista, id_plataforma)
-    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, @id_publicista, NULL)
+    INSERT INTO dbo.Reporte(total, fecha, descripcion)
+    VALUES (@total, @fecha, @descripcion)
 END
 go
 
@@ -301,11 +342,14 @@ go
 CREATE OR ALTER PROCEDURE Crear_Contenido @titulo VARCHAR(255),
                                           @descripcion VARCHAR(255),
                                           @url_imagen VARCHAR(255),
-                                          @clasificacion INT
+                                          @clasificacion SMALLINT,
+                                          @reciente BIT,
+                                          @destacado BIT
 AS
 BEGIN
-    INSERT INTO dbo.Contenido(titulo, descripcion, url_imagen, clasificacion, mas_visto)
-    VALUES (@titulo, @descripcion, @url_imagen, @clasificacion, 0)
+    INSERT INTO dbo.Contenido(titulo, descripcion, url_imagen, clasificacion, reciente, destacado, fecha_alta,
+                              fecha_baja)
+    VALUES (@titulo, @descripcion, @url_imagen, @clasificacion, @reciente, @destacado, GETDATE(), NULL)
 END
 go
 
@@ -313,8 +357,9 @@ CREATE OR ALTER PROCEDURE Modificar_Contenido @id_contenido INT,
                                               @titulo VARCHAR(255),
                                               @descripcion VARCHAR(255),
                                               @url_imagen VARCHAR(255),
-                                              @clasificacion INT,
-                                              @mas_visto BIT
+                                              @clasificacion SMALLINT,
+                                              @reciente BIT,
+                                              @destacado BIT
 AS
 BEGIN
     UPDATE dbo.Contenido
@@ -322,7 +367,8 @@ BEGIN
         descripcion   = @descripcion,
         url_imagen    = @url_imagen,
         clasificacion = @clasificacion,
-        mas_visto     = @mas_visto
+        reciente      = @reciente,
+        destacado     = @destacado
     WHERE id_contenido = @id_contenido
 END
 go
@@ -333,6 +379,15 @@ BEGIN
     DELETE
     FROM dbo.Contenido
     WHERE id_contenido = @id_contenido
+END
+go
+
+CREATE OR ALTER PROCEDURE Obtener_Contenido
+AS
+BEGIN
+    SELECT *
+    FROM dbo.Contenido
+    WHERE fecha_baja IS NULL
 END
 go
 
