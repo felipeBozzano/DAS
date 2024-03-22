@@ -41,14 +41,13 @@ CREATE TABLE [Partner]
 
 CREATE TABLE [Cliente_Usuario]
 (
-    [id_cliente] INT          NOT NULL,
+    [id_cliente] INT IDENTITY (1,1) PRIMARY KEY,
     [usuario]    VARCHAR(255) NOT NULL,
     [contraseña] VARCHAR(255) NOT NULL,
     [email]      VARCHAR(255) NOT NULL,
     [nombre]     VARCHAR(255) NOT NULL,
     [apellido]   VARCHAR(255) NOT NULL,
-    [valido]     BIT          NOT NULL,
-    PRIMARY KEY ([id_cliente])
+    [valido]     BIT          NOT NULL
 );
 
 CREATE TABLE [Transaccion]

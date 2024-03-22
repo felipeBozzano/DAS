@@ -60,7 +60,7 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Codigo @codigo_de_transaccion INT
+CREATE OR ALTER PROCEDURE Verificar_Codigo @codigo_de_transaccion INT
 AS
 BEGIN
     SELECT CASE
@@ -127,9 +127,6 @@ BEGIN
 END
 go
 
-
-/* poner como pk, id_cliente y sesion. Buscar por esa PK cuando usamos la sesion */
-
 CREATE OR ALTER PROCEDURE Usar_Sesion @id_cliente INT,
                                       @sesion VARCHAR(255)
 AS
@@ -143,21 +140,20 @@ BEGIN
 END
 go
 
-
 /* Partner */
 
-CREATE PROCEDURE Crear_Partner @nombre VARCHAR(255),
-                               @token_de_servicio VARCHAR(255)
+CREATE OR ALTER PROCEDURE Crear_Partner @nombre VARCHAR(255),
+                                        @token_de_servicio VARCHAR(255)
 AS
 BEGIN
     INSERT INTO dbo.Partner (nombre, token_de_servicio)
     VALUES (@nombre, @token_de_servicio);
 END
-GO
+go
 
-CREATE PROCEDURE Editar_Partner @id_partner INT,
-                                @nombre VARCHAR(255),
-                                @token_de_servicio VARCHAR(255)
+CREATE OR ALTER PROCEDURE Editar_Partner @id_partner INT,
+                                         @nombre VARCHAR(255),
+                                         @token_de_servicio VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Partner
@@ -167,12 +163,24 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Eliminar_Partner @id_partner INT
+CREATE OR ALTER PROCEDURE Eliminar_Partner @id_partner INT
 AS
 BEGIN
     DELETE
     FROM dbo.Partner
     WHERE id_partner = @id_partner;
+END
+go
+
+CREATE OR ALTER PROCEDURE Verificar_Token_de_Partner @token INT
+AS
+BEGIN
+    SELECT CASE
+               WHEN EXISTS (SELECT 1
+                            FROM dbo.Partner
+                            WHERE @token = @token) THEN 'true'
+               ELSE 'false'
+               END AS ExistePartner;
 END
 go
 
