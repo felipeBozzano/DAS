@@ -1,4 +1,5 @@
-USE Plataforma_de_Streaming;
+USE
+    Plataforma_de_Streaming;
 
 /* Cliente_Usuario */
 
@@ -47,6 +48,18 @@ BEGIN
     UPDATE Cliente_Usuario
     SET valido = 1
     WHERE id_cliente = @id_cliente
+END
+go
+
+CREATE OR ALTER PROCEDURE Login_Usuario @usuario VARCHAR(255),
+                                        @contrasena VARCHAR(255)
+AS
+BEGIN
+    SELECT id_cliente
+    FROM dbo.Cliente_Usuario CU
+    WHERE CU.usuario = @usuario
+      AND CU.contraseña = @contrasena
+      AND CU.valido = 1
 END
 go
 
@@ -103,6 +116,7 @@ BEGIN
     FROM dbo.Autorizacion
     WHERE id_cliente = @id_cliente
       AND codigo_de_transaccion = @codigo_de_transaccion
+      AND fecha_de_baja IS NULL
 END
 go
 
@@ -427,3 +441,12 @@ BEGIN
     WHERE id_clasificacion = @id_clasificacion
 END
 go
+
+-- Federar Usuario
+
+-- CREATE OR ALTER PROCEDURE Crear_Transaccion
+
+-- REGISTRAR USUARIO / LOGUEAR USUARIO
+
+-- CREAR AUTORIZACION
+

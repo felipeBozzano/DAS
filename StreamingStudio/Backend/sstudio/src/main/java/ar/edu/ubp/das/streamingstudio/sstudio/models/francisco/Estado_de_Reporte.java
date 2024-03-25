@@ -1,4 +1,5 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models.francisco;
 
-public class bean {
+public class Estado_de_Reporte {
+
 }
