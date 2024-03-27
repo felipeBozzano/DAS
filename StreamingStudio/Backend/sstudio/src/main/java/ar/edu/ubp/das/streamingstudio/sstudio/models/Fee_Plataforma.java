@@ -1,4 +1,4 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.models.francisco;
+package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 public class Fee_Plataforma {
     private int id_plataforma;

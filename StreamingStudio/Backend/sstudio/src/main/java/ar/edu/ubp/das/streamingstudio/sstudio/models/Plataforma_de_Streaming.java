@@ -1,4 +1,4 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.models.francisco;
+package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 public class Plataforma_de_Streaming {
     private int id_plataforma;

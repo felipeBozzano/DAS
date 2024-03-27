@@ -116,8 +116,13 @@
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 			<version>3.2.0</version>
 		</dependency>
+        <dependency>
+            <groupId>ar.edu.ubp.das.streamingstudio</groupId>
+            <artifactId>sstudio</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

@@ -1,10 +1,11 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.models.francisco;
+package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-public class Estado_Reporte {
+public class Estado_Factura {
+
     private int id_estado;
     private String descripcion;
 
-    public Estado_Reporte(int id_estado, String descripcion) {
+    public Estado_Factura(int id_estado, String descripcion) {
         this.id_estado = id_estado;
         this.descripcion = descripcion;
     }
