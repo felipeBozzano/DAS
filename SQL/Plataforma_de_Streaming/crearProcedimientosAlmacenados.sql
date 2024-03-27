@@ -361,7 +361,8 @@ go
 
 /* Contenido */
 
-CREATE OR ALTER PROCEDURE Crear_Contenido @titulo VARCHAR(255),
+CREATE OR ALTER PROCEDURE Crear_Contenido @codigo_de_contenido VARCHAR(255),
+                                          @titulo VARCHAR(255),
                                           @descripcion VARCHAR(255),
                                           @url_imagen VARCHAR(255),
                                           @clasificacion SMALLINT,
@@ -369,13 +370,16 @@ CREATE OR ALTER PROCEDURE Crear_Contenido @titulo VARCHAR(255),
                                           @destacado BIT
 AS
 BEGIN
-    INSERT INTO dbo.Contenido(titulo, descripcion, url_imagen, clasificacion, reciente, destacado, fecha_alta,
+    INSERT INTO dbo.Contenido(codigo_de_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado,
+                              fecha_alta,
                               fecha_baja)
-    VALUES (@titulo, @descripcion, @url_imagen, @clasificacion, @reciente, @destacado, GETDATE(), NULL)
+    VALUES (@codigo_de_contenido, @titulo, @descripcion, @url_imagen, @clasificacion, @reciente, @destacado, GETDATE(),
+            NULL)
 END
 go
 
-CREATE OR ALTER PROCEDURE Modificar_Contenido @id_contenido INT,
+CREATE OR ALTER PROCEDURE Modificar_Contenido @codigo_de_contenido VARCHAR(255),
+                                              @id_contenido INT,
                                               @titulo VARCHAR(255),
                                               @descripcion VARCHAR(255),
                                               @url_imagen VARCHAR(255),
@@ -385,12 +389,13 @@ CREATE OR ALTER PROCEDURE Modificar_Contenido @id_contenido INT,
 AS
 BEGIN
     UPDATE dbo.Contenido
-    SET titulo        = @titulo,
-        descripcion   = @descripcion,
-        url_imagen    = @url_imagen,
-        clasificacion = @clasificacion,
-        reciente      = @reciente,
-        destacado     = @destacado
+    SET codigo_de_contenido = @codigo_de_contenido,
+        titulo              = @titulo,
+        descripcion         = @descripcion,
+        url_imagen          = @url_imagen,
+        clasificacion       = @clasificacion,
+        reciente            = @reciente,
+        destacado           = @destacado
     WHERE id_contenido = @id_contenido
 END
 go

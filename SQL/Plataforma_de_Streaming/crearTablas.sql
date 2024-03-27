@@ -96,15 +96,16 @@ CREATE TABLE [Clasificacion]
 
 CREATE TABLE [Contenido]
 (
-    [id_contenido]  INT IDENTITY (1,1) PRIMARY KEY,
-    [titulo]        VARCHAR(255) NOT NULL,
-    [descripcion]   VARCHAR(255) NOT NULL,
-    [url_imagen]    VARCHAR(255) NOT NULL,
-    [clasificacion] SMALLINT     NOT NULL,
-    [reciente]      BIT          NOT NULL,
-    [destacado]     BIT          NOT NULL,
-    [fecha_alta]    DATETIME     NOT NULL,
-    [fecha_baja]    DATETIME,
+    [id_contenido]        INT IDENTITY (1,1) PRIMARY KEY,
+    [codigo_de_contenido] VARCHAR(255) NOT NULL,
+    [titulo]              VARCHAR(255) NOT NULL,
+    [descripcion]         VARCHAR(255) NOT NULL,
+    [url_imagen]          VARCHAR(255) NOT NULL,
+    [clasificacion]       SMALLINT     NOT NULL,
+    [reciente]            BIT          NOT NULL,
+    [destacado]           BIT          NOT NULL,
+    [fecha_alta]          DATETIME     NOT NULL,
+    [fecha_baja]          DATETIME,
     CONSTRAINT [FK_Contenido.Clasificacion]
         FOREIGN KEY ([clasificacion])
             REFERENCES [Clasificacion] ([id_clasificacion])
