@@ -1,4 +1,4 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.models.felipe;
+package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 import java.util.Date;
 
