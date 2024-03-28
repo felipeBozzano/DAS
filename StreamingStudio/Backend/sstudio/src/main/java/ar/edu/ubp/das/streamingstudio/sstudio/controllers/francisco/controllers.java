@@ -20,7 +20,7 @@ public class controllers {
     TipoFeeRepository repository;
 
     @GetMapping("/obtener_tipo_fee")
-    public ResponseEntity<Map<String,Object>> lista(){
+    public ResponseEntity<Map<String,Object>> getTipoFee(){
         return new ResponseEntity<>(repository.getTipoFee(1), HttpStatus.OK);
     }
 }

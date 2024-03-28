@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
-public class TipoFeeRepository {
+public class TipoFeeRepository implements ITipoFeeRepository{
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JdbcTemplate jdbcTpl;
 
+    @Override
     @Transactional
     public Map<String, Object> getTipoFee(int tipo_de_fee) {
         SqlParameterSource in = new MapSqlParameterSource()
