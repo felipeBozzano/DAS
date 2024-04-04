@@ -56,9 +56,7 @@ public class TipoFeeRepository {
 
     @Transactional
     public List<ClienteUsuarioBean> getUser(String email) {
-        return jdbcTpl.query("select *,\r\n"
-                + " from Cliente_Usuario \r\n"
-                + " where, email = email", BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class)
+        return jdbcTpl.query("SELECT * FROM dbo.Cliente_Usuario WHERE email = email", BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class)
         );
     }
 
