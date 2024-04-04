@@ -1,3 +1,4 @@
+
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 public class ClienteUsuarioBean {
@@ -18,6 +19,19 @@ public class ClienteUsuarioBean {
         this.nombre = nombre;
         this.apellido = apellido;
         this.valido = valido;
+    }
+
+    ClienteUsuarioBean(String usuario, String contrasena, String email, String nombre, String apellido, Boolean valido) {
+        this.usuario = usuario;
+        this.contrasena = contrasena;
+        this.email = email;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.valido = valido;
+    }
+
+    public ClienteUsuarioBean(){
+
     }
 
     public int getId_cliente() {

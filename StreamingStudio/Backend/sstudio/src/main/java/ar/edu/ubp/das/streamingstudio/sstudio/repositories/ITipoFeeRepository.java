@@ -7,3 +7,8 @@ import java.util.List;
 public interface ITipoFeeRepository {
         public List<Tipo_de_Fee> getTipoFee(int id_tipo_fee);
 }
+
+
+
+
+
