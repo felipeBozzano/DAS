@@ -1,3 +1,5 @@
+
+
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
@@ -50,6 +52,14 @@ public class TipoFeeRepository {
 
         Map<String, Object> out = jdbcCall.execute(in);
         return (List<ClienteUsuarioBean>)out.get("Crear_Usuario");
+    }
+
+    @Transactional
+    public List<ClienteUsuarioBean> getUser(String email) {
+        return jdbcTpl.query("select *,\r\n"
+                + " from Cliente_Usuario \r\n"
+                + " where, email = email", BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class)
+        );
     }
 
 }

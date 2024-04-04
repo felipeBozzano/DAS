@@ -33,4 +33,9 @@ public class controllers {
     public ResponseEntity<List<ClienteUsuarioBean>> createUser(@RequestBody ClienteUsuarioBean cliente) {
         return new ResponseEntity<>(repository.createUser(cliente), HttpStatus.CREATED);
     }
+
+    @GetMapping("/obtener_usuario")
+    public ResponseEntity<List<ClienteUsuarioBean>> getUser(@RequestParam("email") String email) {
+        return new ResponseEntity<>(repository.getUser(email), HttpStatus.OK);
+    }
 }
