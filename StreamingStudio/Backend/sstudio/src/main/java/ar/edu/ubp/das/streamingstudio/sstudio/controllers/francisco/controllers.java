@@ -38,4 +38,9 @@ public class controllers {
     public ResponseEntity<List<ClienteUsuarioBean>> getUser(@RequestParam("email") String email) {
         return new ResponseEntity<>(repository.getUser(email), HttpStatus.OK);
     }
+
+    @DeleteMapping("/borrar_usuario")
+    public ResponseEntity<Integer> deleteUser(@RequestParam("email") String email) {
+        return new ResponseEntity<>(repository.deleteUser(email), HttpStatus.OK);
+    }
 }
