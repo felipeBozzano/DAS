@@ -26,4 +26,3 @@ public class controllers {
         return new ResponseEntity<Map<String, List<?>>>(repository.getHome(id_cliente), HttpStatus.OK);
     }
 }
-
