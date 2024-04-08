@@ -23,6 +23,9 @@ public class ContenidoBean {
         this.url_imagen = url_imagen;
     }
 
+    public ContenidoBean(){}
+
+
     public int getId_contenido() {
         return id_contenido;
     }

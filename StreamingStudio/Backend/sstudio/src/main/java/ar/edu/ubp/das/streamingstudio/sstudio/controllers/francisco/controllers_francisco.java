@@ -16,7 +16,7 @@ import java.util.List;
 @RequestMapping(
         path = "/ss")
 
-public class controllers {
+public class controllers_francisco {
 
     @Autowired
     TipoFeeRepository repository;
