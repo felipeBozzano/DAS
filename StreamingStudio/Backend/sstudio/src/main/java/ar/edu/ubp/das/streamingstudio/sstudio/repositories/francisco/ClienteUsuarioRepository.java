@@ -14,7 +14,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 @Repository
@@ -70,28 +69,31 @@ public class ClienteUsuarioRepository {
     /* FEDERACION */
 
     @Transactional
-    public List<FederacionBean> federarClientePlataforma(int id_plataforma, int id_cliente) {
-        List<FederacionBean> federacion = buscarFederacion(id_plataforma, id_cliente);
-        if (federacion.size() == 0) {
-            return new ArrayList<>();
+    public int federarClientePlataforma(int id_plataforma, int id_cliente) {
+        int federacion = buscarFederacion(id_plataforma, id_cliente);
+        if (federacion == 0) {
+            return 0;
         } else {
-            federacion = VerificarFederacionCurso(id_plataforma, id_cliente);
+//            federacion = VerificarFederacionCurso(id_plataforma, id_cliente);
             return federacion;
         }
     }
 
     @Transactional
-    public List<FederacionBean> buscarFederacion(int id_plataforma, int id_cliente) {
+    public int buscarFederacion(int id_plataforma, int id_cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
                 .addValue("id_cliente", id_cliente);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Buscar_Federacion")
-                .withSchemaName("dbo")
-                .returningResultSet("existe_federacion", BeanPropertyRowMapper.newInstance(Tipo_de_Fee.class));
+                .withSchemaName("dbo");
 
         Map<String, Object> out = jdbcCall.execute(in);
-        return (List<FederacionBean>)out.get("existe_federacion");
+        System.out.println((out));
+        List<Map<String, Integer>> resultList = (List<Map<String, Integer>>) out.get("#result-set-1");
+        Integer resultList1 = resultList.get(0).get("federacion");
+        return resultList1;
+
     }
 
     @Transactional

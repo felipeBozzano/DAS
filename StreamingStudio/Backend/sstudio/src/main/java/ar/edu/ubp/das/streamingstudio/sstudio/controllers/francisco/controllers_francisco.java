@@ -45,7 +45,7 @@ public class controllers_francisco {
             path="/federar_cliente",
             consumes={MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<FederacionBean>> federarClientePlataforma(@RequestBody FederacionBean federacion) {
-        return new ResponseEntity<>(repository.federarClientePlataforma(federacion.getId_plataforma(), federacion.getId_cliente()), HttpStatus.CREATED);
+    public ResponseEntity<Integer> federarClientePlataforma(@RequestBody FederacionBean federacion) {
+        return new ResponseEntity<>(repository.federarClientePlataforma(federacion.getId_plataforma(), federacion.getId_cliente()), HttpStatus.OK);
     }
 }
