@@ -2,7 +2,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.FederacionBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.ClienteUsuarioRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +19,7 @@ import java.util.List;
 public class controllers_francisco {
 
     @Autowired
-    ClienteUsuarioRepository repository;
+    Repository repository;
 
     @PostMapping(
             path="/create_user",
