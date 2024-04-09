@@ -16,6 +16,13 @@ public class FederacionBean {
         this.facturada = facturada;
     }
 
+    public FederacionBean(){}
+
+    public FederacionBean(int id_plataforma, int id_cliente){
+        this.id_plataforma = id_plataforma;
+        this.id_cliente = id_cliente;
+    }
+
     public int getId_plataforma() {
         return id_plataforma;
     }

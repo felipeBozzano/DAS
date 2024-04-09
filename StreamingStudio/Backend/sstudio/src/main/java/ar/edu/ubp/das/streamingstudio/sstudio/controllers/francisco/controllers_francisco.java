@@ -1,8 +1,8 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.Tipo_de_Fee;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.TipoFeeRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.FederacionBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.ClienteUsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,12 +19,7 @@ import java.util.List;
 public class controllers_francisco {
 
     @Autowired
-    TipoFeeRepository repository;
-
-    @GetMapping("/obtener_tipo_fee")
-    public ResponseEntity<List<Tipo_de_Fee>> getTipoFee(@RequestParam("id_tipo_de_fee") int id_tipo_fee){
-        return new ResponseEntity<>(repository.getTipoFee(id_tipo_fee), HttpStatus.OK);
-    }
+    ClienteUsuarioRepository repository;
 
     @PostMapping(
             path="/create_user",
@@ -42,5 +37,15 @@ public class controllers_francisco {
     @DeleteMapping("/borrar_usuario")
     public ResponseEntity<Integer> deleteUser(@RequestParam("email") String email) {
         return new ResponseEntity<>(repository.deleteUser(email), HttpStatus.OK);
+    }
+
+     /* Federacion usaurio*/
+
+    @PostMapping(
+            path="/federar_cliente",
+            consumes={MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<List<FederacionBean>> federarClientePlataforma(@RequestBody FederacionBean federacion) {
+        return new ResponseEntity<>(repository.federarClientePlataforma(federacion.getId_plataforma(), federacion.getId_cliente()), HttpStatus.CREATED);
     }
 }
