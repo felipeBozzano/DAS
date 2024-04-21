@@ -228,7 +228,7 @@ go
 
 /* Tipo_Banner */
 
-CREATE PROCEDURE Crear_Tipo_Banner @costo FLOAT,
+CREATE OR ALTER PROCEDURE Crear_Tipo_Banner @costo FLOAT,
                                    @exclusividad BIT,
                                    @descripcion VARCHAR(255)
 AS
@@ -238,7 +238,7 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Editar_Tipo_Banner @id_tipo_banner SMALLINT,
+CREATE OR ALTER PROCEDURE Editar_Tipo_Banner @id_tipo_banner SMALLINT,
                                     @costo FLOAT,
                                     @exclusividad BIT,
                                     @descripcion VARCHAR(255)
@@ -252,7 +252,7 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Eliminar_Tipo_Banner @id_tipo_banner SMALLINT
+CREATE OR ALTER PROCEDURE Eliminar_Tipo_Banner @id_tipo_banner SMALLINT
 AS
 BEGIN
     DELETE
@@ -261,7 +261,7 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Dar_de_Baja_Tipo_Banner @id_tipo_banner SMALLINT
+CREATE OR ALTER PROCEDURE Dar_de_Baja_Tipo_Banner @id_tipo_banner SMALLINT
 AS
 BEGIN
     UPDATE Tipo_Banner
@@ -272,7 +272,7 @@ go
 
 /* Costo_Banner */
 
-CREATE PROCEDURE Crear_Costo_Banner @id_tipo_banner SMALLINT,
+CREATE OR ALTER PROCEDURE Crear_Costo_Banner @id_tipo_banner SMALLINT,
                                     @id_banner SMALLINT
 AS
 BEGIN
@@ -281,7 +281,7 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Eliminar_Costo_Banner @id_tipo_banner SMALLINT,
+CREATE OR ALTER PROCEDURE Eliminar_Costo_Banner @id_tipo_banner SMALLINT,
                                        @id_banner SMALLINT
 AS
 BEGIN
@@ -924,7 +924,7 @@ go
 
 /* Tipo_de_Fee */
 
-CREATE PROCEDURE Crear_Tipo_de_Fee @tipo_de_fee VARCHAR(1),
+CREATE OR ALTER PROCEDURE Crear_Tipo_de_Fee @tipo_de_fee VARCHAR(1),
                                    @descripcion VARCHAR(255)
 AS
 BEGIN
@@ -933,7 +933,7 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Editar_Tipo_de_Fee @id_tipo_de_fee SMALLINT,
+CREATE OR ALTER PROCEDURE Editar_Tipo_de_Fee @id_tipo_de_fee SMALLINT,
                                     @tipo_de_fee VARCHAR(1),
                                     @descripcion VARCHAR(255)
 AS
@@ -945,7 +945,7 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Eliminar_Tipo_de_Fee @id_tipo_de_fee SMALLINT
+CREATE OR ALTER PROCEDURE Eliminar_Tipo_de_Fee @id_tipo_de_fee SMALLINT
 AS
 BEGIN
     DELETE
@@ -956,7 +956,7 @@ go
 
 /* Fee */
 
-CREATE PROCEDURE Crear_Fee @monto FLOAT,
+CREATE OR ALTER PROCEDURE Crear_Fee @monto FLOAT,
                            @tipo_de_fee SMALLINT
 AS
 BEGIN
@@ -965,7 +965,7 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Editar_Fee @id_fee SMALLINT,
+CREATE OR ALTER PROCEDURE Editar_Fee @id_fee SMALLINT,
                             @monto FLOAT,
                             @tipo_de_fee SMALLINT
 AS
@@ -977,7 +977,7 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Eliminar_Fee @id_fee SMALLINT
+CREATE OR ALTER PROCEDURE Eliminar_Fee @id_fee SMALLINT
 AS
 BEGIN
     DELETE
@@ -986,7 +986,7 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Dar_de_Baja_Fee @id_fee SMALLINT
+CREATE OR ALTER PROCEDURE Dar_de_Baja_Fee @id_fee SMALLINT
 AS
 BEGIN
     UPDATE Fee
@@ -997,7 +997,7 @@ go
 
 /* Fee_Plataforma */
 
-CREATE PROCEDURE Crear_Fee_Plataforma @id_plataforma SMALLINT,
+CREATE OR ALTER PROCEDURE Crear_Fee_Plataforma @id_plataforma SMALLINT,
                                       @id_fee SMALLINT
 AS
 BEGIN
@@ -1006,7 +1006,7 @@ BEGIN
 END
 go
 
-CREATE PROCEDURE Eliminar_Fee_Plataforma @id_plataforma SMALLINT,
+CREATE OR ALTER PROCEDURE Eliminar_Fee_Plataforma @id_plataforma SMALLINT,
                                          @id_fee SMALLINT
 AS
 BEGIN
@@ -1190,15 +1190,15 @@ go
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 CREATE OR ALTER PROCEDURE Buscar_Federacion @id_plataforma INT,
-                                            @id_cliente INT
-AS
-BEGIN
-    SELECT IIF(COUNT(*) > 0, 1, 0)
-    FROM dbo.Federacion
-    WHERE id_plataforma = @id_plataforma
-      AND id_cliente = @id_cliente
-END
-go
+                                              @id_cliente INT
+  AS
+  BEGIN
+      SELECT IIF(COUNT(*) > 0, 1, 0)
+      FROM dbo.Federacion
+      WHERE id_plataforma = @id_plataforma
+        AND id_cliente = @id_cliente
+  END
+  go
 
 /* SI EXISTE LA FEDERACION, TERMINAR EL FLUJO */
 
@@ -1263,7 +1263,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Catalogo_Actual
 AS
 BEGIN
-    SELECT id_plataforma, id_contenido, reciente, destacado, id_en_plataforma, fecha_de_baja
+    SELECT id_plataforma, id_contenido, reciente, destacado, id_en_plataforma, fecha_de_alta, fecha_de_baja
     FROM dbo.Catalogo
 END
 go
@@ -1312,6 +1312,8 @@ go
 /* CON EL CONTENIDO RESTANTE */
 /* Crear_Contenido */
 /* Agregar_Item_al_Catalogo */
+
+/* VER CUALES SON LAS PELÍCULAS QUE ESTAN EN LA PLATAFORMA DE STREAMING Y EN STREAMING STUDIO*/
 
 CREATE OR ALTER PROCEDURE Actualizar_Catalogo @id_contenido INT,
                                               @id_plataforma INT,
@@ -1422,7 +1424,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Publicidades_Activas
 AS
 BEGIN
-    SELECT p.id_banner, tb.id_tipo_banner, p.url_de_imagen, p.url_de_publicidad
+    SELECT p.id_publicidad, p.id_banner, tb.id_tipo_banner, p.url_de_imagen, p.url_de_publicidad
     FROM dbo.Publicidad p
              JOIN dbo.Costo_Banner cb ON p.id_banner = cb.id_banner
              JOIN dbo.Tipo_Banner tb ON cb.id_tipo_banner = tb.id_tipo_banner

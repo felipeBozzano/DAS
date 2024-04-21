@@ -1,7 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 import java.util.Date;
 
-public class Catalogo {
+public class CatalogoBean {
     private int id_contenido;
     private int id_plataforma;
     private boolean reciente;
@@ -10,7 +10,7 @@ public class Catalogo {
     private Date fecha_de_alta;
     private Date fecha_de_baja;
 
-    public Catalogo(int id_contenido, int id_plataforma, boolean reciente, boolean destacado, String id_en_plataforma, Date fecha_de_alta, Date fecha_de_baja) {
+    public CatalogoBean(int id_contenido, int id_plataforma, boolean reciente, boolean destacado, String id_en_plataforma, Date fecha_de_alta, Date fecha_de_baja) {
         this.id_contenido = id_contenido;
         this.id_plataforma = id_plataforma;
         this.reciente = reciente;
@@ -18,6 +18,9 @@ public class Catalogo {
         this.id_en_plataforma = id_en_plataforma;
         this.fecha_de_alta = fecha_de_alta;
         this.fecha_de_baja = fecha_de_baja;
+    }
+
+    public CatalogoBean() {
     }
 
     public int getId_contenido() {

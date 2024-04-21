@@ -226,15 +226,16 @@ go
 -- Crear 9 Publicidades asignadas a Banners y Exclusividades
 INSERT INTO Publicidad (id_publicista, id_banner, codigo_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta,
                         fecha_de_baja)
-VALUES (1, 1, 'CP1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'https://www.urlpublicidad1.com/publicidad.jpg', '2024-01-30', '2024-02-10'),
-       (2, 2, 'CP2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'https://www.urlpublicidad2.com/publicidad.jpg', '2024-03-31', '2024-04-01'),
-       (3, 3, 'CP3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'https://www.urlpublicidad3.com/publicidad.jpg', '2024-03-01', '2024-03-02'),
-       (1, 4, 'CP4', 'https://www.urlimagen4.com/imagenes/imagen.jpg', 'https://www.urlpublicidad4.com/publicidad.jpg', '2024-02-02', '2024-03-03'),
-       (2, 1, 'CP5', 'https://www.urlimagen5.com/imagenes/imagen.jpg', 'https://www.urlpublicidad5.com/publicidad.jpg', '2024-02-03', '2024-04-04'),
-       (3, 2, 'CP6', 'https://www.urlimagen6.com/imagenes/imagen.jpg', 'https://www.urlpublicidad6.com/publicidad.jpg', '2024-03-04', '2024-03-25'),
-       (1, 3, 'CP7', 'https://www.urlimagen7.com/imagenes/imagen.jpg', 'https://www.urlpublicidad7.com/publicidad.jpg', '2024-02-05', '2024-03-01'),
-       (2, 4, 'CP8', 'https://www.urlimagen8.com/imagenes/imagen.jpg', 'https://www.urlpublicidad8.com/publicidad.jpg', '2024-02-06', '2024-02-27'),
-       (3, 1, 'CP9', 'https://www.urlimagen9.com/imagenes/imagen.jpg', 'https://www.urlpublicidad9.com/publicidad.jpg', '2024-02-07', '2024-02-18');
+VALUES
+       (1, 1, 'CP1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'https://www.urlpublicidad1.com/publicidad.jpg', '2024-02-28', '2024-03-10'),
+       (2, 2, 'CP2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'https://www.urlpublicidad2.com/publicidad.jpg', '2024-04-30', '2024-05-01'),
+       (3, 3, 'CP3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'https://www.urlpublicidad3.com/publicidad.jpg', '2024-04-01', '2024-04-02'),
+       (1, 4, 'CP4', 'https://www.urlimagen4.com/imagenes/imagen.jpg', 'https://www.urlpublicidad4.com/publicidad.jpg', '2024-03-02', '2024-03-03'),
+       (2, 1, 'CP5', 'https://www.urlimagen5.com/imagenes/imagen.jpg', 'https://www.urlpublicidad5.com/publicidad.jpg', '2024-03-03', '2024-05-04'),
+       (3, 2, 'CP6', 'https://www.urlimagen6.com/imagenes/imagen.jpg', 'https://www.urlpublicidad6.com/publicidad.jpg', '2024-04-04', '2024-04-25'),
+       (1, 3, 'CP7', 'https://www.urlimagen7.com/imagenes/imagen.jpg', 'https://www.urlpublicidad7.com/publicidad.jpg', '2024-03-05', '2024-04-01'),
+       (2, 4, 'CP8', 'https://www.urlimagen8.com/imagenes/imagen.jpg', 'https://www.urlpublicidad8.com/publicidad.jpg', '2024-03-06', '2024-03-27'),
+       (3, 1, 'CP9', 'https://www.urlimagen9.com/imagenes/imagen.jpg', 'https://www.urlpublicidad9.com/publicidad.jpg', '2024-04-07', '2024-05-18');
 go
 
 -- Crear 4 Estado_Factura
@@ -255,16 +256,16 @@ go
 
 -- Crear Clics para publicidades y catalogo
 INSERT INTO Clic (id_cliente, id_publicidad, id_plataforma, id_contenido, fecha)
-VALUES (1, 1, NULL, NULL, '2024-02-20 00:14:47.940'),
-       (1, 2, NULL, NULL, '2024-02-03 00:14:47.940'),
-       (2, 1, NULL, NULL, '2024-02-15 00:14:47.940'),
-       (2, 1, NULL, NULL, '2024-01-01 00:14:47.940'),
-       (2, 3, NULL, NULL, '2024-02-23 00:14:47.940'),
-       (3, 4, NULL, NULL, '2024-02-10 00:14:47.940'),
-       (4, 5, NULL, NULL, '2024-02-10 00:14:47.940'),
-       (5, 6, NULL, NULL, '2024-02-10 00:14:47.940'),
+VALUES (1, 1, NULL, NULL, '2024-03-20 00:14:47.940'),
+       (1, 2, NULL, NULL, '2024-03-03 00:14:47.940'),
+       (2, 1, NULL, NULL, '2024-03-15 00:14:47.940'),
+       (2, 1, NULL, NULL, '2024-02-01 00:14:47.940'),
+       (2, 3, NULL, NULL, '2024-03-23 00:14:47.940'),
+       (3, 4, NULL, NULL, '2024-03-10 00:14:47.940'),
+       (4, 5, NULL, NULL, '2024-03-10 00:14:47.940'),
        (5, 6, NULL, NULL, '2024-03-10 00:14:47.940'),
-       (5, 7, NULL, NULL, '2024-02-10 00:14:47.940'),
+       (5, 6, NULL, NULL, '2024-03-10 00:14:47.940'),
+       (5, 7, NULL, NULL, '2024-03-10 00:14:47.940'),
        (6, NULL, 1, 1, '2024-02-20 00:14:47.940'),
        (7, NULL, 1, 3, '2024-02-03 00:14:47.940'),
        (7, NULL, 2, 5, '2024-02-15 00:14:47.940'),

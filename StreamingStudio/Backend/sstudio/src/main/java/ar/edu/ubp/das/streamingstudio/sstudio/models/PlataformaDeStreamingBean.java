@@ -1,6 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-public class Plataforma_de_Streaming {
+public class PlataformaDeStreamingBean {
     private int id_plataforma;
     private String nombre_de_fantasaia;
     private String razon_social;
@@ -9,7 +9,7 @@ public class Plataforma_de_Streaming {
     private String url_api;
     private boolean valido;
 
-    public Plataforma_de_Streaming(int id_plataforma, String nombre_de_fantasaia, String razon_social, String url_imagen, String token_de_servicio, String url_api, boolean valido) {
+    public PlataformaDeStreamingBean(int id_plataforma, String nombre_de_fantasaia, String razon_social, String url_imagen, String token_de_servicio, String url_api, boolean valido) {
         this.id_plataforma = id_plataforma;
         this.nombre_de_fantasaia = nombre_de_fantasaia;
         this.razon_social = razon_social;
@@ -17,6 +17,9 @@ public class Plataforma_de_Streaming {
         this.token_de_servicio = token_de_servicio;
         this.url_api = url_api;
         this.valido = valido;
+    }
+
+    public PlataformaDeStreamingBean() {
     }
 
     public int getId_plataforma() {

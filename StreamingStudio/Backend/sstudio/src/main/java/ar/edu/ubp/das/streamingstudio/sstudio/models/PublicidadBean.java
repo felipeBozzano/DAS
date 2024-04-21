@@ -20,6 +20,9 @@ public class PublicidadBean {
         this.url_de_publicidad = url_de_publicidad;
     }
 
+    public PublicidadBean() {
+    }
+
     public int getId_publicidad() {
         return id_publicidad;
     }
