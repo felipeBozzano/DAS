@@ -664,14 +664,15 @@ go
 
 /* Contenido */
 
-CREATE OR ALTER PROCEDURE Crear_Contenido @titulo VARCHAR(255),
+CREATE OR ALTER PROCEDURE Crear_Contenido @id_contenido INT,
+                                          @titulo VARCHAR(255),
                                           @descripcion VARCHAR(255),
                                           @url_imagen VARCHAR(255),
                                           @clasificacion INT
 AS
 BEGIN
-    INSERT INTO dbo.Contenido(titulo, descripcion, url_imagen, clasificacion, mas_visto)
-    VALUES (@titulo, @descripcion, @url_imagen, @clasificacion, 0)
+    INSERT INTO dbo.Contenido(id_contenido, titulo, descripcion, url_imagen, clasificacion, mas_visto)
+    VALUES (@id_contenido, @titulo, @descripcion, @url_imagen, @clasificacion, 0)
 END
 go
 
@@ -1200,6 +1201,7 @@ BEGIN
 END
 go
 
+
 DECLARE @id_plataforma INT = 1; -- Replace with the desired id_plataforma value
 DECLARE @id_cliente INT = 1; -- Replace with the desired id_cliente value
 
@@ -1269,7 +1271,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Catalogo_Actual
 AS
 BEGIN
-    SELECT id_plataforma, id_contenido, reciente, destacado, id_en_plataforma, fecha_de_baja
+    SELECT id_plataforma, id_contenido, reciente, destacado, id_en_plataforma, fecha_de_alta, fecha_de_baja
     FROM dbo.Catalogo
 END
 go
@@ -1316,8 +1318,20 @@ END
 go
 
 /* CON EL CONTENIDO RESTANTE */
+
+CREATE OR ALTER PROCEDURE Buscar_Contenido @id_contenido INT
+AS
+    BEGIN
+        SELECT IIF(COUNT(*) > 0, 1, 0) as contenido
+        FROM dbo.Contenido Co
+        WHERE Co.id_contenido = @id_contenido
+    END
+go
+
 /* Crear_Contenido */
 /* Agregar_Item_al_Catalogo */
+
+/* VER CUALES SON LAS PELÍCULAS QUE ESTAN EN LA PLATAFORMA DE STREAMING Y EN STREAMING STUDIO*/
 
 CREATE OR ALTER PROCEDURE Actualizar_Catalogo @id_contenido INT,
                                               @id_plataforma INT,
@@ -1428,7 +1442,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Publicidades_Activas
 AS
 BEGIN
-    SELECT p.id_banner, tb.id_tipo_banner, p.url_de_imagen, p.url_de_publicidad
+    SELECT p.id_publicidad, p.id_banner, tb.id_tipo_banner, p.url_de_imagen, p.url_de_publicidad
     FROM dbo.Publicidad p
              JOIN dbo.Costo_Banner cb ON p.id_banner = cb.id_banner
              JOIN dbo.Tipo_Banner tb ON cb.id_tipo_banner = tb.id_tipo_banner

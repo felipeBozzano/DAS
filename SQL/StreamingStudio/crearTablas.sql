@@ -307,7 +307,7 @@ CREATE TABLE [Clasificacion]
 
 CREATE TABLE [Contenido]
 (
-    [id_contenido]  INT IDENTITY (1,1) PRIMARY KEY,
+    [id_contenido]  INT PRIMARY KEY,
     [titulo]        VARCHAR(255) NOT NULL,
     [descripcion]   VARCHAR(255) NOT NULL,
     [url_imagen]    VARCHAR(255) NOT NULL,

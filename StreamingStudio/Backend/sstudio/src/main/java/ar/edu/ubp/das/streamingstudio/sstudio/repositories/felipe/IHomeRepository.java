@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface IHomeRepository {
-    public Map<String, List<?>> getHome(int id_cliente);
-    public List<PublicidadBean> getPublicidadesActivas();
-    public List<ContenidoBean> getMasVisto(int id_cliente);
-    public List<ContenidoBean> getReciente(int id_cliente);
-    public List<ContenidoBean> getDestacado(int id_cliente);
+    public Map<String, Map<Integer, List<?>>> getHome(int id_cliente);
+    public List<?> getPublicidadesActivas();
+    public List<?> getMasVisto(int id_cliente);
+    public List<?> getReciente(int id_cliente);
+    public List<?> getDestacado(int id_cliente);
+    public Map<Integer, List<?>> agruparContenido(List<ContenidoBean> listaContenidos);
+    public Map<Integer, List<?>> agruparPublicidad(List<PublicidadBean> listaPublicidad);
 }

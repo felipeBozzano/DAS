@@ -22,7 +22,7 @@ public class controllers {
     HomeRepository repository;
 
     @GetMapping("/home")
-    public ResponseEntity<Map<String, List<?>>> getTipoFee(@RequestParam("id_cliente") int id_cliente){
-        return new ResponseEntity<Map<String, List<?>>>(repository.getHome(id_cliente), HttpStatus.OK);
+    public ResponseEntity<Map<String, Map<Integer, List<?>>>> getTipoFee(@RequestParam("id_cliente") int id_cliente){
+        return new ResponseEntity<>(repository.getHome(id_cliente), HttpStatus.OK);
     }
 }
