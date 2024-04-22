@@ -197,31 +197,46 @@ public class CatalogoRepository implements ICatalogoRepository {
                 .filter(contenido -> idEnPlataformaContenidoActivo.contains(contenido.getId_en_plataforma()))
                 .toList();
 
-        // Creamos el contenido
+
+        // Por cada contenido
         for (ContenidoBean contenido: contenidoAAgregar) {
+
+            int id_contenido = contenido.getId_contenido();
             String titulo = contenido.getTitulo();
             String id_plataforma = contenido.getId_en_plataforma();
             String url_imagen = contenido.getUrl_imagen();
             int clasificacion = contenido.getClasificacion();
-            SqlParameterSource in = new MapSqlParameterSource()
-                    .addValue("titulo", titulo)
-                    .addValue("id_plataforma", id_plataforma)
-                    .addValue("url_imagen", url_imagen)
-                    .addValue("clasificacion", clasificacion);
-            SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                    .withProcedureName("Crear_Contenido")
-                    .withSchemaName("dbo");
-            Map<String, Object> out = jdbcCall.execute(in);
-            System.out.println(out);
-        }
-
-        // Agregamos el contenido al catalogo
-        for (ContenidoBean contenido: contenidoAAgregar) {
-            int id_contenido = contenido.getId_contenido();
-            int id_plataforma = contenido.getId_plataforma();
             boolean reciente = contenido.getReciente();
             boolean destacado = contenido.getDestacado();
             String id_en_plataforma = contenido.getId_en_plataforma();
+
+            // Buscamos si existe en la tabla Contenido
+            SqlParameterSource in_existe_contenido = new MapSqlParameterSource()
+                    .addValue("id_contenido", id_contenido);
+            SimpleJdbcCall jdbcCall_existe_contenido = new SimpleJdbcCall(jdbcTpl)
+                    .withProcedureName("Buscar_Contenido")
+                    .withSchemaName("dbo");
+            Map<String, Object> out_existe_contenido = jdbcCall_existe_contenido.execute(in_existe_contenido);
+            List<Map<String, Integer>> resultset = (List<Map<String, Integer>>) out_existe_contenido.get("#result-set-1");
+            Integer existe_contenido = resultset.get(0).get("contenido");
+            System.out.println(existe_contenido);
+
+            // Si no existe, lo creamos
+            if (existe_contenido == 0) {
+                SqlParameterSource in_crear_contenido = new MapSqlParameterSource()
+                        .addValue("id_contenido", id_contenido)
+                        .addValue("titulo", titulo)
+                        .addValue("id_plataforma", id_plataforma)
+                        .addValue("url_imagen", url_imagen)
+                        .addValue("clasificacion", clasificacion);
+                SimpleJdbcCall jdbcCall_crear_contenido = new SimpleJdbcCall(jdbcTpl)
+                        .withProcedureName("Crear_Contenido")
+                        .withSchemaName("dbo");
+                Map<String, Object> out_crear_contenido = jdbcCall_crear_contenido.execute(in_crear_contenido);
+                System.out.println(out_crear_contenido);
+            }
+
+            // Agregamos dicho contenido a la tabla catálogo
             SqlParameterSource in = new MapSqlParameterSource()
                     .addValue("id_contenido", id_contenido)
                     .addValue("id_plataforma", id_plataforma)

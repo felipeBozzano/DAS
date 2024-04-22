@@ -664,14 +664,15 @@ go
 
 /* Contenido */
 
-CREATE OR ALTER PROCEDURE Crear_Contenido @titulo VARCHAR(255),
+CREATE OR ALTER PROCEDURE Crear_Contenido @id_contenido INT,
+                                          @titulo VARCHAR(255),
                                           @descripcion VARCHAR(255),
                                           @url_imagen VARCHAR(255),
                                           @clasificacion INT
 AS
 BEGIN
-    INSERT INTO dbo.Contenido(titulo, descripcion, url_imagen, clasificacion, mas_visto)
-    VALUES (@titulo, @descripcion, @url_imagen, @clasificacion, 0)
+    INSERT INTO dbo.Contenido(id_contenido, titulo, descripcion, url_imagen, clasificacion, mas_visto)
+    VALUES (@id_contenido, @titulo, @descripcion, @url_imagen, @clasificacion, 0)
 END
 go
 
@@ -1310,6 +1311,16 @@ END
 go
 
 /* CON EL CONTENIDO RESTANTE */
+
+CREATE OR ALTER PROCEDURE Buscar_Contenido @id_contenido INT
+AS
+    BEGIN
+        SELECT IIF(COUNT(*) > 0, 1, 0) as contenido
+        FROM dbo.Contenido Co
+        WHERE Co.id_contenido = @id_contenido
+    END
+go
+
 /* Crear_Contenido */
 /* Agregar_Item_al_Catalogo */
 
