@@ -2,6 +2,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.FederacionBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,5 +48,17 @@ public class controllers_francisco {
     )
     public ResponseEntity<Integer> federarClientePlataforma(@RequestBody FederacionBean federacion) {
         return new ResponseEntity<>(repository.federarClientePlataforma(federacion.getId_plataforma(), federacion.getId_cliente()), HttpStatus.OK);
+    }
+
+    /* Facturacion */
+
+    @GetMapping("/datos_publiciadad")
+    public ResponseEntity<List<PublicidadBean>> getPublicadades() {
+        return new ResponseEntity<>(repository.buscarDatoPublicidades(), HttpStatus.OK);
+    }
+
+    @GetMapping("/costo_banner")
+    public ResponseEntity<Float> getCostoBanner(@RequestParam("id_banner") int id_banner) {
+        return new ResponseEntity<>(repository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
     }
 }

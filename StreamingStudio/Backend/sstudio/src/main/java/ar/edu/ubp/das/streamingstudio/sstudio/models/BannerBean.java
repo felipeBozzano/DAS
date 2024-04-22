@@ -12,6 +12,8 @@ public class BannerBean {
         this.descripcion = descripcion;
     }
 
+    public BannerBean(){}
+
     public int getId_banner() {
         return id_banner;
     }

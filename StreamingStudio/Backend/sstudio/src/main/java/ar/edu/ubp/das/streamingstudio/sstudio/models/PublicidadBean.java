@@ -20,6 +20,15 @@ public class PublicidadBean {
         this.url_de_publicidad = url_de_publicidad;
     }
 
+    public PublicidadBean(int id_banner, int id_publicista, int id_publicidad, String codigo_publicidad) {
+        this.id_banner = id_banner;
+        this.id_publicista = id_publicista;
+        this.id_publicidad = id_publicidad;
+        this.codigo_publicidad = codigo_publicidad;
+    }
+
+    public PublicidadBean(){}
+
     public int getId_publicidad() {
         return id_publicidad;
     }
