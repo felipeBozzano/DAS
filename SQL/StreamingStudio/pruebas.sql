@@ -442,3 +442,9 @@ EXEC Obtener_Informacion_de_Plataforma @id_contenido = 4;
     PROBAMOS EL FLUJO PARA CONSULTAR URL DE CONTENIDO A REPRODUCIR
  */
 
+-- inserto datos en tipo_fee
+
+INSERT INTO Tipo_de_Fee (tipo_de_fee, descripcion)
+VALUES
+    ('A', 'Description for A'),
+    ('B', 'Description for B');
