@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ICatalogoRepository {
-    public void actualizarCatalogo();
-
+    public String actualizarCatalogo();
     public List<CatalogoBean> obtenerCatalogo();
     public List<PlataformaDeStreamingBean> obtenerPlataformasActivas();
     public String obtenerTokenDeServicioDePlataforma(int id_plataforma);

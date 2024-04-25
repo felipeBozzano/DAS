@@ -147,6 +147,7 @@ CREATE TABLE [Banner]
 (
     [id_banner]        SMALLINT IDENTITY (1,1) PRIMARY KEY,
     [tamaño_de_banner] VARCHAR(255) NOT NULL,
+    [exclusividad]     BIT NOT NULL,
     [descripcion]      VARCHAR(255) NOT NULL
 );
 
@@ -154,10 +155,8 @@ CREATE TABLE [Tipo_Banner]
 (
     [id_tipo_banner]    SMALLINT IDENTITY (1,1) PRIMARY KEY,
     [costo]             FLOAT NOT NULL,
-    [exclusividad]      BIT NOT NULL,
     [fecha_alta]        DATETIME NOT NULL,
-    [fecha_baja]        DATETIME,
-    [descripcion]       VARCHAR(255) NOT NULL,
+    [fecha_baja]        DATETIME
 );
 
 CREATE TABLE [Costo_Banner]

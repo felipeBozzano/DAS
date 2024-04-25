@@ -14,13 +14,23 @@ public class ContenidoBean {
     private boolean reciente;
     private boolean destacado;
     private String id_en_plataforma;
-    private Date fecha_de_alta;
-    private Date fecha_de_baja;
+//    private Date fecha_de_alta;
+//    private Date fecha_de_baja;
+    private boolean valido;
 
-    public ContenidoBean(int id_contenido, int id_plataforma, String url_imagen) {
+    public ContenidoBean(int id_contenido, int id_plataforma, String titulo, String descripcion, String url_imagen, int clasificacion,
+                         boolean destacado, boolean reciente, String id_en_plataforma, boolean valido) {
         this.id_contenido = id_contenido;
         this.id_plataforma = id_plataforma;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
         this.url_imagen = url_imagen;
+        this.clasificacion = clasificacion;
+        this.mas_visto = false;
+        this.destacado = destacado;
+        this.reciente = reciente;
+        this.id_en_plataforma = id_en_plataforma;
+        this.valido = valido;
     }
 
     public ContenidoBean() {
@@ -82,7 +92,7 @@ public class ContenidoBean {
         this.id_plataforma = id_plataforma;
     }
 
-    public boolean getReciente() {
+    public boolean isReciente() {
         return reciente;
     }
 
@@ -90,7 +100,7 @@ public class ContenidoBean {
         this.reciente = reciente;
     }
 
-    public boolean getDestacado() {
+    public boolean isDestacado() {
         return destacado;
     }
 
@@ -106,19 +116,26 @@ public class ContenidoBean {
         this.id_en_plataforma = id_en_plataforma;
     }
 
-    public Date getFecha_de_alta() {
-        return fecha_de_alta;
+    public boolean isValido() {
+        return valido;
     }
 
-    public void setFecha_de_alta(Date fecha_de_alta) {
-        this.fecha_de_alta = fecha_de_alta;
+    public void setValido(boolean valido) {
+        this.valido = valido;
     }
-
-    public Date getFecha_de_baja() {
-        return fecha_de_baja;
-    }
-
-    public void setFecha_de_baja(Date fecha_de_baja) {
-        this.fecha_de_baja = fecha_de_baja;
-    }
+//    public Date getFecha_de_alta() {
+//        return fecha_de_alta;
+//    }
+//
+//    public void setFecha_de_alta(Date fecha_de_alta) {
+//        this.fecha_de_alta = fecha_de_alta;
+//    }
+//
+//    public Date getFecha_de_baja() {
+//        return fecha_de_baja;
+//    }
+//
+//    public void setFecha_de_baja(Date fecha_de_baja) {
+//        this.fecha_de_baja = fecha_de_baja;
+//    }
 }

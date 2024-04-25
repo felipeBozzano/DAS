@@ -74,86 +74,89 @@ VALUES ('Director1', 'Apellido1'),
 go
 
 -- Crear 8 contenidos
-INSERT INTO Contenido (titulo, descripcion, url_imagen, clasificacion, mas_visto)
-VALUES ('Pelicula1', N'Descripción de Pelicula1', 'url_imagen1.jpg', 2, 0),
-       ('Serie1', N'Descripción de Serie1', 'url_imagen2.jpg', 1, 1),
-       ('Pelicula2', N'Descripción de Pelicula2', 'url_imagen3.jpg', 2, 0),
-       ('Serie2', N'Descripción de Serie2', 'url_imagen4.jpg', 1, 1),
-       ('Pelicula3', N'Descripción de Pelicula3', 'url_imagen5.jpg', 2, 0),
-       ('Serie3', N'Descripción de Serie3', 'url_imagen6.jpg', 1, 0),
-       ('Pelicula4', N'Descripción de Pelicula4', 'url_imagen7.jpg', 2, 1),
-       ('Serie4', N'Descripción de Serie4', 'url_imagen8.jpg', 1, 0);
+INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, clasificacion, mas_visto)
+VALUES (101,'Pelicula1', N'Descripción de Pelicula1', 'url_imagen1.jpg', 2, 0),
+       (102,'Serie1', N'Descripción de Serie1', 'url_imagen2.jpg', 1, 1),
+       (103,'Pelicula2', N'Descripción de Pelicula2', 'url_imagen3.jpg', 2, 0),
+       (104,'Serie2', N'Descripción de Serie2', 'url_imagen4.jpg', 1, 1),
+       (105,'Pelicula3', N'Descripción de Pelicula3', 'url_imagen5.jpg', 2, 0),
+       (106,'Serie3', N'Descripción de Serie3', 'url_imagen6.jpg', 1, 0),
+       (107,'Pelicula4', N'Descripción de Pelicula4', 'url_imagen7.jpg', 2, 1),
+       (108,'Serie4', N'Descripción de Serie4', 'url_imagen8.jpg', 1, 0);
 go
 
 -- Asignar directores a contenidos en Director_Contenido
 INSERT INTO Director_Contenido (id_contenido, id_director)
-VALUES (1, 1),
-       (1, 2),
-       (2, 3),
-       (2, 4),
-       (3, 5),
-       (4, 1),
-       (5, 2),
-       (6, 3),
-       (7, 4),
-       (8, 5);
+VALUES (101, 1),
+       (101, 2),
+       (102, 3),
+       (102, 4),
+       (103, 5),
+       (104, 1),
+       (105, 2),
+       (106, 3),
+       (107, 4),
+       (108, 5);
 go
 
 -- Asignar actores a contenidos en Actor_Contenido
 INSERT INTO Actor_Contenido (id_contenido, id_actor)
-VALUES (1, 1),
-       (1, 2),
-       (2, 3),
-       (2, 4),
-       (3, 5),
-       (4, 6),
-       (5, 7),
-       (6, 8),
-       (7, 1),
-       (8, 2)
+VALUES (101, 1),
+       (101, 2),
+       (102, 3),
+       (102, 4),
+       (103, 5),
+       (104, 6),
+       (105, 7),
+       (106, 8),
+       (107, 1),
+       (108, 2)
 go
 
 -- Asignar generos a contenidos en Genero_Contenido
 INSERT INTO Genero_Contenido (id_contenido, id_genero)
-VALUES (1, 1),
-       (1, 3),
-       (2, 2),
-       (3, 3),
-       (3, 2),
-       (4, 1),
-       (5, 2),
-       (6, 3),
-       (6, 1),
-       (7, 1),
-       (8, 2),
-       (8, 3);
+VALUES (101, 1),
+       (101, 3),
+       (102, 2),
+       (103, 3),
+       (103, 2),
+       (104, 1),
+       (105, 2),
+       (106, 3),
+       (106, 1),
+       (107, 1),
+       (108, 2),
+       (108, 3);
 go
 
 -- Crear 3 Plataformas de Streaming
 INSERT INTO Plataforma_de_Streaming (nombre_de_fantasia, razón_social, url_imagen, token_de_servicio, url_api, valido)
-VALUES ('Plataforma1', N'Razón Social 1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'token1', 'https://www.urlapi1.com', 1),
-       ('Plataforma2', N'Razón Social 2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'token2', 'https://www.urlapi2.com', 1),
-       ('Plataforma3', N'Razón Social 3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'token3', 'https://www.urlapi3.com', 1);
+VALUES ('Plataforma1', N'Razón Social 1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'token1',
+        'https://www.urlapi1.com', 1),
+       ('Plataforma2', N'Razón Social 2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'token2',
+        'https://www.urlapi2.com', 1),
+       ('Plataforma3', N'Razón Social 3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'token3',
+        'https://www.urlapi3.com', 1);
 go
 
 -- Llenar Catálogo
 INSERT INTO Catalogo (id_contenido, id_plataforma, reciente, destacado, id_en_plataforma, fecha_de_alta, fecha_de_baja)
 VALUES
     -- Plataforma 1
-    (1, 1, 1, 1, 'P1_C1', '2024-03-10 00:14:47.770', NULL),
-    (2, 1, 1, 0, 'S1_C2', '2024-03-10 00:14:47.770', NULL),
-    (3, 1, 0, 1, 'P2_C1', '2024-03-10 00:14:47.770', NULL),
-    (4, 1, 0, 0, 'S2_C2', '2024-03-10 00:14:47.770', '2024-03-11 20:34:12.000'),
+    (101, 1, 1, 1, 'P1_C1', '2024-03-10 00:14:47.770', NULL),
+    (102, 1, 1, 0, 'S1_C2', '2024-03-10 00:14:47.770', NULL),
+    (103, 1, 0, 1, 'P2_C1', '2024-03-10 00:14:47.770', NULL),
+    (104, 1, 0, 0, 'S2_C2', '2024-03-10 00:14:47.770', '2024-03-11 20:34:12'),
     -- Plataforma 2
-    (5, 2, 1, 1, 'P2_C1', '2024-03-10 00:14:47.770', NULL),
-    (6, 2, 1, 0, 'S3_C2', '2024-03-10 00:14:47.770', NULL),
-    (7, 2, 0, 1, 'P4_C1', '2024-03-10 00:14:47.770', NULL),
-    (8, 2, 0, 0, 'S4_C2', '2024-03-10 00:14:47.770', NULL),
+    (105, 2, 1, 1, 'P2_C1', '2024-03-10 00:14:47.770', NULL),
+    (106, 2, 1, 0, 'S3_C2', '2024-03-10 00:14:47.770', NULL),
+    (107, 2, 0, 1, 'P4_C1', '2024-03-10 00:14:47.770', NULL),
+    (108, 2, 0, 0, 'S4_C2', '2024-03-10 00:14:47.770', NULL),
     -- Plataforma 3
-    (1, 3, 1, 1, 'P1_C3', '2024-03-10 00:14:47.770', '2024-03-11 20:34:38.000'),
-    (2, 3, 1, 0, 'S1_C4', '2024-03-10 00:14:47.770', NULL),
-    (5, 3, 0, 1, 'P3_C1', '2024-03-10 00:14:47.770', NULL),
-    (6, 3, 0, 0, 'S3_C2', '2024-03-10 00:14:47.770', NULL);
+    (101, 3, 1, 1, 'P1_C3', '2024-03-10 00:14:47.770', '2024-03-11 20:34:38'),
+    (102, 3, 1, 0, 'S1_C4', '2024-03-10 00:14:47.770', NULL),
+    (105, 3, 0, 1, 'P3_C1', '2024-03-10 00:14:47.770', NULL),
+    (106, 3, 0, 0, 'S3_C2', '2024-03-10 00:14:47.770', NULL);
 go
 
 -- Insertar los tipos de usuario "Registrado" y "Nuevo"
@@ -187,33 +190,33 @@ VALUES (1, 1),
 go
 
 -- Crear 6 Banners
-INSERT INTO Banner (tamaño_de_banner, descripcion)
-VALUES ('20x20', N'Banner Arriba Izquierda 20x20 Exclusivo'),
-       ('15x30', N'Banner Arriba Derecha 15x30 Exclusivo'),
-       ('10x20', N'Banner Arriba Derecha 15x30 NO Exclusivo'),
-       ('20x30', N'Banner Abajo Derecha 20x30 NO Exclusivo'),
-       ('20x20', N'Banner Arriba Izquierda 20x20 NO Exclusivo'),
-       ('15x30', N'Banner Arriba Derecha 15x30 NO Exclusivo')
+INSERT INTO Banner (tamaño_de_banner, exclusividad, descripcion)
+VALUES ('20x20', 1, N'Banner Arriba Izquierda 20x20 Exclusivo'),
+       ('15x30', 1, N'Banner Arriba Derecha 15x30 Exclusivo'),
+       ('10x20', 0, N'Banner Arriba Derecha 15x30 NO Exclusivo'),
+       ('20x30', 0, N'Banner Abajo Derecha 20x30 NO Exclusivo'),
+       ('20x20', 0, N'Banner Arriba Izquierda 20x20 NO Exclusivo'),
+       ('15x30', 0, N'Banner Arriba Derecha 15x30 NO Exclusivo')
 go
 
 -- Crear 6 Tipo_Banner
-INSERT INTO Tipo_Banner (costo, exclusividad, fecha_alta, fecha_baja, descripcion)
-VALUES (23.5, 1, GETDATE(), NULL, 'Banner Arriba Izquierda Exclusivo'),
-       (30.0, 1, GETDATE(), NULL, 'Banner Arriba Derecha Exclusivo'),
-       (15.5, 0, GETDATE(), NULL, 'Banner Arriba Izquierda NO Exclusivo'),
-       (20.0, 0, GETDATE(), NULL, 'Banner Arriba Derecha NO Exclusivo'),
-       (10.5, 0, GETDATE(), NULL, 'Banner Abajo Izquierda NO Exclusivo'),
-       (15.0, 0, GETDATE(), NULL, 'Banner Abajo Derecha NO Exclusivo');
+INSERT INTO Tipo_Banner (costo, fecha_alta, fecha_baja)
+VALUES (23.5, GETDATE(), NULL),
+       (30.0, GETDATE(), NULL),
+       (15.5, GETDATE(), NULL),
+       (20.0, GETDATE(), NULL),
+       (10.5, GETDATE(), NULL),
+       (15.0, GETDATE(), NULL);
 go
 
 -- Crear 6 Costo_Banner
 INSERT INTO Costo_Banner (id_tipo_banner, id_banner)
 VALUES (1, 1),
-       (3, 1),
        (2, 2),
-       (4, 2),
-       (5, 3),
-       (6, 4);
+       (3, 3),
+       (4, 4),
+       (5, 5),
+       (6, 6);
 go
 
 -- Crear 3 Publicista
@@ -226,16 +229,24 @@ go
 -- Crear 9 Publicidades asignadas a Banners y Exclusividades
 INSERT INTO Publicidad (id_publicista, id_banner, codigo_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta,
                         fecha_de_baja)
-VALUES
-       (1, 1, 'CP1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'https://www.urlpublicidad1.com/publicidad.jpg', '2024-02-28', '2024-03-10'),
-       (2, 2, 'CP2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'https://www.urlpublicidad2.com/publicidad.jpg', '2024-04-30', '2024-05-01'),
-       (3, 3, 'CP3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'https://www.urlpublicidad3.com/publicidad.jpg', '2024-04-01', '2024-04-02'),
-       (1, 4, 'CP4', 'https://www.urlimagen4.com/imagenes/imagen.jpg', 'https://www.urlpublicidad4.com/publicidad.jpg', '2024-03-02', '2024-03-03'),
-       (2, 1, 'CP5', 'https://www.urlimagen5.com/imagenes/imagen.jpg', 'https://www.urlpublicidad5.com/publicidad.jpg', '2024-03-03', '2024-05-04'),
-       (3, 2, 'CP6', 'https://www.urlimagen6.com/imagenes/imagen.jpg', 'https://www.urlpublicidad6.com/publicidad.jpg', '2024-04-04', '2024-04-25'),
-       (1, 3, 'CP7', 'https://www.urlimagen7.com/imagenes/imagen.jpg', 'https://www.urlpublicidad7.com/publicidad.jpg', '2024-03-05', '2024-04-01'),
-       (2, 4, 'CP8', 'https://www.urlimagen8.com/imagenes/imagen.jpg', 'https://www.urlpublicidad8.com/publicidad.jpg', '2024-03-06', '2024-03-27'),
-       (3, 1, 'CP9', 'https://www.urlimagen9.com/imagenes/imagen.jpg', 'https://www.urlpublicidad9.com/publicidad.jpg', '2024-04-07', '2024-05-18');
+VALUES (1, 1, 'CP1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'https://www.urlpublicidad1.com/publicidad.jpg',
+        '2024-02-28', '2024-03-10'),
+       (2, 2, 'CP2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'https://www.urlpublicidad2.com/publicidad.jpg',
+        '2024-04-30', '2024-05-01'),
+       (3, 3, 'CP3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'https://www.urlpublicidad3.com/publicidad.jpg',
+        '2024-04-01', '2024-04-02'),
+       (1, 4, 'CP4', 'https://www.urlimagen4.com/imagenes/imagen.jpg', 'https://www.urlpublicidad4.com/publicidad.jpg',
+        '2024-03-02', '2024-03-03'),
+       (2, 1, 'CP5', 'https://www.urlimagen5.com/imagenes/imagen.jpg', 'https://www.urlpublicidad5.com/publicidad.jpg',
+        '2024-03-03', '2024-05-04'),
+       (3, 2, 'CP6', 'https://www.urlimagen6.com/imagenes/imagen.jpg', 'https://www.urlpublicidad6.com/publicidad.jpg',
+        '2024-04-04', '2024-04-25'),
+       (1, 3, 'CP7', 'https://www.urlimagen7.com/imagenes/imagen.jpg', 'https://www.urlpublicidad7.com/publicidad.jpg',
+        '2024-03-05', '2024-04-01'),
+       (2, 4, 'CP8', 'https://www.urlimagen8.com/imagenes/imagen.jpg', 'https://www.urlpublicidad8.com/publicidad.jpg',
+        '2024-03-06', '2024-03-27'),
+       (3, 1, 'CP9', 'https://www.urlimagen9.com/imagenes/imagen.jpg', 'https://www.urlpublicidad9.com/publicidad.jpg',
+        '2024-04-07', '2024-05-18');
 go
 
 -- Crear 4 Estado_Factura
@@ -266,14 +277,14 @@ VALUES (1, 1, NULL, NULL, '2024-03-20 00:14:47.940'),
        (5, 6, NULL, NULL, '2024-03-10 00:14:47.940'),
        (5, 6, NULL, NULL, '2024-03-10 00:14:47.940'),
        (5, 7, NULL, NULL, '2024-03-10 00:14:47.940'),
-       (6, NULL, 1, 1, '2024-02-20 00:14:47.940'),
-       (7, NULL, 1, 3, '2024-02-03 00:14:47.940'),
-       (7, NULL, 2, 5, '2024-02-15 00:14:47.940'),
-       (8, NULL, 2, 7, '2024-01-01 00:14:47.940'),
-       (8, NULL, 1, 3, '2024-02-23 00:14:47.940'),
-       (8, NULL, 3, 2, '2024-02-10 00:14:47.940'),
-       (9, NULL, 3, 5, '2024-02-10 00:14:47.940'),
-       (10, NULL, 3, 6, '2024-02-10 00:14:47.940'),
-       (10, NULL, 2, 6, '2024-03-10 00:14:47.940'),
-       (10, NULL, 2, 6, '2024-02-10 00:14:47.940');
+       (6, NULL, 1, 101, '2024-02-20 00:14:47.940'),
+       (7, NULL, 1, 103, '2024-02-03 00:14:47.940'),
+       (7, NULL, 2, 105, '2024-02-15 00:14:47.940'),
+       (8, NULL, 2, 107, '2024-01-01 00:14:47.940'),
+       (8, NULL, 1, 103, '2024-02-23 00:14:47.940'),
+       (8, NULL, 3, 102, '2024-02-10 00:14:47.940'),
+       (9, NULL, 3, 105, '2024-02-10 00:14:47.940'),
+       (10, NULL, 3, 106, '2024-02-10 00:14:47.940'),
+       (10, NULL, 2, 106, '2024-03-10 00:14:47.940'),
+       (10, NULL, 2, 106, '2024-02-10 00:14:47.940');
 go

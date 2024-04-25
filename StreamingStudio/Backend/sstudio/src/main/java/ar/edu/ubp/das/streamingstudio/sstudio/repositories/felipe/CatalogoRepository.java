@@ -10,9 +10,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
-
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class CatalogoRepository implements ICatalogoRepository {
@@ -21,7 +19,7 @@ public class CatalogoRepository implements ICatalogoRepository {
     private JdbcTemplate jdbcTpl;
 
     @Override
-    public void actualizarCatalogo() {
+    public String actualizarCatalogo() {
         List<CatalogoBean> catalogoStreamingStudio = obtenerCatalogo();
         List<PlataformaDeStreamingBean> plataformasActivas = obtenerPlataformasActivas();
         for (PlataformaDeStreamingBean plataforma : plataformasActivas) {
@@ -48,26 +46,31 @@ public class CatalogoRepository implements ICatalogoRepository {
 
             // Filtramos el contenido de la plataforma de streaming que esta inactivo
             List<ContenidoBean> contenidoPlataformaInactivo = catalogoDePlataforma.stream()
-                    .filter(contenido -> contenido.getFecha_de_baja() != null && contenido.getFecha_de_baja().after(contenido.getFecha_de_alta()))
+                    .filter(contenido -> !contenido.isValido())
                     .toList();
 
             // Filtro el contenido de la plataforma de streaming que esta activo
             List<ContenidoBean> contenidoPlataformaActivo = catalogoDePlataforma.stream()
-                    .filter(contenido -> contenido.getFecha_de_baja() == null || contenido.getFecha_de_alta().after(contenido.getFecha_de_baja()))
+                    .filter(contenido -> contenido.isValido())
                     .toList();
 
-            // Buscamos el contenido que la plataforma de streaming dio de baja, para darlo de baja en nuestra plataforma
-            darDeBajaContenido(contenidoStreamingStudioActivo, contenidoPlataformaInactivo);
+            if (!contenidoPlataformaInactivo.isEmpty()) {
+                // Buscamos el contenido que la plataforma de streaming dio de baja, para darlo de baja en nuestra plataforma
+                darDeBajaContenido(contenidoStreamingStudioActivo, contenidoPlataformaInactivo);
+            }
 
-            // Buscamos el contenido dado de baja en Streaming Studio para revisar si tenemos que habilitarlo
-            habilitarContenido(contenidoStreamingStudioInactivo, contenidoPlataformaActivo);
+            if (!contenidoPlataformaActivo.isEmpty()) {
+                // Buscamos el contenido dado de baja en Streaming Studio para revisar si tenemos que habilitarlo
+                habilitarContenido(contenidoStreamingStudioInactivo, contenidoPlataformaActivo);
 
-            // Buscamos el contenido de la plataforma de streaming que no está en Streaming Studio y lo cargamos
-            agregarContenidoNuevo(catalogoStreamingStudioFiltrado, contenidoPlataformaActivo);
+                // Buscamos el contenido de la plataforma de streaming que no está en Streaming Studio y lo cargamos
+                agregarContenidoNuevo(catalogoStreamingStudioFiltrado, contenidoPlataformaActivo);
+            }
 
             // Buscamos el contenido que esté en ambas plataformas y lo actualizamos si cambió
             actualizarContenido(catalogoStreamingStudioFiltrado, catalogoDePlataforma);
         }
+        return "OK";
     }
 
     @Override
@@ -96,18 +99,38 @@ public class CatalogoRepository implements ICatalogoRepository {
 
     @Override
     public String obtenerTokenDeServicioDePlataforma(int id_plataforma) {
-        SqlParameterSource in = new MapSqlParameterSource();
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_plataforma", id_plataforma);;
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Token_de_Servicio_de_Plataforma")
                 .withSchemaName("dbo");
 
         Map<String, Object> out = jdbcCall.execute(in);
-        return out.get("token").toString();
+        List<Map<String, String>> resultset = (List<Map<String, String>>) out.get("#result-set-1");
+        String token = resultset.get(0).get("token_de_servicio");
+        return token;
     }
 
     @Override
     public List<ContenidoBean> obtenerCatalogoDePlataforma(int id_plataforma, String tokenDeServicio) {
-        return List.of();
+        List<ContenidoBean> catalogo = new ArrayList<>();
+        if (id_plataforma == 1) {
+            ContenidoBean bean_1 = new ContenidoBean(101, id_plataforma, "Pelicula1",
+                    "Descripción de Pelicula1", "url_imagen1.jpg",2, false,
+                    false, "P1_C1", false);
+            catalogo.add(bean_1);
+        } else if (id_plataforma == 2) {
+            ContenidoBean bean_2 = new ContenidoBean(109, id_plataforma, "Pelicula6",
+                    "Descripción de Pelicula6", "url_imagen9.jpg",2, false,
+                    true, "P6_C2", true);
+            catalogo.add(bean_2);
+        } else {
+            ContenidoBean bean_3 = new ContenidoBean(101, id_plataforma, "Serie5",
+                    "Descripción de Serie5", "url_imagen1.jpg",2, true,
+                    false, "P1_C3", true);
+            catalogo.add(bean_3);
+        }
+        return catalogo;
     }
 
     @Override
@@ -197,17 +220,16 @@ public class CatalogoRepository implements ICatalogoRepository {
                 .filter(contenido -> idEnPlataformaContenidoActivo.contains(contenido.getId_en_plataforma()))
                 .toList();
 
-
         // Por cada contenido
         for (ContenidoBean contenido: contenidoAAgregar) {
-
             int id_contenido = contenido.getId_contenido();
             String titulo = contenido.getTitulo();
-            String id_plataforma = contenido.getId_en_plataforma();
+            int id_plataforma = contenido.getId_plataforma();
+            String descripcion = contenido.getDescripcion();
             String url_imagen = contenido.getUrl_imagen();
             int clasificacion = contenido.getClasificacion();
-            boolean reciente = contenido.getReciente();
-            boolean destacado = contenido.getDestacado();
+            boolean reciente = contenido.isReciente();
+            boolean destacado = contenido.isDestacado();
             String id_en_plataforma = contenido.getId_en_plataforma();
 
             // Buscamos si existe en la tabla Contenido
@@ -226,7 +248,7 @@ public class CatalogoRepository implements ICatalogoRepository {
                 SqlParameterSource in_crear_contenido = new MapSqlParameterSource()
                         .addValue("id_contenido", id_contenido)
                         .addValue("titulo", titulo)
-                        .addValue("id_plataforma", id_plataforma)
+                        .addValue("descripcion", descripcion)
                         .addValue("url_imagen", url_imagen)
                         .addValue("clasificacion", clasificacion);
                 SimpleJdbcCall jdbcCall_crear_contenido = new SimpleJdbcCall(jdbcTpl)
@@ -278,8 +300,8 @@ public class CatalogoRepository implements ICatalogoRepository {
         for (ContenidoBean contenido: contenidoAActualizar) {
             int id_contenido = contenido.getId_contenido();
             int id_plataforma = contenido.getId_plataforma();
-            boolean reciente = contenido.getReciente();
-            boolean destacado = contenido.getDestacado();
+            boolean reciente = contenido.isReciente();
+            boolean destacado = contenido.isDestacado();
             SqlParameterSource in = new MapSqlParameterSource()
                     .addValue("id_contenido", id_contenido)
                     .addValue("id_plataforma", id_plataforma)

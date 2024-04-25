@@ -197,21 +197,24 @@ go
 /* Banner */
 
 CREATE OR ALTER PROCEDURE Crear_Banner @tamaño_de_banner VARCHAR(255),
+                                       @exclusividad BIT,
                                        @descripcion VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Banner(tamaño_de_banner, descripcion)
-    VALUES (@tamaño_de_banner, @descripcion)
+    INSERT INTO dbo.Banner(tamaño_de_banner, exclusividad, descripcion)
+    VALUES (@tamaño_de_banner, @exclusividad, @descripcion)
 END
 go
 
 CREATE OR ALTER PROCEDURE Editar_Banner @id_banner INT,
                                         @tamaño_de_banner VARCHAR(255),
+                                        @exclusividad BIT,
                                         @descripcion VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Banner
     SET tamaño_de_banner = @tamaño_de_banner,
+        exclusividad     = @exclusividad,
         descripcion      = @descripcion
     WHERE id_banner = @id_banner
 END
@@ -228,26 +231,20 @@ go
 
 /* Tipo_Banner */
 
-CREATE OR ALTER PROCEDURE Crear_Tipo_Banner @costo FLOAT,
-                                   @exclusividad BIT,
-                                   @descripcion VARCHAR(255)
+CREATE OR ALTER PROCEDURE Crear_Tipo_Banner @costo FLOAT
 AS
 BEGIN
-    INSERT INTO Tipo_Banner (costo, exclusividad, fecha_alta, fecha_baja, descripcion)
-    VALUES (@costo, @exclusividad, GETDATE(), NULL, @descripcion);
+    INSERT INTO Tipo_Banner (costo, fecha_alta, fecha_baja)
+    VALUES (@costo, GETDATE(), NULL);
 END
 go
 
 CREATE OR ALTER PROCEDURE Editar_Tipo_Banner @id_tipo_banner SMALLINT,
-                                    @costo FLOAT,
-                                    @exclusividad BIT,
-                                    @descripcion VARCHAR(255)
+                                             @costo FLOAT
 AS
 BEGIN
     UPDATE Tipo_Banner
-    SET costo        = @costo,
-        exclusividad = @exclusividad,
-        descripcion  = @descripcion
+    SET costo = @costo
     WHERE id_tipo_banner = @id_tipo_banner;
 END
 go
@@ -273,7 +270,7 @@ go
 /* Costo_Banner */
 
 CREATE OR ALTER PROCEDURE Crear_Costo_Banner @id_tipo_banner SMALLINT,
-                                    @id_banner SMALLINT
+                                             @id_banner SMALLINT
 AS
 BEGIN
     INSERT INTO Costo_Banner (id_tipo_banner, id_banner)
@@ -282,7 +279,7 @@ END
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Costo_Banner @id_tipo_banner SMALLINT,
-                                       @id_banner SMALLINT
+                                                @id_banner SMALLINT
 AS
 BEGIN
     DELETE
@@ -926,7 +923,7 @@ go
 /* Tipo_de_Fee */
 
 CREATE OR ALTER PROCEDURE Crear_Tipo_de_Fee @tipo_de_fee VARCHAR(1),
-                                   @descripcion VARCHAR(255)
+                                            @descripcion VARCHAR(255)
 AS
 BEGIN
     INSERT INTO Tipo_Fee (tipo_de_fee, descripcion)
@@ -935,8 +932,8 @@ END
 go
 
 CREATE OR ALTER PROCEDURE Editar_Tipo_de_Fee @id_tipo_de_fee SMALLINT,
-                                    @tipo_de_fee VARCHAR(1),
-                                    @descripcion VARCHAR(255)
+                                             @tipo_de_fee VARCHAR(1),
+                                             @descripcion VARCHAR(255)
 AS
 BEGIN
     UPDATE Tipo_Fee
@@ -958,7 +955,7 @@ go
 /* Fee */
 
 CREATE OR ALTER PROCEDURE Crear_Fee @monto FLOAT,
-                           @tipo_de_fee SMALLINT
+                                    @tipo_de_fee SMALLINT
 AS
 BEGIN
     INSERT INTO Fee (monto, fecha_alta, fecha_baja, tipo_de_fee)
@@ -967,8 +964,8 @@ END
 go
 
 CREATE OR ALTER PROCEDURE Editar_Fee @id_fee SMALLINT,
-                            @monto FLOAT,
-                            @tipo_de_fee SMALLINT
+                                     @monto FLOAT,
+                                     @tipo_de_fee SMALLINT
 AS
 BEGIN
     UPDATE Fee
@@ -999,7 +996,7 @@ go
 /* Fee_Plataforma */
 
 CREATE OR ALTER PROCEDURE Crear_Fee_Plataforma @id_plataforma SMALLINT,
-                                      @id_fee SMALLINT
+                                               @id_fee SMALLINT
 AS
 BEGIN
     INSERT INTO Fee_Plataforma (id_plataforma, id_fee)
@@ -1008,7 +1005,7 @@ END
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Fee_Plataforma @id_plataforma SMALLINT,
-                                         @id_fee SMALLINT
+                                                  @id_fee SMALLINT
 AS
 BEGIN
     DELETE
@@ -1202,11 +1199,11 @@ END
 go
 
 
-DECLARE @id_plataforma INT = 1; -- Replace with the desired id_plataforma value
-DECLARE @id_cliente INT = 1; -- Replace with the desired id_cliente value
+-- DECLARE @id_plataforma INT = 1; -- Replace with the desired id_plataforma value
+-- DECLARE @id_cliente INT = 1; -- Replace with the desired id_cliente value
 
 -- Execute the stored procedure
-EXEC Buscar_Federacion @id_plataforma, @id_cliente;
+-- EXEC Buscar_Federacion @id_plataforma, @id_cliente;
 
 /* SI EXISTE LA FEDERACION, TERMINAR EL FLUJO */
 
@@ -1279,7 +1276,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Plataformas_de_Streaming_Activas
 AS
 BEGIN
-    SELECT id_plataforma
+    SELECT id_plataforma, valido
     FROM dbo.Plataforma_de_Streaming
     WHERE valido = 1
 END
@@ -1321,11 +1318,11 @@ go
 
 CREATE OR ALTER PROCEDURE Buscar_Contenido @id_contenido INT
 AS
-    BEGIN
-        SELECT IIF(COUNT(*) > 0, 1, 0) as contenido
-        FROM dbo.Contenido Co
-        WHERE Co.id_contenido = @id_contenido
-    END
+BEGIN
+    SELECT IIF(COUNT(*) > 0, 1, 0) as contenido
+    FROM dbo.Contenido Co
+    WHERE Co.id_contenido = @id_contenido
+END
 go
 
 /* Crear_Contenido */
@@ -1696,14 +1693,12 @@ go
 
 -- prueba para controller
 
-CREATE
-OR
-ALTER PROCEDURE Obtener_Tipo_Fee @id_tipo_de_fee SMALLINT
-    AS
+CREATE OR ALTER PROCEDURE Obtener_Tipo_Fee @id_tipo_de_fee SMALLINT
+AS
 BEGIN
-SELECT *
-FROM Tipo_de_Fee
-WHERE Tipo_de_Fee.id_tipo_de_fee = @id_tipo_de_fee
+    SELECT *
+    FROM dbo.Tipo_Fee
+    WHERE id_tipo_de_fee = @id_tipo_de_fee
 END
 go
 

@@ -2,7 +2,6 @@ package ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.Tipo_de_Fee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,7 +9,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
-
 import java.util.*;
 
 @Repository
