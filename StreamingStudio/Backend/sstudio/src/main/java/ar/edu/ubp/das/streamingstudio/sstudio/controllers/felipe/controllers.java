@@ -36,7 +36,7 @@ public class controllers {
     }
 
     @GetMapping("/estadisticas")
-    public ResponseEntity<> getEstadisticas(){
+    public ResponseEntity<?> getEstadisticas(){
         return new ResponseEntity<>(catalogoRepository.actualizarCatalogo(), HttpStatus.OK);
     }
 }

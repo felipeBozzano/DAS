@@ -58,7 +58,12 @@ public class controllers_francisco {
     }
 
     @GetMapping("/costo_banner")
-    public ResponseEntity<Float> getCostoBanner(@RequestParam("id_banner") int id_banner) {
+    public ResponseEntity<Double> getCostoBanner(@RequestParam("id_banner") int id_banner) {
         return new ResponseEntity<>(repository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
+    }
+
+    @GetMapping("/facturacion")
+    public ResponseEntity<String> facturacion() {
+        return new ResponseEntity<String>(repository.enviarFacturas(), HttpStatus.OK);
     }
 }
