@@ -1,6 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers.felipe;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe.CatalogoRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe.EstadisticasRepository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe.HomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,9 @@ public class controllers {
     @Autowired
     CatalogoRepository catalogoRepository;
 
+    @Autowired
+    EstadisticasRepository estadisticasRepository;
+
     @GetMapping("/home")
     public ResponseEntity<Map<String, Map<Integer, List<?>>>> getTipoFee(@RequestParam("id_cliente") int id_cliente){
         return new ResponseEntity<>(homeRepository.getHome(id_cliente), HttpStatus.OK);
@@ -35,8 +39,8 @@ public class controllers {
         return new ResponseEntity<>(catalogoRepository.actualizarCatalogo(), HttpStatus.OK);
     }
 
-    @GetMapping("/estadisticas")
-    public ResponseEntity<> getEstadisticas(){
-        return new ResponseEntity<>(catalogoRepository.actualizarCatalogo(), HttpStatus.OK);
+    @GetMapping("/estadisticasPublicistas")
+    public ResponseEntity<String> getEstadisticas(){
+        return new ResponseEntity<String>(estadisticasRepository.reportesPublicistas(), HttpStatus.OK);
     }
 }
