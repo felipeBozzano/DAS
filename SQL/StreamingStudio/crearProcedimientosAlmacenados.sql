@@ -838,11 +838,16 @@ go
 
 /* Reporte */
 
-CREATE OR ALTER PROCEDURE Crear_Reporte_Publicista @id_publicista INT
+CREATE OR ALTER PROCEDURE Crear_Reporte_Publicista @id_publicista INT,
+                                                   @id_reporte INT OUTPUT
 AS
 BEGIN
     INSERT INTO dbo.Reporte(total, fecha, estado, id_publicista, id_plataforma)
-    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, @id_publicista, NULL)
+    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, @id_publicista, NULL);
+
+    SET @id_reporte = SCOPE_IDENTITY();
+
+    SELECT @id_reporte AS id_reporte;
 END
 go
 
