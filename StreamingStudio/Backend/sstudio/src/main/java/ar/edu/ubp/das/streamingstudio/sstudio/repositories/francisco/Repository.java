@@ -168,7 +168,14 @@ public class Repository {
         for (Integer id_publicista : publicidades_agrupadas.keySet()) {
             crearFacturaPublicista(id_publicista);
         }
-        System.out.println(publicidades_agrupadas);
+
+        for (Map.Entry<String, ?> entry : publicidades_agrupadas.entrySet()) {
+            String clave = entry.getKey();
+            Integer valor = entry.getValue();
+            System.out.println("Clave: " + clave + ", Valor: " + valor);
+        }
+
+        //System.out.println(publicidades_agrupadas.toString());
         return "ok";
     }
 

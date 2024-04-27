@@ -100,4 +100,18 @@ public class PublicidadBean {
     public void setId_tipo_banner(int id_tipo_banner) {
         this.id_tipo_banner = id_tipo_banner;
     }
+
+    @Override
+    public String toString() {
+        return "id_publicidad: "       + id_publicidad     + "\n"
+             + "id_publicista: "       + id_publicista     + "\n"
+             +  "id_banner: "          + id_banner         + "\n"
+             +  "codigo_publicidad"    + codigo_publicidad + "\n"
+             +  "url_de_imagen: "      + url_de_imagen     + "\n"
+             +  "url_de_publiocidad: " + url_de_publicidad + "\n"
+             +  "fecha_de_alta: "      + fecha_de_alta     + "\n"
+             +  "fecha_de_baja: "      + fecha_de_baja     + "\n"
+             +  "id_tipo_banner: "     + id_tipo_banner    + "\n";
+
+    }
 }
