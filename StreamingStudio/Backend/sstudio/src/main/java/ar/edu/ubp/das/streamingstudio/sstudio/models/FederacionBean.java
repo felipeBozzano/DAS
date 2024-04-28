@@ -7,6 +7,15 @@ public class FederacionBean {
     private String token;
     private String tipo_usuario;
     private Boolean facturada;
+    private int cantidad_de_federaciones;
+
+    public int getCantidad_de_federaciones() {
+        return cantidad_de_federaciones;
+    }
+
+    public void setCantidad_de_federaciones(int cantidad_de_federaciones) {
+        this.cantidad_de_federaciones = cantidad_de_federaciones;
+    }
 
     public FederacionBean(int id_plataforma, int id_cliente, String token, String tipo_usuario, Boolean facturada) {
         this.id_plataforma = id_plataforma;

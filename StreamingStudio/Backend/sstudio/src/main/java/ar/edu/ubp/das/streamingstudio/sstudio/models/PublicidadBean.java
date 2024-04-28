@@ -10,8 +10,9 @@ public class PublicidadBean {
     private String codigo_publicidad;
     private String url_de_imagen;
     private String url_de_publicidad;
-    private Date fecha_de_alta;
-    private Date fecha_de_baja;
+    private Date fecha_inicio;
+    private Date fecha_final;
+    private int cantidad_de_dias;
 
     public PublicidadBean(int id_banner, int id_tipo_banner, String url_de_imagen, String url_de_publicidad) {
         this.id_banner = id_banner;
@@ -78,27 +79,31 @@ public class PublicidadBean {
     }
 
     public Date getFecha_de_alta() {
-        return fecha_de_alta;
+        return fecha_inicio;
     }
 
     public void setFecha_de_alta(Date fecha_de_alta) {
-        this.fecha_de_alta = fecha_de_alta;
+        this.fecha_inicio = fecha_de_alta;
     }
 
     public Date getFecha_de_baja() {
-        return fecha_de_baja;
+        return fecha_final;
     }
 
     public void setFecha_de_baja(Date fecha_de_baja) {
-        this.fecha_de_baja = fecha_de_baja;
+        this.fecha_final = fecha_de_baja;
     }
 
     public int getId_tipo_banner() {
         return id_tipo_banner;
     }
 
-    public void setId_tipo_banner(int id_tipo_banner) {
-        this.id_tipo_banner = id_tipo_banner;
+    public int getCantidad_de_dias() {
+        return cantidad_de_dias;
+    }
+
+    public void setCantidad_de_dias(int cantidad_de_dias) {
+        this.cantidad_de_dias = cantidad_de_dias;
     }
 
     @Override
@@ -109,8 +114,8 @@ public class PublicidadBean {
              +  "codigo_publicidad"    + codigo_publicidad + "\n"
              +  "url_de_imagen: "      + url_de_imagen     + "\n"
              +  "url_de_publiocidad: " + url_de_publicidad + "\n"
-             +  "fecha_de_alta: "      + fecha_de_alta     + "\n"
-             +  "fecha_de_baja: "      + fecha_de_baja     + "\n"
+             +  "fecha_de_alta: "      + fecha_inicio      + "\n"
+             +  "fecha_de_baja: "      + fecha_final       + "\n"
              +  "id_tipo_banner: "     + id_tipo_banner    + "\n";
 
     }

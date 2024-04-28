@@ -2,6 +2,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.FederacionBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.Fee;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +63,23 @@ public class controllers_francisco {
         return new ResponseEntity<>(repository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
     }
 
-    @GetMapping("/facturacion")
-    public ResponseEntity<String> facturacion() {
-        return new ResponseEntity<String>(repository.enviarFacturas(), HttpStatus.OK);
+    @GetMapping("/enviar_facturas_publicistas")
+    public ResponseEntity<String> enviar_facturacion_publicistas() {
+        return new ResponseEntity<String>(repository.enviarFacturasPublicistas(), HttpStatus.OK);
+    }
+
+    @GetMapping("/enviar_facturas_plataforma")
+    public ResponseEntity<List<FederacionBean>> facturacion_plataforma() {
+        return new ResponseEntity<>(repository.buscarDatosFederaciones(), HttpStatus.OK);
+    }
+
+    @GetMapping("/obtener_fees_plataforma")
+    public ResponseEntity<List<Fee>> obtener_fees_plataforma(@RequestParam("id_plataforma") int id_plataforma) {
+        return new ResponseEntity<>(repository.obtenerFeesPlataforma(id_plataforma), HttpStatus.OK);
+    }
+
+    @GetMapping("/enviar_facturas_plataformas")
+    public ResponseEntity<String> enviar_facturacion_plataformas() {
+        return new ResponseEntity<String>(repository.enviarFacturasPlataformas(), HttpStatus.OK);
     }
 }

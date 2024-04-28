@@ -2,12 +2,11 @@
 
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.Tipo_de_Fee;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -18,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -154,10 +154,11 @@ public class Repository {
     /* FACTURACION */
 
     @Transactional
-    public String enviarFacturas() {
+    public String enviarFacturasPublicistas() {
         List<PublicidadBean> datosPublicidades = buscarDatoPublicidades();
 
-        // Print the grouped data
+        // ** FACTURAS PUBLICISTAS ** //
+        // agrupar publicidades por publicista
         Map<Integer, List<PublicidadBean>> publicidades_agrupadas = new HashMap<>();
         for (PublicidadBean publicidad : datosPublicidades) {
             if (!publicidades_agrupadas.containsKey(publicidad.getId_publicista())) {
@@ -165,20 +166,25 @@ public class Repository {
             }
             publicidades_agrupadas.get(publicidad.getId_publicista()).add(publicidad);
         }
-        for (Integer id_publicista : publicidades_agrupadas.keySet()) {
-            crearFacturaPublicista(id_publicista);
-        }
 
-        for (Map.Entry<String, ?> entry : publicidades_agrupadas.entrySet()) {
-            String clave = entry.getKey();
-            Integer valor = entry.getValue();
-            System.out.println("Clave: " + clave + ", Valor: " + valor);
+        for (Integer id_publicista : publicidades_agrupadas.keySet()) {
+            int id_factura = crearFacturaPublicista(id_publicista);
+            List<PublicidadBean> listaPublicadades = publicidades_agrupadas.get(id_publicista);
+            double total = 0;
+            for(PublicidadBean  publicidad : listaPublicadades){
+                double costoBanner = obtenerCostoDeBanner(publicidad.getId_banner());
+                total += costoBanner * publicidad.getCantidad_de_dias();
+                crearDetalleFacturaPublicista(id_factura, costoBanner, publicidad.getCantidad_de_dias(), costoBanner * publicidad.getCantidad_de_dias(), "Publicidad " + id_factura);
+            }
+            finalizarFactura(id_factura, total);
+            enviarFactura(id_factura);
         }
 
         //System.out.println(publicidades_agrupadas.toString());
         return "ok";
     }
 
+    // FACTURAS PUBLICISTAS //
     @Transactional
     public List<PublicidadBean> buscarDatoPublicidades() {
         SqlParameterSource in = new MapSqlParameterSource();
@@ -204,37 +210,41 @@ public class Repository {
     }
 
     @Transactional
-    public void crearFacturaPublicista(int id_publicista) {
+    public int crearFacturaPublicista(int id_publicista) {
     SqlParameterSource in = new MapSqlParameterSource()
             .addValue("id_publicista", id_publicista);
     SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
             .withProcedureName("Crear_Factura_Publicista")
-            .withSchemaName("dbo");
+            .withSchemaName("dbo")
+            .declareParameters(new SqlOutParameter("id_factura", Types.INTEGER));;
+        Map<String, Object> out = jdbcCall.execute(in);
+        int id_factura = (int) out.get("id_factura");
+        return id_factura;
+    }
+
+    @Transactional
+    public void crearDetalleFacturaPublicista(int id_factura, double precio_unitario, int cantidad, double subtotal, String description) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_factura", id_factura)
+                .addValue("precio_unitario", precio_unitario)
+                .addValue("cantidad", cantidad)
+                .addValue("subtotal", subtotal)
+                .addValue("descripcion", description);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Crear_Detalle_Factura")
+                .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
     }
 
     @Transactional
-    public void crearDetalleFacturaPublicista(int id_factura, int id_detalle, float precio_unitario, int cantidad, float subtotal, String description) {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_factura", id_factura)
-                .addValue("id_detalle", id_detalle)
-                .addValue("precio_unitario", precio_unitario)
-                .addValue("cantidad", cantidad)
-                .addValue("subtotal", subtotal)
-                .addValue("description", description);
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Crear_Detalle_Factura")
-                .withSchemaName("dbo");
-    }
-
-    @Transactional
-    public void finalizarFactura(int id_factura, int total) {
+    public void finalizarFactura(int id_factura, double total) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_factura", id_factura)
                 .addValue("total", total);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Finalizar_Factura")
                 .withSchemaName("dbo");
+        Map<String, Object> out = jdbcCall.execute(in);
     }
 
     @Transactional
@@ -244,5 +254,62 @@ public class Repository {
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Enviar_Factura")
                 .withSchemaName("dbo");
+        Map<String, Object> out = jdbcCall.execute(in);
+    }
+
+    // FACTURAS PLATAFORMA STREAMING //
+
+    @Transactional
+    public String enviarFacturasPlataformas() {
+        List<FederacionBean> federacionesPorPlataforma = buscarDatosFederaciones();
+
+        // ** FACTURAS PLATAFORMA STREAMING ** //
+        // agrupar publicidades por publicista
+        Map<Integer, List<FederacionBean>> federaciones_agrupadas = new HashMap<>();
+        for (FederacionBean federacionesPlatatorma : federacionesPorPlataforma) {
+            if (!federaciones_agrupadas.containsKey(federacionesPlatatorma.getId_plataforma())) {
+                federaciones_agrupadas.put(federacionesPlatatorma.getId_plataforma(), new ArrayList<>());
+            }
+            federaciones_agrupadas.get(federacionesPlatatorma.getId_plataforma()).add(federacionesPlatatorma);
+        }
+
+//        for (Integer id_publicista : publicidades_agrupadas.keySet()) {
+//            int id_factura = crearFacturaPublicista(id_publicista);
+//            List<PublicidadBean> listaPublicadades = publicidades_agrupadas.get(id_publicista);
+//            double total = 0;
+//            for(PublicidadBean  publicidad : listaPublicadades){
+//                double costoBanner = obtenerCostoDeBanner(publicidad.getId_banner());
+//                total += costoBanner * publicidad.getCantidad_de_dias();
+//                crearDetalleFacturaPublicista(id_factura, costoBanner, publicidad.getCantidad_de_dias(), costoBanner * publicidad.getCantidad_de_dias(), "Publicidad " + id_factura);
+//            }
+//            finalizarFactura(id_factura, total);
+//            enviarFactura(id_factura);
+//        }
+
+        //System.out.println(publicidades_agrupadas.toString());
+        return "ok";
+    }
+
+    @Transactional
+    public List<FederacionBean> buscarDatosFederaciones() {
+        SqlParameterSource in = new MapSqlParameterSource();
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_Datos_de_Federaciones")
+                .withSchemaName("dbo")
+                .returningResultSet("federaciones", BeanPropertyRowMapper.newInstance(FederacionBean.class));
+        Map<String, Object> out = jdbcCall.execute(in);
+        return (List<FederacionBean>)out.get("federaciones");
+    }
+
+    @Transactional
+    public List<Fee> obtenerFeesPlataforma(int id_plataforma) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_plataforma", id_plataforma);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_Fees_de_Plataforma")
+                .withSchemaName("dbo")
+                .returningResultSet("fees_plataforma", BeanPropertyRowMapper.newInstance(Fee.class));
+        Map<String, Object> out = jdbcCall.execute(in);
+        return (List<Fee>)out.get("fees_plataforma");
     }
 }

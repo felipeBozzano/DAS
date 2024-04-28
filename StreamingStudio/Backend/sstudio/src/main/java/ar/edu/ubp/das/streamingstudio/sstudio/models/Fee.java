@@ -17,6 +17,8 @@ public class Fee {
         this.tipo_de_fee = tipo_de_fee;
     }
 
+    public Fee(){}
+
     public int getId_fee() {
         return id_fee;
     }
