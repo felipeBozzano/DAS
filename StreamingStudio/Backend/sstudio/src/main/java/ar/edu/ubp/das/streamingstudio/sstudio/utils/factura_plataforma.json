@@ -1,0 +1,17 @@
+{
+  "codigo_factura": "FP-{id_factura}",
+  "total": "{total}",
+  "fecha": "{fecha}",
+  "nombre_de_fantasía": "{nombre_de_fantasía}",
+  "razón_social": "{razón_social}",
+  "detalle": [
+    {
+      "tipo_de_federacion": "{tipo_de_federacion}",
+      "cantidad": "{cantidad}",
+      "precio_unitario": "{precio_unitario}",
+      "subtotal": "{subtotal}"
+    },
+    {
+    }
+  ]
+}

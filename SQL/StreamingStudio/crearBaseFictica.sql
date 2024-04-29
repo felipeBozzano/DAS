@@ -220,7 +220,7 @@ VALUES (1, 1),
 go
 
 -- Crear 3 Publicista
-INSERT INTO Publicista (nombre_de_fantasia, razón_social, email, contraseña, token_de_servicio, url_api)
+INSERT INTO Publicista (nombre_de_fantasia, razón_social, email, contrasena, token_de_servicio, url_api)
 VALUES ('Publicista1', N'Razón Social 1', 'publicista1@email.com', N'contraseña1', 'token1', 'https://www.urlapi1.com'),
        ('Publicista2', N'Razón Social 2', 'publicista2@email.com', N'contraseña2', 'token2', 'https://www.urlapi2.com'),
        ('Publicista3', N'Razón Social 3', 'publicista3@email.com', N'contraseña3', 'token3', 'https://www.urlapi3.com');
@@ -277,14 +277,14 @@ VALUES (1, 1, NULL, NULL, '2024-03-20 00:14:47.940'),
        (5, 6, NULL, NULL, '2024-03-10 00:14:47.940'),
        (5, 6, NULL, NULL, '2024-03-10 00:14:47.940'),
        (5, 7, NULL, NULL, '2024-03-10 00:14:47.940'),
-       (6, NULL, 1, 101, '2024-02-20 00:14:47.940'),
-       (7, NULL, 1, 103, '2024-02-03 00:14:47.940'),
-       (7, NULL, 2, 105, '2024-02-15 00:14:47.940'),
-       (8, NULL, 2, 107, '2024-01-01 00:14:47.940'),
-       (8, NULL, 1, 103, '2024-02-23 00:14:47.940'),
-       (8, NULL, 3, 102, '2024-02-10 00:14:47.940'),
-       (9, NULL, 3, 105, '2024-02-10 00:14:47.940'),
-       (10, NULL, 3, 106, '2024-02-10 00:14:47.940'),
-       (10, NULL, 2, 106, '2024-03-10 00:14:47.940'),
-       (10, NULL, 2, 106, '2024-02-10 00:14:47.940');
+       (6, NULL, 1, 101, '2024-03-20 00:14:47.940'),
+       (7, NULL, 1, 103, '2024-03-03 00:14:47.940'),
+       (7, NULL, 2, 105, '2024-03-15 00:14:47.940'),
+       (8, NULL, 2, 107, '2024-02-01 00:14:47.940'),
+       (8, NULL, 1, 103, '2024-03-23 00:14:47.940'),
+       (8, NULL, 3, 102, '2024-03-10 00:14:47.940'),
+       (9, NULL, 3, 105, '2024-03-10 00:14:47.940'),
+       (10, NULL, 3, 106, '2024-03-10 00:14:47.940'),
+       (10, NULL, 2, 106, '2024-04-10 00:14:47.940'),
+       (10, NULL, 2, 106, '2024-03-10 00:14:47.940');
 go

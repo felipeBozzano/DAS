@@ -6,13 +6,13 @@ import ar.edu.ubp.das.streamingstudio.sstudio.models.Publicista;
 import java.util.List;
 import java.util.Map;
 
-public interface IEstadisticasRepository {
+public interface IEstadisticasPublicistaRepository {
 
     public String reportesPublicistas();
     public Map<Integer, List<EstadisticaPublicistaBean>> obtenerEstadisticasPublicistas();
     public int crearReportePublicista(int id_publicista);
     public void crearDetalleReporte(int id_reporte, EstadisticaPublicistaBean detalle);
-    public void finalizarReporte(int id_reporte);
+    public void finalizarReporte(int id_reporte, int clics_totales);
     public Publicista obtenerDatosDePublicista(int id_publicista);
-    public void enviarReporte(int id_reporte);
+    public void enviarReporte(int id_reporte, Publicista publicista);
 }

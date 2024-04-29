@@ -1,7 +1,9 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers.felipe;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.models.EstadisticaPlataformaBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe.CatalogoRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe.EstadisticasRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe.EstadisticasPlataformaRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe.EstadisticasPublicistaRepository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe.HomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +29,10 @@ public class controllers {
     CatalogoRepository catalogoRepository;
 
     @Autowired
-    EstadisticasRepository estadisticasRepository;
+    EstadisticasPublicistaRepository estadisticasRepository;
+
+    @Autowired
+    EstadisticasPlataformaRepository estadisticasPlataformasRepository;
 
     @GetMapping("/home")
     public ResponseEntity<Map<String, Map<Integer, List<?>>>> getTipoFee(@RequestParam("id_cliente") int id_cliente){
@@ -40,7 +45,12 @@ public class controllers {
     }
 
     @GetMapping("/estadisticasPublicistas")
-    public ResponseEntity<String> getEstadisticas(){
-        return new ResponseEntity<String>(estadisticasRepository.reportesPublicistas(), HttpStatus.OK);
+    public ResponseEntity<String> getEstadisticasPublicistas(){
+        return new ResponseEntity<>(estadisticasRepository.reportesPublicistas(), HttpStatus.OK);
+    }
+
+    @GetMapping("/estadisticasPlataformas")
+    public ResponseEntity<String> getEstadisticasPlataformas(){
+        return new ResponseEntity<>(estadisticasPlataformasRepository.reportesPlataformas(), HttpStatus.OK);
     }
 }

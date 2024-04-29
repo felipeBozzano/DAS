@@ -2,7 +2,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 import java.util.Date;
 
-public class Transaccion {
+public class TransaccionBean {
 
     private int id_plataforma;
     private int id_cliente;
@@ -15,7 +15,7 @@ public class Transaccion {
     private Date fecha_baja;
     private Boolean facturada;
 
-    public Transaccion(int id_plataforma, int id_cliente, Date fecha_alta, String codigo_de_transaccion, String url_login_registro_plataforma, String url_redireccion_propia, String tipo_usuario, Date fecha_baja, Boolean facturada) {
+    public TransaccionBean(int id_plataforma, int id_cliente, Date fecha_alta, String codigo_de_transaccion, String url_login_registro_plataforma, String url_redireccion_propia, String tipo_usuario, Date fecha_baja, Boolean facturada) {
         this.id_plataforma = id_plataforma;
         this.id_cliente = id_cliente;
         this.fecha_alta = fecha_alta;
@@ -27,7 +27,7 @@ public class Transaccion {
         this.facturada = facturada;
     }
 
-    public Transaccion(int id_plataforma, int id_cliente, Date fecha_alta, String codigo_de_transaccion, String url_login_registro_plataforma, String url_redireccion_propia, String token, String tipo_usuario, Date fecha_baja, Boolean facturada) {
+    public TransaccionBean(int id_plataforma, int id_cliente, Date fecha_alta, String codigo_de_transaccion, String url_login_registro_plataforma, String url_redireccion_propia, String token, String tipo_usuario, Date fecha_baja, Boolean facturada) {
         this.id_plataforma = id_plataforma;
         this.id_cliente = id_cliente;
         this.fecha_alta = fecha_alta;
@@ -38,6 +38,9 @@ public class Transaccion {
         this.tipo_usuario = tipo_usuario;
         this.fecha_baja = fecha_baja;
         this.facturada = facturada;
+    }
+
+    public TransaccionBean() {
     }
 
     public int getId_plataforma() {
