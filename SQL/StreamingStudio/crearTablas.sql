@@ -69,7 +69,7 @@ CREATE TABLE [Publicista]
     [nombre_de_fantasia]    VARCHAR(255) NOT NULL,
     [razón_social]          VARCHAR(255) NOT NULL,
     [email]                 VARCHAR(255) NOT NULL,
-    [contraseña]            VARCHAR(255) NOT NULL,
+    [contrasena]            VARCHAR(255) NOT NULL,
     [token_de_servicio]     VARCHAR(255) NOT NULL,
     [url_api]               VARCHAR(255) NOT NULL,
 );

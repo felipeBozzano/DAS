@@ -19,6 +19,8 @@ public class Publicista {
         this.url_api = url_api;
     }
 
+    public Publicista(){}
+
     public int getId_publicista() {
         return id_publicista;
     }

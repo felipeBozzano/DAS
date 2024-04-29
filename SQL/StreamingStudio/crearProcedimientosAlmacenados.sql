@@ -299,7 +299,7 @@ CREATE OR ALTER PROCEDURE Registrar_Publicista @nombre_de_fantasia VARCHAR(255),
                                                @url_api VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Publicista(nombre_de_fantasia, razón_social, email, contraseña, token_de_servicio, url_api)
+    INSERT INTO dbo.Publicista(nombre_de_fantasia, razón_social, email, contrasena, token_de_servicio, url_api)
     VALUES (@nombre_de_fantasia, @razón_social, @email, @contraseña, @token_de_servicio, @url_api)
 END
 go
@@ -317,7 +317,7 @@ BEGIN
     SET nombre_de_fantasia = @nombre_de_fantasia,
         razón_social       = @razón_social,
         email              = @email,
-        contraseña         = @contraseña,
+        contrasena         = @contraseña,
         token_de_servicio  = @token_de_servicio,
         url_api            = @url_api
     WHERE id_publicista = @id_publicista
@@ -851,11 +851,16 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE Crear_Reporte_Plataforma @id_plataforma SMALLINT
+CREATE OR ALTER PROCEDURE Crear_Reporte_Plataforma @id_plataforma SMALLINT,
+                                                   @id_reporte INT OUTPUT
 AS
 BEGIN
     INSERT INTO dbo.Reporte(total, fecha, estado, id_publicista, id_plataforma)
-    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, NULL, @id_plataforma)
+    VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, NULL, @id_plataforma);
+
+    SET @id_reporte = SCOPE_IDENTITY();
+
+    SELECT @id_reporte AS id_reporte;
 END
 go
 
