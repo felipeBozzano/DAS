@@ -2,7 +2,9 @@
 
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.FederacionBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.Fee;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -10,143 +12,18 @@ import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.Types;
 import java.util.*;
 
-@org.springframework.stereotype.Repository
-public class Repository {
+@Repository
+public class Enviar_facturas_repository {
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JdbcTemplate jdbcTpl;
-
-
-    @Transactional
-    public List<Tipo_de_Fee> getTipoFee(int tipo_de_fee) {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_tipo_de_fee", tipo_de_fee);
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Obtener_Tipo_Fee")
-                .withSchemaName("dbo")
-                .returningResultSet("tipos_de_fee", BeanPropertyRowMapper.newInstance(Tipo_de_Fee.class));
-
-        Map<String, Object> out = jdbcCall.execute(in);
-        return (List<Tipo_de_Fee>)out.get("tipos_de_fee");
-    }
-
-    @Transactional
-    public List<ClienteUsuarioBean> createUser(ClienteUsuarioBean cliente) {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("usuario", cliente.getUsuario())
-                .addValue("contrasena", cliente.getContrasena())
-                .addValue("email", cliente.getEmail())
-                .addValue("nombre", cliente.getNombre())
-                .addValue("apellido", cliente.getApellido())
-                .addValue("valido", true);
-
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Crear_Usuario")
-                .withSchemaName("dbo");
-
-        Map<String, Object> out = jdbcCall.execute(in);
-        return (List<ClienteUsuarioBean>)out.get("Crear_Usuario");
-    }
-
-    @Transactional
-    public List<ClienteUsuarioBean> getUser(String email) {
-        return jdbcTpl.query("SELECT * FROM dbo.Cliente_Usuario WHERE email = ?",new Object[]{email}, BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class)
-        );
-    }
-
-    @Transactional
-    public int deleteUser(String email) {
-        return jdbcTpl.update("DELETE FROM dbo.Cliente_Usuario WHERE email = ?", email);
-    }
-
-    /* FEDERACION */
-
-    @Transactional
-    public int federarClientePlataforma(int id_plataforma, int id_cliente) {
-        int federacion = buscarFederacion(id_plataforma, id_cliente);
-        if(federacion == 1){
-            return 1;
-        } else {
-            federacion = VerificarFederacionCurso(id_plataforma, id_cliente);
-            if(federacion == 1) {
-                return 1;
-            }
-            try {
-                // Specify the URL to send the GET request to
-                URL url = new URL("http://localhost:8081/netflix/obtener_token");
-
-                // Open a connection to the specified URL
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-                // Set the request method to GET
-                connection.setRequestMethod("GET");
-
-                // Get the response code
-                int responseCode = connection.getResponseCode();
-                System.out.println("Response Code: " + responseCode);
-
-                // Read the response from the server
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                // Print the response
-                System.out.println("Response:");
-                System.out.println(response.toString());
-                connection.disconnect();
-                return responseCode;
-                // Close the connection
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return federacion;
-    }
-
-    @Transactional
-    public int buscarFederacion(int id_plataforma, int id_cliente) {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_plataforma", id_plataforma)
-                .addValue("id_cliente", id_cliente);
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Buscar_Federacion")
-                .withSchemaName("dbo");
-        Map<String, Object> out = jdbcCall.execute(in);
-        List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
-        Integer federacion = resulset.get(0).get("federacion");
-        return federacion;
-
-    }
-
-    @Transactional
-    public int VerificarFederacionCurso(int id_plataforma, int id_cliente) {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_plataforma", id_plataforma)
-                .addValue("id_cliente", id_cliente);
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Verificar_Federacion_en_Curso")
-                .withSchemaName("dbo");
-
-        Map<String, Object> out = jdbcCall.execute(in);
-        List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
-        Integer federacion = resulset.get(0).get("existe_federacion");
-        return federacion;
-    }
 
     /* FACTURACION */
 
@@ -181,18 +58,6 @@ public class Repository {
         return "ok";
     }
 
-    // FACTURAS PUBLICISTAS //
-    @Transactional
-    public List<PublicidadBean> buscarDatoPublicidades() {
-        SqlParameterSource in = new MapSqlParameterSource();
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Obtener_Datos_de_Publicidades")
-                .withSchemaName("dbo")
-                .returningResultSet("publicidad", BeanPropertyRowMapper.newInstance(PublicidadBean.class));
-        Map<String, Object> out = jdbcCall.execute(in);
-        return (List<PublicidadBean>)out.get("publicidad");
-    }
-
     @Transactional
     public double obtenerCostoDeBanner(int id_banner) {
         SqlParameterSource in = new MapSqlParameterSource()
@@ -205,6 +70,19 @@ public class Repository {
         double cotsto_banner = resulset.get(0).get("costo");
         return cotsto_banner;
     }
+
+    @Transactional
+    public List<PublicidadBean> buscarDatoPublicidades() {
+        SqlParameterSource in = new MapSqlParameterSource();
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_Datos_de_Publicidades")
+                .withSchemaName("dbo")
+                .returningResultSet("publicidad", BeanPropertyRowMapper.newInstance(PublicidadBean.class));
+        Map<String, Object> out = jdbcCall.execute(in);
+        return (List<PublicidadBean>)out.get("publicidad");
+    }
+
+    // FACTURAS PUBLICISTAS //
 
     @Transactional
     public int crearFacturaPublicista(int id_publicista) {
