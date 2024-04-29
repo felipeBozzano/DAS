@@ -1,0 +1,16 @@
+{
+  "codigo_reporte": "RP-{id_reporte}",
+  "total": "{total}",
+  "fecha": "{fecha}",
+  "nombre_de_fantasía": "{nombre_de_fantasía}",
+  "razón_social": "{razón_social}",
+  "detalle": [
+    {
+      "codigo_de_contenido": "{codigo_de_contenido}",
+      "nombre_de_contenido": "{nombre_de_contenido}",
+      "cantidad": "{cantidad}"
+    },
+    {
+    }
+  ]
+}

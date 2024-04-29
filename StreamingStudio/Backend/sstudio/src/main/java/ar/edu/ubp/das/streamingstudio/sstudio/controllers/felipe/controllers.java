@@ -49,11 +49,6 @@ public class controllers {
         return new ResponseEntity<>(estadisticasRepository.reportesPublicistas(), HttpStatus.OK);
     }
 
-//    @GetMapping("/estadisticasPlataformas")
-//    public ResponseEntity<Map<Integer, List<EstadisticaPlataformaBean>>> getEstadisticasPlataformas(){
-//        return new ResponseEntity<>(estadisticasPlataformasRepository.reportesPlataformas(), HttpStatus.OK);
-//    }
-
     @GetMapping("/estadisticasPlataformas")
     public ResponseEntity<String> getEstadisticasPlataformas(){
         return new ResponseEntity<>(estadisticasPlataformasRepository.reportesPlataformas(), HttpStatus.OK);
