@@ -412,19 +412,29 @@ go
 
 /* Factura */
 
-CREATE OR ALTER PROCEDURE Crear_Factura_Plataforma @id_plataforma INT
+CREATE OR ALTER PROCEDURE Crear_Factura_Plataforma @id_plataforma INT,
+                                                   @id_factura INT OUTPUT
 AS
 BEGIN
     INSERT INTO dbo.Factura(total, fecha, estado, id_publicista, id_plataforma)
     VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, NULL, @id_plataforma)
+
+    SET @id_factura = SCOPE_IDENTITY();
+
+    SELECT @id_factura AS id_factura;
 END
 go
 
-CREATE OR ALTER PROCEDURE Crear_Factura_Publicista @id_publicista INT
+CREATE OR ALTER PROCEDURE Crear_Factura_Publicista @id_publicista INT,
+                                                   @id_factura INT OUTPUT
 AS
 BEGIN
     INSERT INTO dbo.Factura(total, fecha, estado, id_publicista, id_plataforma)
     VALUES (0, (SELECT CONVERT(date, CURRENT_TIMESTAMP)), 0, @id_publicista, NULL)
+
+    SET @id_factura = SCOPE_IDENTITY();
+
+    SELECT @id_factura AS id_factura;
 END
 go
 

@@ -68,6 +68,11 @@ public class controllers_francisco {
         return new ResponseEntity<String>(repository.enviarFacturasPublicistas(), HttpStatus.OK);
     }
 
+    @GetMapping("/enviar_facturas_plataformas")
+    public ResponseEntity<String> enviar_facturacion_plataformas() {
+        return new ResponseEntity<String>(repository.enviarFacturasPlataformas(), HttpStatus.OK);
+    }
+
     @GetMapping("/enviar_facturas_plataforma")
     public ResponseEntity<List<FederacionBean>> facturacion_plataforma() {
         return new ResponseEntity<>(repository.buscarDatosFederaciones(), HttpStatus.OK);
@@ -78,8 +83,5 @@ public class controllers_francisco {
         return new ResponseEntity<>(repository.obtenerFeesPlataforma(id_plataforma), HttpStatus.OK);
     }
 
-    @GetMapping("/enviar_facturas_plataformas")
-    public ResponseEntity<String> enviar_facturacion_plataformas() {
-        return new ResponseEntity<String>(repository.enviarFacturasPlataformas(), HttpStatus.OK);
-    }
+
 }

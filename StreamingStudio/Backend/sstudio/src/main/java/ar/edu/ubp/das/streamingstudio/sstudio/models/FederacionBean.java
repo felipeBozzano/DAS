@@ -9,6 +9,16 @@ public class FederacionBean {
     private Boolean facturada;
     private int cantidad_de_federaciones;
 
+    private double monto_federacion;
+
+    public double getMonto_federacion() {
+        return monto_federacion;
+    }
+
+    public void setMonto_federacion(double monto_federacion) {
+        this.monto_federacion = monto_federacion;
+    }
+
     public int getCantidad_de_federaciones() {
         return cantidad_de_federaciones;
     }
