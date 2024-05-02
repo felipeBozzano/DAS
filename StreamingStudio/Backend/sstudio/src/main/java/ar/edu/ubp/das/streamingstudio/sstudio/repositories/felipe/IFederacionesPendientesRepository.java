@@ -4,8 +4,8 @@ import ar.edu.ubp.das.streamingstudio.sstudio.models.TransaccionBean;
 
 import java.util.List;
 
-public interface IFederacionesPendientes {
-    public void terminarFederacionesPendientes();
+public interface IFederacionesPendientesRepository {
+    public String terminarFederacionesPendientes();
     public List<TransaccionBean> consultarFederacionesPendientes();
     public String obtenerTokenDeServicioDePlataforma(int id_plataforma);
     public void finalizarFederacion(int id_plataforma, int id_cliente, String token);

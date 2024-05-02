@@ -22,15 +22,15 @@ DROP TABLE IF EXISTS dbo.Fee
 DROP TABLE IF EXISTS dbo.Tipo_Fee
 DROP TABLE IF EXISTS dbo.Plataforma_de_Streaming
 DROP TABLE IF EXISTS dbo.Cliente_Usuario
+DROP TABLE IF EXISTS dbo.Costo_Banner
+DROP TABLE IF EXISTS dbo.Publicidad_Tipo_Banner
+DROP TABLE IF EXISTS dbo.Tipo_Banner
 DROP TABLE IF EXISTS dbo.Publicidad
 DROP TABLE IF EXISTS dbo.Publicista
 DROP TABLE IF EXISTS dbo.Factura
 DROP TABLE IF EXISTS dbo.Estado_Factura
 DROP TABLE IF EXISTS dbo.Reporte
 DROP TABLE IF EXISTS dbo.Estado_Reporte
-DROP TABLE IF EXISTS dbo.Costo_Banner
-DROP TABLE IF EXISTS dbo.Tipo_Banner
-DROP TABLE IF EXISTS dbo.Banner
 
 CREATE TABLE [Administrador]
 (
@@ -54,24 +54,24 @@ CREATE TABLE [Estado_Reporte]
 
 CREATE TABLE [Plataforma_de_Streaming]
 (
-    [id_plataforma]         SMALLINT IDENTITY (1,1) PRIMARY KEY,
-    [nombre_de_fantasia]    VARCHAR(255) NOT NULL,
-    [razón_social]          VARCHAR(255) NOT NULL,
-    [url_imagen]            VARCHAR(255) NOT NULL,
-    [token_de_servicio]     VARCHAR(255) NOT NULL,
-    [url_api]               VARCHAR(255) NOT NULL,
-    [valido]                BIT          NOT NULL
+    [id_plataforma]      SMALLINT IDENTITY (1,1) PRIMARY KEY,
+    [nombre_de_fantasia] VARCHAR(255) NOT NULL,
+    [razón_social]       VARCHAR(255) NOT NULL,
+    [url_imagen]         VARCHAR(255) NOT NULL,
+    [token_de_servicio]  VARCHAR(255) NOT NULL,
+    [url_api]            VARCHAR(255) NOT NULL,
+    [valido]             BIT          NOT NULL
 );
 
 CREATE TABLE [Publicista]
 (
-    [id_publicista]         INT IDENTITY (1,1) PRIMARY KEY,
-    [nombre_de_fantasia]    VARCHAR(255) NOT NULL,
-    [razón_social]          VARCHAR(255) NOT NULL,
-    [email]                 VARCHAR(255) NOT NULL,
-    [contrasena]            VARCHAR(255) NOT NULL,
-    [token_de_servicio]     VARCHAR(255) NOT NULL,
-    [url_api]               VARCHAR(255) NOT NULL,
+    [id_publicista]      INT IDENTITY (1,1) PRIMARY KEY,
+    [nombre_de_fantasia] VARCHAR(255) NOT NULL,
+    [razón_social]       VARCHAR(255) NOT NULL,
+    [email]              VARCHAR(255) NOT NULL,
+    [contrasena]         VARCHAR(255) NOT NULL,
+    [token_de_servicio]  VARCHAR(255) NOT NULL,
+    [url_api]            VARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE [Reporte]
@@ -89,7 +89,7 @@ CREATE TABLE [Reporte]
         CHECK (
             ([id_publicista] IS NULL AND [id_plataforma] IS NOT NULL) OR
             ([id_publicista] IS NOT NULL AND [id_plataforma] IS NULL)
-        )
+            )
 );
 
 CREATE TABLE [Detalle_Reporte]
@@ -124,7 +124,7 @@ CREATE TABLE [Factura]
         CHECK (
             ([id_publicista] IS NULL AND [id_plataforma] IS NOT NULL) OR
             ([id_publicista] IS NOT NULL AND [id_plataforma] IS NULL)
-        )
+            )
 );
 
 CREATE TABLE [Detalle_Factura]
@@ -143,35 +143,25 @@ CREATE TABLE [Detalle_Factura]
             ON DELETE CASCADE
 );
 
-CREATE TABLE [Banner]
-(
-    [id_banner]        SMALLINT IDENTITY (1,1) PRIMARY KEY,
-    [tamaño_de_banner] VARCHAR(255) NOT NULL,
-    [exclusividad]     BIT NOT NULL,
-    [descripcion]      VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE [Tipo_Banner]
 (
-    [id_tipo_banner]    SMALLINT IDENTITY (1,1) PRIMARY KEY,
-    [costo]             FLOAT NOT NULL,
-    [fecha_alta]        DATETIME NOT NULL,
-    [fecha_baja]        DATETIME
+    [id_tipo_banner] INT IDENTITY (1,1) PRIMARY KEY,
+    [fecha_alta]     DATETIME     NOT NULL,
+    [tamano]         VARCHAR(255) NOT NULL,
+    [exclusividad]   VARCHAR(2)   NOT NULL,
+    [fecha_baja]     DATETIME
 );
 
 CREATE TABLE [Costo_Banner]
 (
-    [id_tipo_banner]    SMALLINT NOT NULL,
-    [id_banner]         SMALLINT NOT NULL,
-    PRIMARY KEY ([id_tipo_banner], [id_banner]),
+    [id_tipo_banner] INT      NOT NULL,
+    [fecha_alta]     DATETIME NOT NULL,
+    [costo]          FLOAT    NOT NULL,
+    [fecha_baja]     DATETIME
+        PRIMARY KEY ([id_tipo_banner], [fecha_alta]),
     CONSTRAINT [FK_Costo_Banner.Tipo_Banner]
         FOREIGN KEY ([id_tipo_banner])
             REFERENCES [Tipo_Banner] ([id_tipo_banner])
-            ON UPDATE CASCADE
-            ON DELETE CASCADE,
-    CONSTRAINT [FK_Costo_Banner.Banner]
-        FOREIGN KEY ([id_banner])
-            REFERENCES [Banner] ([id_banner])
             ON UPDATE CASCADE
             ON DELETE CASCADE
 );
@@ -180,17 +170,11 @@ CREATE TABLE [Publicidad]
 (
     [id_publicidad]     INT IDENTITY (1,1) PRIMARY KEY,
     [id_publicista]     INT          NOT NULL,
-    [id_banner]         SMALLINT     NOT NULL,
     [codigo_publicidad] VARCHAR(255) NOT NULL,
     [url_de_imagen]     VARCHAR(255) NOT NULL,
     [url_de_publicidad] VARCHAR(255) NOT NULL,
     [fecha_de_alta]     DATE         NOT NULL,
     [fecha_de_baja]     DATE         NOT NULL,
-    CONSTRAINT [FK_Publicidad.Banner]
-        FOREIGN KEY ([id_banner])
-            REFERENCES [Banner] ([id_banner])
-            ON UPDATE CASCADE
-            ON DELETE CASCADE,
     CONSTRAINT [FK_Publicidad.Publicista]
         FOREIGN KEY ([id_publicista])
             REFERENCES [Publicista] ([id_publicista])
@@ -198,20 +182,37 @@ CREATE TABLE [Publicidad]
             ON DELETE CASCADE
 );
 
+CREATE TABLE [Publicidad_Tipo_Banner]
+(
+    [id_tipo_banner] INT NOT NULL,
+    [id_publicidad]  INT NOT NULL,
+    PRIMARY KEY ([id_tipo_banner], [id_publicidad]),
+    CONSTRAINT [Publicidad_Tipo_Banner.Tipo_Banner]
+        FOREIGN KEY ([id_tipo_banner])
+            REFERENCES [Tipo_Banner] ([id_tipo_banner])
+            ON UPDATE CASCADE
+            ON DELETE CASCADE,
+    CONSTRAINT [Publicidad_Tipo_Banner.Publicidad]
+        FOREIGN KEY ([id_publicidad])
+            REFERENCES [Publicidad] ([id_publicidad])
+            ON UPDATE CASCADE
+            ON DELETE CASCADE,
+);
+
 CREATE TABLE [Tipo_Fee]
 (
-    [id_tipo_de_fee]    SMALLINT IDENTITY(1,1) PRIMARY KEY,
-    [tipo_de_fee]       VARCHAR(1) NOT NULL,
-    [descripcion]       VARCHAR(255) NOT NULL
+    [id_tipo_de_fee] SMALLINT IDENTITY (1,1) PRIMARY KEY,
+    [tipo_de_fee]    VARCHAR(1)   NOT NULL,
+    [descripcion]    VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE [Fee]
 (
-    [id_fee]        SMALLINT IDENTITY(1,1) PRIMARY KEY,
-    [monto]         FLOAT NOT NULL,
-    [fecha_alta]    DATETIME NOT NULL,
-    [fecha_baja]    DATETIME,
-    [tipo_de_fee]   SMALLINT NOT NULL,
+    [id_fee]      SMALLINT IDENTITY (1,1) PRIMARY KEY,
+    [monto]       FLOAT    NOT NULL,
+    [fecha_alta]  DATETIME NOT NULL,
+    [fecha_baja]  DATETIME,
+    [tipo_de_fee] SMALLINT NOT NULL,
     CONSTRAINT [FK_Fee.Tipo_Fee]
         FOREIGN KEY ([tipo_de_fee])
             REFERENCES [Tipo_Fee] ([id_tipo_de_fee])
@@ -239,18 +240,12 @@ CREATE TABLE [Fee_Plataforma]
 CREATE TABLE [Cliente_Usuario]
 (
     [id_cliente] INT IDENTITY (1,1) PRIMARY KEY,
-    [usuario]    VARCHAR(255) NOT NULL,
-    [contraseña] VARCHAR(255) NOT NULL,
+    [usuario]    VARCHAR(255)        NOT NULL,
+    [contraseña] VARCHAR(255)        NOT NULL,
     [email]      VARCHAR(255) UNIQUE NOT NULL,
-    [nombre]     VARCHAR(255) NOT NULL,
-    [apellido]   VARCHAR(255) NOT NULL,
-    [valido]     BIT          NOT NULL
-);
-
-CREATE TABLE [Tipo_Usuario]
-(
-    [id_tipo_usuario] SMALLINT PRIMARY KEY,
-    [descripcion]     VARCHAR(255) NOT NULL
+    [nombre]     VARCHAR(255)        NOT NULL,
+    [apellido]   VARCHAR(255)        NOT NULL,
+    [valido]     BIT                 NOT NULL
 );
 
 CREATE TABLE [Transaccion]
@@ -261,16 +256,11 @@ CREATE TABLE [Transaccion]
     [codigo_de_transaccion]         VARCHAR(255) NOT NULL,
     [url_login_registro_plataforma] VARCHAR(255) NOT NULL,
     [url_redireccion_propia]        VARCHAR(255) NOT NULL,
-    [tipo_usuario]                  SMALLINT     NOT NULL,
+    [tipo_transaccion]              VARCHAR(1)   NOT NULL,
+    [facturada]                     BIT          NOT NULL,
     [token]                         VARCHAR(255),
     [fecha_baja]                    DATETIME,
-    [facturada]                     BIT          NOT NULL,
     PRIMARY KEY ([id_plataforma], [id_cliente], [fecha_alta]),
-    CONSTRAINT [FK_Transaccion.Tipo_Usuario]
-        FOREIGN KEY ([tipo_usuario])
-            REFERENCES [Tipo_Usuario] ([id_tipo_usuario])
-            ON UPDATE CASCADE
-            ON DELETE CASCADE,
     CONSTRAINT [FK_Transaccion.Plataforma_de_Streaming]
         FOREIGN KEY ([id_plataforma])
             REFERENCES [Plataforma_de_Streaming] ([id_plataforma])
@@ -285,11 +275,11 @@ CREATE TABLE [Transaccion]
 
 CREATE TABLE [Federacion]
 (
-    [id_plataforma]         INT          NOT NULL,
-    [id_cliente]            INT          NOT NULL,
-    [token]                 VARCHAR(255) NOT NULL,
-    [tipo_usuario]          VARCHAR(255) NOT NULL,
-    [facturada]             BIT          NOT NULL,
+    [id_plataforma]    INT          NOT NULL,
+    [id_cliente]       INT          NOT NULL,
+    [token]            VARCHAR(255) NOT NULL,
+    [tipo_transaccion] VARCHAR(1)   NOT NULL,
+    [facturada]        BIT          NOT NULL,
     PRIMARY KEY ([id_plataforma], [id_cliente]),
     CONSTRAINT [FK_Federacion.Cliente_Usuario]
         FOREIGN KEY ([id_cliente])
@@ -328,7 +318,7 @@ CREATE TABLE [Catalogo]
     [id_en_plataforma] VARCHAR(255) NOT NULL,
     [fecha_de_alta]    DATETIME     NOT NULL,
     [fecha_de_baja]    DATETIME
-    PRIMARY KEY ([id_contenido], [id_plataforma]),
+        PRIMARY KEY ([id_contenido], [id_plataforma]),
     CONSTRAINT [FK_Catalogo.Contenido]
         FOREIGN KEY ([id_contenido])
             REFERENCES [Contenido] ([id_contenido])
@@ -368,7 +358,7 @@ CREATE TABLE [Clic]
         CHECK (
             ([id_publicidad] IS NULL AND [id_plataforma] IS NOT NULL AND [id_contenido] IS NOT NULL) OR
             ([id_publicidad] IS NOT NULL AND [id_plataforma] IS NULL AND [id_contenido] IS NULL)
-        )
+            )
 );
 
 CREATE TABLE [Genero]

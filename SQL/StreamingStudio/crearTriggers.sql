@@ -13,7 +13,7 @@ CREATE OR ALTER TRIGGER Registrar_Federacion
     AFTER UPDATE
     AS
 BEGIN
-    WITH Federacion_Terminada AS (SELECT i.id_plataforma, i.id_cliente, i.token, i.tipo_usuario, i.facturada
+    WITH Federacion_Terminada AS (SELECT i.id_plataforma, i.id_cliente, i.token, i.tipo_transaccion, i.facturada
                                   FROM inserted i
                                            JOIN deleted d ON i.id_cliente = d.id_cliente
                                   WHERE i.token IS NOT NULL
@@ -25,7 +25,7 @@ BEGIN
     SELECT id_plataforma,
            id_cliente,
            token,
-           tipo_usuario,
+           tipo_transaccion,
            facturada
     FROM Federacion_Terminada
 END

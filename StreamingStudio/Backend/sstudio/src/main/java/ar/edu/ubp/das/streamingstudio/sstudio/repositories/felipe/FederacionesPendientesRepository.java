@@ -13,13 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class FederacionesPendientes implements IFederacionesPendientes{
+public class FederacionesPendientesRepository implements IFederacionesPendientesRepository {
 
     @Autowired
     JdbcTemplate jdbcTpl;
 
     @Override
-    public void terminarFederacionesPendientes() {
+    public String terminarFederacionesPendientes() {
         List<TransaccionBean> federacionesPendientes = consultarFederacionesPendientes();
         for (TransaccionBean federacionPendiente: federacionesPendientes) {
             int id_plataforma = federacionPendiente.getId_plataforma();
@@ -27,6 +27,7 @@ public class FederacionesPendientes implements IFederacionesPendientes{
             String token = obtenerTokenDeServicioDePlataforma(id_plataforma);
             finalizarFederacion(id_plataforma, id_cliente, token);
         }
+        return "OK";
     }
 
     @Override
@@ -50,12 +51,21 @@ public class FederacionesPendientes implements IFederacionesPendientes{
                 .withSchemaName("dbo");
 
         Map<String, Object> out = jdbcCall.execute(in);
-        List<Map<String, String>> token = (List<Map<String, String>>) out.get("#result-set-1");
-        return null;
+        List<Map<String,String>> mapa_token = (List<Map<String,String>>) out.get("#result-set-1");
+        String token = mapa_token.get(0).get("token_de_servicio");
+        return token;
     }
 
     @Override
     public void finalizarFederacion(int id_plataforma, int id_cliente, String token) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_plataforma", id_plataforma)
+                .addValue("id_cliente", id_cliente)
+                .addValue("token", token);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Finalizar_Federacion")
+                .withSchemaName("dbo");
 
+        Map<String, Object> out = jdbcCall.execute(in);
     }
 }

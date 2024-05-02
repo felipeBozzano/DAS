@@ -129,7 +129,7 @@ CREATE OR ALTER PROCEDURE Comenzar_Federacion @id_plataforma INT,
                                               @codigo_de_transaccion VARCHAR(255),
                                               @url_login_registro_plataforma VARCHAR(255),
                                               @url_redireccion_propia VARCHAR(255),
-                                              @tipo_usuario SMALLINT
+                                              @tipo_transaccion VARCHAR(1)
 AS
 BEGIN
     DECLARE @facturada BIT;
@@ -139,10 +139,11 @@ BEGIN
                                            and id_cliente = @id_cliente
                                            and facturada = 1), 1, 0))
     INSERT INTO dbo.Transaccion(id_plataforma, id_cliente, fecha_alta, codigo_de_transaccion,
-                                url_login_registro_plataforma, url_redireccion_propia, tipo_usuario, token, fecha_baja,
+                                url_login_registro_plataforma, url_redireccion_propia, tipo_transaccion, token,
+                                fecha_baja,
                                 facturada)
     VALUES (@id_plataforma, @id_cliente, GETDATE(), @codigo_de_transaccion, @url_login_registro_plataforma,
-            @url_redireccion_propia, @tipo_usuario, NULL, NULL, @facturada)
+            @url_redireccion_propia, @tipo_transaccion, NULL, NULL, @facturada)
 END
 go
 
@@ -194,57 +195,25 @@ BEGIN
 END
 go
 
-/* Banner */
-
-CREATE OR ALTER PROCEDURE Crear_Banner @tamaño_de_banner VARCHAR(255),
-                                       @exclusividad BIT,
-                                       @descripcion VARCHAR(255)
-AS
-BEGIN
-    INSERT INTO dbo.Banner(tamaño_de_banner, exclusividad, descripcion)
-    VALUES (@tamaño_de_banner, @exclusividad, @descripcion)
-END
-go
-
-CREATE OR ALTER PROCEDURE Editar_Banner @id_banner INT,
-                                        @tamaño_de_banner VARCHAR(255),
-                                        @exclusividad BIT,
-                                        @descripcion VARCHAR(255)
-AS
-BEGIN
-    UPDATE dbo.Banner
-    SET tamaño_de_banner = @tamaño_de_banner,
-        exclusividad     = @exclusividad,
-        descripcion      = @descripcion
-    WHERE id_banner = @id_banner
-END
-go
-
-CREATE OR ALTER PROCEDURE Eliminar_Banner @id_banner INT
-AS
-BEGIN
-    DELETE
-    FROM dbo.Banner
-    WHERE id_banner = @id_banner
-END
-go
-
 /* Tipo_Banner */
 
-CREATE OR ALTER PROCEDURE Crear_Tipo_Banner @costo FLOAT
+CREATE OR ALTER PROCEDURE Crear_Tipo_Banner @tamano VARCHAR(255),
+                                            @exclusividad VARCHAR(2)
 AS
 BEGIN
-    INSERT INTO Tipo_Banner (costo, fecha_alta, fecha_baja)
-    VALUES (@costo, GETDATE(), NULL);
+    INSERT INTO Tipo_Banner (fecha_alta, tamano, exclusividad, fecha_baja)
+    VALUES (GETDATE(), @tamano, @exclusividad, NULL);
 END
 go
 
-CREATE OR ALTER PROCEDURE Editar_Tipo_Banner @id_tipo_banner SMALLINT,
-                                             @costo FLOAT
+CREATE OR ALTER PROCEDURE Editar_Tipo_Banner @id_tipo_banner INT,
+                                             @tamano VARCHAR(255),
+                                             @exclusividad VARCHAR(2)
 AS
 BEGIN
     UPDATE Tipo_Banner
-    SET costo = @costo
+    SET tamano       = @tamano,
+        exclusividad = @exclusividad
     WHERE id_tipo_banner = @id_tipo_banner;
 END
 go
@@ -269,23 +238,12 @@ go
 
 /* Costo_Banner */
 
-CREATE OR ALTER PROCEDURE Crear_Costo_Banner @id_tipo_banner SMALLINT,
-                                             @id_banner SMALLINT
+CREATE OR ALTER PROCEDURE Crear_Costo_Banner @id_tipo_banner INT,
+                                             @costo FLOAT
 AS
 BEGIN
-    INSERT INTO Costo_Banner (id_tipo_banner, id_banner)
-    VALUES (@id_tipo_banner, @id_banner);
-END
-go
-
-CREATE OR ALTER PROCEDURE Eliminar_Costo_Banner @id_tipo_banner SMALLINT,
-                                                @id_banner SMALLINT
-AS
-BEGIN
-    DELETE
-    FROM Costo_Banner
-    WHERE id_tipo_banner = @id_tipo_banner
-      AND id_banner = @id_banner;
+    INSERT INTO Costo_Banner (id_tipo_banner, fecha_alta, costo, fecha_baja)
+    VALUES (@id_tipo_banner, GETDATE(), @costo, NULL);
 END
 go
 
@@ -336,7 +294,6 @@ go
 /* Publicidad */
 
 CREATE OR ALTER PROCEDURE Registrar_Publicidad @id_publicista VARCHAR(255),
-                                               @id_banner VARCHAR(255),
                                                @codigo_publicidad VARCHAR(255),
                                                @url_de_imagen VARCHAR(255),
                                                @url_de_publicidad VARCHAR(255),
@@ -344,16 +301,15 @@ CREATE OR ALTER PROCEDURE Registrar_Publicidad @id_publicista VARCHAR(255),
                                                @fecha_de_baja DATE
 AS
 BEGIN
-    INSERT INTO dbo.Publicidad(id_publicista, id_banner, codigo_publicidad, url_de_imagen,
+    INSERT INTO dbo.Publicidad(id_publicista, codigo_publicidad, url_de_imagen,
                                url_de_publicidad, fecha_de_alta, fecha_de_baja)
-    VALUES (@id_publicista, @id_banner, @codigo_publicidad, @url_de_imagen, @url_de_publicidad, @fecha_de_alta,
+    VALUES (@id_publicista, @codigo_publicidad, @url_de_imagen, @url_de_publicidad, @fecha_de_alta,
             @fecha_de_baja)
 END
 go
 
 CREATE OR ALTER PROCEDURE Editar_Publicidad @id_publicidad INT,
                                             @id_publicista VARCHAR(255),
-                                            @id_banner VARCHAR(255),
                                             @codigo_publicidad VARCHAR(255),
                                             @url_de_imagen VARCHAR(255),
                                             @url_de_publicidad VARCHAR(255),
@@ -362,7 +318,6 @@ AS
 BEGIN
     UPDATE dbo.Publicidad
     SET id_publicista     = @id_publicista,
-        id_banner         = @id_banner,
         codigo_publicidad = @codigo_publicidad,
         url_de_imagen     = @url_de_imagen,
         url_de_publicidad = @url_de_publicidad,
@@ -1117,9 +1072,9 @@ AS
 BEGIN
     DECLARE @PrimerDiaMesAnterior AS DATE = DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)
     DECLARE @UltimoDiaMesAnterior AS DATE = EOMONTH(DATEADD(MONTH, -1, GETDATE()))
-    SELECT id_publicidad,
+    SELECT Publicidad.id_publicidad,
            id_publicista,
-           id_banner,
+           id_tipo_banner,
            codigo_publicidad,
            CASE
                WHEN fecha_de_alta < @PrimerDiaMesAnterior
@@ -1138,6 +1093,7 @@ BEGIN
            IIF(fecha_de_alta < @PrimerDiaMesAnterior, @PrimerDiaMesAnterior, fecha_de_alta)            AS fecha_inicio,
            IIF(Publicidad.fecha_de_baja > @UltimoDiaMesAnterior, @UltimoDiaMesAnterior, fecha_de_baja) AS fecha_final
     FROM dbo.Publicidad
+             JOIN dbo.Publicidad_Tipo_Banner ON Publicidad.id_publicidad = Publicidad_Tipo_Banner.id_publicidad
     WHERE fecha_de_alta <= @UltimoDiaMesAnterior
       AND fecha_de_baja >= @PrimerDiaMesAnterior
 END
@@ -1145,13 +1101,13 @@ go
 
 /* Crear_Factura_Publicista  agrupar por id_publicista y crear una factura */
 
-CREATE OR ALTER PROCEDURE Obtener_Costo_de_Banner @id_banner INT
+CREATE OR ALTER PROCEDURE Obtener_Costo_de_Banner @id_tipo_banner INT
 AS
 BEGIN
-    SELECT tp.costo
-    FROM dbo.Costo_Banner cb
-             JOIN dbo.Tipo_Banner tp ON tp.id_tipo_banner = cb.id_tipo_banner
-    WHERE id_banner = @id_banner
+    SELECT TOP (1) costo
+    FROM dbo.Costo_Banner
+    WHERE id_tipo_banner = @id_tipo_banner
+    ORDER BY fecha_alta DESC
 END
 go
 
@@ -1166,10 +1122,10 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Datos_de_Federaciones
 AS
 BEGIN
-    SELECT id_plataforma, tipo_usuario, count(id_cliente) AS cantidad_de_federaciones
+    SELECT id_plataforma, tipo_transaccion, count(id_cliente) AS cantidad_de_federaciones
     FROM dbo.Federacion
     WHERE facturada = 0
-    GROUP BY id_plataforma, tipo_usuario
+    GROUP BY id_plataforma, tipo_transaccion
 END
 go
 
@@ -1268,7 +1224,7 @@ go
 CREATE OR ALTER PROCEDURE Consultar_Federaciones_Pendientes
 AS
 BEGIN
-    SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_usuario
+    SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_transaccion
     FROM dbo.Transaccion
     WHERE token IS NULL
       AND fecha_baja IS NULL
@@ -1459,14 +1415,13 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Publicidades_Activas
 AS
 BEGIN
-    SELECT p.id_publicidad, p.id_banner, tb.id_tipo_banner, p.url_de_imagen, p.url_de_publicidad
+    SELECT p.id_publicidad, tb.id_tipo_banner, p.url_de_imagen, p.url_de_publicidad
     FROM dbo.Publicidad p
-             JOIN dbo.Costo_Banner cb ON p.id_banner = cb.id_banner
-             JOIN dbo.Tipo_Banner tb ON cb.id_tipo_banner = tb.id_tipo_banner
+             JOIN dbo.Publicidad_Tipo_Banner ptb ON p.id_publicidad = ptb.id_publicidad
+             JOIN dbo.Tipo_Banner tb ON ptb.id_tipo_banner = tb.id_tipo_banner
     WHERE CONVERT(DATE, fecha_de_baja, 23) > CONVERT(DATE, CURRENT_TIMESTAMP, 23)
       AND CONVERT(DATE, fecha_de_alta, 23) <= CONVERT(DATE, CURRENT_TIMESTAMP, 23)
       AND tb.fecha_baja IS NULL
-    ORDER BY tb.id_tipo_banner DESC
 END
 go
 
@@ -1721,4 +1676,3 @@ BEGIN
     WHERE id_tipo_de_fee = @id_tipo_de_fee
 END
 go
-
