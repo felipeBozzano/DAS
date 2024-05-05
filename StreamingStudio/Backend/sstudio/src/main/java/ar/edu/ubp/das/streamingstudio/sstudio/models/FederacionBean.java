@@ -8,8 +8,8 @@ public class FederacionBean {
     private String tipo_transaccion;
     private Boolean facturada;
     private int cantidad_de_federaciones;
-
     private double monto_federacion;
+    private String codigo_de_transaccion;
 
     public double getMonto_federacion() {
         return monto_federacion;
@@ -80,5 +80,13 @@ public class FederacionBean {
 
     public void setFacturada(Boolean facturada) {
         this.facturada = facturada;
+    }
+
+    public String getCodigo_de_transaccion() {
+        return codigo_de_transaccion;
+    }
+
+    public void setCodigo_de_transaccion(String codigo_de_transaccion) {
+        this.codigo_de_transaccion = codigo_de_transaccion;
     }
 }

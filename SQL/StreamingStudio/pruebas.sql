@@ -12,7 +12,7 @@ EXEC Buscar_Federacion @id_plataforma = 1, @id_cliente = 1;
 EXEC Verificar_Federacion_en_Curso @id_plataforma = 1, @id_cliente = 1;
 EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 1;
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 1, @codigo_de_transaccion = "Codigo1_Cliente1_Plataforma1",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
+     @tipo_transaccion = 'L', @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 1, @token = "Token1_Cliente1_Plataforma1";
 
@@ -26,7 +26,7 @@ EXEC Buscar_Federacion @id_plataforma = 1, @id_cliente = 1;
 EXEC Verificar_Federacion_en_Curso @id_plataforma = 1, @id_cliente = 1;
 EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 1;
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 1, @codigo_de_transaccion = "Codigo2_Cliente1_Plataforma1",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
+     @tipo_transaccion = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 1, @token = "Token2_Cliente1_Plataforma1";
 
@@ -35,7 +35,7 @@ EXEC Buscar_Federacion @id_plataforma = 2, @id_cliente = 1;
 EXEC Verificar_Federacion_en_Curso @id_plataforma = 2, @id_cliente = 1;
 EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 2;
 EXEC Comenzar_Federacion @id_plataforma = 2, @id_cliente = 1, @codigo_de_transaccion = "Codigo1_Cliente1_Plataforma2",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
+     @tipo_transaccion = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 2, @id_cliente = 1, @token = "Token1_Cliente1_Plataforma2";
 
@@ -52,7 +52,7 @@ EXEC Buscar_Federacion @id_plataforma = 1, @id_cliente = 1;
 EXEC Verificar_Federacion_en_Curso @id_plataforma = 1, @id_cliente = 1;
 EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 1;
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 1, @codigo_de_transaccion = "Codigo3_Cliente1_Plataforma1",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
+     @tipo_transaccion = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 1, @token = "Token3_Cliente1_Plataforma1";
 
@@ -61,7 +61,7 @@ EXEC Buscar_Federacion @id_plataforma = 1, @id_cliente = 2;
 EXEC Verificar_Federacion_en_Curso @id_plataforma = 1, @id_cliente = 2;
 EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 1;
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 2, @codigo_de_transaccion = "Codigo1_Cliente2_Plataforma1",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
+     @tipo_transaccion = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 2, @token = "Token1_Cliente2_Plataforma1";
 
@@ -137,13 +137,13 @@ EXEC Desvincular_Federacion @id_plataforma = 1, @id_cliente = 2;
 
 /* FEDERAR NUEVAMENTE CLIENTE 1 CON PLATAFORMA 1 */
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 1, @codigo_de_transaccion = "Codigo2_Cliente1_Plataforma1",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
+     @tipo_transaccion = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 1, @token = "Token2_Cliente1_Plataforma1";
 
 /* FEDERAR NUEVAMENTE CLIENTE 2 CON PLATAFORMA 1 */
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 2, @codigo_de_transaccion = "Codigo2_Cliente2_Plataforma1",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
+     @tipo_transaccion = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 2, @token = "Token2_Cliente2_Plataforma1";
 
@@ -257,28 +257,28 @@ EXEC Enviar_Reporte @id_reporte = 1010;
 
 /* INICIAR FEDERACION DE CLIENTE 3 CON PLATAFORMA 3 */
 EXEC Comenzar_Federacion @id_plataforma = 3, @id_cliente = 3, @codigo_de_transaccion = "Codigo1_Cliente3_Plataforma3",
-     @tipo_usuario = 2, @url_login_registro_plataforma = 'https://www.plataforma3.com/login',
+     @tipo_transaccion = 2, @url_login_registro_plataforma = 'https://www.plataforma3.com/login',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 
 /* FEDERAR CLIENTE 4 CON PLATAFORMA 1 */
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 4, @codigo_de_transaccion = "Codigo1_Cliente4_Plataforma1",
-     @tipo_usuario = 2, @url_login_registro_plataforma = 'https://www.plataforma3.com/login',
+     @tipo_transaccion = 2, @url_login_registro_plataforma = 'https://www.plataforma3.com/login',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 
 /* FEDERAR CLIENTE 4 CON PLATAFORMA 2 */
 EXEC Comenzar_Federacion @id_plataforma = 2, @id_cliente = 4, @codigo_de_transaccion = "Codigo1_Cliente4_Plataforma2",
-     @tipo_usuario = 2, @url_login_registro_plataforma = 'https://www.plataforma3.com/login',
+     @tipo_transaccion = 2, @url_login_registro_plataforma = 'https://www.plataforma3.com/login',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 2, @id_cliente = 4, @token = "Token1_Cliente4_Plataforma2";
 
 /* INICIAR FEDERACION DE CLIENTE 5 CON PLATAFORMA 2 */
 EXEC Comenzar_Federacion @id_plataforma = 2, @id_cliente = 5, @codigo_de_transaccion = "Codigo1_Cliente5_Plataforma2",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma3.com/registro',
+     @tipo_transaccion = 1, @url_login_registro_plataforma = 'https://www.plataforma3.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 
 /* INICIAR FEDERACION DE  CLIENTE 5 CON PLATAFORMA 1 */
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 5, @codigo_de_transaccion = "Codigo1_Cliente5_Plataforma1",
-     @tipo_usuario = 2, @url_login_registro_plataforma = 'https://www.plataforma3.com/login',
+     @tipo_transaccion = 2, @url_login_registro_plataforma = 'https://www.plataforma3.com/login',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 
 EXEC Consultar_Federaciones_Pendientes;

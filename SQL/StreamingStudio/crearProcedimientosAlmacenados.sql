@@ -1,5 +1,3 @@
-
-
 /* Cliente_Usuario */
 
 CREATE OR ALTER PROCEDURE Crear_Usuario @usuario VARCHAR(255),
@@ -1192,7 +1190,7 @@ BEGIN
                            FROM dbo.Transaccion
                            WHERE id_plataforma = @id_plataforma
                              AND id_cliente = @id_cliente)
-    SELECT IIF(COUNT(*) > 0, 1, 0) AS existe_federacion
+    SELECT codigo_de_transaccion
     FROM dbo.Transaccion
     WHERE id_plataforma = @id_plataforma
       AND id_cliente = @id_cliente
@@ -1215,20 +1213,32 @@ go
 /* PEGARLE A LA API DE LA PLATAFORMA PARA OBTENER LA URL DE LOGIN Y EL CÓDIGO DE TRANSACCIÓN. */
 /* Comenzar_Federacion */
 /* PUNTO 2 -- PEGARLE A LA API PARA CONSULTAR EL TOKEN DEL USUARIO */
+
+CREATE PROCEDURE ObtenerUltimaTransaccion @id_cliente INT
+AS
+BEGIN
+    SELECT TOP 1 id_plataforma, codigo_de_transaccion
+    FROM dbo.Transaccion
+    WHERE id_cliente = @id_cliente
+      AND fecha_baja IS NOT NULL
+    ORDER BY fecha_alta DESC;
+END;
+
 /* Finalizar_Federacion */
+
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 /* ---------------------------------------- TERMINAR FEDERACIONES PENDIENTES ---------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-CREATE OR ALTER PROCEDURE Consultar_Federaciones_Pendientes
-AS
-BEGIN
-    SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_transaccion
-    FROM dbo.Transaccion
-    WHERE token IS NULL
-      AND fecha_baja IS NULL
-END
+    CREATE OR ALTER PROCEDURE Consultar_Federaciones_Pendientes
+    AS
+    BEGIN
+        SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_transaccion
+        FROM dbo.Transaccion
+        WHERE token IS NULL
+          AND fecha_baja IS NULL
+    END
 go
 
 /* POR CADA FEDERACION PENDIENTE */

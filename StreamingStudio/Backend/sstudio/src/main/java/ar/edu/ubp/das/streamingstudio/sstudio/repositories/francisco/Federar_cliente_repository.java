@@ -2,11 +2,8 @@ package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
-import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.ComenzarFederacionBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.utils.RespuestaFront;
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.FederacionBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -14,12 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,23 +19,26 @@ import java.util.Map;
 @Repository
 public class Federar_cliente_repository {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JdbcTemplate jdbcTpl;
+    private final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
+    private Map<String, String> respuesta;
 
     @Transactional
     public Map<String, String> federarClientePlataforma(int id_plataforma, int id_cliente, String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        int federacion = buscarFederacion(id_plataforma, id_cliente);
-
-        Map respuesta = new HashMap();
-        if(federacion == 1){
+        if(buscarFederacion(id_plataforma, id_cliente)){
+            respuesta = new HashMap<>();
             respuesta.put("mensaje", "El cliente ya esta federado");
         } else {
-            federacion = VerificarFederacionCurso(id_plataforma, id_cliente);
-            if(federacion == 1) {
-                finalizarFederacion(id_plataforma, id_cliente);
-            }else{
-                String urlRedireccionPropia = "";
+            String codigo_de_transaccion = VerificarFederacionCurso(id_plataforma, id_cliente);
+            if (codigo_de_transaccion != null) {
+                respuesta = new HashMap<>();
+                respuesta.put("mensaje", "Federacion en curso");
+                respuesta.put("codigo_de_transaccion", codigo_de_transaccion);
+                respuesta.put("url_redireccion", "https://localhost:8080/ss/finalizar_federacion");
+            }
+            else {
+                String urlRedireccionPropia = "https://localhost:8080/ss/finalizar_federacion";
                 respuesta = comenzarFederacion(id_plataforma, id_cliente, urlRedireccionPropia, tipo_transaccion);
             }
         }
@@ -51,7 +46,7 @@ public class Federar_cliente_repository {
     }
 
     @Transactional
-    public int buscarFederacion(int id_plataforma, int id_cliente) {
+    public boolean buscarFederacion(int id_plataforma, int id_cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
                 .addValue("id_cliente", id_cliente);
@@ -60,13 +55,12 @@ public class Federar_cliente_repository {
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
-        Integer federacion = resulset.get(0).get("federacion");
-        return federacion;
-
+        Integer federacion = resulset.getFirst().get("federacion");
+        return federacion == 1;
     }
 
     @Transactional
-    public int VerificarFederacionCurso(int id_plataforma, int id_cliente) {
+    public String VerificarFederacionCurso(int id_plataforma, int id_cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
                 .addValue("id_cliente", id_cliente);
@@ -76,32 +70,10 @@ public class Federar_cliente_repository {
 
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
-        Integer federacion = resulset.get(0).get("existe_federacion");
-        return federacion;
-    }
-
-    @Transactional
-    public List<PublicidadBean> buscarDatoPublicidades() {
-        SqlParameterSource in = new MapSqlParameterSource();
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Obtener_Datos_de_Publicidades")
-                .withSchemaName("dbo")
-                .returningResultSet("publicidad", BeanPropertyRowMapper.newInstance(PublicidadBean.class));
-        Map<String, Object> out = jdbcCall.execute(in);
-        return (List<PublicidadBean>)out.get("publicidad");
-    }
-
-    @Transactional
-    public double obtenerCostoDeBanner(int id_banner) {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_banner", id_banner);
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Obtener_Costo_de_Banner")
-                .withSchemaName("dbo");
-        Map<String, Object> out = jdbcCall.execute(in);
-        List<Map<String, Double >> resulset = (List<Map<String, Double>>) out.get("#result-set-1");
-        double cotsto_banner = resulset.get(0).get("costo");
-        return cotsto_banner;
+        if (resulset.isEmpty())
+            return null;
+        else
+            return String.valueOf(resulset.getFirst().get("codigo_de_transaccion"));
     }
 
     @Transactional
@@ -114,32 +86,19 @@ public class Federar_cliente_repository {
 
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String,String>> mapa_token = (List<Map<String,String>>) out.get("#result-set-1");
-        String token = mapa_token.get(0).get("token_de_servicio");
+        String token = mapa_token.getFirst().get("token_de_servicio");
         return token;
     }
 
     @Transactional
-    public void finalizarFederacion(int id_plataforma, int id_cliente) {
-
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_plataforma", id_plataforma)
-                .addValue("id_cliente", id_cliente)
-                .addValue("token", token);
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Finalizar_Federacion")
-                .withSchemaName("dbo");
-        Map<String, Object> out = jdbcCall.execute(in);
-    }
-
-    @Transactional
     public Map<String, String> comenzarFederacion(int id_plataforma, int id_cliente, String url_redireccion_propia, String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Map<String, String> respuesta = new HashMap();
-        AbstractConnector conector;
-        AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
-        conector = conectorFactory.crearConector("REST");
+        respuesta = new HashMap<>();
+        AbstractConnector conector = conectorFactory.crearConector("REST");
         Map<String, String> body = new HashMap<>();
         body.put("url", "https://localhost:8080/ss/");
-        ComenzarFederacionBean bean = (ComenzarFederacionBean) conector.execute_post_request("http://localhost:8081/netflix/obtener_token", body, "ComenzarFederacionBean");
+        body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
+        FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/federar", body, "FederacionBean");
+
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
                 .addValue("id_cliente", id_cliente)
@@ -151,9 +110,48 @@ public class Federar_cliente_repository {
                 .withProcedureName("Comenzar_Federacion")
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
+
         respuesta.put("mensaje", "Federacion comenzada");
         respuesta.put("url_redireccion", bean.getUrl());
         respuesta.put("codigo_transaccion", bean.getCodigoTransaccion());
         return respuesta;
+    }
+
+    @Transactional
+    public Map<String, String> finalizarFederacion(int id_plataforma, int id_cliente, String codigo_de_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        respuesta = new HashMap<>();
+        AbstractConnector conector = conectorFactory.crearConector("REST");
+        Map<String, String> body = new HashMap<>();
+        body.put("codigo_transaccion", codigo_de_transaccion);
+        body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
+        FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/obtener_token", body, "FederacionBean");
+
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_plataforma", id_plataforma)
+                .addValue("id_cliente", id_cliente)
+                .addValue("token", bean.getToken());
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Finalizar_Federacion")
+                .withSchemaName("dbo");
+        Map<String, Object> out = jdbcCall.execute(in);
+
+        respuesta.put("mensaje", "Federacion finalizada");
+        return respuesta;
+    }
+
+    @Transactional
+    public Map<String, String> finalizarFederacion(int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_cliente", id_cliente);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("ObtenerUltimaTransaccion")
+                .withSchemaName("dbo");
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<Map<String,?>> lista_resultado = (List<Map<String,?>>) out.get("#result-set-1");
+        Map<String, ?> resultado = lista_resultado.getFirst();
+        short id_plataforma = (short) resultado.get("id_plataforma");
+        String codigo_de_transaccion = (String) resultado.get("codigo_de_transaccion");
+
+        return finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion);
     }
 }

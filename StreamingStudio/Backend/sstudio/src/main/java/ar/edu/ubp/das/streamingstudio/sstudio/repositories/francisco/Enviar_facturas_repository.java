@@ -242,4 +242,28 @@ public class Enviar_facturas_repository {
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
     }
+
+//    @Transactional
+//    public List<PublicidadBean> buscarDatoPublicidades() {
+//        SqlParameterSource in = new MapSqlParameterSource();
+//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+//                .withProcedureName("Obtener_Datos_de_Publicidades")
+//                .withSchemaName("dbo")
+//                .returningResultSet("publicidad", BeanPropertyRowMapper.newInstance(PublicidadBean.class));
+//        Map<String, Object> out = jdbcCall.execute(in);
+//        return (List<PublicidadBean>) out.get("publicidad");
+//    }
+//
+//    @Transactional
+//    public double obtenerCostoDeBanner(int id_banner) {
+//        SqlParameterSource in = new MapSqlParameterSource()
+//                .addValue("id_banner", id_banner);
+//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+//                .withProcedureName("Obtener_Costo_de_Banner")
+//                .withSchemaName("dbo");
+//        Map<String, Object> out = jdbcCall.execute(in);
+//        List<Map<String, Double >> resulset = (List<Map<String, Double>>) out.get("#result-set-1");
+//        double cotsto_banner = resulset.getFirst().get("costo");
+//        return cotsto_banner;
+//    }
 }

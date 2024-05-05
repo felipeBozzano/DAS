@@ -57,24 +57,27 @@ public class controllers_francisco {
         return new ResponseEntity<>(federar_cliente_repository.federarClientePlataforma(federacion.getId_plataforma(), federacion.getId_cliente(), federacion.getTipo_transaccion()), HttpStatus.OK);
     }
 
-//    @PostMapping(
-//            path="/finalizar_federacion",
-//            consumes={MediaType.APPLICATION_JSON_VALUE}
-//    )
-//    public ResponseEntity<Integer> finalizarFederacion(@RequestBody FederacionBean federacion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-//        return new ResponseEntity<>(federar_cliente_repository.finalizarFederacion(federacion.getId_plataforma(), federacion.getId_cliente(), federacion.getTipo_transaccion());, HttpStatus.OK);
-//    }
+    @PostMapping(
+            path="/finalizar_federacion",
+            consumes={MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> finalizarFederacion(@RequestBody FederacionBean federacion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        if (federacion.getCodigo_de_transaccion() != null)
+            return new ResponseEntity<>(federar_cliente_repository.finalizarFederacion(federacion.getId_plataforma(), federacion.getId_cliente(), federacion.getTipo_transaccion()), HttpStatus.OK);
+        else
+            return new ResponseEntity<>(federar_cliente_repository.finalizarFederacion(federacion.getId_cliente()), HttpStatus.OK);
+    }
 
     /* Facturacion */
 
     @GetMapping("/datos_publiciadad")
     public ResponseEntity<List<PublicidadBean>> getPublicadades() {
-        return new ResponseEntity<>(federar_cliente_repository.buscarDatoPublicidades(), HttpStatus.OK);
+        return new ResponseEntity<>(enviar_facturas_repository.buscarDatoPublicidades(), HttpStatus.OK);
     }
 
     @GetMapping("/costo_banner")
     public ResponseEntity<Double> getCostoBanner(@RequestParam("id_banner") int id_banner) {
-        return new ResponseEntity<>(federar_cliente_repository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
+        return new ResponseEntity<>(enviar_facturas_repository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
     }
 
     @GetMapping("/enviar_facturas_publicistas")
