@@ -5,7 +5,7 @@ public class FederacionBean {
     private int id_plataforma;
     private int id_cliente;
     private String token;
-    private String tipo_usuario;
+    private String tipo_transaccion;
     private Boolean facturada;
     private int cantidad_de_federaciones;
 
@@ -31,7 +31,7 @@ public class FederacionBean {
         this.id_plataforma = id_plataforma;
         this.id_cliente = id_cliente;
         this.token = token;
-        this.tipo_usuario = tipo_usuario;
+        this.tipo_transaccion = tipo_usuario;
         this.facturada = facturada;
     }
 
@@ -66,12 +66,12 @@ public class FederacionBean {
         this.token = token;
     }
 
-    public String getTipo_usuario() {
-        return tipo_usuario;
+    public String getTipo_transaccion() {
+        return tipo_transaccion;
     }
 
-    public void setTipo_usuario(String tipo_usuario) {
-        this.tipo_usuario = tipo_usuario;
+    public void setTipo_transaccion(String tipo_transaccion) {
+        this.tipo_transaccion = tipo_transaccion;
     }
 
     public Boolean getFacturada() {

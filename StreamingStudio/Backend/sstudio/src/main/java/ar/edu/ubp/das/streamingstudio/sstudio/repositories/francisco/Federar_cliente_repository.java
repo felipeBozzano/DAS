@@ -1,6 +1,10 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.ComenzarFederacionBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.utils.RespuestaFront;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,8 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,49 +32,22 @@ public class Federar_cliente_repository {
     private JdbcTemplate jdbcTpl;
 
     @Transactional
-    public int federarClientePlataforma(int id_plataforma, int id_cliente) {
+    public Map<String, String> federarClientePlataforma(int id_plataforma, int id_cliente, String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         int federacion = buscarFederacion(id_plataforma, id_cliente);
+
+        Map respuesta = new HashMap();
         if(federacion == 1){
-            return 1;
+            respuesta.put("mensaje", "El cliente ya esta federado");
         } else {
             federacion = VerificarFederacionCurso(id_plataforma, id_cliente);
             if(federacion == 1) {
-                return 1;
-            }
-            try {
-                // Specify the URL to send the GET request to
-                URL url = new URL("http://localhost:8081/netflix/obtener_token");
-
-                // Open a connection to the specified URL
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-                // Set the request method to GET
-                connection.setRequestMethod("GET");
-
-                // Get the response code
-                int responseCode = connection.getResponseCode();
-                System.out.println("Response Code: " + responseCode);
-
-                // Read the response from the server
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                // Print the response
-                System.out.println("Response:");
-                System.out.println(response.toString());
-                connection.disconnect();
-                return responseCode;
-                // Close the connection
-            } catch (IOException e) {
-                e.printStackTrace();
+                finalizarFederacion(id_plataforma, id_cliente);
+            }else{
+                String urlRedireccionPropia = "";
+                respuesta = comenzarFederacion(id_plataforma, id_cliente, urlRedireccionPropia, tipo_transaccion);
             }
         }
-        return federacion;
+        return respuesta;
     }
 
     @Transactional
@@ -123,5 +102,58 @@ public class Federar_cliente_repository {
         List<Map<String, Double >> resulset = (List<Map<String, Double>>) out.get("#result-set-1");
         double cotsto_banner = resulset.get(0).get("costo");
         return cotsto_banner;
+    }
+
+    @Transactional
+    public String obtenerTokenDeServicioDePlataforma(int id_plataforma) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_plataforma", id_plataforma);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_Token_de_Servicio_de_Plataforma")
+                .withSchemaName("dbo");
+
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<Map<String,String>> mapa_token = (List<Map<String,String>>) out.get("#result-set-1");
+        String token = mapa_token.get(0).get("token_de_servicio");
+        return token;
+    }
+
+    @Transactional
+    public void finalizarFederacion(int id_plataforma, int id_cliente) {
+
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_plataforma", id_plataforma)
+                .addValue("id_cliente", id_cliente)
+                .addValue("token", token);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Finalizar_Federacion")
+                .withSchemaName("dbo");
+        Map<String, Object> out = jdbcCall.execute(in);
+    }
+
+    @Transactional
+    public Map<String, String> comenzarFederacion(int id_plataforma, int id_cliente, String url_redireccion_propia, String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        Map<String, String> respuesta = new HashMap();
+        AbstractConnector conector;
+        AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
+        conector = conectorFactory.crearConector("REST");
+        Map<String, String> body = new HashMap<>();
+        body.put("url", "https://localhost:8080/ss/");
+        ComenzarFederacionBean bean = (ComenzarFederacionBean) conector.execute_post_request("http://localhost:8081/netflix/obtener_token", body, "ComenzarFederacionBean");
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_plataforma", id_plataforma)
+                .addValue("id_cliente", id_cliente)
+                .addValue("codigo_de_transaccion", bean.getCodigoTransaccion())
+                .addValue("url_login_registro_plataforma", bean.getUrl())
+                .addValue("url_redireccion_propia", url_redireccion_propia)
+                .addValue("tipo_transaccion", tipo_transaccion);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Comenzar_Federacion")
+                .withSchemaName("dbo");
+        Map<String, Object> out = jdbcCall.execute(in);
+        respuesta.put("mensaje", "Federacion comenzada");
+        respuesta.put("url_redireccion", bean.getUrl());
+        respuesta.put("codigo_transaccion", bean.getCodigoTransaccion());
+        return respuesta;
     }
 }

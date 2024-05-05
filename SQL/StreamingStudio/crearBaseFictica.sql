@@ -160,10 +160,6 @@ VALUES
 go
 
 -- Insertar los tipos de usuario "Registrado" y "Nuevo"
-INSERT INTO Tipo_Usuario (id_tipo_usuario, descripcion)
-VALUES (1, N'Nuevo'),
-       (2, N'Registrado');
-go
 
 -- Crear 2 Tipo_de_Fee
 INSERT INTO Tipo_Fee (tipo_de_fee, descripcion)
@@ -190,33 +186,25 @@ VALUES (1, 1),
 go
 
 -- Crear 6 Banners
-INSERT INTO Banner (tamaño_de_banner, exclusividad, descripcion)
-VALUES ('20x20', 1, N'Banner Arriba Izquierda 20x20 Exclusivo'),
-       ('15x30', 1, N'Banner Arriba Derecha 15x30 Exclusivo'),
-       ('10x20', 0, N'Banner Arriba Derecha 15x30 NO Exclusivo'),
-       ('20x30', 0, N'Banner Abajo Derecha 20x30 NO Exclusivo'),
-       ('20x20', 0, N'Banner Arriba Izquierda 20x20 NO Exclusivo'),
-       ('15x30', 0, N'Banner Arriba Derecha 15x30 NO Exclusivo')
-go
 
 -- Crear 6 Tipo_Banner
-INSERT INTO Tipo_Banner (costo, fecha_alta, fecha_baja)
-VALUES (23.5, GETDATE(), NULL),
-       (30.0, GETDATE(), NULL),
-       (15.5, GETDATE(), NULL),
-       (20.0, GETDATE(), NULL),
-       (10.5, GETDATE(), NULL),
-       (15.0, GETDATE(), NULL);
+INSERT INTO Tipo_Banner (fecha_alta, tamano, exclusividad, fecha_baja)
+VALUES (GETDATE(), '10*20', 'E', '2024-06-10 00:14:47.770'),
+       (GETDATE(), '30*40', 'NE', '2024-06-10 00:14:47.770'),
+       (GETDATE(), '50*50', 'E', '2024-06-10 00:14:47.770'),
+       (GETDATE(), '20*30', 'NE', '2024-06-10 00:14:47.770'),
+       (GETDATE(), '10*20', 'E','2024-06-10 00:14:47.770'),
+       (GETDATE(), '5*15', 'NE', '2024-06-10 00:14:47.770');
 go
 
 -- Crear 6 Costo_Banner
-INSERT INTO Costo_Banner (id_tipo_banner, id_banner)
-VALUES (1, 1),
-       (2, 2),
-       (3, 3),
-       (4, 4),
-       (5, 5),
-       (6, 6);
+INSERT INTO Costo_Banner (id_tipo_banner, fecha_alta, costo, fecha_baja)
+VALUES (1, GETDATE(), 10.5, '2024-06-10 00:14:47.770'),
+       (2,GETDATE(),2, '2024-07-11 00:14:47.770'),
+       (3,GETDATE(),3, '2024-08-10 00:14:47.770'),
+       (4,GETDATE(),4, '2024-05-05 00:14:47.770'),
+       (5,GETDATE(),5, '2024-05-20 00:14:47.770'),
+       (6,GETDATE(),6, '2024-05-19 00:14:47.770');
 go
 
 -- Crear 3 Publicista
@@ -227,25 +215,25 @@ VALUES ('Publicista1', N'Razón Social 1', 'publicista1@email.com', N'contraseñ
 go
 
 -- Crear 9 Publicidades asignadas a Banners y Exclusividades
-INSERT INTO Publicidad (id_publicista, id_banner, codigo_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta,
+INSERT INTO Publicidad (id_publicista, codigo_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta,
                         fecha_de_baja)
-VALUES (1, 1, 'CP1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'https://www.urlpublicidad1.com/publicidad.jpg',
+VALUES (1, 'CP1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'https://www.urlpublicidad1.com/publicidad.jpg',
         '2024-02-28', '2024-03-10'),
-       (2, 2, 'CP2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'https://www.urlpublicidad2.com/publicidad.jpg',
+       (2, 'CP2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'https://www.urlpublicidad2.com/publicidad.jpg',
         '2024-04-30', '2024-05-01'),
-       (3, 3, 'CP3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'https://www.urlpublicidad3.com/publicidad.jpg',
+       (3, 'CP3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'https://www.urlpublicidad3.com/publicidad.jpg',
         '2024-04-01', '2024-04-02'),
-       (1, 4, 'CP4', 'https://www.urlimagen4.com/imagenes/imagen.jpg', 'https://www.urlpublicidad4.com/publicidad.jpg',
+       (1, 'CP4', 'https://www.urlimagen4.com/imagenes/imagen.jpg', 'https://www.urlpublicidad4.com/publicidad.jpg',
         '2024-03-02', '2024-03-03'),
-       (2, 1, 'CP5', 'https://www.urlimagen5.com/imagenes/imagen.jpg', 'https://www.urlpublicidad5.com/publicidad.jpg',
+       (2, 'CP5', 'https://www.urlimagen5.com/imagenes/imagen.jpg', 'https://www.urlpublicidad5.com/publicidad.jpg',
         '2024-03-03', '2024-05-04'),
-       (3, 2, 'CP6', 'https://www.urlimagen6.com/imagenes/imagen.jpg', 'https://www.urlpublicidad6.com/publicidad.jpg',
+       (3, 'CP6', 'https://www.urlimagen6.com/imagenes/imagen.jpg', 'https://www.urlpublicidad6.com/publicidad.jpg',
         '2024-04-04', '2024-04-25'),
-       (1, 3, 'CP7', 'https://www.urlimagen7.com/imagenes/imagen.jpg', 'https://www.urlpublicidad7.com/publicidad.jpg',
+       (1,'CP7', 'https://www.urlimagen7.com/imagenes/imagen.jpg', 'https://www.urlpublicidad7.com/publicidad.jpg',
         '2024-03-05', '2024-04-01'),
-       (2, 4, 'CP8', 'https://www.urlimagen8.com/imagenes/imagen.jpg', 'https://www.urlpublicidad8.com/publicidad.jpg',
+       (2, 'CP8', 'https://www.urlimagen8.com/imagenes/imagen.jpg', 'https://www.urlpublicidad8.com/publicidad.jpg',
         '2024-03-06', '2024-03-27'),
-       (3, 1, 'CP9', 'https://www.urlimagen9.com/imagenes/imagen.jpg', 'https://www.urlpublicidad9.com/publicidad.jpg',
+       (3, 'CP9', 'https://www.urlimagen9.com/imagenes/imagen.jpg', 'https://www.urlpublicidad9.com/publicidad.jpg',
         '2024-04-07', '2024-05-18');
 go
 

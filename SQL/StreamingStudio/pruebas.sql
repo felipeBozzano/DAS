@@ -88,19 +88,19 @@ WHERE id_plataforma IS NOT NULL;
 
 /* FEDERAR CLIENTE 1 CON PLATAFORMA 1 */
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 1, @codigo_de_transaccion = "Codigo1_Cliente1_Plataforma1",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
+     @tipo_transaccion = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 1, @token = "Token1_Cliente1_Plataforma1";
 
 /* FEDERAR CLIENTE 1 CON PLATAFORMA 2 */
 EXEC Comenzar_Federacion @id_plataforma = 2, @id_cliente = 1, @codigo_de_transaccion = "Codigo1_Cliente1_Plataforma2",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
+     @tipo_transaccion = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 2, @id_cliente = 1, @token = "Token1_Cliente1_Plataforma2";
 
 /* FEDERAR CLIENTE 2 CON PLATAFORMA 1 */
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 2, @codigo_de_transaccion = "Codigo1_Cliente2_Plataforma1",
-     @tipo_usuario = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
+     @tipo_transaccion = 1, @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 2, @token = "Token1_Cliente2_Plataforma1";
 
@@ -444,7 +444,7 @@ EXEC Obtener_Informacion_de_Plataforma @id_contenido = 4;
 
 -- inserto datos en tipo_fee
 
-INSERT INTO Tipo_de_Fee (tipo_de_fee, descripcion)
+INSERT INTO Tipo_Fee (tipo_de_fee, descripcion)
 VALUES
     ('A', 'Description for A'),
     ('B', 'Description for B');

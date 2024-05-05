@@ -32,6 +32,7 @@ DROP TABLE IF EXISTS dbo.Estado_Factura
 DROP TABLE IF EXISTS dbo.Reporte
 DROP TABLE IF EXISTS dbo.Estado_Reporte
 
+
 CREATE TABLE [Administrador]
 (
     [id_administrador] INT IDENTITY (1,1) PRIMARY KEY,

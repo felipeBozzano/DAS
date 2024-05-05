@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping(
@@ -48,12 +50,20 @@ public class controllers_francisco {
      /* Federacion usaurio*/
 
     @PostMapping(
-            path="/federar_cliente",
+            path="/comenzar_federacion",
             consumes={MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Integer> federarClientePlataforma(@RequestBody FederacionBean federacion) {
-        return new ResponseEntity<>(federar_cliente_repository.federarClientePlataforma(federacion.getId_plataforma(), federacion.getId_cliente()), HttpStatus.OK);
+    public ResponseEntity<Map<String, String>> federarClientePlataforma(@RequestBody FederacionBean federacion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        return new ResponseEntity<>(federar_cliente_repository.federarClientePlataforma(federacion.getId_plataforma(), federacion.getId_cliente(), federacion.getTipo_transaccion()), HttpStatus.OK);
     }
+
+//    @PostMapping(
+//            path="/finalizar_federacion",
+//            consumes={MediaType.APPLICATION_JSON_VALUE}
+//    )
+//    public ResponseEntity<Integer> finalizarFederacion(@RequestBody FederacionBean federacion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+//        return new ResponseEntity<>(federar_cliente_repository.finalizarFederacion(federacion.getId_plataforma(), federacion.getId_cliente(), federacion.getTipo_transaccion());, HttpStatus.OK);
+//    }
 
     /* Facturacion */
 

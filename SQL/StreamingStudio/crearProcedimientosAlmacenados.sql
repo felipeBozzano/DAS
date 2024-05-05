@@ -1,4 +1,4 @@
-USE StreamingStudio;
+
 
 /* Cliente_Usuario */
 

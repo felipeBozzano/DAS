@@ -164,7 +164,7 @@ public class Enviar_facturas_repository {
             }
             for(FederacionBean  federacion : listaFederaciones){
                 double preco_unitario = 0;
-                if(Objects.equals(federacion.getTipo_usuario(), "1")){
+                if(Objects.equals(federacion.getTipo_transaccion(), "1")){
                     total += feeLogin;
                     preco_unitario = feeLogin;
                 }else{
