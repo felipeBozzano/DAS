@@ -4,7 +4,6 @@ import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.ComenzarFederacionBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.utils.RespuestaFront;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,12 +13,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,7 +114,7 @@ public class Federar_cliente_repository {
 
     @Transactional
     public void finalizarFederacion(int id_plataforma, int id_cliente) {
-
+        String token = "";
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
                 .addValue("id_cliente", id_cliente)
