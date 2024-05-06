@@ -16,14 +16,23 @@ import java.util.UUID;
 
 public class controllers {
 
-    @PostMapping("/obtener_token")
-    public ResponseEntity<Map<String, String>> geToken() {
+    @PostMapping("/federar")
+    public ResponseEntity<Map<String, String>> federarCliente() {
         Map<String, String> respuesta = new HashMap<>();
         UUID uuid = UUID.randomUUID();
         String uuidString = uuid.toString();
         String url = "http://localhost:8081/netflix/login";
         respuesta.put("codigoTransaccion", uuidString);
         respuesta.put("url", url);
+        return new ResponseEntity<>(respuesta,HttpStatus.OK);
+    }
+
+    @PostMapping("/obtener_token")
+    public ResponseEntity<Map<String, String>> obtenerToken() {
+        Map<String, String> respuesta = new HashMap<>();
+        UUID token = UUID.randomUUID();
+        String tokenString = token.toString();
+        respuesta.put("token", tokenString);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 }

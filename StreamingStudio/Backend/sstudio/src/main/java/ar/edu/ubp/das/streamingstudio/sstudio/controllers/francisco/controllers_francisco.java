@@ -1,23 +1,23 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.FederacionBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.Fee;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.Enviar_facturas_repository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.Federar_cliente_repository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.User_repository;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
+//@RestController
 @Controller
 @RequestMapping(
         path = "/ss")
@@ -50,31 +50,58 @@ public class controllers_francisco {
      /* Federacion usaurio*/
 
     @PostMapping(
-            path="/comenzar_federacion",
+            path="/usuario/{id_cliente}/federaciones",
             consumes={MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Map<String, String>> federarClientePlataforma(@RequestBody FederacionBean federacion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        return new ResponseEntity<>(federar_cliente_repository.federarClientePlataforma(federacion.getId_plataforma(), federacion.getId_cliente(), federacion.getTipo_transaccion()), HttpStatus.OK);
+    public ResponseEntity<List<PlataformaDeStreamingBean>> verFederaciones(@PathVariable("id_cliente") Integer id_cliente) {
+        return new ResponseEntity<>(user_repository.obtenerFederaciones(id_cliente), HttpStatus.OK);
     }
 
-//    @PostMapping(
-//            path="/finalizar_federacion",
-//            consumes={MediaType.APPLICATION_JSON_VALUE}
-//    )
-//    public ResponseEntity<Integer> finalizarFederacion(@RequestBody FederacionBean federacion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-//        return new ResponseEntity<>(federar_cliente_repository.finalizarFederacion(federacion.getId_plataforma(), federacion.getId_cliente(), federacion.getTipo_transaccion());, HttpStatus.OK);
-//    }
+    @PostMapping(
+            path="/usuario/{id_cliente}/comenzar_federacion/{id_plataforma}/{tipo_de_transaccion}",
+            consumes={MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> federarClientePlataforma(@PathVariable("id_plataforma") Integer id_plataforma,
+                                                                        @PathVariable("id_cliente") Integer id_cliente,
+                                                                        @PathVariable("tipo_de_transaccion") String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        return new ResponseEntity<>(federar_cliente_repository.federarClientePlataforma(id_plataforma, id_cliente, tipo_transaccion), HttpStatus.OK);
+    }
+
+    @PostMapping(
+            value="/usuario/{id_cliente}/finalizar_federacion/{id_plataforma}",
+            consumes={MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> finalizarFederacion(@PathVariable("id_plataforma") Integer id_plataforma,
+                                                                   @PathVariable("id_cliente") Integer id_cliente,
+                                                                   @RequestBody Map<String,String> body,
+                                                                   HttpServletResponse response) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        String codigo_de_transaccion = body.get("codigo_de_transaccion");
+        Map<String, String> respuesta = federar_cliente_repository.finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion);
+
+        // Construye la URL de redirección con id_cliente
+        String urlRedireccion = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/usuario/{id_cliente}/federaciones")
+                .buildAndExpand(id_cliente)
+                .toUriString();
+
+        // Redirige al cliente a la nueva URL
+        response.setHeader("Location", urlRedireccion);
+        response.setStatus(302);
+
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
 
     /* Facturacion */
 
     @GetMapping("/datos_publiciadad")
     public ResponseEntity<List<PublicidadBean>> getPublicadades() {
-        return new ResponseEntity<>(federar_cliente_repository.buscarDatoPublicidades(), HttpStatus.OK);
+        return new ResponseEntity<>(enviar_facturas_repository.buscarDatoPublicidades(), HttpStatus.OK);
     }
 
     @GetMapping("/costo_banner")
     public ResponseEntity<Double> getCostoBanner(@RequestParam("id_banner") int id_banner) {
-        return new ResponseEntity<>(federar_cliente_repository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
+        return new ResponseEntity<>(enviar_facturas_repository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
     }
 
     @GetMapping("/enviar_facturas_publicistas")

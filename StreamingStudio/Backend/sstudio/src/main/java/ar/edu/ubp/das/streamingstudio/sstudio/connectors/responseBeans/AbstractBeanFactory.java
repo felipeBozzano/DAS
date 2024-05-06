@@ -9,7 +9,7 @@ public class AbstractBeanFactory {
     public AbstractBeanFactory() {
         beanMap = new HashMap<>();
         // Asocia el nombre de la clase con el tipo de objeto correspondiente
-        beanMap.put("ComenzarFederacionBean", ComenzarFederacionBean.class);
+        beanMap.put("FederacionBean", FederacionBean.class);
         // Agrega más asociaciones según sea necesario para tus otros beans
     }
 

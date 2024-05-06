@@ -1,6 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,5 +42,9 @@ public class User_repository {
     public List<ClienteUsuarioBean> getUser(String email) {
         return jdbcTpl.query("SELECT * FROM dbo.Cliente_Usuario WHERE email = ?",new Object[]{email}, BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class)
         );
+    }
+
+    public List<PlataformaDeStreamingBean> obtenerFederaciones(int id_cliente) {
+        return List.of();
     }
 }

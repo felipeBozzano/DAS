@@ -1,5 +1,3 @@
-
-
 /* Cliente_Usuario */
 
 CREATE OR ALTER PROCEDURE Crear_Usuario @usuario VARCHAR(255),
@@ -11,7 +9,7 @@ AS
 BEGIN
     INSERT INTO dbo.Cliente_Usuario(usuario, contraseña, email, nombre, apellido, valido)
     VALUES (@usuario, @contraseña, @email, @nombre, @apellido, 0)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Editar_Usuario @id_cliente INT,
@@ -29,7 +27,7 @@ BEGIN
         nombre     = @nombre,
         apellido   = @apellido
     WHERE id_cliente = @id_cliente
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Usuario @id_cliente INT
@@ -38,7 +36,7 @@ BEGIN
     UPDATE Cliente_Usuario
     SET valido = 0
     WHERE id_cliente = @id_cliente
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Validar_Usuario @id_cliente INT
@@ -47,7 +45,7 @@ BEGIN
     UPDATE Cliente_Usuario
     SET valido = 1
     WHERE id_cliente = @id_cliente
-END
+END;
 go
 
 /* Plataforma_de_Streaming */
@@ -63,7 +61,7 @@ BEGIN
     INSERT INTO dbo.Plataforma_de_Streaming(nombre_de_fantasia, razón_social, url_imagen, token_de_servicio,
                                             url_api, valido)
     VALUES (@nombre_de_fantasia, @razón_social, @url_imagen, @token_de_servicio, @url_api, @valido)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Editar_Plataforma_de_Streaming @id_plataforma INT,
@@ -83,7 +81,7 @@ BEGIN
         url_api            = @url_api,
         valido             = @valido
     WHERE id_plataforma = @id_plataforma
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Plataforma_de_Streaming @id_plataforma INT
@@ -92,7 +90,7 @@ BEGIN
     DELETE
     FROM Plataforma_de_Streaming
     WHERE id_plataforma = @id_plataforma
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Datos_de_Sesion @id_plataforma INT
@@ -101,7 +99,7 @@ BEGIN
     SELECT url_api, token_de_servicio
     FROM dbo.Plataforma_de_Streaming
     WHERE id_plataforma = @id_plataforma
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Dar_de_Baja_Plataforma_de_Streaming @id_plataforma INT
@@ -110,7 +108,7 @@ BEGIN
     UPDATE Plataforma_de_Streaming
     SET valido = 0
     WHERE id_plataforma = @id_plataforma
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Reactivar_Plataforma_de_Streaming @id_plataforma INT
@@ -119,7 +117,7 @@ BEGIN
     UPDATE dbo.Plataforma_de_Streaming
     SET valido = 1
     WHERE id_plataforma = @id_plataforma
-END
+END;
 go
 
 /* Transaccion */
@@ -144,7 +142,7 @@ BEGIN
                                 facturada)
     VALUES (@id_plataforma, @id_cliente, GETDATE(), @codigo_de_transaccion, @url_login_registro_plataforma,
             @url_redireccion_propia, @tipo_transaccion, NULL, NULL, @facturada)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Interrumpir_Federacion @id_plataforma INT,
@@ -161,7 +159,7 @@ BEGIN
     WHERE id_plataforma = @id_plataforma
       and id_cliente = @id_cliente
       and fecha_alta = @max_fecha_alta
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Finalizar_Federacion @id_plataforma INT,
@@ -179,7 +177,7 @@ BEGIN
     WHERE id_plataforma = @id_plataforma
       and id_cliente = @id_cliente
       and fecha_alta = @max_fecha_alta
-END
+END;
 go
 
 /* Federacion */
@@ -192,7 +190,7 @@ BEGIN
     FROM Federacion
     WHERE id_plataforma = @id_plataforma
       and id_cliente = @id_cliente
-END
+END;
 go
 
 /* Tipo_Banner */
@@ -203,7 +201,7 @@ AS
 BEGIN
     INSERT INTO Tipo_Banner (fecha_alta, tamano, exclusividad, fecha_baja)
     VALUES (GETDATE(), @tamano, @exclusividad, NULL);
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Editar_Tipo_Banner @id_tipo_banner INT,
@@ -215,25 +213,25 @@ BEGIN
     SET tamano       = @tamano,
         exclusividad = @exclusividad
     WHERE id_tipo_banner = @id_tipo_banner;
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Eliminar_Tipo_Banner @id_tipo_banner SMALLINT
+CREATE OR ALTER PROCEDURE Eliminar_Tipo_Banner @id_tipo_banner INT
 AS
 BEGIN
     DELETE
     FROM Tipo_Banner
     WHERE id_tipo_banner = @id_tipo_banner;
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Dar_de_Baja_Tipo_Banner @id_tipo_banner SMALLINT
+CREATE OR ALTER PROCEDURE Dar_de_Baja_Tipo_Banner @id_tipo_banner INT
 AS
 BEGIN
     UPDATE Tipo_Banner
     SET fecha_baja = GETDATE()
     WHERE id_tipo_banner = @id_tipo_banner;
-END
+END;
 go
 
 /* Costo_Banner */
@@ -244,7 +242,7 @@ AS
 BEGIN
     INSERT INTO Costo_Banner (id_tipo_banner, fecha_alta, costo, fecha_baja)
     VALUES (@id_tipo_banner, GETDATE(), @costo, NULL);
-END
+END;
 go
 
 /* Publicista */
@@ -259,7 +257,7 @@ AS
 BEGIN
     INSERT INTO dbo.Publicista(nombre_de_fantasia, razón_social, email, contrasena, token_de_servicio, url_api)
     VALUES (@nombre_de_fantasia, @razón_social, @email, @contraseña, @token_de_servicio, @url_api)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Editar_Publicista @id_publicista INT,
@@ -279,7 +277,7 @@ BEGIN
         token_de_servicio  = @token_de_servicio,
         url_api            = @url_api
     WHERE id_publicista = @id_publicista
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Publicista @id_publicista INT
@@ -288,7 +286,7 @@ BEGIN
     DELETE
     FROM dbo.Publicista
     WHERE id_publicista = @id_publicista
-END
+END;
 go
 
 /* Publicidad */
@@ -305,7 +303,7 @@ BEGIN
                                url_de_publicidad, fecha_de_alta, fecha_de_baja)
     VALUES (@id_publicista, @codigo_publicidad, @url_de_imagen, @url_de_publicidad, @fecha_de_alta,
             @fecha_de_baja)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Editar_Publicidad @id_publicidad INT,
@@ -323,7 +321,7 @@ BEGIN
         url_de_publicidad = @url_de_publicidad,
         fecha_de_baja     = @fecha_de_baja
     WHERE id_publicidad = @id_publicidad
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Publicidad @id_publicidad INT
@@ -332,28 +330,28 @@ BEGIN
     DELETE
     FROM dbo.Publicidad
     WHERE id_publicidad = @id_publicidad
-END
+END;
 go
 
 /* Estado_Factura */
 
-CREATE OR ALTER PROCEDURE Crear_Estado_Factura @id_estado SMALLINT,
+CREATE OR ALTER PROCEDURE Crear_Estado_Factura @id_estado INT,
                                                @descripcion VARCHAR(255)
 AS
 BEGIN
     INSERT INTO dbo.Estado_Factura(id_estado, descripcion)
     VALUES (@id_estado, @descripcion)
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Modificar_Estado_Factura @id_estado SMALLINT,
+CREATE OR ALTER PROCEDURE Modificar_Estado_Factura @id_estado INT,
                                                    @descripcion VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Estado_Factura
     SET descripcion = @descripcion
     WHERE id_estado = @id_estado
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Estado_Factura @id_estado INT
@@ -362,7 +360,7 @@ BEGIN
     DELETE
     FROM dbo.Estado_Factura
     WHERE id_estado = @id_estado
-END
+END;
 go
 
 /* Factura */
@@ -377,7 +375,7 @@ BEGIN
     SET @id_factura = SCOPE_IDENTITY();
 
     SELECT @id_factura AS id_factura;
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Crear_Factura_Publicista @id_publicista INT,
@@ -390,7 +388,7 @@ BEGIN
     SET @id_factura = SCOPE_IDENTITY();
 
     SELECT @id_factura AS id_factura;
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Finalizar_Factura @id_factura INT,
@@ -401,7 +399,7 @@ BEGIN
     SET total  = @total,
         estado = 1
     WHERE id_factura = @id_factura
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Enviar_Factura @id_factura INT
@@ -410,7 +408,7 @@ BEGIN
     UPDATE dbo.Factura
     SET estado = 2
     WHERE id_factura = @id_factura
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Cancelar_Factura @id_factura INT
@@ -419,7 +417,7 @@ BEGIN
     UPDATE dbo.Factura
     SET estado = -1
     WHERE id_factura = @id_factura
-END
+END;
 go
 
 /* Detalle_Factura */
@@ -433,7 +431,7 @@ AS
 BEGIN
     INSERT INTO dbo.Detalle_Factura(id_factura, precio_unitario, cantidad, subtotal, descripcion)
     VALUES (@id_factura, @precio_unitario, @cantidad, @subtotal, @descripcion)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Modificar_Detalle_Factura @id_factura INT,
@@ -451,7 +449,7 @@ BEGIN
         descripcion     = @descripcion
     WHERE id_factura = @id_factura
       AND id_detalle = @id_detalle
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Detalle_Factura @id_factura INT,
@@ -462,7 +460,7 @@ BEGIN
     FROM dbo.Detalle_Factura
     WHERE id_factura = @id_factura
       AND id_detalle = @id_detalle
-END
+END;
 go
 
 /* Director */
@@ -473,7 +471,7 @@ AS
 BEGIN
     INSERT INTO dbo.Director(nombre, apellido)
     VALUES (@nombre, @apellido)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Modificar_Director @id_director INT,
@@ -485,7 +483,7 @@ BEGIN
     SET nombre   = @nombre,
         apellido = @apellido
     WHERE id_director = @id_director
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Director @id_director INT
@@ -494,7 +492,7 @@ BEGIN
     DELETE
     FROM dbo.Director
     WHERE id_director = @id_director
-END
+END;
 go
 
 /* Actor */
@@ -505,7 +503,7 @@ AS
 BEGIN
     INSERT INTO dbo.Actor(nombre, apellido)
     VALUES (@nombre, @apellido)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Modificar_Actor @id_actor INT,
@@ -517,7 +515,7 @@ BEGIN
     SET nombre   = @nombre,
         apellido = @apellido
     WHERE id_actor = @id_actor
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Actor @id_actor INT
@@ -526,7 +524,7 @@ BEGIN
     DELETE
     FROM dbo.Actor
     WHERE id_actor = @id_actor
-END
+END;
 go
 
 /* Director_Contenido */
@@ -537,7 +535,7 @@ AS
 BEGIN
     INSERT INTO dbo.Director_Contenido(id_contenido, id_director)
     VALUES (@id_contenido, @id_director)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Director_Contenido @id_contenido INT,
@@ -548,7 +546,7 @@ BEGIN
     FROM dbo.Director_Contenido
     WHERE id_contenido = @id_contenido
       AND id_director = @id_director
-END
+END;
 go
 
 /* Actor_Contenido */
@@ -559,7 +557,7 @@ AS
 BEGIN
     INSERT INTO dbo.Actor_Contenido(id_contenido, id_actor)
     VALUES (@id_contenido, @id_actor)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Actor_Contenido @id_contenido INT,
@@ -570,7 +568,7 @@ BEGIN
     FROM dbo.Actor_Contenido
     WHERE id_contenido = @id_contenido
       AND id_actor = @id_actor
-END
+END;
 go
 
 /* Genero */
@@ -580,7 +578,7 @@ AS
 BEGIN
     INSERT INTO dbo.Genero(descripcion)
     VALUES (@descripcion)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Modificar_Genero @id_genero INT,
@@ -590,7 +588,7 @@ BEGIN
     UPDATE dbo.Genero
     SET descripcion = @descripcion
     WHERE id_genero = @id_genero
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Genero @id_genero INT
@@ -599,7 +597,7 @@ BEGIN
     DELETE
     FROM dbo.Genero
     WHERE id_genero = @id_genero
-END
+END;
 go
 
 /* Preferencia */
@@ -610,7 +608,7 @@ AS
 BEGIN
     INSERT INTO dbo.Preferencia(id_genero, id_cliente)
     VALUES (@id_genero, @id_cliente)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Preferencia @id_genero INT,
@@ -621,7 +619,7 @@ BEGIN
     FROM dbo.Preferencia
     WHERE id_genero = @id_genero
       AND id_cliente = @id_cliente
-END
+END;
 go
 
 /* Contenido */
@@ -635,7 +633,7 @@ AS
 BEGIN
     INSERT INTO dbo.Contenido(id_contenido, titulo, descripcion, url_imagen, clasificacion, mas_visto)
     VALUES (@id_contenido, @titulo, @descripcion, @url_imagen, @clasificacion, 0)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Modificar_Contenido @id_contenido INT,
@@ -653,7 +651,7 @@ BEGIN
         clasificacion = @clasificacion,
         mas_visto     = @mas_visto
     WHERE id_contenido = @id_contenido
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Contenido @id_contenido INT
@@ -662,22 +660,21 @@ BEGIN
     DELETE
     FROM dbo.Contenido
     WHERE id_contenido = @id_contenido
-END
+END;
 go
 
 /* Catalogo */
 
 CREATE OR ALTER PROCEDURE Agregar_Item_al_Catalogo @id_contenido INT,
-                                                   @id_plataforma INT,
+                                                   @id_plataforma VARCHAR(255),
                                                    @reciente BIT,
-                                                   @destacado BIT,
-                                                   @id_en_plataforma VARCHAR(255)
+                                                   @destacado BIT
 AS
 BEGIN
-    INSERT INTO dbo.Catalogo(id_contenido, id_plataforma, reciente, destacado, id_en_plataforma, fecha_de_alta,
+    INSERT INTO dbo.Catalogo(id_contenido, id_plataforma, reciente, destacado, fecha_de_alta,
                              fecha_de_baja)
-    VALUES (@id_contenido, @id_plataforma, @reciente, @destacado, @id_en_plataforma, GETDATE(), NULL)
-END
+    VALUES (@id_contenido, @id_plataforma, @reciente, @destacado, GETDATE(), NULL)
+END;
 go
 
 /* Clic */
@@ -690,7 +687,7 @@ AS
 BEGIN
     INSERT INTO dbo.Clic(id_cliente, id_publicidad, id_plataforma, id_contenido, fecha)
     VALUES (@id_cliente, @id_publicidad, @id_plataforma, @id_contenido, CURRENT_TIMESTAMP)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Contenido_mas_Visto
@@ -704,7 +701,7 @@ BEGIN
         AND DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
     GROUP BY id_contenido
     ORDER BY count(id_clic)
-END
+END;
 go
 
 /* Administrador */
@@ -716,7 +713,7 @@ AS
 BEGIN
     INSERT INTO dbo.Administrador(usuario, contraseña, email)
     VALUES (@usuario, @contraseña, @email)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Modificar_Administrador @id_administrador INT,
@@ -730,7 +727,7 @@ BEGIN
         contraseña = @contraseña,
         email      = @email
     WHERE id_administrador = @id_administrador
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Administrador @id_administrador INT
@@ -739,7 +736,7 @@ BEGIN
     DELETE
     FROM dbo.Administrador
     WHERE id_administrador = @id_administrador
-END
+END;
 go
 
 /* Clasificacion */
@@ -749,7 +746,7 @@ AS
 BEGIN
     INSERT INTO dbo.Clasificacion(descripcion)
     VALUES (@descripcion)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Modificar_Clasificacion @id_clasificacion INT,
@@ -759,7 +756,7 @@ BEGIN
     UPDATE dbo.Clasificacion
     SET descripcion = @descripcion
     WHERE id_clasificacion = @id_clasificacion
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Clasificacion @id_clasificacion INT
@@ -768,28 +765,28 @@ BEGIN
     DELETE
     FROM dbo.Clasificacion
     WHERE id_clasificacion = @id_clasificacion
-END
+END;
 go
 
 /* Estado_Reporte */
 
-CREATE OR ALTER PROCEDURE Crear_Estado_Reporte @id_estado SMALLINT,
+CREATE OR ALTER PROCEDURE Crear_Estado_Reporte @id_estado INT,
                                                @descripcion VARCHAR(255)
 AS
 BEGIN
     INSERT INTO dbo.Estado_Reporte(id_estado, descripcion)
     VALUES (@id_estado, @descripcion)
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Modificar_Estado_Reporte @id_estado SMALLINT,
+CREATE OR ALTER PROCEDURE Modificar_Estado_Reporte @id_estado INT,
                                                    @descripcion VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Estado_Reporte
     SET descripcion = @descripcion
     WHERE id_estado = @id_estado
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Estado_Reporte @id_estado INT
@@ -798,7 +795,7 @@ BEGIN
     DELETE
     FROM dbo.Estado_Reporte
     WHERE id_estado = @id_estado
-END
+END;
 go
 
 /* Reporte */
@@ -813,10 +810,10 @@ BEGIN
     SET @id_reporte = SCOPE_IDENTITY();
 
     SELECT @id_reporte AS id_reporte;
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Crear_Reporte_Plataforma @id_plataforma SMALLINT,
+CREATE OR ALTER PROCEDURE Crear_Reporte_Plataforma @id_plataforma INT,
                                                    @id_reporte INT OUTPUT
 AS
 BEGIN
@@ -826,7 +823,7 @@ BEGIN
     SET @id_reporte = SCOPE_IDENTITY();
 
     SELECT @id_reporte AS id_reporte;
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Finalizar_Reporte @id_reporte INT,
@@ -837,7 +834,7 @@ BEGIN
     SET total  = @total,
         estado = 1
     WHERE id_reporte = @id_reporte
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Enviar_Reporte @id_reporte INT
@@ -846,7 +843,7 @@ BEGIN
     UPDATE dbo.Reporte
     SET estado = 2
     WHERE id_reporte = @id_reporte
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Cancelar_Reporte @id_reporte INT
@@ -855,7 +852,7 @@ BEGIN
     UPDATE dbo.Reporte
     SET estado = -1
     WHERE id_reporte = @id_reporte
-END
+END;
 go
 
 /* Detalle_Reporte */
@@ -867,7 +864,7 @@ AS
 BEGIN
     INSERT INTO dbo.Detalle_Reporte(id_reporte, descripcion, cantidad_de_clics)
     VALUES (@id_reporte, @descripcion, @cantidad_de_clics)
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Modificar_Detalle_Reporte @id_reporte INT,
@@ -881,7 +878,7 @@ BEGIN
         descripcion       = @descripcion
     WHERE id_reporte = @id_reporte
       AND id_detalle = @id_detalle
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Eliminar_Detalle_Reporte @id_reporte INT,
@@ -892,7 +889,7 @@ BEGIN
     FROM dbo.Detalle_Reporte
     WHERE id_reporte = @id_reporte
       AND id_detalle = @id_detalle
-END
+END;
 go
 
 /* Tipo_de_Fee */
@@ -903,10 +900,10 @@ AS
 BEGIN
     INSERT INTO Tipo_Fee (tipo_de_fee, descripcion)
     VALUES (@tipo_de_fee, @descripcion);
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Editar_Tipo_de_Fee @id_tipo_de_fee SMALLINT,
+CREATE OR ALTER PROCEDURE Editar_Tipo_de_Fee @id_tipo_de_fee INT,
                                              @tipo_de_fee VARCHAR(1),
                                              @descripcion VARCHAR(255)
 AS
@@ -915,79 +912,79 @@ BEGIN
     SET tipo_de_fee = @tipo_de_fee,
         descripcion = @descripcion
     WHERE id_tipo_de_fee = @id_tipo_de_fee;
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Eliminar_Tipo_de_Fee @id_tipo_de_fee SMALLINT
+CREATE OR ALTER PROCEDURE Eliminar_Tipo_de_Fee @id_tipo_de_fee INT
 AS
 BEGIN
     DELETE
     FROM Tipo_Fee
     WHERE id_tipo_de_fee = @id_tipo_de_fee;
-END
+END;
 go
 
 /* Fee */
 
 CREATE OR ALTER PROCEDURE Crear_Fee @monto FLOAT,
-                                    @tipo_de_fee SMALLINT
+                                    @tipo_de_fee INT
 AS
 BEGIN
     INSERT INTO Fee (monto, fecha_alta, fecha_baja, tipo_de_fee)
     VALUES (@monto, GETDATE(), NULL, @tipo_de_fee);
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Editar_Fee @id_fee SMALLINT,
+CREATE OR ALTER PROCEDURE Editar_Fee @id_fee INT,
                                      @monto FLOAT,
-                                     @tipo_de_fee SMALLINT
+                                     @tipo_de_fee INT
 AS
 BEGIN
     UPDATE Fee
     SET monto       = @monto,
         tipo_de_fee = @tipo_de_fee
     WHERE id_fee = @id_fee;
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Eliminar_Fee @id_fee SMALLINT
+CREATE OR ALTER PROCEDURE Eliminar_Fee @id_fee INT
 AS
 BEGIN
     DELETE
     FROM Fee
     WHERE id_fee = @id_fee;
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Dar_de_Baja_Fee @id_fee SMALLINT
+CREATE OR ALTER PROCEDURE Dar_de_Baja_Fee @id_fee INT
 AS
 BEGIN
     UPDATE Fee
     SET fecha_baja = GETDATE()
     WHERE id_fee = @id_fee;
-END
+END;
 go
 
 /* Fee_Plataforma */
 
-CREATE OR ALTER PROCEDURE Crear_Fee_Plataforma @id_plataforma SMALLINT,
-                                               @id_fee SMALLINT
+CREATE OR ALTER PROCEDURE Crear_Fee_Plataforma @id_plataforma INT,
+                                               @id_fee INT
 AS
 BEGIN
     INSERT INTO Fee_Plataforma (id_plataforma, id_fee)
     VALUES (@id_plataforma, @id_fee);
-END
+END;
 go
 
-CREATE OR ALTER PROCEDURE Eliminar_Fee_Plataforma @id_plataforma SMALLINT,
-                                                  @id_fee SMALLINT
+CREATE OR ALTER PROCEDURE Eliminar_Fee_Plataforma @id_plataforma INT,
+                                                  @id_fee INT
 AS
 BEGIN
     DELETE
     FROM Fee_Plataforma
     WHERE id_plataforma = @id_plataforma
       AND id_fee = @id_fee;
-END
+END;
 go
 
 
@@ -1005,7 +1002,7 @@ BEGIN
       AND fecha BETWEEN DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)
         AND DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
     GROUP BY P.id_publicista, P.id_publicidad, P.codigo_publicidad
-END
+END;
 go
 
 /* POR CADA PUBLICISTA REPETIR EL SIGUIENTE CICLO*/
@@ -1020,7 +1017,7 @@ BEGIN
     SELECT nombre_de_fantasia, razón_social, token_de_servicio, url_api
     FROM dbo.Publicista
     WHERE id_publicista = @id_publicista
-END
+END;
 go
 
 /* PEGARLE A LA API DEL PUBLICISTA PARA CARGAR EL REPORTE */
@@ -1031,7 +1028,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Estadisticas_para_Plataformas
 AS
 BEGIN
-    SELECT Cc.id_plataforma, Cc.id_contenido, Co.id_en_plataforma, COUNT(id_clic) AS cantidad_de_clics
+    SELECT Cc.id_plataforma, Cc.id_contenido, COUNT(id_clic) AS cantidad_de_clics
     FROM dbo.Clic Cc
              JOIN dbo.Catalogo Co ON Cc.id_contenido = Co.id_contenido AND Cc.id_plataforma = Co.id_plataforma
     WHERE Cc.id_contenido IS NOT NULL
@@ -1039,8 +1036,8 @@ BEGIN
       AND Co.fecha_de_baja IS NULL
       AND Cc.fecha BETWEEN DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()) - 1, 0)
         AND DATEADD(MONTH, DATEDIFF(MONTH, 0, GETDATE()), 0)
-    GROUP BY Cc.id_plataforma, Cc.id_contenido, Co.id_en_plataforma
-END
+    GROUP BY Cc.id_plataforma, Cc.id_contenido
+END;
 go
 
 /* POR CADA PLATAFORMA DE STREAMING REPETIR EL SIGUIENTE CICLO*/
@@ -1055,7 +1052,7 @@ BEGIN
     SELECT nombre_de_fantasia, razón_social, token_de_servicio, url_api
     FROM dbo.Plataforma_de_Streaming
     WHERE id_plataforma = @id_plataforma
-END
+END;
 go
 
 /* PEGARLE A LA API DE PLATAFORMA PARA CARGAR EL REPORTE */
@@ -1096,7 +1093,7 @@ BEGIN
              JOIN dbo.Publicidad_Tipo_Banner ON Publicidad.id_publicidad = Publicidad_Tipo_Banner.id_publicidad
     WHERE fecha_de_alta <= @UltimoDiaMesAnterior
       AND fecha_de_baja >= @PrimerDiaMesAnterior
-END
+END;
 go
 
 /* Crear_Factura_Publicista  agrupar por id_publicista y crear una factura */
@@ -1108,7 +1105,7 @@ BEGIN
     FROM dbo.Costo_Banner
     WHERE id_tipo_banner = @id_tipo_banner
     ORDER BY fecha_alta DESC
-END
+END;
 go
 
 /* Crear_Detalle_Factura */
@@ -1126,7 +1123,7 @@ BEGIN
     FROM dbo.Federacion
     WHERE facturada = 0
     GROUP BY id_plataforma, tipo_transaccion
-END
+END;
 go
 
 /* Crear_Factura_Plataforma registro =  cobro  |  login = pago */
@@ -1140,7 +1137,7 @@ BEGIN
              JOIN dbo.Tipo_Fee tp ON f.tipo_de_fee = tp.id_tipo_de_fee
     WHERE fp.id_plataforma = @id_plataforma
       AND f.fecha_baja IS NULL
-END
+END;
 go
 
 /* Crear_Detalle_Factura */
@@ -1156,7 +1153,7 @@ BEGIN
     SET facturada = 1
     WHERE facturada = 0
       AND id_plataforma = @id_plataforma
-END
+END;
 go
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1171,7 +1168,7 @@ BEGIN
     FROM dbo.Federacion
     WHERE id_plataforma = @id_plataforma
       AND id_cliente = @id_cliente
-END
+END;
 go
 
 
@@ -1192,13 +1189,13 @@ BEGIN
                            FROM dbo.Transaccion
                            WHERE id_plataforma = @id_plataforma
                              AND id_cliente = @id_cliente)
-    SELECT IIF(COUNT(*) > 0, 1, 0) AS existe_federacion
+    SELECT codigo_de_transaccion
     FROM dbo.Transaccion
     WHERE id_plataforma = @id_plataforma
       AND id_cliente = @id_cliente
       AND fecha_baja IS NULL
       AND fecha_alta = @max_fecha_alta
-END
+END;
 go
 
 /* SI HAY UNA FEDERACION EN CURSO, IR DIRECTAMENTE AL PUNTO 2 */
@@ -1209,16 +1206,29 @@ BEGIN
     SELECT token_de_servicio
     FROM dbo.Plataforma_de_Streaming
     WHERE id_plataforma = @id_plataforma
-END
+END;
 go
 
 /* PEGARLE A LA API DE LA PLATAFORMA PARA OBTENER LA URL DE LOGIN Y EL CÓDIGO DE TRANSACCIÓN. */
 /* Comenzar_Federacion */
 /* PUNTO 2 -- PEGARLE A LA API PARA CONSULTAR EL TOKEN DEL USUARIO */
+
+CREATE OR ALTER PROCEDURE ObtenerUltimaTransaccion @id_cliente INT
+AS
+BEGIN
+    SELECT TOP 1 id_plataforma, codigo_de_transaccion
+    FROM dbo.Transaccion
+    WHERE id_cliente = @id_cliente
+      AND fecha_baja IS NOT NULL
+    ORDER BY fecha_alta DESC;
+END;
+go
+
 /* Finalizar_Federacion */
 
+
 /* ------------------------------------------------------------------------------------------------------------------ */
-/* ---------------------------------------- TERMINAR FEDERACIONES PENDIENTES ---------------------------------------- */
+/* ---------------------------------------- TERMINAR FEDERACIONES PEND;IENTES ---------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 CREATE OR ALTER PROCEDURE Consultar_Federaciones_Pendientes
@@ -1228,10 +1238,10 @@ BEGIN
     FROM dbo.Transaccion
     WHERE token IS NULL
       AND fecha_baja IS NULL
-END
+END;
 go
 
-/* POR CADA FEDERACION PENDIENTE */
+/* POR CADA FEDERACION PEND;IENTE */
 
 /* Obtener_Token_de_Servicio_de_Plataforma */
 /* PEGARLE A LA API DE LA PLATAFORMA PARA OBTENER LA URL DE LOGIN Y EL CÓDIGO DE TRANSACCIÓN. */
@@ -1244,9 +1254,9 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Catalogo_Actual
 AS
 BEGIN
-    SELECT id_plataforma, id_contenido, reciente, destacado, id_en_plataforma, fecha_de_alta, fecha_de_baja
+    SELECT id_plataforma, id_contenido, reciente, destacado, fecha_de_alta, fecha_de_baja
     FROM dbo.Catalogo
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Plataformas_de_Streaming_Activas
@@ -1255,7 +1265,7 @@ BEGIN
     SELECT id_plataforma, valido
     FROM dbo.Plataforma_de_Streaming
     WHERE valido = 1
-END
+END;
 go
 
 /* POR CADA PLATAFORMA DE STREAMING VALIDA */
@@ -1273,7 +1283,7 @@ BEGIN
     SET fecha_de_baja = CURRENT_TIMESTAMP
     WHERE id_contenido = @id_contenido
       AND id_plataforma = @id_plataforma
-END
+END;
 go
 
 /* VER CUALES SON LAS PELÍCULAS QUE ESTAN EN LA PLATAFORMA DE STREAMING PERO NO EN STREAMING STUDIO*/
@@ -1287,7 +1297,7 @@ BEGIN
     SET fecha_de_alta = CURRENT_TIMESTAMP
     WHERE id_contenido = @id_contenido
       AND id_plataforma = @id_plataforma
-END
+END;
 go
 
 /* CON EL CONTENIDO RESTANTE */
@@ -1298,7 +1308,7 @@ BEGIN
     SELECT IIF(COUNT(*) > 0, 1, 0) as contenido
     FROM dbo.Contenido Co
     WHERE Co.id_contenido = @id_contenido
-END
+END;
 go
 
 /* Crear_Contenido */
@@ -1317,7 +1327,7 @@ BEGIN
         destacado = @destacado
     WHERE id_contenido = @id_contenido
       AND id_plataforma = @id_plataforma
-END
+END;
 go
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1338,7 +1348,7 @@ BEGIN
            url_de_publicidad
     FROM dbo.Publicidad
     WHERE fecha_de_baja >= CONVERT(DATE, GETDATE())
-END
+END;
 go
 
 /* CONVERTIR AMBOS RESULTADOS EN HASHSET Y VER CUALES SON LAS PUBLICIDADES QUE ESTAN EN STREAMING STUDIO Y EN EL
@@ -1354,7 +1364,7 @@ BEGIN
     SET url_de_imagen     = @url_de_imagen,
         url_de_publicidad = @url_de_publicidad
     WHERE id_publicidad = @id_publicidad
-END
+END;
 go
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1367,7 +1377,7 @@ BEGIN
     SELECT id_contenido
     FROM dbo.Contenido
     WHERE mas_visto = 1
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Contenido_mas_Visto_del_Mes_Anterior
@@ -1381,7 +1391,7 @@ BEGIN
       AND id_publicidad IS NULL
     GROUP BY id_contenido
     ORDER BY COUNT(id_clic) DESC
-END
+END;
 go
 
 /* CONVERTIR AMBOS RESULTADOS EN HASHSET Y VER CUALES SON LOS CONTENIDOS MAS VISTOS DEL MES ANTERIOR QUE NO ESTÁN
@@ -1393,7 +1403,7 @@ BEGIN
     UPDATE dbo.Contenido
     SET mas_visto = 1
     WHERE id_contenido = @id_contenido
-END
+END;
 go
 
 /* VER CUALES SON LOS CONTENIDOS MAS VISTOS ACTUALES QUE NO ESTÁN DENTRO DE LOS CONTENIDOS MAS VISTOS ACTUALES */
@@ -1404,7 +1414,7 @@ BEGIN
     UPDATE dbo.Contenido
     SET mas_visto = 0
     WHERE id_contenido = @id_contenido
-END
+END;
 go
 
 
@@ -1422,7 +1432,7 @@ BEGIN
     WHERE CONVERT(DATE, fecha_de_baja, 23) > CONVERT(DATE, CURRENT_TIMESTAMP, 23)
       AND CONVERT(DATE, fecha_de_alta, 23) <= CONVERT(DATE, CURRENT_TIMESTAMP, 23)
       AND tb.fecha_baja IS NULL
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Contenido_Destacado @id_cliente INT = NULL
@@ -1441,7 +1451,7 @@ BEGIN
             WHERE Ca.destacado = 1
               AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
               AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END
+        END;
     ELSE
         BEGIN
             SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
@@ -1450,8 +1460,8 @@ BEGIN
             WHERE Ca.destacado = 1
               AND Ca.id_plataforma IN (SELECT id_plataforma FROM dbo.Plataforma_de_Streaming WHERE valido = 1)
               AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END
-END
+        END;
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Contenido_Reciente @id_cliente INT = NULL
@@ -1470,7 +1480,7 @@ BEGIN
             WHERE reciente = 1
               AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
               AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END
+        END;
     ELSE
         BEGIN
             SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
@@ -1479,8 +1489,8 @@ BEGIN
             WHERE reciente = 1
               AND Ca.id_plataforma IN (SELECT id_plataforma FROM dbo.Plataforma_de_Streaming WHERE valido = 1)
               AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END
-END
+        END;
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Contenido_mas_Visto @id_cliente INT = NULL
@@ -1499,7 +1509,7 @@ BEGIN
             WHERE mas_visto = 1
               AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
               AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END
+        END;
     ELSE
         BEGIN
             SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
@@ -1508,8 +1518,8 @@ BEGIN
             WHERE mas_visto = 1
               AND Ca.id_plataforma IN (SELECT id_plataforma FROM dbo.Plataforma_de_Streaming WHERE valido = 1)
               AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END
-END
+        END;
+END;
 go
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1553,7 +1563,7 @@ BEGIN
                                     JOIN Genero G ON Gc.id_genero = G.id_genero
                            WHERE Gc.id_contenido = Ca.id_contenido
                              AND G.descripcion IN (SELECT value FROM STRING_SPLIT(@genero, ','))))
-        END
+        END;
     ELSE
         BEGIN
             SELECT Ca.id_contenido, Co.url_imagen, Co.titulo
@@ -1577,8 +1587,8 @@ BEGIN
                                     JOIN Genero G ON Gc.id_genero = G.id_genero
                            WHERE Gc.id_contenido = Ca.id_contenido
                              AND G.descripcion IN (SELECT value FROM STRING_SPLIT(@genero, ','))))
-        END
-END
+        END;
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Informacion_de_Contenido @id_contenido INT
@@ -1587,7 +1597,7 @@ BEGIN
     SELECT Co.url_imagen, Co.titulo, Co.descripcion
     FROM dbo.Contenido Co
     WHERE Co.id_contenido = @id_contenido
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Generos @id_contenido INT
@@ -1598,7 +1608,7 @@ BEGIN
              JOIN dbo.Genero_Contenido Gc ON Co.id_contenido = Gc.id_contenido
              JOIN dbo.Genero G ON Gc.id_genero = G.id_genero
     WHERE Co.id_contenido = @id_contenido
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Directores @id_contenido INT
@@ -1609,7 +1619,7 @@ BEGIN
              JOIN dbo.Director_Contenido Dc ON Co.id_contenido = Dc.id_contenido
              JOIN dbo.Director D ON Dc.id_director = D.id_director
     WHERE Co.id_contenido = @id_contenido
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Actores @id_contenido INT
@@ -1620,7 +1630,7 @@ BEGIN
              JOIN dbo.Actor_Contenido Ac ON Co.id_contenido = Ac.id_contenido
              JOIN dbo.Actor A ON Ac.id_actor = A.id_actor
     WHERE Co.id_contenido = @id_contenido
-END
+END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Informacion_de_Plataforma @id_cliente INT = NULL,
@@ -1634,23 +1644,23 @@ BEGIN
                                                       LEFT JOIN dbo.Federacion F ON P.id_plataforma = F.id_plataforma
                                              WHERE F.id_cliente = @id_cliente
                                                AND p.valido = 1)
-            SELECT Ps.id_plataforma, Ps.url_imagen, Ca.id_en_plataforma
+            SELECT Ps.id_plataforma, Ps.url_imagen
             FROM dbo.Plataforma_de_Streaming Ps
                      JOIN dbo.Catalogo Ca ON Ps.id_plataforma = Ca.id_plataforma
             WHERE id_contenido = @id_contenido
               AND Ps.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
               AND (Ca.fecha_de_baja IS NOT NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END
+        END;
     ELSE
         BEGIN
-            SELECT Ps.id_plataforma, Ps.url_imagen, Ca.id_en_plataforma
+            SELECT Ps.id_plataforma, Ps.url_imagen
             FROM dbo.Plataforma_de_Streaming Ps
                      JOIN dbo.Catalogo Ca ON Ps.id_plataforma = Ca.id_plataforma
             WHERE id_contenido = @id_contenido
               AND Ps.id_plataforma IN (SELECT id_plataforma FROM dbo.Plataforma_de_Streaming WHERE valido = 1)
               AND (Ca.fecha_de_baja IS NOT NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END
-END
+        END;
+END;
 go
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -1668,11 +1678,11 @@ go
 
 -- prueba para controller
 
-CREATE OR ALTER PROCEDURE Obtener_Tipo_Fee @id_tipo_de_fee SMALLINT
+CREATE OR ALTER PROCEDURE Obtener_Tipo_Fee @id_tipo_de_fee INT
 AS
 BEGIN
     SELECT *
     FROM dbo.Tipo_Fee
     WHERE id_tipo_de_fee = @id_tipo_de_fee
-END
+END;
 go

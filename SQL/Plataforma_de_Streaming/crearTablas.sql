@@ -1,5 +1,10 @@
 USE Plataforma_de_Streaming;
 
+DROP TABLE IF EXISTS dbo.Autorizacion
+DROP TABLE IF EXISTS dbo.Transaccion
+DROP TABLE IF EXISTS dbo.Sesion
+DROP TABLE IF EXISTS dbo.Partner
+DROP TABLE IF EXISTS dbo.Cliente_Usuario
 DROP TABLE IF EXISTS dbo.Actor_Contenido
 DROP TABLE IF EXISTS dbo.Actor
 DROP TABLE IF EXISTS dbo.Director_Contenido
@@ -10,52 +15,156 @@ DROP TABLE IF EXISTS dbo.Contenido
 DROP TABLE IF EXISTS dbo.Clasificacion
 DROP TABLE IF EXISTS dbo.Factura
 DROP TABLE IF EXISTS dbo.Reporte
-DROP TABLE IF EXISTS dbo.Partner
-DROP TABLE IF EXISTS dbo.Sesion
-DROP TABLE IF EXISTS dbo.Autorizacion
-DROP TABLE IF EXISTS dbo.Transaccion
-DROP TABLE IF EXISTS dbo.Cliente_Usuario
 
-CREATE TABLE [Reporte]
+CREATE TABLE [Director]
 (
-    [id_reporte]  INT IDENTITY (1,1) PRIMARY KEY,
-    [total]       INT,
-    [fecha]       DATE         NOT NULL,
-    [descripcion] VARCHAR(255) NOT NULL
+    [id_director] INT IDENTITY (1,1),
+    [nombre]      VARCHAR(255) NOT NULL,
+    [apellido]    VARCHAR(255) NOT NULL,
+    PRIMARY KEY ([id_director])
 );
 
-CREATE TABLE [Factura]
+CREATE TABLE [Clasificacion]
 (
-    [id_factura]  INT IDENTITY (1,1) PRIMARY KEY,
-    [total]       FLOAT,
-    [fecha]       DATE         NOT NULL,
-    [descripcion] VARCHAR(255) NOT NULL
+    [id_clasificacion] INT IDENTITY (1,1),
+    [descripcion]      VARCHAR(255) NOT NULL,
+    PRIMARY KEY ([id_clasificacion])
+);
+
+CREATE TABLE [Contenido]
+(
+    [id_contenido]  VARCHAR(255),
+    [titulo]        VARCHAR(255) NOT NULL,
+    [descripcion]   VARCHAR(255) NOT NULL,
+    [url_imagen]    VARCHAR(255) NOT NULL,
+    [clasificacion] INT          NOT NULL,
+    [reciente]      BIT          NOT NULL,
+    [destacado]     BIT          NOT NULL,
+    [fecha_alta]    DATETIME     NOT NULL,
+    [fecha_baja]    DATETIME,
+    PRIMARY KEY ([id_contenido]),
+    CONSTRAINT [FK_Contenido.clasificacion]
+        FOREIGN KEY ([clasificacion])
+            REFERENCES [Clasificacion] ([id_clasificacion])
+);
+
+CREATE TABLE [Director_Contenido]
+(
+    [id_contenido] VARCHAR(255) NOT NULL,
+    [id_director]  INT          NOT NULL,
+    PRIMARY KEY ([id_contenido], [id_director]),
+    CONSTRAINT [FK_Director_Contenido.id_contenido]
+        FOREIGN KEY ([id_contenido])
+            REFERENCES [Contenido] ([id_contenido]),
+    CONSTRAINT [FK_Director_Contenido.id_director]
+        FOREIGN KEY ([id_director])
+            REFERENCES [Director] ([id_director])
 );
 
 CREATE TABLE [Partner]
 (
-    [id_partner]        INT IDENTITY (1,1) PRIMARY KEY,
-    [nombre]            VARCHAR(255) NOT NULL,
-    [token_de_servicio] VARCHAR(255) NOT NULL
+    [id_partner]        INT IDENTITY (1,1) NOT NULL,
+    [nombre]            VARCHAR(255)       NOT NULL,
+    [token_de_servicio] VARCHAR(255)       NOT NULL,
+    PRIMARY KEY ([id_partner])
 );
 
 CREATE TABLE [Cliente_Usuario]
 (
-    [id_cliente] INT IDENTITY (1,1) PRIMARY KEY,
-    [usuario]    VARCHAR(255) NOT NULL,
-    [contraseña] VARCHAR(255) NOT NULL,
-    [email]      VARCHAR(255) NOT NULL,
-    [nombre]     VARCHAR(255) NOT NULL,
-    [apellido]   VARCHAR(255) NOT NULL,
-    [valido]     BIT          NOT NULL
+    [id_cliente] INT IDENTITY (1,1) NOT NULL,
+    [usuario]    VARCHAR(255)       NOT NULL,
+    [contraseña] VARCHAR(255)       NOT NULL,
+    [email]      VARCHAR(255)       NOT NULL,
+    [nombre]     VARCHAR(255)       NOT NULL,
+    [apellido]   VARCHAR(255)       NOT NULL,
+    [valido]     BIT                NOT NULL,
+    PRIMARY KEY ([id_cliente])
+);
+
+CREATE INDEX [UK] ON [Cliente_Usuario] ([email]);
+
+CREATE TABLE [Sesion]
+(
+    [id_cliente]        INT          NOT NULL,
+    [sesion]            VARCHAR(255) NOT NULL,
+    [fecha_de_creacion] DATETIME     NOT NULL,
+    [fecha_de_uso]      DATETIME,
+    [id_partner]        INT          NOT NULL,
+    PRIMARY KEY ([id_cliente], [sesion]),
+    CONSTRAINT [FK_Sesion.id_partner]
+        FOREIGN KEY ([id_partner])
+            REFERENCES [Partner] ([id_partner]),
+    CONSTRAINT [FK_Sesion.id_cliente]
+        FOREIGN KEY ([id_cliente])
+            REFERENCES [Cliente_Usuario] ([id_cliente])
+);
+
+CREATE TABLE [Reporte]
+(
+    [id_reporte]  INT IDENTITY (1,1) NOT NULL,
+    [total]       INT                NOT NULL,
+    [fecha]       DATE               NOT NULL,
+    [descripcion] VARCHAR(MAX)       NOT NULL,
+    PRIMARY KEY ([id_reporte])
+);
+
+CREATE TABLE [Genero]
+(
+    [id_genero]   INT IDENTITY (1,1) NOT NULL,
+    [descripcion] VARCHAR(255)       NOT NULL,
+    PRIMARY KEY ([id_genero])
 );
 
 CREATE TABLE [Transaccion]
 (
     [codigo_de_transaccion] VARCHAR(255),
-    [fecha_de_alta]         DATETIME NOT NULL,
+    [fecha_de_alta]         DATETIME   NOT NULL,
     [url_de_redireccion]    VARCHAR(255),
+    [tipo_de_transaccion]   VARCHAR(1) NOT NULL,
     PRIMARY KEY ([codigo_de_transaccion])
+);
+
+CREATE TABLE [Factura]
+(
+    [id_factura]  INT IDENTITY (1,1) NOT NULL,
+    [total]       FLOAT              NOT NULL,
+    [fecha]       DATE               NOT NULL,
+    [descripcion] VARCHAR(MAX)       NOT NULL,
+    PRIMARY KEY ([id_factura])
+);
+
+CREATE TABLE [Actor]
+(
+    [id_actor] INT IDENTITY (1,1) NOT NULL,
+    [nombre]   VARCHAR(255)       NOT NULL,
+    [apellido] VARCHAR(255)       NOT NULL,
+    PRIMARY KEY ([id_actor])
+);
+
+CREATE TABLE [Actor_Contenido]
+(
+    [id_contenido] VARCHAR(255) NOT NULL,
+    [id_actor]     INT          NOT NULL,
+    PRIMARY KEY ([id_contenido], [id_actor]),
+    CONSTRAINT [FK_Actor_Contenido.id_actor]
+        FOREIGN KEY ([id_actor])
+            REFERENCES [Actor] ([id_actor]),
+    CONSTRAINT [FK_Actor_Contenido.id_contenido]
+        FOREIGN KEY ([id_contenido])
+            REFERENCES [Contenido] ([id_contenido])
+);
+
+CREATE TABLE [Genero_Contenido]
+(
+    [id_contenido] VARCHAR(255) NOT NULL,
+    [id_genero]    INT          NOT NULL,
+    PRIMARY KEY ([id_contenido], [id_genero]),
+    CONSTRAINT [FK_Genero_Contenido.id_contenido]
+        FOREIGN KEY ([id_contenido])
+            REFERENCES [Contenido] ([id_contenido]),
+    CONSTRAINT [FK_Genero_Contenido.id_genero]
+        FOREIGN KEY ([id_genero])
+            REFERENCES [Genero] ([id_genero])
 );
 
 CREATE TABLE [Autorizacion]
@@ -74,112 +183,5 @@ CREATE TABLE [Autorizacion]
             REFERENCES [Cliente_Usuario] ([id_cliente])
 );
 
+CREATE INDEX [UK] ON [Autorizacion] ([token]);
 
-CREATE TABLE [Sesion]
-(
-    [id_cliente]          INT          NOT NULL,
-    [sesion]              VARCHAR(255) NOT NULL,
-    [fecha_de_creacion]   DATETIME     NOT NULL,
-    [fecha_de_expiracion] DATETIME     NOT NULL,
-    [fecha_de_uso]        DATETIME,
-    PRIMARY KEY ([id_cliente], [sesion]),
-    CONSTRAINT [FK_Sesion.id_cliente]
-        FOREIGN KEY ([id_cliente])
-            REFERENCES [Cliente_Usuario] ([id_cliente])
-);
-
-CREATE TABLE [Clasificacion]
-(
-    [id_clasificacion] SMALLINT IDENTITY (1,1) PRIMARY KEY,
-    [descripcion]      VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE [Contenido]
-(
-    [id_contenido]        INT IDENTITY (1,1) PRIMARY KEY,
-    [codigo_de_contenido] VARCHAR(255) NOT NULL,
-    [titulo]              VARCHAR(255) NOT NULL,
-    [descripcion]         VARCHAR(255) NOT NULL,
-    [url_imagen]          VARCHAR(255) NOT NULL,
-    [clasificacion]       SMALLINT     NOT NULL,
-    [reciente]            BIT          NOT NULL,
-    [destacado]           BIT          NOT NULL,
-    [fecha_alta]          DATETIME     NOT NULL,
-    [fecha_baja]          DATETIME,
-    CONSTRAINT [FK_Contenido.Clasificacion]
-        FOREIGN KEY ([clasificacion])
-            REFERENCES [Clasificacion] ([id_clasificacion])
-            ON UPDATE CASCADE
-            ON DELETE CASCADE
-);
-
-CREATE TABLE [Genero]
-(
-    [id_genero]   INT IDENTITY (1,1) PRIMARY KEY,
-    [descripcion] VARCHAR(255) NOT NULL,
-);
-
-CREATE TABLE [Genero_Contenido]
-(
-    [id_contenido] INT NOT NULL,
-    [id_genero]    INT NOT NULL,
-    PRIMARY KEY ([id_contenido], [id_genero]),
-    CONSTRAINT [FK_Genero_Contenido.Genero]
-        FOREIGN KEY ([id_genero])
-            REFERENCES [Genero] ([id_genero])
-            ON UPDATE CASCADE
-            ON DELETE CASCADE,
-    CONSTRAINT [FK_Genero_Contenido.Contenido]
-        FOREIGN KEY ([id_contenido])
-            REFERENCES [Contenido] ([id_contenido])
-            ON UPDATE CASCADE
-            ON DELETE CASCADE
-);
-
-CREATE TABLE [Actor]
-(
-    [id_actor] INT IDENTITY (1,1) PRIMARY KEY,
-    [nombre]   VARCHAR(255) NOT NULL,
-    [apellido] VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE [Actor_Contenido]
-(
-    [id_contenido] INT NOT NULL,
-    [id_actor]     INT NOT NULL,
-    PRIMARY KEY ([id_contenido], [id_actor]),
-    CONSTRAINT [FK_Actor_Contenido.Contenido]
-        FOREIGN KEY ([id_contenido])
-            REFERENCES [Contenido] ([id_contenido])
-            ON UPDATE CASCADE
-            ON DELETE CASCADE,
-    CONSTRAINT [FK_Actor_Contenido.Actor]
-        FOREIGN KEY ([id_actor])
-            REFERENCES [Actor] ([id_actor])
-            ON UPDATE CASCADE
-            ON DELETE CASCADE
-);
-
-CREATE TABLE [Director]
-(
-    [id_director] INT IDENTITY (1,1) PRIMARY KEY,
-    [nombre]      VARCHAR(255) NOT NULL,
-    [apellido]    VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE [Director_Contenido]
-(
-    [id_contenido] INT NOT NULL,
-    [id_director]  INT NOT NULL,
-    PRIMARY KEY ([id_contenido], [id_director]),
-    CONSTRAINT [FK_Director_Contenido.Contenido]
-        FOREIGN KEY ([id_contenido])
-            REFERENCES [Contenido] ([id_contenido])
-            ON UPDATE CASCADE
-            ON DELETE CASCADE,
-    CONSTRAINT [FK_Director_Contenido.Director]
-        FOREIGN KEY ([id_director])
-            REFERENCES [Director] ([id_director])
-            ON UPDATE CASCADE
-            ON DELETE CASCADE
-);

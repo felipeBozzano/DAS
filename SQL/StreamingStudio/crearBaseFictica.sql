@@ -75,58 +75,58 @@ go
 
 -- Crear 8 contenidos
 INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, clasificacion, mas_visto)
-VALUES (101,'Pelicula1', N'Descripción de Pelicula1', 'url_imagen1.jpg', 2, 0),
-       (102,'Serie1', N'Descripción de Serie1', 'url_imagen2.jpg', 1, 1),
-       (103,'Pelicula2', N'Descripción de Pelicula2', 'url_imagen3.jpg', 2, 0),
-       (104,'Serie2', N'Descripción de Serie2', 'url_imagen4.jpg', 1, 1),
-       (105,'Pelicula3', N'Descripción de Pelicula3', 'url_imagen5.jpg', 2, 0),
-       (106,'Serie3', N'Descripción de Serie3', 'url_imagen6.jpg', 1, 0),
-       (107,'Pelicula4', N'Descripción de Pelicula4', 'url_imagen7.jpg', 2, 1),
-       (108,'Serie4', N'Descripción de Serie4', 'url_imagen8.jpg', 1, 0);
+VALUES ('P-1','Pelicula1', N'Descripción de Pelicula1', 'url_imagen1.jpg', 2, 0),
+       ('S-1','Serie1', N'Descripción de Serie1', 'url_imagen2.jpg', 1, 1),
+       ('P-2','Pelicula2', N'Descripción de Pelicula2', 'url_imagen3.jpg', 2, 0),
+       ('S-2','Serie2', N'Descripción de Serie2', 'url_imagen4.jpg', 1, 1),
+       ('P-3','Pelicula3', N'Descripción de Pelicula3', 'url_imagen5.jpg', 2, 0),
+       ('S-3','Serie3', N'Descripción de Serie3', 'url_imagen6.jpg', 1, 0),
+       ('P-4','Pelicula4', N'Descripción de Pelicula4', 'url_imagen7.jpg', 2, 1),
+       ('S-4','Serie4', N'Descripción de Serie4', 'url_imagen8.jpg', 1, 0);
 go
 
 -- Asignar directores a contenidos en Director_Contenido
 INSERT INTO Director_Contenido (id_contenido, id_director)
-VALUES (101, 1),
-       (101, 2),
-       (102, 3),
-       (102, 4),
-       (103, 5),
-       (104, 1),
-       (105, 2),
-       (106, 3),
-       (107, 4),
-       (108, 5);
+VALUES ('P-1', 1),
+       ('P-1', 2),
+       ('S-1', 3),
+       ('S-1', 4),
+       ('P-2', 5),
+       ('S-2', 1),
+       ('P-3', 2),
+       ('S-3', 3),
+       ('P-4', 4),
+       ('S-4', 5);
 go
 
 -- Asignar actores a contenidos en Actor_Contenido
 INSERT INTO Actor_Contenido (id_contenido, id_actor)
-VALUES (101, 1),
-       (101, 2),
-       (102, 3),
-       (102, 4),
-       (103, 5),
-       (104, 6),
-       (105, 7),
-       (106, 8),
-       (107, 1),
-       (108, 2)
+VALUES ('P-1', 1),
+       ('P-1', 2),
+       ('S-1', 3),
+       ('S-1', 4),
+       ('P-2', 5),
+       ('S-2', 6),
+       ('P-3', 7),
+       ('S-3', 8),
+       ('P-4', 1),
+       ('S-4', 2)
 go
 
 -- Asignar generos a contenidos en Genero_Contenido
 INSERT INTO Genero_Contenido (id_contenido, id_genero)
-VALUES (101, 1),
-       (101, 3),
-       (102, 2),
-       (103, 3),
-       (103, 2),
-       (104, 1),
-       (105, 2),
-       (106, 3),
-       (106, 1),
-       (107, 1),
-       (108, 2),
-       (108, 3);
+VALUES ('P-1', 1),
+       ('P-1', 3),
+       ('S-1', 2),
+       ('P-2', 3),
+       ('P-2', 2),
+       ('S-2', 1),
+       ('P-3', 2),
+       ('S-3', 3),
+       ('S-3', 1),
+       ('P-4', 1),
+       ('S-4', 2),
+       ('S-4', 3);
 go
 
 -- Crear 3 Plataformas de Streaming
@@ -140,23 +140,23 @@ VALUES ('Plataforma1', N'Razón Social 1', 'https://www.urlimagen1.com/imagenes/
 go
 
 -- Llenar Catálogo
-INSERT INTO Catalogo (id_contenido, id_plataforma, reciente, destacado, id_en_plataforma, fecha_de_alta, fecha_de_baja)
+INSERT INTO Catalogo (id_contenido, id_plataforma, reciente, destacado, fecha_de_alta, fecha_de_baja)
 VALUES
     -- Plataforma 1
-    (101, 1, 1, 1, 'P1_C1', '2024-03-10 00:14:47.770', NULL),
-    (102, 1, 1, 0, 'S1_C2', '2024-03-10 00:14:47.770', NULL),
-    (103, 1, 0, 1, 'P2_C1', '2024-03-10 00:14:47.770', NULL),
-    (104, 1, 0, 0, 'S2_C2', '2024-03-10 00:14:47.770', '2024-03-11 20:34:12'),
+    ('P-1', 1, 1, 1, '2024-03-10 00:14:47.770', NULL),
+    ('S-1', 1, 1, 0, '2024-03-10 00:14:47.770', NULL),
+    ('P-2', 1, 0, 1, '2024-03-10 00:14:47.770', NULL),
+    ('S-2', 1, 0, 0, '2024-03-10 00:14:47.770', '2024-03-11 20:34:12'),
     -- Plataforma 2
-    (105, 2, 1, 1, 'P2_C1', '2024-03-10 00:14:47.770', NULL),
-    (106, 2, 1, 0, 'S3_C2', '2024-03-10 00:14:47.770', NULL),
-    (107, 2, 0, 1, 'P4_C1', '2024-03-10 00:14:47.770', NULL),
-    (108, 2, 0, 0, 'S4_C2', '2024-03-10 00:14:47.770', NULL),
+    ('P-3', 2, 1, 1, '2024-03-10 00:14:47.770', NULL),
+    ('S-3', 2, 1, 0, '2024-03-10 00:14:47.770', NULL),
+    ('P-4', 2, 0, 1, '2024-03-10 00:14:47.770', NULL),
+    ('S-4', 2, 0, 0, '2024-03-10 00:14:47.770', NULL),
     -- Plataforma 3
-    (101, 3, 1, 1, 'P1_C3', '2024-03-10 00:14:47.770', '2024-03-11 20:34:38'),
-    (102, 3, 1, 0, 'S1_C4', '2024-03-10 00:14:47.770', NULL),
-    (105, 3, 0, 1, 'P3_C1', '2024-03-10 00:14:47.770', NULL),
-    (106, 3, 0, 0, 'S3_C2', '2024-03-10 00:14:47.770', NULL);
+    ('P-1', 3, 1, 1, '2024-03-10 00:14:47.770', '2024-03-11 20:34:38'),
+    ('S-1', 3, 1, 0, '2024-03-10 00:14:47.770', NULL),
+    ('P-3', 3, 0, 1, '2024-03-10 00:14:47.770', NULL),
+    ('S-3', 3, 0, 0, '2024-03-10 00:14:47.770', NULL);
 go
 
 -- Insertar los tipos de usuario "Registrado" y "Nuevo"
@@ -265,14 +265,14 @@ VALUES (1, 1, NULL, NULL, '2024-03-20 00:14:47.940'),
        (5, 6, NULL, NULL, '2024-03-10 00:14:47.940'),
        (5, 6, NULL, NULL, '2024-03-10 00:14:47.940'),
        (5, 7, NULL, NULL, '2024-03-10 00:14:47.940'),
-       (6, NULL, 1, 101, '2024-03-20 00:14:47.940'),
-       (7, NULL, 1, 103, '2024-03-03 00:14:47.940'),
-       (7, NULL, 2, 105, '2024-03-15 00:14:47.940'),
-       (8, NULL, 2, 107, '2024-02-01 00:14:47.940'),
-       (8, NULL, 1, 103, '2024-03-23 00:14:47.940'),
-       (8, NULL, 3, 102, '2024-03-10 00:14:47.940'),
-       (9, NULL, 3, 105, '2024-03-10 00:14:47.940'),
-       (10, NULL, 3, 106, '2024-03-10 00:14:47.940'),
-       (10, NULL, 2, 106, '2024-04-10 00:14:47.940'),
-       (10, NULL, 2, 106, '2024-03-10 00:14:47.940');
+       (6, NULL, 1, 'P-1', '2024-03-20 00:14:47.940'),
+       (7, NULL, 1, 'P-2', '2024-03-03 00:14:47.940'),
+       (7, NULL, 2, 'P-3', '2024-03-15 00:14:47.940'),
+       (8, NULL, 2, 'P-4', '2024-02-01 00:14:47.940'),
+       (8, NULL, 1, 'P-2', '2024-03-23 00:14:47.940'),
+       (8, NULL, 3, 'S-1', '2024-03-10 00:14:47.940'),
+       (9, NULL, 3, 'P-3', '2024-03-10 00:14:47.940'),
+       (10, NULL, 3, 'S-3', '2024-03-10 00:14:47.940'),
+       (10, NULL, 2, 'S-3', '2024-04-10 00:14:47.940'),
+       (10, NULL, 2, 'S-3', '2024-03-10 00:14:47.940');
 go
