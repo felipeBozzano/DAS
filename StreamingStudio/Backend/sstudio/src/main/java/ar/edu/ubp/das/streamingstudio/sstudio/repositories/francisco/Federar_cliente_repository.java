@@ -94,7 +94,7 @@ public class Federar_cliente_repository {
         respuesta = new HashMap<>();
         AbstractConnector conector = conectorFactory.crearConector("REST");
         Map<String, String> body = new HashMap<>();
-        body.put("url", "https://localhost:8080/ss/terminar_federacion");
+        body.put("url", "https://localhost:8080/ss/usuario/{id_cliente}/terminar_federacion/{id_plataforma}");
         body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
         FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/federar", body, "FederacionBean");
 
@@ -103,7 +103,7 @@ public class Federar_cliente_repository {
                 .addValue("id_cliente", id_cliente)
                 .addValue("codigo_de_transaccion", bean.getCodigoTransaccion())
                 .addValue("url_login_registro_plataforma", bean.getUrl())
-                .addValue("url_redireccion_propia", "https://localhost:8080/ss/terminar_federacion")
+                .addValue("url_redireccion_propia", "https://localhost:8080/ss/usuario/{id_cliente}/terminar_federacion/{id_plataforma}")
                 .addValue("tipo_transaccion", tipo_transaccion);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Comenzar_Federacion")
@@ -117,13 +117,13 @@ public class Federar_cliente_repository {
     }
 
     @Transactional
-    public Map<String, String> finalizarFederacion(int id_plataforma, int id_cliente, String codigo_de_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public Map<String, String> finalizarFederacion(int id_plataforma, int id_cliente, String codigo_de_transaccion, int id_cliente_plataforma) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         respuesta = new HashMap<>();
         AbstractConnector conector = conectorFactory.crearConector("REST");
         Map<String, String> body = new HashMap<>();
         body.put("codigo_transaccion", codigo_de_transaccion);
         body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
-        FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/obtener_token", body, "FederacionBean");
+        FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/usuario/{id_cliente_plataforma}/obtener_token", body, "FederacionBean");
 
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
