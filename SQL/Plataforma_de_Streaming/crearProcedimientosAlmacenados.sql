@@ -1,5 +1,4 @@
-USE
-    Plataforma_de_Streaming;
+USE Plataforma_de_Streaming;
 
 /* Cliente_Usuario */
 
@@ -65,11 +64,13 @@ go
 
 /* Transaccion */
 
-CREATE OR ALTER PROCEDURE Crear_Transaccion @url_de_redireccion VARCHAR(255)
+CREATE OR ALTER PROCEDURE Crear_Transaccion @codigo_de_transaccion VARCHAR(255),
+                                            @url_de_redireccion VARCHAR(255),
+                                            @tipo_de_transaccion VARCHAR(1)
 AS
 BEGIN
-    INSERT INTO dbo.Transaccion(codigo_de_transaccion, fecha_de_alta, url_de_redireccion)
-    VALUES ((SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 8)), GETDATE(), @url_de_redireccion)
+    INSERT INTO dbo.Transaccion(codigo_de_transaccion, fecha_de_alta, url_de_redireccion, tipo_de_transaccion)
+    VALUES (@codigo_de_transaccion, GETDATE(), @url_de_redireccion, @tipo_de_transaccion)
 END
 go
 
@@ -132,12 +133,13 @@ go
 
 /* Sesion */
 
-CREATE OR ALTER PROCEDURE Crear_Sesion @id_cliente INT
+CREATE OR ALTER PROCEDURE Crear_Sesion @id_cliente INT,
+                                       @id_partner INT
 AS
 BEGIN
-    INSERT INTO dbo.Sesion (id_cliente, sesion, fecha_de_creacion, fecha_de_expiracion, fecha_de_uso)
-    VALUES (@id_cliente, (SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 6)), GETDATE(),
-            (SELECT DATEADD(HOUR, 1, GETDATE())), null)
+    INSERT INTO dbo.Sesion (id_cliente, sesion, fecha_de_creacion, fecha_de_uso, id_partner)
+    VALUES (@id_cliente, (SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 6)), GETDATE(), null,
+            @id_partner)
 END
 go
 
@@ -150,7 +152,6 @@ BEGIN
     WHERE id_cliente = @id_cliente
       AND sesion = @sesion
       AND fecha_de_uso IS NULL
-      AND fecha_de_expiracion > GETDATE()
 END
 go
 
@@ -361,7 +362,7 @@ go
 
 /* Contenido */
 
-CREATE OR ALTER PROCEDURE Crear_Contenido @codigo_de_contenido VARCHAR(255),
+CREATE OR ALTER PROCEDURE Crear_Contenido @id_contenido VARCHAR(255),
                                           @titulo VARCHAR(255),
                                           @descripcion VARCHAR(255),
                                           @url_imagen VARCHAR(255),
@@ -370,16 +371,14 @@ CREATE OR ALTER PROCEDURE Crear_Contenido @codigo_de_contenido VARCHAR(255),
                                           @destacado BIT
 AS
 BEGIN
-    INSERT INTO dbo.Contenido(codigo_de_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado,
-                              fecha_alta,
-                              fecha_baja)
-    VALUES (@codigo_de_contenido, @titulo, @descripcion, @url_imagen, @clasificacion, @reciente, @destacado, GETDATE(),
+    INSERT INTO dbo.Contenido(id_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado,
+                              fecha_alta, fecha_baja)
+    VALUES (@id_contenido, @titulo, @descripcion, @url_imagen, @clasificacion, @reciente, @destacado, GETDATE(),
             NULL)
 END
 go
 
-CREATE OR ALTER PROCEDURE Modificar_Contenido @codigo_de_contenido VARCHAR(255),
-                                              @id_contenido INT,
+CREATE OR ALTER PROCEDURE Modificar_Contenido @id_contenido VARCHAR(255),
                                               @titulo VARCHAR(255),
                                               @descripcion VARCHAR(255),
                                               @url_imagen VARCHAR(255),
@@ -389,13 +388,12 @@ CREATE OR ALTER PROCEDURE Modificar_Contenido @codigo_de_contenido VARCHAR(255),
 AS
 BEGIN
     UPDATE dbo.Contenido
-    SET codigo_de_contenido = @codigo_de_contenido,
-        titulo              = @titulo,
-        descripcion         = @descripcion,
-        url_imagen          = @url_imagen,
-        clasificacion       = @clasificacion,
-        reciente            = @reciente,
-        destacado           = @destacado
+    SET titulo        = @titulo,
+        descripcion   = @descripcion,
+        url_imagen    = @url_imagen,
+        clasificacion = @clasificacion,
+        reciente      = @reciente,
+        destacado     = @destacado
     WHERE id_contenido = @id_contenido
 END
 go

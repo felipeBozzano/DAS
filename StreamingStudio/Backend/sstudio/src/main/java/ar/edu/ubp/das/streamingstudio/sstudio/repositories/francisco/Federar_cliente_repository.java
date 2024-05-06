@@ -38,8 +38,7 @@ public class Federar_cliente_repository {
                 respuesta.put("url_redireccion", "https://localhost:8080/ss/finalizar_federacion");
             }
             else {
-                String urlRedireccionPropia = "https://localhost:8080/ss/finalizar_federacion";
-                respuesta = comenzarFederacion(id_plataforma, id_cliente, urlRedireccionPropia, tipo_transaccion);
+                respuesta = comenzarFederacion(id_plataforma, id_cliente, tipo_transaccion);
             }
         }
         return respuesta;
@@ -91,11 +90,11 @@ public class Federar_cliente_repository {
     }
 
     @Transactional
-    public Map<String, String> comenzarFederacion(int id_plataforma, int id_cliente, String url_redireccion_propia, String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public Map<String, String> comenzarFederacion(int id_plataforma, int id_cliente, String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         respuesta = new HashMap<>();
         AbstractConnector conector = conectorFactory.crearConector("REST");
         Map<String, String> body = new HashMap<>();
-        body.put("url", "https://localhost:8080/ss/");
+        body.put("url", "https://localhost:8080/ss/terminar_federacion");
         body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
         FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/federar", body, "FederacionBean");
 
@@ -104,7 +103,7 @@ public class Federar_cliente_repository {
                 .addValue("id_cliente", id_cliente)
                 .addValue("codigo_de_transaccion", bean.getCodigoTransaccion())
                 .addValue("url_login_registro_plataforma", bean.getUrl())
-                .addValue("url_redireccion_propia", url_redireccion_propia)
+                .addValue("url_redireccion_propia", "https://localhost:8080/ss/terminar_federacion")
                 .addValue("tipo_transaccion", tipo_transaccion);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Comenzar_Federacion")
@@ -137,21 +136,5 @@ public class Federar_cliente_repository {
 
         respuesta.put("mensaje", "Federacion finalizada");
         return respuesta;
-    }
-
-    @Transactional
-    public Map<String, String> finalizarFederacion(int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_cliente", id_cliente);
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("ObtenerUltimaTransaccion")
-                .withSchemaName("dbo");
-        Map<String, Object> out = jdbcCall.execute(in);
-        List<Map<String,?>> lista_resultado = (List<Map<String,?>>) out.get("#result-set-1");
-        Map<String, ?> resultado = lista_resultado.getFirst();
-        short id_plataforma = (short) resultado.get("id_plataforma");
-        String codigo_de_transaccion = (String) resultado.get("codigo_de_transaccion");
-
-        return finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion);
     }
 }

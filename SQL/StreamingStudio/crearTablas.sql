@@ -43,19 +43,19 @@ CREATE TABLE [Administrador]
 
 CREATE TABLE [Estado_Factura]
 (
-    [id_estado]   SMALLINT PRIMARY KEY,
+    [id_estado]   INT PRIMARY KEY,
     [descripcion] VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE [Estado_Reporte]
 (
-    [id_estado]   SMALLINT PRIMARY KEY,
+    [id_estado]   INT PRIMARY KEY,
     [descripcion] VARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE [Plataforma_de_Streaming]
 (
-    [id_plataforma]      SMALLINT IDENTITY (1,1) PRIMARY KEY,
+    [id_plataforma]      INT IDENTITY (1,1) PRIMARY KEY,
     [nombre_de_fantasia] VARCHAR(255) NOT NULL,
     [razón_social]       VARCHAR(255) NOT NULL,
     [url_imagen]         VARCHAR(255) NOT NULL,
@@ -79,10 +79,10 @@ CREATE TABLE [Reporte]
 (
     [id_reporte]    INT IDENTITY (1,1) PRIMARY KEY,
     [total]         INT,
-    [fecha]         DATE     NOT NULL,
-    [estado]        SMALLINT NOT NULL,
-    [id_publicista] SMALLINT,
-    [id_plataforma] SMALLINT,
+    [fecha]         DATE NOT NULL,
+    [estado]        INT  NOT NULL,
+    [id_publicista] INT,
+    [id_plataforma] INT,
     CONSTRAINT [FK_Reporte.estado]
         FOREIGN KEY ([estado])
             REFERENCES [Estado_Reporte] ([id_estado]),
@@ -112,10 +112,10 @@ CREATE TABLE [Factura]
 (
     [id_factura]    INT IDENTITY (1,1) PRIMARY KEY,
     [total]         FLOAT,
-    [fecha]         DATE     NOT NULL,
-    [estado]        SMALLINT NOT NULL,
-    [id_publicista] SMALLINT,
-    [id_plataforma] SMALLINT,
+    [fecha]         DATE NOT NULL,
+    [estado]        INT  NOT NULL,
+    [id_publicista] INT,
+    [id_plataforma] INT,
     CONSTRAINT [FK_Factura.Estado_Factura]
         FOREIGN KEY ([estado])
             REFERENCES [Estado_Factura] ([id_estado])
@@ -202,18 +202,18 @@ CREATE TABLE [Publicidad_Tipo_Banner]
 
 CREATE TABLE [Tipo_Fee]
 (
-    [id_tipo_de_fee] SMALLINT IDENTITY (1,1) PRIMARY KEY,
+    [id_tipo_de_fee] INT IDENTITY (1,1) PRIMARY KEY,
     [tipo_de_fee]    VARCHAR(1)   NOT NULL,
     [descripcion]    VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE [Fee]
 (
-    [id_fee]      SMALLINT IDENTITY (1,1) PRIMARY KEY,
+    [id_fee]      INT IDENTITY (1,1) PRIMARY KEY,
     [monto]       FLOAT    NOT NULL,
     [fecha_alta]  DATETIME NOT NULL,
     [fecha_baja]  DATETIME,
-    [tipo_de_fee] SMALLINT NOT NULL,
+    [tipo_de_fee] INT      NOT NULL,
     CONSTRAINT [FK_Fee.Tipo_Fee]
         FOREIGN KEY ([tipo_de_fee])
             REFERENCES [Tipo_Fee] ([id_tipo_de_fee])
@@ -223,8 +223,8 @@ CREATE TABLE [Fee]
 
 CREATE TABLE [Fee_Plataforma]
 (
-    [id_plataforma] SMALLINT NOT NULL,
-    [id_fee]        SMALLINT NOT NULL,
+    [id_plataforma] INT NOT NULL,
+    [id_fee]        INT NOT NULL,
     PRIMARY KEY ([id_plataforma], [id_fee]),
     CONSTRAINT [FK_Fee_Plataforma.Fee]
         FOREIGN KEY ([id_fee])
@@ -251,7 +251,7 @@ CREATE TABLE [Cliente_Usuario]
 
 CREATE TABLE [Transaccion]
 (
-    [id_plataforma]                 SMALLINT     NOT NULL,
+    [id_plataforma]                 INT          NOT NULL,
     [id_cliente]                    INT          NOT NULL,
     [fecha_alta]                    DATETIME     NOT NULL,
     [codigo_de_transaccion]         VARCHAR(255) NOT NULL,
@@ -291,17 +291,17 @@ CREATE TABLE [Federacion]
 
 CREATE TABLE [Clasificacion]
 (
-    [id_clasificacion] SMALLINT IDENTITY (1,1) PRIMARY KEY,
+    [id_clasificacion] INT IDENTITY (1,1) PRIMARY KEY,
     [descripcion]      VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE [Contenido]
 (
-    [id_contenido]  INT PRIMARY KEY,
+    [id_contenido]  VARCHAR(255) PRIMARY KEY,
     [titulo]        VARCHAR(255) NOT NULL,
     [descripcion]   VARCHAR(255) NOT NULL,
     [url_imagen]    VARCHAR(255) NOT NULL,
-    [clasificacion] SMALLINT     NOT NULL,
+    [clasificacion] INT          NOT NULL,
     [mas_visto]     BIT          NOT NULL,
     CONSTRAINT [FK_Contenido.Clasificacion]
         FOREIGN KEY ([clasificacion])
@@ -312,13 +312,12 @@ CREATE TABLE [Contenido]
 
 CREATE TABLE [Catalogo]
 (
-    [id_contenido]     INT          NOT NULL,
-    [id_plataforma]    SMALLINT     NOT NULL,
-    [reciente]         BIT          NOT NULL,
-    [destacado]        BIT          NOT NULL,
-    [id_en_plataforma] VARCHAR(255) NOT NULL,
-    [fecha_de_alta]    DATETIME     NOT NULL,
-    [fecha_de_baja]    DATETIME
+    [id_contenido]  VARCHAR(255) NOT NULL,
+    [id_plataforma] INT          NOT NULL,
+    [reciente]      BIT          NOT NULL,
+    [destacado]     BIT          NOT NULL,
+    [fecha_de_alta] DATETIME     NOT NULL,
+    [fecha_de_baja] DATETIME
         PRIMARY KEY ([id_contenido], [id_plataforma]),
     CONSTRAINT [FK_Catalogo.Contenido]
         FOREIGN KEY ([id_contenido])
@@ -337,8 +336,8 @@ CREATE TABLE [Clic]
     [id_clic]       INT IDENTITY (1,1) PRIMARY KEY,
     [id_cliente]    INT      NOT NULL,
     [id_publicidad] INT,
-    [id_plataforma] SMALLINT,
-    [id_contenido]  INT,
+    [id_plataforma] INT,
+    [id_contenido]  VARCHAR(255),
     [fecha]         DATETIME NOT NULL,
     CONSTRAINT [FK_Clic.Cliente_Usuario]
         FOREIGN KEY ([id_cliente])
@@ -387,7 +386,7 @@ CREATE TABLE [Preferencia]
 
 CREATE TABLE [Genero_Contenido]
 (
-    [id_contenido] INT NOT NULL,
+    [id_contenido] VARCHAR(255) NOT NULL,
     [id_genero]    INT NOT NULL,
     PRIMARY KEY ([id_contenido], [id_genero]),
     CONSTRAINT [FK_Genero_Contenido.Genero]
@@ -411,7 +410,7 @@ CREATE TABLE [Actor]
 
 CREATE TABLE [Actor_Contenido]
 (
-    [id_contenido] INT NOT NULL,
+    [id_contenido] VARCHAR(255) NOT NULL,
     [id_actor]     INT NOT NULL,
     PRIMARY KEY ([id_contenido], [id_actor]),
     CONSTRAINT [FK_Actor_Contenido.Contenido]
@@ -435,7 +434,7 @@ CREATE TABLE [Director]
 
 CREATE TABLE [Director_Contenido]
 (
-    [id_contenido] INT NOT NULL,
+    [id_contenido] VARCHAR(255) NOT NULL,
     [id_director]  INT NOT NULL,
     PRIMARY KEY ([id_contenido], [id_director]),
     CONSTRAINT [FK_Director_Contenido.Contenido]
