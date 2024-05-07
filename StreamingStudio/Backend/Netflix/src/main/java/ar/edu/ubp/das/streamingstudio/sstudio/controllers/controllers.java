@@ -1,14 +1,13 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.AutorizacionBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.TransaccionBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,42 +19,63 @@ import java.util.UUID;
 
 public class controllers {
 
+    private Map<String, String> respuesta;
+
     @Autowired
     ClienteRepository clienteRepository;
 
     @PostMapping("/federar")
-    public ResponseEntity<Map<String, String>> federarCliente(@RequestBody AutorizacionBean autorizacionBean) {
-        Map<String, String> respuesta = new HashMap<>();
-        UUID uuid = UUID.randomUUID();
-        String uuidString = uuid.toString();
-        String url = "http://localhost:8081/netflix/login";
-        respuesta.put("codigoTransaccion", uuidString);
+    public ResponseEntity<Map<String, String>> federarCliente(@RequestBody TransaccionBean transaccionBean) {
+        respuesta = new HashMap<>();
+        if (!clienteRepository.verificarTokenDePartner(transaccionBean.getToken_de_servicio())) {
+            respuesta.put("mensaje", "Partner no identificado");
+            return new ResponseEntity<>(respuesta, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        UUID codigo_de_transaccion = UUID.randomUUID();
+        String codigo_de_transaccion_string = codigo_de_transaccion.toString();
+        String url;
+        if (transaccionBean.getTipo_de_transaccion() == 'L')
+            url = "http://localhost:8081/netflix/login";
+        else
+            url = "http://localhost:8081/netflix/register";
+        clienteRepository.crearTransaccion(codigo_de_transaccion_string, transaccionBean.getUrl_de_redireccion(),
+                transaccionBean.getTipo_de_transaccion());
+
+        respuesta.put("codigoTransaccion", codigo_de_transaccion_string);
         respuesta.put("url", url);
-        clienteRepository.autorizarCliente(autorizacionBean.getId_cliente(), autorizacionBean.getToken());
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 
-    @PostMapping("/login")
-    public void login(@RequestBody Map<String,String> body) {
-        String codigo_de_transaccion = body.get("codigo_de_transaccion");
-
+    @GetMapping("/login")
+    public void login(@RequestParam("codigo_de_transaccion") String codigoTransaccion) {
         // HACE EL LOGIN Y DEVUELVE UN id_cliente
+        int id_cliente = 1;
 
         // CREAR UN TOKEN UNICO E INSERTAR UNA FILA EN LA TABLA AUTORIZACIÓN CON EL ID_CLIENTE
         // Y EL CODIGO_DE_TRANSACCIÓN OBTENIDOS ANTERIORMENTE
+        UUID token = UUID.randomUUID();
+        String token_string = token.toString();
+        clienteRepository.crearAutorizacion(id_cliente, codigoTransaccion, token_string);
 
         // EN BASE AL CODIGO DE TRANSACCION, BUSCAR EN LA TABLA TRANSACCION EL URL DE REDIRECCION
         // DE STREAMING STUDIO
+        String url_de_redireccion = clienteRepository.obtenerUrlDeRedireccion(codigoTransaccion);
 
         // REDIRIGIR AL URL DE REDIRECCION DE STREAMING STUDIO
     }
 
     @PostMapping("/usuario/{id_cliente}/obtener_token")
-    public ResponseEntity<Map<String, String>> obtenerToken() {
-        Map<String, String> respuesta = new HashMap<>();
-        UUID token = UUID.randomUUID();
-        String tokenString = token.toString();
-        respuesta.put("token", tokenString);
+    public ResponseEntity<Map<String, String>> obtenerToken(@PathVariable("id_cliente") Integer id_cliente,
+                                                            @RequestBody AutorizacionBean autorizacionBean) {
+        respuesta = new HashMap<>();
+        if (!clienteRepository.verificarTokenDePartner(autorizacionBean.getToken_de_servicio())) {
+            respuesta.put("mensaje", "Partner no identificado");
+            return new ResponseEntity<>(respuesta, HttpStatus.NOT_ACCEPTABLE);
+        }
+
+        String token = clienteRepository.obtenerToken(id_cliente, autorizacionBean.getCodigo_de_transaccion());
+        respuesta.put("token", token);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 }

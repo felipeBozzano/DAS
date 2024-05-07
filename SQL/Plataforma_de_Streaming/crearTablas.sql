@@ -1,4 +1,3 @@
-CREATE DATABASE Plataforma_de_Streaming;
 USE Plataforma_de_Streaming;
 
 DROP TABLE IF EXISTS dbo.Autorizacion
@@ -185,4 +184,3 @@ CREATE TABLE [Autorizacion]
 );
 
 CREATE INDEX [UK] ON [Autorizacion] ([token]);
-

@@ -74,7 +74,7 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE Verificar_Codigo @codigo_de_transaccion INT
+CREATE OR ALTER PROCEDURE Verificar_Codigo @codigo_de_transaccion VARCHAR(255)
 AS
 BEGIN
     SELECT CASE
@@ -90,11 +90,12 @@ go
 /* Autorizacion */
 
 CREATE OR ALTER PROCEDURE Crear_Autorizacion @id_cliente INT,
-                                             @codigo_de_transaccion VARCHAR(255)
+                                             @codigo_de_transaccion VARCHAR(255),
+                                             @token VARCHAR(255)
 AS
 BEGIN
     INSERT INTO dbo.Autorizacion(codigo_de_transaccion, id_cliente, token, fecha_de_alta, fecha_de_baja)
-    VALUES (@codigo_de_transaccion, @id_cliente, (SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 8)), GETDATE(), NULL)
+    VALUES (@codigo_de_transaccion, @id_cliente, @token, GETDATE(), NULL)
 END
 go
 
@@ -445,20 +446,21 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE Autorizar_Cliente @id_cliente INT,
-                                            @token VARCHAR(255)
+/* ------------------------------------------------------------------------------------------------------------------ */
+/* ------------------------------------------------ FEDERAR USUARIO ------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------------------------ */
+
+/* Verificar_Token_de_Partner */
+
+/* Crear_Transaccion */
+
+CREATE OR ALTER PROCEDURE Obtener_codigo_de_redireccion @codigo_de_transaccion VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Autorizacion(id_cliente, token)
-    VALUES (@id_cliente, @token)
+    SELECT url_de_redireccion
+    FROM dbo.Transaccion
+    WHERE codigo_de_transaccion = @codigo_de_transaccion
 END
 go
 
--- Federar Usuario
-
--- CREATE OR ALTER PROCEDURE Crear_Transaccion
-
--- REGISTRAR USUARIO / LOGUEAR USUARIO
-
--- CREAR AUTORIZACION
-
+/* Obtener_Token */
