@@ -35,7 +35,22 @@ public class controllers {
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 
-    @PostMapping("/obtener_token")
+    @PostMapping("/login")
+    public void login(@RequestBody Map<String,String> body) {
+        String codigo_de_transaccion = body.get("codigo_de_transaccion");
+
+        // HACE EL LOGIN Y DEVUELVE UN id_cliente
+
+        // CREAR UN TOKEN UNICO E INSERTAR UNA FILA EN LA TABLA AUTORIZACIÓN CON EL ID_CLIENTE
+        // Y EL CODIGO_DE_TRANSACCIÓN OBTENIDOS ANTERIORMENTE
+
+        // EN BASE AL CODIGO DE TRANSACCION, BUSCAR EN LA TABLA TRANSACCION EL URL DE REDIRECCION
+        // DE STREAMING STUDIO
+
+        // REDIRIGIR AL URL DE REDIRECCION DE STREAMING STUDIO
+    }
+
+    @PostMapping("/usuario/{id_cliente}/obtener_token")
     public ResponseEntity<Map<String, String>> obtenerToken() {
         Map<String, String> respuesta = new HashMap<>();
         UUID token = UUID.randomUUID();

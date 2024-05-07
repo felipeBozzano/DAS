@@ -119,9 +119,9 @@ CREATE TABLE [Genero]
 CREATE TABLE [Transaccion]
 (
     [codigo_de_transaccion] VARCHAR(255),
-    [fecha_de_alta]         DATETIME   NOT NULL,
-    [url_de_redireccion]    VARCHAR(255),
-    [tipo_de_transaccion]   VARCHAR(1) NOT NULL,
+    [fecha_de_alta]         DATETIME     NOT NULL,
+    [url_de_redireccion]    VARCHAR(255) NOT NULL,
+    [tipo_de_transaccion]   VARCHAR(1)   NOT NULL,
     PRIMARY KEY ([codigo_de_transaccion])
 );
 
