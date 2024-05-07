@@ -445,6 +445,15 @@ BEGIN
 END
 go
 
+CREATE OR ALTER PROCEDURE Autorizar_Cliente @id_cliente INT,
+                                            @token VARCHAR(255)
+AS
+BEGIN
+    INSERT INTO dbo.Autorizacion(id_cliente, token)
+    VALUES (@id_cliente, @token)
+END
+go
+
 -- Federar Usuario
 
 -- CREATE OR ALTER PROCEDURE Crear_Transaccion
