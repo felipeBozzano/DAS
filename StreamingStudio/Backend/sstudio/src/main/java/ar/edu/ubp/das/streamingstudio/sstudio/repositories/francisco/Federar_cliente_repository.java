@@ -96,6 +96,7 @@ public class Federar_cliente_repository {
         Map<String, String> body = new HashMap<>();
         body.put("url", "https://localhost:8080/ss/terminar_federacion");
         body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
+        body.put("id_cliente", String.valueOf(id_cliente));
         FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/federar", body, "FederacionBean");
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
