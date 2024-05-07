@@ -42,7 +42,7 @@ public class ClienteUsuarioBean {
         return usuario;
     }
 
-    public String getContrasena() {
+    public String getcontrasena() {
         return contrasena;
     }
 
@@ -70,7 +70,7 @@ public class ClienteUsuarioBean {
         this.usuario = usuario;
     }
 
-    public void setContrasena(String contrasena) {
+    public void setcontrasena(String contrasena) {
         this.contrasena = contrasena;
     }
 

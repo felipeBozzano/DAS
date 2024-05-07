@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,21 @@ public class controllers_francisco {
     )
     public ResponseEntity<List<ClienteUsuarioBean>> createUser(@RequestBody ClienteUsuarioBean cliente) {
         return new ResponseEntity<>(user_repository.createUser(cliente), HttpStatus.CREATED);
+    }
+
+    @PostMapping(
+            path="/login_user",
+            consumes={MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String,String>> loginUsuario(@RequestBody ClienteUsuarioBean cliente) {
+        int user = user_repository.verificarUsuario(cliente.getUsuario(), cliente.getcontrasena());
+        Map<String, String> respuesta = new HashMap<>();
+        if(user == 1){
+            respuesta.put("mensaje", "Usuario existente");
+        }else {
+            respuesta.put("mensaje", "Usuario no existente");
+        }
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
     @GetMapping("/obtener_usuario")

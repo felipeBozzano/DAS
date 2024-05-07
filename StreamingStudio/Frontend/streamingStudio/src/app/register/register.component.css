@@ -1,0 +1,55 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
+
+.register-form {
+  width: 300px; /* Ancho de la tarjeta */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.register-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.register-form .form-group {
+  margin-bottom: 15px;
+}
+
+.register-form .form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.register-form .form-group input {
+  width: 100%; /* Ancho completo */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.register-form button {
+  width: 100%; /* Ancho completo */
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff; /* Color de fondo del botón */
+  color: #fff; /* Color del texto del botón */
+  cursor: pointer;
+}
+
+.register-form button:hover {
+  background-color: #0056b3; /* Color de fondo del botón al pasar el ratón */
+}
+
+.title-container {
+  text-align: center; /* Para centrar el título */
+  margin-top: 50px;
+}

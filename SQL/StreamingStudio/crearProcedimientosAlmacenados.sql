@@ -1,14 +1,14 @@
 /* Cliente_Usuario */
 
 CREATE OR ALTER PROCEDURE Crear_Usuario @usuario VARCHAR(255),
-                                        @contraseña VARCHAR(255),
+                                        @contrasena VARCHAR(255),
                                         @email VARCHAR(255),
                                         @nombre VARCHAR(255),
                                         @apellido VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Cliente_Usuario(usuario, contraseña, email, nombre, apellido, valido)
-    VALUES (@usuario, @contraseña, @email, @nombre, @apellido, 0)
+    INSERT INTO dbo.Cliente_Usuario(usuario, contrasena, email, nombre, apellido, valido)
+    VALUES (@usuario, @contrasena, @email, @nombre, @apellido, 0)
 END;
 go
 
@@ -22,7 +22,7 @@ AS
 BEGIN
     UPDATE Cliente_Usuario
     SET usuario    = @usuario,
-        contraseña = @contraseña,
+        contrasena = @contraseña,
         email      = @email,
         nombre     = @nombre,
         apellido   = @apellido
@@ -47,6 +47,31 @@ BEGIN
     WHERE id_cliente = @id_cliente
 END;
 go
+
+CREATE OR ALTER PROCEDURE Login_Usuario
+    @usuario VARCHAR(255),
+    @contrasena VARCHAR(255)
+AS
+BEGIN
+    DECLARE @resultado INT;
+
+    -- Verificar si existe el usuario y contraseña
+    IF EXISTS (
+        SELECT 1
+        FROM Cliente_Usuario
+        WHERE usuario = @usuario AND contrasena = @contrasena
+    )
+        BEGIN
+            SET @resultado = 1; -- Usuario y contraseña coinciden
+        END
+    ELSE
+        BEGIN
+            SET @resultado = 0; -- Usuario y/o contraseña no coinciden
+        END
+
+    -- Devolver el resultado
+    SELECT @resultado AS 'ExisteUsuario';
+END;
 
 /* Plataforma_de_Streaming */
 

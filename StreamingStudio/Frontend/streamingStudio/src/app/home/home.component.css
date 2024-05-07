@@ -1,0 +1,11 @@
+.home-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ajusta la altura según tus necesidades */
+}
+
+.home-title {
+  font-size: 3em; /* Tamaño del título */
+  text-align: center;
+}
