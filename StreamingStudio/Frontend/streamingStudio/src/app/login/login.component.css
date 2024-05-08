@@ -3,64 +3,103 @@
   justify-content: center;
   align-items: center;
   height: 70vh;
+  background-color: lightskyblue; /* Fondo gris claro */
 }
 
 .login-form {
-  border: 1px solid #ccc;
-  padding: 20px;
+  border: 1px solid #ddd; /* Borde gris claro */
+  padding: 30px;
   border-radius: 8px;
   width: 300px;
+  background-color: #fff; /* Fondo blanco */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .login-form h2 {
   text-align: center;
+  color: #333; /* Color de texto gris oscuro */
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 label {
   display: block;
+  color: #555; /* Color de texto gris */
 }
 
 input[type="text"],
 input[type="password"] {
   width: calc(100% - 12px); /* Toma en cuenta el ancho del borde */
-  padding: 6px;
+  padding: 10px;
+  border: 1px solid #ccc; /* Borde gris */
+  border-radius: 5px;
 }
 
 button[type="submit"] {
   width: 100%;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
+  padding: 12px;
+  background-color: #ffc107; /* Amarillo suave */
+  color: #fff; /* Texto blanco */
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s; /* Transición suave */
 }
 
 button[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: #ffa000; /* Amarillo más intenso al pasar el mouse */
 }
 
 .register-button {
   background-color: transparent;
   border: none;
-  color: #007bff;
+  color: #007bff; /* Color azul */
   cursor: pointer;
 }
 
 .register-button:hover {
   text-decoration: underline;
+  color: #0056b3; /* Azul más oscuro al pasar el mouse */
+  font-weight: bold;
 }
 
 .title-container {
   text-align: center; /* Para centrar el título */
-  margin-top: 50px;
+  margin-bottom: 30px;
+  color: #0056b3;
+  font-family: "Arial", sans-serif;
+}
+
+.login-form h2 {
+  text-align: center;
+  color: #0056b3; /* Color azul */
+  font-family: "Arial", sans-serif;
 }
 
 .error-message {
   color: red;
-  margin-top: 5px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.register-container {
+  text-align: center; /* Centra el texto */
+  margin-top: 20px; /* Espacio superior */
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #007bff; /* Azul */
+  color: #fff; /* Texto negro */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Transición suave */
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
 }

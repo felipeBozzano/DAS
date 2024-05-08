@@ -13,7 +13,7 @@
         <label for="password">Contraseña:</label>
         <input type="password" id="password" name="password" [(ngModel)]="password" required>
       </div>
-      <div class="form-group">
+      <div class="form-group login">
         <button type="submit">Iniciar Sesión</button>
       </div>
       <!-- Mensaje de error -->
@@ -22,12 +22,9 @@
       </div>
     </form>
     <hr> <!-- Línea separadora -->
-    <div>
+    <div class="register-container">
       <span>¿No tienes cuenta? </span>
       <button class="register-button" (click)="navigateToRegister()">Regístrate</button>
     </div>
   </div>
-</div>
-<div *ngIf="spinnerService.isVisible()" class="spinner-overlay">
-  <app-spinner></app-spinner>
 </div>

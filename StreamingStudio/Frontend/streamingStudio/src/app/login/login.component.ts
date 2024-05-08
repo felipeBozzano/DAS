@@ -23,8 +23,8 @@ export class LoginComponent {
 
   // tslint:disable-next-line:typedef
   onSubmit() {
-    this.spinnerService.show();
-    setTimeout(() => {
+    //this.spinnerService.show();
+    //setTimeout(() => {
       this.login(this.username, this.password)
         .subscribe(
           (response) => {
@@ -32,7 +32,7 @@ export class LoginComponent {
             console.log('Respuesta del servidor:', response);
             if (response.mensaje == "Usuario existente") {
               this.showError = false;
-              this.spinnerService.hide();
+              //this.spinnerService.hide();
               this.router.navigate(['/home']);
             } else {
               this.showError = true;
@@ -44,7 +44,7 @@ export class LoginComponent {
             // Aquí puedes manejar el error y mostrar un mensaje de error al usuario
           }
         );
-    }, 2000);
+    //}, 2000);
   }
 
   navigateToRegister() {

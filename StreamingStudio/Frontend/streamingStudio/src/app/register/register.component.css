@@ -3,6 +3,7 @@
   justify-content: center;
   align-items: center;
   height: 70vh;
+  background-color: lightskyblue; /* Fondo gris claro */
 }
 
 .register-form {
