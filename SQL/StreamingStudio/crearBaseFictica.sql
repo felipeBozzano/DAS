@@ -131,11 +131,11 @@ go
 
 -- Crear 3 Plataformas de Streaming
 INSERT INTO Plataforma_de_Streaming (nombre_de_fantasia, razón_social, url_imagen, token_de_servicio, url_api, valido)
-VALUES ('Plataforma1', N'Razón Social 1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'token1',
+VALUES ('Plataforma1', N'Razón Social 1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', '123456789',
         'https://www.urlapi1.com', 1),
-       ('Plataforma2', N'Razón Social 2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', 'token2',
+       ('Plataforma2', N'Razón Social 2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', '123456789',
         'https://www.urlapi2.com', 1),
-       ('Plataforma3', N'Razón Social 3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', 'token3',
+       ('Plataforma3', N'Razón Social 3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', '123456789',
         'https://www.urlapi3.com', 1);
 go
 
@@ -209,9 +209,9 @@ go
 
 -- Crear 3 Publicista
 INSERT INTO Publicista (nombre_de_fantasia, razón_social, email, contrasena, token_de_servicio, url_api)
-VALUES ('Publicista1', N'Razón Social 1', 'publicista1@email.com', N'contrasena1', 'token1', 'https://www.urlapi1.com'),
-       ('Publicista2', N'Razón Social 2', 'publicista2@email.com', N'contrasena2', 'token2', 'https://www.urlapi2.com'),
-       ('Publicista3', N'Razón Social 3', 'publicista3@email.com', N'contrasena3', 'token3', 'https://www.urlapi3.com');
+VALUES ('Publicista1', N'Razón Social 1', 'publicista1@email.com', N'contrasena1', '123456789', 'https://www.urlapi1.com'),
+       ('Publicista2', N'Razón Social 2', 'publicista2@email.com', N'contrasena2', '123456789', 'https://www.urlapi2.com'),
+       ('Publicista3', N'Razón Social 3', 'publicista3@email.com', N'contrasena3', '123456789', 'https://www.urlapi3.com');
 go
 
 -- Crear 9 Publicidades asignadas a Banners y Exclusividades

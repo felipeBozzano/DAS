@@ -464,3 +464,13 @@ END
 go
 
 /* Obtener_Token */
+
+CREATE OR ALTER PROCEDURE Verificar_Autorizacion @codigo_de_transaccion VARCHAR(255)
+AS
+BEGIN
+    SELECT A.id_cliente, T.url_de_redireccion
+    FROM dbo.Autorizacion A
+        JOIN dbo.Transaccion T ON A.codigo_de_transaccion = T.codigo_de_transaccion
+    WHERE A.codigo_de_transaccion = @codigo_de_transaccion
+END
+go

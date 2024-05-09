@@ -35,7 +35,7 @@ public class controllers {
         UUID codigo_de_transaccion = UUID.randomUUID();
         String codigo_de_transaccion_string = codigo_de_transaccion.toString();
         String url;
-        if (transaccionBean.getTipo_de_transaccion() == 'L')
+        if (transaccionBean.getTipo_de_transaccion().equals("L"))
             url = "http://localhost:8081/netflix/login";
         else
             url = "http://localhost:8081/netflix/register";
@@ -49,20 +49,28 @@ public class controllers {
 
     @GetMapping("/login")
     public void login(@RequestParam("codigo_de_transaccion") String codigoTransaccion) {
-        // HACE EL LOGIN Y DEVUELVE UN id_cliente
-        int id_cliente = 1;
+        // VERIFICAR QUE NO HAYA UNA AUTORIZACION CREADA CON ESE CODIGO DE TRANSACCION
+        AutorizacionBean autorizacion = clienteRepository.verificarAutorizacion(codigoTransaccion);
+        String url_de_redireccion = autorizacion.getUrl_de_redireccion();
+        int id_cliente = autorizacion.getId_cliente();
 
-        // CREAR UN TOKEN UNICO E INSERTAR UNA FILA EN LA TABLA AUTORIZACIÓN CON EL ID_CLIENTE
-        // Y EL CODIGO_DE_TRANSACCIÓN OBTENIDOS ANTERIORMENTE
-        UUID token = UUID.randomUUID();
-        String token_string = token.toString();
-        clienteRepository.crearAutorizacion(id_cliente, codigoTransaccion, token_string);
+        if (url_de_redireccion == null) {
+            // HACE EL LOGIN Y DEVUELVE UN id_cliente
+            id_cliente = 1;
 
-        // EN BASE AL CODIGO DE TRANSACCION, BUSCAR EN LA TABLA TRANSACCION EL URL DE REDIRECCION
-        // DE STREAMING STUDIO
-        String url_de_redireccion = clienteRepository.obtenerUrlDeRedireccion(codigoTransaccion);
+            // CREAR UN TOKEN UNICO E INSERTAR UNA FILA EN LA TABLA AUTORIZACIÓN CON EL ID_CLIENTE
+            // Y EL CODIGO_DE_TRANSACCIÓN OBTENIDOS ANTERIORMENTE
+            UUID token = UUID.randomUUID();
+            String token_string = token.toString();
+            clienteRepository.crearAutorizacion(id_cliente, codigoTransaccion, token_string);
+
+            // EN BASE AL CODIGO DE TRANSACCION, BUSCAR EN LA TABLA TRANSACCION EL URL DE REDIRECCION
+            // DE STREAMING STUDIO
+            url_de_redireccion = clienteRepository.obtenerUrlDeRedireccion(codigoTransaccion);
+        }
 
         // REDIRIGIR AL URL DE REDIRECCION DE STREAMING STUDIO
+        // redirect(url_de_redireccion).body(id_cliente, codigo_de_transaccion)
     }
 
     @PostMapping("/usuario/{id_cliente}/obtener_token")

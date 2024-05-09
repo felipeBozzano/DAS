@@ -3,7 +3,9 @@ package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.FederacionBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.TransaccionBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class Federar_cliente_repository {
+public class FederarClienteRepository implements IFederarClienteRepository {
 
     @Autowired
     private JdbcTemplate jdbcTpl;
@@ -30,21 +32,14 @@ public class Federar_cliente_repository {
             respuesta = new HashMap<>();
             respuesta.put("mensaje", "El cliente ya esta federado");
         } else {
-            String codigo_de_transaccion = VerificarFederacionCurso(id_plataforma, id_cliente);
-            if (codigo_de_transaccion != null) {
-                respuesta = new HashMap<>();
-                respuesta.put("mensaje", "Federacion en curso");
-                respuesta.put("codigo_de_transaccion", codigo_de_transaccion);
-                respuesta.put("url_redireccion", "https://localhost:8080/ss/finalizar_federacion");
-            }
-            else {
+            Map<String, String> transaccion = verificarFederacionCurso(id_plataforma, id_cliente);
+            if (!transaccion.containsKey("existe")) {
                 respuesta = comenzarFederacion(id_plataforma, id_cliente, tipo_transaccion);
             }
         }
         return respuesta;
     }
 
-    @Transactional
     public boolean buscarFederacion(int id_plataforma, int id_cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
@@ -52,14 +47,15 @@ public class Federar_cliente_repository {
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Buscar_Federacion")
                 .withSchemaName("dbo");
+
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
         Integer federacion = resulset.getFirst().get("federacion");
+
         return federacion == 1;
     }
 
-    @Transactional
-    public String VerificarFederacionCurso(int id_plataforma, int id_cliente) {
+    public Map<String, String> verificarFederacionCurso(int id_plataforma, int id_cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
                 .addValue("id_cliente", id_cliente);
@@ -68,14 +64,13 @@ public class Federar_cliente_repository {
                 .withSchemaName("dbo");
 
         Map<String, Object> out = jdbcCall.execute(in);
-        List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
-        if (resulset.isEmpty())
-            return null;
-        else
-            return String.valueOf(resulset.getFirst().get("codigo_de_transaccion"));
+        List<Map<String,String>> resultado = (List<Map<String,String>>) out.get("#result-set-1");
+        if (resultado.isEmpty())
+            resultado.add(new HashMap<>());
+
+        return resultado.getFirst();
     }
 
-    @Transactional
     public String obtenerTokenDeServicioDePlataforma(int id_plataforma) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma);
@@ -94,16 +89,19 @@ public class Federar_cliente_repository {
         respuesta = new HashMap<>();
         AbstractConnector conector = conectorFactory.crearConector("REST");
         Map<String, String> body = new HashMap<>();
-        body.put("url", "https://localhost:8080/ss/usuario/{id_cliente}/terminar_federacion/{id_plataforma}");
+        String url_de_redireccion = "https://localhost:8080/ss/usuario/" + id_cliente + "/finalizar_federacion/" + id_plataforma;
+        body.put("url_de_redireccion", url_de_redireccion);
         body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
         body.put("id_cliente", String.valueOf(id_cliente));
+        body.put("tipo_de_transaccion", tipo_transaccion);
         FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/federar", body, "FederacionBean");
+
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
                 .addValue("id_cliente", id_cliente)
                 .addValue("codigo_de_transaccion", bean.getCodigoTransaccion())
                 .addValue("url_login_registro_plataforma", bean.getUrl())
-                .addValue("url_redireccion_propia", "https://localhost:8080/ss/usuario/{id_cliente}/terminar_federacion/{id_plataforma}")
+                .addValue("url_redireccion_propia", url_de_redireccion)
                 .addValue("tipo_transaccion", tipo_transaccion);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Comenzar_Federacion")
@@ -121,9 +119,9 @@ public class Federar_cliente_repository {
         respuesta = new HashMap<>();
         AbstractConnector conector = conectorFactory.crearConector("REST");
         Map<String, String> body = new HashMap<>();
-        body.put("codigo_transaccion", codigo_de_transaccion);
+        body.put("codigo_de_transaccion", codigo_de_transaccion);
         body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
-        FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/usuario/{id_cliente_plataforma}/obtener_token", body, "FederacionBean");
+        FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/usuario/" + id_cliente_plataforma + "/obtener_token", body, "FederacionBean");
 
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)

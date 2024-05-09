@@ -180,7 +180,8 @@ CREATE TABLE [Autorizacion]
             REFERENCES [Transaccion] ([codigo_de_transaccion]),
     CONSTRAINT [FK_Autorizacion.id_cliente]
         FOREIGN KEY ([id_cliente])
-            REFERENCES [Cliente_Usuario] ([id_cliente])
+            REFERENCES [Cliente_Usuario] ([id_cliente]),
+    CONSTRAINT [UK_codigo_de_transaccion] UNIQUE (codigo_de_transaccion),
+    CONSTRAINT [UK_token] UNIQUE (token),
 );
 
-CREATE INDEX [UK] ON [Autorizacion] ([token]);
