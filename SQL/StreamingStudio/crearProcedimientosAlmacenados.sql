@@ -1214,7 +1214,7 @@ BEGIN
                            FROM dbo.Transaccion
                            WHERE id_plataforma = @id_plataforma
                              AND id_cliente = @id_cliente)
-    SELECT codigo_de_transaccion
+    SELECT codigo_de_transaccion, url_login_registro_plataforma
     FROM dbo.Transaccion
     WHERE id_plataforma = @id_plataforma
       AND id_cliente = @id_cliente

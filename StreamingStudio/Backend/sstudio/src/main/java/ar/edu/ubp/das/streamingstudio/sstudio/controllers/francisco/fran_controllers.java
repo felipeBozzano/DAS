@@ -2,7 +2,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.Enviar_facturas_repository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.Federar_cliente_repository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.FederarClienteRepository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.User_repository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +23,13 @@ import java.util.Map;
 @RequestMapping(
         path = "/ss")
 
-public class controllers_francisco {
+public class fran_controllers {
 
     @Autowired
     User_repository user_repository;
 
     @Autowired
-    Federar_cliente_repository federar_cliente_repository;
+    FederarClienteRepository federar_clienteRepository;
 
     @Autowired
     Enviar_facturas_repository enviar_facturas_repository;
@@ -70,7 +70,7 @@ public class controllers_francisco {
         return new ResponseEntity<>(user_repository.getUser(email), HttpStatus.OK);
     }
 
-     /* Federacion usaurio*/
+    /* Federacion usaurio*/
 
     @PostMapping(
             path="/usuario/{id_cliente}/federaciones",
@@ -81,13 +81,12 @@ public class controllers_francisco {
     }
 
     @PostMapping(
-            path="/usuario/{id_cliente}/comenzar_federacion/{id_plataforma}/{tipo_de_transaccion}",
-            consumes={MediaType.APPLICATION_JSON_VALUE}
+            path="/usuario/{id_cliente}/comenzar_federacion/{id_plataforma}/{tipo_de_transaccion}"
     )
     public ResponseEntity<Map<String, String>> federarClientePlataforma(@PathVariable("id_plataforma") Integer id_plataforma,
                                                                         @PathVariable("id_cliente") Integer id_cliente,
                                                                         @PathVariable("tipo_de_transaccion") String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        return new ResponseEntity<>(federar_cliente_repository.federarClientePlataforma(id_plataforma, id_cliente, tipo_transaccion), HttpStatus.OK);
+        return new ResponseEntity<>(federar_clienteRepository.federarClientePlataforma(id_plataforma, id_cliente, tipo_transaccion), HttpStatus.OK);
     }
 
     @PostMapping(
@@ -100,12 +99,12 @@ public class controllers_francisco {
                                                                    HttpServletResponse response) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String codigo_de_transaccion = body.get("codigo_de_transaccion");
         int id_cliente_plataforma = Integer.parseInt(body.get("id_cliente_plataforma"));
-        Map<String, String> respuesta = federar_cliente_repository.finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion, id_cliente_plataforma);
+        Map<String, String> respuesta = federar_clienteRepository.finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion, id_cliente_plataforma);
 
         // Construye la URL de redirección con id_cliente
         String urlRedireccion = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/usuario/{id_cliente}/federaciones")
+                .path("/usuario/" + id_cliente + "/federaciones")
                 .buildAndExpand(id_cliente)
                 .toUriString();
 

@@ -1,12 +1,13 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 public class TransaccionBean {
+    private String token_de_servicio;
+    private String tipo_de_transaccion;
+    private String url_de_redireccion;
+    private int id_cliente;
+
     public TransaccionBean() {
     }
-
-    private String token_de_servicio;
-    private char tipo_de_transaccion;
-    private String url_de_redireccion;
 
     public String getUrl_de_redireccion() {
         return url_de_redireccion;
@@ -24,11 +25,19 @@ public class TransaccionBean {
         this.token_de_servicio = token_de_servicio;
     }
 
-    public char getTipo_de_transaccion() {
+    public String getTipo_de_transaccion() {
         return tipo_de_transaccion;
     }
 
-    public void setTipo_de_transaccion(char tipo_de_transaccion) {
+    public void setTipo_de_transaccion(String tipo_de_transaccion) {
         this.tipo_de_transaccion = tipo_de_transaccion;
+    }
+
+    public int getId_cliente() {
+        return id_cliente;
+    }
+
+    public void setId_cliente(int id_cliente) {
+        this.id_cliente = id_cliente;
     }
 }
