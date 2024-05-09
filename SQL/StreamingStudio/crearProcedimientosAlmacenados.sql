@@ -14,7 +14,7 @@ go
 
 CREATE OR ALTER PROCEDURE Editar_Usuario @id_cliente INT,
                                          @usuario VARCHAR(255),
-                                         @contraseña VARCHAR(255),
+                                         @contrasena VARCHAR(255),
                                          @email VARCHAR(255),
                                          @nombre VARCHAR(255),
                                          @apellido VARCHAR(255)
@@ -22,7 +22,7 @@ AS
 BEGIN
     UPDATE Cliente_Usuario
     SET usuario    = @usuario,
-        contrasena = @contraseña,
+        contrasena = @contrasena,
         email      = @email,
         nombre     = @nombre,
         apellido   = @apellido
@@ -48,34 +48,33 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Login_Usuario
-    @usuario VARCHAR(255),
-    @contrasena VARCHAR(255)
+CREATE OR ALTER PROCEDURE Login_Usuario @usuario VARCHAR(255),
+                                        @contrasena VARCHAR(255)
 AS
 BEGIN
     DECLARE @resultado INT;
 
-    -- Verificar si existe el usuario y contraseña
-    IF EXISTS (
-        SELECT 1
-        FROM Cliente_Usuario
-        WHERE usuario = @usuario AND contrasena = @contrasena
-    )
+    -- Verificar si existe el usuario y contrasena
+    IF EXISTS (SELECT 1
+               FROM Cliente_Usuario
+               WHERE usuario = @usuario
+                 AND contrasena = @contrasena)
         BEGIN
-            SET @resultado = 1; -- Usuario y contraseña coinciden
+            SET @resultado = 1; -- Usuario y contrasena coinciden
         END
     ELSE
         BEGIN
-            SET @resultado = 0; -- Usuario y/o contraseña no coinciden
+            SET @resultado = 0; -- Usuario y/o contrasena no coinciden
         END
 
     -- Devolver el resultado
     SELECT @resultado AS 'ExisteUsuario';
 END;
+go
 
 /* Plataforma_de_Streaming */
 
-CREATE OR ALTER PROCEDURE Añadir_Plataforma_de_Streaming @nombre_de_fantasia VARCHAR(255),
+CREATE OR ALTER PROCEDURE Anadir_Plataforma_de_Streaming @nombre_de_fantasia VARCHAR(255),
                                                          @razón_social VARCHAR(255),
                                                          @url_imagen VARCHAR(255),
                                                          @token_de_servicio VARCHAR(255),
@@ -275,13 +274,13 @@ go
 CREATE OR ALTER PROCEDURE Registrar_Publicista @nombre_de_fantasia VARCHAR(255),
                                                @razón_social VARCHAR(255),
                                                @email VARCHAR(255),
-                                               @contraseña VARCHAR(255),
+                                               @contrasena VARCHAR(255),
                                                @token_de_servicio VARCHAR(255),
                                                @url_api VARCHAR(255)
 AS
 BEGIN
     INSERT INTO dbo.Publicista(nombre_de_fantasia, razón_social, email, contrasena, token_de_servicio, url_api)
-    VALUES (@nombre_de_fantasia, @razón_social, @email, @contraseña, @token_de_servicio, @url_api)
+    VALUES (@nombre_de_fantasia, @razón_social, @email, @contrasena, @token_de_servicio, @url_api)
 END;
 go
 
@@ -289,7 +288,7 @@ CREATE OR ALTER PROCEDURE Editar_Publicista @id_publicista INT,
                                             @nombre_de_fantasia VARCHAR(255),
                                             @razón_social VARCHAR(255),
                                             @email VARCHAR(255),
-                                            @contraseña VARCHAR(255),
+                                            @contrasena VARCHAR(255),
                                             @token_de_servicio VARCHAR(255),
                                             @url_api VARCHAR(255)
 AS
@@ -298,7 +297,7 @@ BEGIN
     SET nombre_de_fantasia = @nombre_de_fantasia,
         razón_social       = @razón_social,
         email              = @email,
-        contrasena         = @contraseña,
+        contrasena         = @contrasena,
         token_de_servicio  = @token_de_servicio,
         url_api            = @url_api
     WHERE id_publicista = @id_publicista
@@ -732,24 +731,24 @@ go
 /* Administrador */
 
 CREATE OR ALTER PROCEDURE Crear_Administrador @usuario VARCHAR(255),
-                                              @contraseña VARCHAR(255),
+                                              @contrasena VARCHAR(255),
                                               @email VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Administrador(usuario, contraseña, email)
-    VALUES (@usuario, @contraseña, @email)
+    INSERT INTO dbo.Administrador(usuario, contrasena, email)
+    VALUES (@usuario, @contrasena, @email)
 END;
 go
 
 CREATE OR ALTER PROCEDURE Modificar_Administrador @id_administrador INT,
                                                   @usuario VARCHAR(255),
-                                                  @contraseña VARCHAR(255),
+                                                  @contrasena VARCHAR(255),
                                                   @email VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Administrador
     SET usuario    = @usuario,
-        contraseña = @contraseña,
+        contrasena = @contrasena,
         email      = @email
     WHERE id_administrador = @id_administrador
 END;

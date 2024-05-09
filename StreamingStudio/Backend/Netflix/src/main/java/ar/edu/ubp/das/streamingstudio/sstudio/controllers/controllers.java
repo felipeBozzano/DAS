@@ -48,21 +48,21 @@ public class controllers {
     }
 
     @GetMapping("/login")
-    public void login(@RequestParam("codigo_de_transaccion") String codigoTransaccion) {
+    public ResponseEntity<Map<String, String>> login(@RequestParam("codigo_de_transaccion") String codigoTransaccion) {
         // VERIFICAR QUE NO HAYA UNA AUTORIZACION CREADA CON ESE CODIGO DE TRANSACCION
         AutorizacionBean autorizacion = clienteRepository.verificarAutorizacion(codigoTransaccion);
         String url_de_redireccion = autorizacion.getUrl_de_redireccion();
-        int id_cliente = autorizacion.getId_cliente();
+        int id_cliente_plataforma = autorizacion.getId_cliente();
 
         if (url_de_redireccion == null) {
             // HACE EL LOGIN Y DEVUELVE UN id_cliente
-            id_cliente = 1;
+            id_cliente_plataforma = 1;
 
             // CREAR UN TOKEN UNICO E INSERTAR UNA FILA EN LA TABLA AUTORIZACIÓN CON EL ID_CLIENTE
             // Y EL CODIGO_DE_TRANSACCIÓN OBTENIDOS ANTERIORMENTE
             UUID token = UUID.randomUUID();
             String token_string = token.toString();
-            clienteRepository.crearAutorizacion(id_cliente, codigoTransaccion, token_string);
+            clienteRepository.crearAutorizacion(id_cliente_plataforma, codigoTransaccion, token_string);
 
             // EN BASE AL CODIGO DE TRANSACCION, BUSCAR EN LA TABLA TRANSACCION EL URL DE REDIRECCION
             // DE STREAMING STUDIO
@@ -70,7 +70,13 @@ public class controllers {
         }
 
         // REDIRIGIR AL URL DE REDIRECCION DE STREAMING STUDIO
-        // redirect(url_de_redireccion).body(id_cliente, codigo_de_transaccion)
+        // redirect(url_de_redireccion).body(id_cliente_plataforma, codigo_de_transaccion)
+
+        respuesta = new HashMap<>();
+        respuesta.put("mensaje", "Autorizacion creada");
+        respuesta.put("id_cliente_plataforma", String.valueOf(id_cliente_plataforma));
+        respuesta.put("codigo_de_transaccion", codigoTransaccion);
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
     @PostMapping("/usuario/{id_cliente}/obtener_token")
