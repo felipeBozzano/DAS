@@ -6,6 +6,10 @@
   background-color: lightskyblue; /* Fondo gris claro */
 }
 
+body {
+  background-color: #b3d1ff; /* Color de fondo menos fuerte, un tono más claro de azul */
+}
+
 .login-form {
   border: 1px solid #ddd; /* Borde gris claro */
   padding: 30px;

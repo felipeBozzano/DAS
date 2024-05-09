@@ -89,4 +89,5 @@ public class ClienteUsuarioBean {
     public void setValido(Boolean valido) {
         this.valido = valido;
     }
+
 }

@@ -18,7 +18,7 @@ export class LoginComponent {
   // tslint:disable-next-line:typedef
   login(usuario: string, contraseña: string) {
     const body = { usuario: this.username, contrasena: this.password };
-    return this.http.post<any>('http://localhost:8080/ss/login_user', body);
+    return this.http.post<any>('http://localhost:8080/ss/login_usuario_retardo', body);
   }
 
   // tslint:disable-next-line:typedef

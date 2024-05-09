@@ -58,6 +58,13 @@ public class controllers_francisco {
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
+    @PostMapping("/login_usuario_retardo")
+    public int verificarUsuarioConRetardo(@RequestBody ClienteUsuarioBean request) {
+        // Llama al método verificarUsuarioConRetardo() del servicio
+        int future = user_repository.verificarUsuarioConRetardo(request.getUsuario(), request.getcontrasena());
+        return future;
+    }
+
     @GetMapping("/obtener_usuario")
     public ResponseEntity<List<ClienteUsuarioBean>> getUser(@RequestParam("email") String email) {
         return new ResponseEntity<>(user_repository.getUser(email), HttpStatus.OK);
