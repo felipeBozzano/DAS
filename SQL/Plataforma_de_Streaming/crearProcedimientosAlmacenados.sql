@@ -3,20 +3,20 @@ USE Plataforma_de_Streaming;
 /* Cliente_Usuario */
 
 CREATE OR ALTER PROCEDURE Crear_Usuario @usuario VARCHAR(255),
-                                        @contraseña VARCHAR(255),
+                                        @contrasena VARCHAR(255),
                                         @email VARCHAR(255),
                                         @nombre VARCHAR(255),
                                         @apellido VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Cliente_Usuario(usuario, contraseña, email, nombre, apellido, valido)
-    VALUES (@usuario, @contraseña, @email, @nombre, @apellido, 0)
+    INSERT INTO dbo.Cliente_Usuario(usuario, contrasena, email, nombre, apellido, valido)
+    VALUES (@usuario, @contrasena, @email, @nombre, @apellido, 0)
 END
 go
 
 CREATE OR ALTER PROCEDURE Editar_Usuario @id_cliente INT,
                                          @usuario VARCHAR(255),
-                                         @contraseña VARCHAR(255),
+                                         @contrasena VARCHAR(255),
                                          @email VARCHAR(255),
                                          @nombre VARCHAR(255),
                                          @apellido VARCHAR(255)
@@ -24,7 +24,7 @@ AS
 BEGIN
     UPDATE Cliente_Usuario
     SET usuario    = @usuario,
-        contraseña = @contraseña,
+        contrasena = @contrasena,
         email      = @email,
         nombre     = @nombre,
         apellido   = @apellido
@@ -57,7 +57,7 @@ BEGIN
     SELECT id_cliente
     FROM dbo.Cliente_Usuario CU
     WHERE CU.usuario = @usuario
-      AND CU.contraseña = @contrasena
+      AND CU.contrasena = @contrasena
       AND CU.valido = 1
 END
 go
