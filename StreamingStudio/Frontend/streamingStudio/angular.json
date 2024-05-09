@@ -120,5 +120,8 @@
         }
       }
     }},
-  "defaultProject": "streamingStudio"
+  "defaultProject": "streamingStudio",
+  "cli": {
+    "analytics": false
+  }
 }
