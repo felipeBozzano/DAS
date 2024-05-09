@@ -5,7 +5,7 @@ import { IMessage } from '../../models/i-message';
 @Component({
   selector: 'app-message-dialog',
   templateUrl: './message-dialog.component.html',
-  styleUrls: ['./message-dialog.component.scss']
+  styleUrls: ['./message-dialog.component.css']
 })
 export class MessageDialogComponent implements OnInit {
 

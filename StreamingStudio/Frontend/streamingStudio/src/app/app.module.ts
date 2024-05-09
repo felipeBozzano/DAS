@@ -10,11 +10,8 @@ import {RouterModule} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
 import { RegisterComponent } from './main/pages/register/register.component';
 import { SpinnerComponent } from './main/components/spinner/spinner.component';
-import {SpinnerService} from './SpinnerService';
-import {SpinnerInterceptor} from './SpinnerInterceptor';
 import {AppHttpInterceptor} from './core/interceptors/app-http-interceptor';
 import {AppErrorHandler} from './core/handlers/app-error-handler';
-import {LoaderComponent} from './core/layouts/loader/loader.component';
 import {CoreModule} from './core/core.module';
 
 @NgModule({

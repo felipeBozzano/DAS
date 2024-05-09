@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
-import {SpinnerService} from '../../../SpinnerService';
 import {AuthService} from '../../../AuthService';
 
 @Component({
@@ -14,7 +13,7 @@ export class LoginComponent {
   password: string = "";
   showError = false;
 
-  constructor(private http: HttpClient, private router: Router, public spinnerService: SpinnerService, private authService: AuthService ) { }
+  constructor(private http: HttpClient, private router: Router, private authService: AuthService ) { }
 
   // tslint:disable-next-line:typedef
   login(usuario: string, contraseña: string) {
