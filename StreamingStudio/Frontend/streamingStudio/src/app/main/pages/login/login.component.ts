@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
-import {AuthService} from '../../../AuthService';
+import {AuthService} from '../../AuthService';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {ILogin } from '../../api/models/login.model';
+import {StreamingStudioResources} from '../../api/resources/streaming-studio.resources';
 
 @Component({
-  selector: 'app-login.ts',
+  selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
@@ -12,20 +14,30 @@ export class LoginComponent {
   username: string = "";
   password: string = "";
   showError = false;
+  public formLogin!: FormGroup;
 
-  constructor(private http: HttpClient, private router: Router, private authService: AuthService ) { }
-
-  // tslint:disable-next-line:typedef
-  login(usuario: string, contraseña: string) {
-    const body = { usuario: this.username, contrasena: this.password };
-    return this.http.post<any>('http://localhost:8080/ss/login_user', body);
-  }
+  constructor(private router: Router,
+              private authService: AuthService,
+              private _fb: FormBuilder,
+              private streamingStudioResources: StreamingStudioResources)
+              { this.formLogin = this._fb.group({
+                usuario: new FormControl('',[Validators.required, Validators.maxLength(16)]),
+                contrasena: new FormControl('',[Validators.required, Validators.maxLength(16)])
+              }) }
 
   // tslint:disable-next-line:typedef
   onSubmit() {
-     // this.spinnerService.show();
-     // setTimeout(() => {
-      this.login(this.username, this.password)
+    // this.spinnerService.show();
+    // setTimeout(() => {
+    if (this.formLogin.valid) {
+      const { usuario, contrasena } = this.formLogin.value
+      const login: ILogin = {
+        usuario: usuario,
+        contrasena: contrasena
+      }
+
+      console.log(login);
+      this.streamingStudioResources.login(login)
         .subscribe(
           (response) => {
             // Si la respuesta es exitosa, redirige al home
@@ -45,7 +57,8 @@ export class LoginComponent {
             // Aquí puedes manejar el error y mostrar un mensaje de error al usuario
           }
         );
-     // }, 2000);
+      // }, 2000);
+    }
   }
 
   navigateToRegister() {
