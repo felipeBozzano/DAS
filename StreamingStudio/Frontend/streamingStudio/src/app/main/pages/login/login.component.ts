@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import {AuthService} from '../../AuthService';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ILogin } from '../../api/models/login.model';
-import {StreamingStudioResources} from '../../api/resources/streaming-studio.resources';
+import {StreamingStudioResources} from '../../api/resources/streaming-studio.services';
 
 @Component({
   selector: 'app-login',

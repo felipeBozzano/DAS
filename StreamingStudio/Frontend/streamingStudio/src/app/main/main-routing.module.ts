@@ -6,7 +6,7 @@ import {RegisterComponent} from './pages/register/register.component';
 import {AuthGuard} from './AuthGuard';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login.ts', pathMatch: 'full' }, // Ruta por defecto a tu formulario de inicio de sesión
+  { path: '', redirectTo: '/login', pathMatch: 'full' }, // Ruta por defecto a tu formulario de inicio de sesión
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
@@ -17,4 +17,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 
-export class MainRoutingModule { } { }
+export class MainRoutingModule { }

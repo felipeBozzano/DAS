@@ -1,27 +1,30 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {ErrorHandler, NgModule} from '@angular/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ErrorHandler, Injectable, NgModule} from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-
 import { AppComponent } from './app.component';
-import { LoginComponent } from './main/pages/login/login.component';
-import { HomeComponent } from './main/pages/home/home.component';
 import {RouterModule} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
-import { RegisterComponent } from './main/pages/register/register.component';
 import { SpinnerComponent } from './main/components/spinner/spinner.component';
 import {AppHttpInterceptor} from './core/interceptors/app-http-interceptor';
 import {AppErrorHandler} from './core/handlers/app-error-handler';
 import {CoreModule} from './core/core.module';
-import {StreamingStudioResources} from './main/api/resources/streaming-studio.resources';
-import {MatCardModule} from '@angular/material/card';
-import {ResourceHandler, ResourceModule} from '@kkoehn/ngx-resource-core';
+import { ResourceModule } from '@kkoehn/ngx-resource-handler-ngx-http';
 import {MainModule} from './main/main.module';
+import {StreamingStudioResources} from './main/api/resources/streaming-studio.services';
+
+class IResourceRequestBody {
+}
+
+class IResourceResponseBody {
+}
+
+class ResourceResponse {
+}
 
 @NgModule({
   declarations: [
     AppComponent,
-    SpinnerComponent
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,12 +33,11 @@ import {MainModule} from './main/main.module';
     AppRoutingModule,
     CoreModule,
     MainModule,
-    ResourceModule.forRoot()
+    ResourceModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
     { provide: ErrorHandler, useClass: AppErrorHandler },
-    StreamingStudioResources,
   ],
   bootstrap: [AppComponent]
 })
