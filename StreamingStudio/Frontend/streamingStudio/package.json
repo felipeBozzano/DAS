@@ -25,6 +25,8 @@
     "@kkoehn/ngx-resource-core": "^14.0.1",
     "@kkoehn/ngx-resource-handler-ngx-http": "^14.0.1",
     "@ng-bootstrap/ng-bootstrap": "^13.1.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.2",
     "ngx-i18nsupport": "^0.17.1",
     "rxjs": "~7.5.0",

@@ -22,23 +22,26 @@ class ResourceResponse {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SpinnerComponent,
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    RouterModule,
-    AppRoutingModule,
-    CoreModule,
-    MainModule,
-    ResourceModule.forRoot(),
-  ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
-    { provide: ErrorHandler, useClass: AppErrorHandler },
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        SpinnerComponent,
+    ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        RouterModule,
+        AppRoutingModule,
+        CoreModule,
+        MainModule,
+        ResourceModule.forRoot(),
+    ],
+    providers: [
+        {provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true},
+        {provide: ErrorHandler, useClass: AppErrorHandler},
+    ],
+    exports: [
+        SpinnerComponent
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

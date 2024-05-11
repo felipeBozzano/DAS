@@ -26,7 +26,7 @@ export class LoginComponent {
               }) }
 
   // tslint:disable-next-line:typedef
-  onSubmit() {
+  async onSubmit() {
     // this.spinnerService.show();
     // setTimeout(() => {
     if (this.formLogin.valid) {

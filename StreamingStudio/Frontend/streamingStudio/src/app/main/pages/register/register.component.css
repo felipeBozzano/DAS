@@ -54,3 +54,9 @@
   text-align: center; /* Para centrar el título */
   margin-top: 50px;
 }
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
