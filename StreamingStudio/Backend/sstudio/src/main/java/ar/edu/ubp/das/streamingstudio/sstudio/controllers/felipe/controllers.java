@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -35,12 +36,12 @@ public class controllers {
     FederacionesPendientesRepository federacionesPendientesRepository;
 
     @GetMapping("/home")
-    public ResponseEntity<Map<String, Map<Integer, List<?>>>> getTipoFee(@RequestParam("id_cliente") int id_cliente){
+    public ResponseEntity<Map<String, Map<?, List<?>>>> mostrarHome(@RequestParam("id_cliente") int id_cliente){
         return new ResponseEntity<>(homeRepository.getHome(id_cliente), HttpStatus.OK);
     }
 
     @GetMapping("/catalogo")
-    public ResponseEntity<String> getCatalogo(){
+    public ResponseEntity<String> obtenerCatalogo() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         return new ResponseEntity<>(catalogoRepository.actualizarCatalogo(), HttpStatus.OK);
     }
 

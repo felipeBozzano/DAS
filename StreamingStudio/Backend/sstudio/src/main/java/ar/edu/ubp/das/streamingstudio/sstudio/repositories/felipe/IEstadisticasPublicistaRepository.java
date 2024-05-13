@@ -1,7 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.EstadisticaPublicistaBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.Publicista;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicistaBean;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +13,6 @@ public interface IEstadisticasPublicistaRepository {
     public int crearReportePublicista(int id_publicista);
     public void crearDetalleReporte(int id_reporte, EstadisticaPublicistaBean detalle);
     public void finalizarReporte(int id_reporte, int clics_totales);
-    public Publicista obtenerDatosDePublicista(int id_publicista);
-    public void enviarReporte(int id_reporte, Publicista publicista);
+    public PublicistaBean obtenerDatosDePublicista(int id_publicista);
+    public void enviarReporte(int id_reporte, PublicistaBean publicistaBean);
 }

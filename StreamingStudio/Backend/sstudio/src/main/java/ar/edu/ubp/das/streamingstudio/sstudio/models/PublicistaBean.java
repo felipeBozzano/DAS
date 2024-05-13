@@ -1,6 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-public class Publicista {
+public class PublicistaBean {
     private int id_publicista;
     private String nombre_de_fantasia;
     private String razon_social;
@@ -9,17 +9,7 @@ public class Publicista {
     private String token_de_servicio;
     private String url_api;
 
-    public Publicista(int id_publicista, String nombre_de_fantasia, String razon_social, String email, String contrasena, String token_de_servicio, String url_api) {
-        this.id_publicista = id_publicista;
-        this.nombre_de_fantasia = nombre_de_fantasia;
-        this.razon_social = razon_social;
-        this.email = email;
-        this.contrasena = contrasena;
-        this.token_de_servicio = token_de_servicio;
-        this.url_api = url_api;
-    }
-
-    public Publicista(){}
+    public PublicistaBean(){}
 
     public int getId_publicista() {
         return id_publicista;

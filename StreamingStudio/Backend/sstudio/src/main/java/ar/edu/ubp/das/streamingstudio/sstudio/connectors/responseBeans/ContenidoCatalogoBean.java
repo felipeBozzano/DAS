@@ -1,35 +1,16 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.models;
+package ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans;
 
-import java.util.Date;
-
-public class ContenidoBean {
-
+public class ContenidoCatalogoBean extends AbstractBean{
     private String id_contenido;
-    private int id_plataforma;
     private String titulo;
     private String descripcion;
     private String url_imagen;
     private int clasificacion;
-    private Boolean mas_visto;
     private boolean reciente;
     private boolean destacado;
     private boolean valido;
 
-    public ContenidoBean(String id_contenido, int id_plataforma, String titulo, String descripcion, String url_imagen, int clasificacion,
-                         boolean destacado, boolean reciente, boolean valido) {
-        this.id_contenido = id_contenido;
-        this.id_plataforma = id_plataforma;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.url_imagen = url_imagen;
-        this.clasificacion = clasificacion;
-        this.mas_visto = false;
-        this.destacado = destacado;
-        this.reciente = reciente;
-        this.valido = valido;
-    }
-
-    public ContenidoBean() {
+    public ContenidoCatalogoBean() {
     }
 
     public String getId_contenido() {
@@ -70,22 +51,6 @@ public class ContenidoBean {
 
     public void setClasificacion(int clasificacion) {
         this.clasificacion = clasificacion;
-    }
-
-    public Boolean getMas_visto() {
-        return mas_visto;
-    }
-
-    public void setMas_visto(Boolean mas_visto) {
-        this.mas_visto = mas_visto;
-    }
-
-    public int getId_plataforma() {
-        return id_plataforma;
-    }
-
-    public void setId_plataforma(int id_plataforma) {
-        this.id_plataforma = id_plataforma;
     }
 
     public boolean isReciente() {

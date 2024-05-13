@@ -58,13 +58,6 @@ public class fran_controllers {
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
-    @PostMapping("/login_usuario_retardo")
-    public int verificarUsuarioConRetardo(@RequestBody ClienteUsuarioBean request) {
-        // Llama al método verificarUsuarioConRetardo() del servicio
-        int future = user_repository.verificarUsuarioConRetardo(request.getUsuario(), request.getcontrasena());
-        return future;
-    }
-
     @GetMapping("/obtener_usuario")
     public ResponseEntity<List<ClienteUsuarioBean>> getUser(@RequestParam("email") String email) {
         return new ResponseEntity<>(user_repository.getUser(email), HttpStatus.OK);
@@ -72,11 +65,17 @@ public class fran_controllers {
 
     /* Federacion usaurio*/
 
-    @PostMapping(
-            path="/usuario/{id_cliente}/federaciones",
-            consumes={MediaType.APPLICATION_JSON_VALUE}
+    @GetMapping(
+            path="/usuario/{id_cliente}/mi_perfil"
     )
-    public ResponseEntity<List<PlataformaDeStreamingBean>> verFederaciones(@PathVariable("id_cliente") Integer id_cliente) {
+    public ResponseEntity<?> verPerfilUsuario(@PathVariable("id_cliente") Integer id_cliente) {
+        return new ResponseEntity<>(id_cliente, HttpStatus.OK);
+    }
+
+    @GetMapping(
+            path="/usuario/{id_cliente}/federaciones"
+    )
+    public ResponseEntity<Map<String, List<PlataformaDeStreamingBean>>> verFederaciones(@PathVariable("id_cliente") Integer id_cliente) {
         return new ResponseEntity<>(user_repository.obtenerFederaciones(id_cliente), HttpStatus.OK);
     }
 

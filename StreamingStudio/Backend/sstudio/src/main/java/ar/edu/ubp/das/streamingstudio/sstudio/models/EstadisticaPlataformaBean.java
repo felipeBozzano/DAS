@@ -3,7 +3,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.models;
 public class EstadisticaPlataformaBean {
     private int id_plataforma;
 
-    private int id_contenido;
+    private String id_contenido;
 
     private String id_en_plataforma;
 
@@ -20,11 +20,11 @@ public class EstadisticaPlataformaBean {
         this.id_plataforma = id_plataforma;
     }
 
-    public int getId_contenido() {
+    public String getId_contenido() {
         return id_contenido;
     }
 
-    public void setId_contenido(int id_contenido) {
+    public void setId_contenido(String id_contenido) {
         this.id_contenido = id_contenido;
     }
 

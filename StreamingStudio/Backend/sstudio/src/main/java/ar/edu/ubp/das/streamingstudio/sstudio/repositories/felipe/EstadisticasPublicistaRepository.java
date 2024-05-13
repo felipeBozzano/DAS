@@ -1,5 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.*;
@@ -20,6 +21,8 @@ public class EstadisticasPublicistaRepository implements IEstadisticasPublicista
     @Autowired
     private JdbcTemplate jdbcTpl;
 
+    private final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
+
     @Override
     public String reportesPublicistas() {
         Map<Integer, List<EstadisticaPublicistaBean>> estadisticasPublicistas = obtenerEstadisticasPublicistas();
@@ -32,8 +35,8 @@ public class EstadisticasPublicistaRepository implements IEstadisticasPublicista
                 clics_totales = clics_totales + datos.getCantidad_de_clics();
             }
             finalizarReporte(id_reporte, clics_totales);
-            Publicista publicista = obtenerDatosDePublicista(id_publicista);
-            enviarReporte(id_reporte, publicista);
+            PublicistaBean publicistaBean = obtenerDatosDePublicista(id_publicista);
+            enviarReporte(id_reporte, publicistaBean);
         }
         return "OK";
     }
@@ -96,20 +99,20 @@ public class EstadisticasPublicistaRepository implements IEstadisticasPublicista
     }
 
     @Override
-    public Publicista obtenerDatosDePublicista(int id_publicista) {
+    public PublicistaBean obtenerDatosDePublicista(int id_publicista) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_publicista", id_publicista);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Datos_de_Publicista")
                 .withSchemaName("dbo")
-                .returningResultSet("publicista", BeanPropertyRowMapper.newInstance(Publicista.class));
+                .returningResultSet("publicista", BeanPropertyRowMapper.newInstance(PublicistaBean.class));
         Map<String, Object> out = jdbcCall.execute(in);
-        List<Publicista> publicista = (List<Publicista>) out.get("publicista");
-        return publicista.getFirst();
+        List<PublicistaBean> publicistaBean = (List<PublicistaBean>) out.get("publicista");
+        return publicistaBean.getFirst();
     }
 
     @Override
-    public void enviarReporte(int id_reporte, Publicista publicista) {
+    public void enviarReporte(int id_reporte, PublicistaBean publicistaBean) {
         /*
 
         -) CREAR EL REPORTE A ENVIAR.

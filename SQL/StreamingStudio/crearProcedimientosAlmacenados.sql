@@ -144,6 +144,15 @@ BEGIN
 END;
 go
 
+CREATE OR ALTER PROCEDURE Obtener_Plataformas_de_Streaming_Activas
+AS
+BEGIN
+    SELECT id_plataforma, url_imagen, url_api
+    FROM dbo.Plataforma_de_Streaming
+    WHERE valido = 1
+END;
+go
+
 /* Transaccion */
 
 CREATE OR ALTER PROCEDURE Comenzar_Federacion @id_plataforma INT,
@@ -214,6 +223,16 @@ BEGIN
     FROM Federacion
     WHERE id_plataforma = @id_plataforma
       and id_cliente = @id_cliente
+END;
+go
+
+CREATE OR ALTER PROCEDURE Obtener_Plataformas_Federadas_de_Usuario @id_cliente INT
+AS
+BEGIN
+    SELECT f.id_plataforma, url_imagen, url_api
+    FROM dbo.Federacion f
+        JOIN dbo.Plataforma_de_Streaming p ON f.id_plataforma = p.id_plataforma
+    WHERE id_cliente = @id_cliente
 END;
 go
 
@@ -1258,14 +1277,14 @@ go
 CREATE OR ALTER PROCEDURE Consultar_Federaciones_Pendientes
 AS
 BEGIN
-    SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_transaccion
+    SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_transaccion, url_login_registro_plataforma
     FROM dbo.Transaccion
     WHERE token IS NULL
       AND fecha_baja IS NULL
 END;
 go
 
-/* POR CADA FEDERACION PEND;IENTE */
+/* POR CADA FEDERACION PENDIENTE */
 
 /* Obtener_Token_de_Servicio_de_Plataforma */
 /* PEGARLE A LA API DE LA PLATAFORMA PARA OBTENER LA URL DE LOGIN Y EL CÓDIGO DE TRANSACCIÓN. */
@@ -1326,7 +1345,7 @@ go
 
 /* CON EL CONTENIDO RESTANTE */
 
-CREATE OR ALTER PROCEDURE Buscar_Contenido @id_contenido INT
+CREATE OR ALTER PROCEDURE Buscar_Contenido @id_contenido VARCHAR(255)
 AS
 BEGIN
     SELECT IIF(COUNT(*) > 0, 1, 0) as contenido
@@ -1340,7 +1359,7 @@ go
 
 /* VER CUALES SON LAS PELÍCULAS QUE ESTAN EN LA PLATAFORMA DE STREAMING Y EN STREAMING STUDIO*/
 
-CREATE OR ALTER PROCEDURE Actualizar_Catalogo @id_contenido INT,
+CREATE OR ALTER PROCEDURE Actualizar_Catalogo @id_contenido VARCHAR(255),
                                               @id_plataforma INT,
                                               @reciente BIT,
                                               @destacado BIT
@@ -1459,90 +1478,56 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Contenido_Destacado @id_cliente INT = NULL
+CREATE OR ALTER PROCEDURE Obtener_Contenido_Destacado @id_cliente INT
 AS
 BEGIN
-    IF @id_cliente IS NOT NULL AND EXISTS (SELECT 1 FROM dbo.Federacion WHERE id_cliente = @id_cliente)
-        BEGIN
-            WITH Plataformas_Disponibles AS (SELECT DISTINCT(P.id_plataforma)
-                                             FROM dbo.Plataforma_de_Streaming P
-                                                      LEFT JOIN dbo.Federacion F ON P.id_plataforma = F.id_plataforma
-                                             WHERE F.id_cliente = @id_cliente
-                                               AND p.valido = 1)
-            SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
-            FROM dbo.Catalogo Ca
-                     JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
-            WHERE Ca.destacado = 1
-              AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
-              AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END;
-    ELSE
-        BEGIN
-            SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
-            FROM dbo.Catalogo Ca
-                     JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
-            WHERE Ca.destacado = 1
-              AND Ca.id_plataforma IN (SELECT id_plataforma FROM dbo.Plataforma_de_Streaming WHERE valido = 1)
-              AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END;
+    WITH Plataformas_Disponibles AS (SELECT DISTINCT(P.id_plataforma)
+                                     FROM dbo.Plataforma_de_Streaming P
+                                              LEFT JOIN dbo.Federacion F ON P.id_plataforma = F.id_plataforma
+                                     WHERE F.id_cliente = @id_cliente
+                                       AND p.valido = 1)
+    SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
+    FROM dbo.Catalogo Ca
+             JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+    WHERE Ca.destacado = 1
+      AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
+      AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja);
+
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Contenido_Reciente @id_cliente INT = NULL
+CREATE OR ALTER PROCEDURE Obtener_Contenido_Reciente @id_cliente INT
 AS
 BEGIN
-    IF @id_cliente IS NOT NULL AND EXISTS (SELECT 1 FROM dbo.Federacion WHERE id_cliente = @id_cliente)
-        BEGIN
-            WITH Plataformas_Disponibles AS (SELECT DISTINCT(P.id_plataforma)
-                                             FROM dbo.Plataforma_de_Streaming P
-                                                      LEFT JOIN dbo.Federacion F ON P.id_plataforma = F.id_plataforma
-                                             WHERE F.id_cliente = @id_cliente
-                                               AND p.valido = 1)
-            SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
-            FROM dbo.Catalogo Ca
-                     JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
-            WHERE reciente = 1
-              AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
-              AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END;
-    ELSE
-        BEGIN
-            SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
-            FROM dbo.Catalogo Ca
-                     JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
-            WHERE reciente = 1
-              AND Ca.id_plataforma IN (SELECT id_plataforma FROM dbo.Plataforma_de_Streaming WHERE valido = 1)
-              AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END;
+    WITH Plataformas_Disponibles AS (SELECT DISTINCT(P.id_plataforma)
+                                     FROM dbo.Plataforma_de_Streaming P
+                                              LEFT JOIN dbo.Federacion F ON P.id_plataforma = F.id_plataforma
+                                     WHERE F.id_cliente = @id_cliente
+                                       AND p.valido = 1)
+    SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
+    FROM dbo.Catalogo Ca
+             JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+    WHERE reciente = 1
+      AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
+      AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja);
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Contenido_mas_Visto @id_cliente INT = NULL
+CREATE OR ALTER PROCEDURE Obtener_Contenido_mas_Visto @id_cliente INT
 AS
 BEGIN
-    IF @id_cliente IS NOT NULL AND EXISTS (SELECT 1 FROM dbo.Federacion WHERE id_cliente = @id_cliente)
-        BEGIN
-            WITH Plataformas_Disponibles AS (SELECT DISTINCT(P.id_plataforma)
-                                             FROM dbo.Plataforma_de_Streaming P
-                                                      LEFT JOIN dbo.Federacion F ON P.id_plataforma = F.id_plataforma
-                                             WHERE F.id_cliente = @id_cliente
-                                               AND p.valido = 1)
-            SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
-            FROM dbo.Catalogo Ca
-                     JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
-            WHERE mas_visto = 1
-              AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
-              AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END;
-    ELSE
-        BEGIN
-            SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
-            FROM dbo.Catalogo Ca
-                     JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
-            WHERE mas_visto = 1
-              AND Ca.id_plataforma IN (SELECT id_plataforma FROM dbo.Plataforma_de_Streaming WHERE valido = 1)
-              AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
-        END;
+    WITH Plataformas_Disponibles AS (SELECT DISTINCT(P.id_plataforma)
+                                     FROM dbo.Plataforma_de_Streaming P
+                                              LEFT JOIN dbo.Federacion F ON P.id_plataforma = F.id_plataforma
+                                     WHERE F.id_cliente = @id_cliente
+                                       AND p.valido = 1)
+    SELECT Ca.id_contenido, Ca.id_plataforma, Co.url_imagen
+    FROM dbo.Catalogo Ca
+             JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+    WHERE mas_visto = 1
+      AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
+      AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja);
+
 END;
 go
 

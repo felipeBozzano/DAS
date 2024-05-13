@@ -1,9 +1,8 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.EstadisticaPlataformaBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.EstadisticaPublicistaBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.Publicista;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,6 +23,8 @@ public class EstadisticasPlataformaRepository implements IEstadisticasPlataforma
 
     @Autowired
     private JdbcTemplate jdbcTpl;
+
+    private final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
 
     @Override
     public String reportesPlataformas() {

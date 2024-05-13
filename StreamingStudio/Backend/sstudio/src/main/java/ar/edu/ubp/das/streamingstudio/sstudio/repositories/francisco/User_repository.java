@@ -1,5 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 
 @Repository
@@ -20,6 +20,8 @@ public class User_repository {
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JdbcTemplate jdbcTpl;
+
+    private Map<String, String> respuesta;
 
     @Transactional
     public List<ClienteUsuarioBean> createUser(ClienteUsuarioBean cliente) {
@@ -54,58 +56,48 @@ public class User_repository {
     }
 
     @Transactional
-    public Integer verificarUsuarioConRetardo(String usuario, String contrasena) {
-        CompletableFuture<Integer> future = new CompletableFuture<>();
-
-        // Simulación de una operación asíncrona que tarda 2 segundos en completarse
-        CompletableFuture.runAsync(() -> {
-            try {
-                Thread.sleep(2000);
-                int resultado = verificarUsuario(usuario, contrasena);
-                future.complete(resultado);
-            } catch (InterruptedException e) {
-                future.completeExceptionally(e);
-            }
-        });
-
-        // Espera hasta que el futuro se complete y obtén el resultado
-        try {
-            return future.get(); // Obtiene el resultado del CompletableFuture
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException("Error al obtener el resultado del CompletableFuture", e);
-        }
-    }
-
-    public CompletableFuture<Integer> verificarUsuarioConRetardoo(String usuario, String contrasena) {
-        CompletableFuture<Integer> future = new CompletableFuture<>();
-
-        // Crear un ScheduledExecutorService
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
-
-        // Programar la ejecución de la tarea después de 2 segundos
-        executorService.schedule(() -> {
-            try {
-                int resultado = verificarUsuario(usuario, contrasena); // Obtener el resultado de la verificación
-                future.complete(resultado); // Completar el futuro con el resultado
-            } catch (Exception e) {
-                future.completeExceptionally(e); // Completar el futuro con una excepción si ocurre un error
-            }
-        }, 2, TimeUnit.SECONDS); // Retraso de 2 segundos
-
-        // Detener el executorService después de completar la tarea
-        executorService.shutdown();
-
-        return future; // Devolver el futuro
-    }
-
-
-    @Transactional
     public List<ClienteUsuarioBean> getUser(String email) {
-        return jdbcTpl.query("SELECT * FROM dbo.Cliente_Usuario WHERE email = ?",new Object[]{email}, BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class)
-        );
+        return jdbcTpl.query("SELECT * FROM dbo.Cliente_Usuario WHERE email = ?",new Object[]{email}, BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class));
     }
 
-    public List<PlataformaDeStreamingBean> obtenerFederaciones(int id_cliente) {
-        return List.of();
+    public Map<String, List<PlataformaDeStreamingBean>> obtenerFederaciones(int id_cliente) {
+        Map<String, List<PlataformaDeStreamingBean>> plataformas = new HashMap<>();
+        Set<PlataformaDeStreamingBean> conjuntoPlataformasActivas = obtenerPlataformasActivas();
+        Set<PlataformaDeStreamingBean> conjuntoPlataformasFederadas = obtenerPlataformasFederadas(id_cliente);
+
+        conjuntoPlataformasActivas.removeAll(conjuntoPlataformasFederadas);
+
+        List<PlataformaDeStreamingBean> plataformasAFederar = new ArrayList<>(conjuntoPlataformasActivas);
+        List<PlataformaDeStreamingBean> plataformasFederadas = new ArrayList<>(conjuntoPlataformasFederadas);
+
+        plataformas.put("Plataformas A Federar", plataformasAFederar);
+        plataformas.put("Plataformas Federadas", plataformasFederadas);
+
+        return plataformas;
+    }
+
+    public Set<PlataformaDeStreamingBean> obtenerPlataformasActivas() {
+        SqlParameterSource in = new MapSqlParameterSource();
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_Plataformas_de_Streaming_Activas")
+                .withSchemaName("dbo")
+                .returningResultSet("plataformas", BeanPropertyRowMapper.newInstance(PlataformaDeStreamingBean.class));;
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<PlataformaDeStreamingBean> plataformas = (List<PlataformaDeStreamingBean>) out.get("plataformas");
+        Set<PlataformaDeStreamingBean> conjuntoPlataformasActivas = new HashSet<>(plataformas);
+        return conjuntoPlataformasActivas;
+    }
+
+    public Set<PlataformaDeStreamingBean> obtenerPlataformasFederadas(int id_cliente) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_cliente", id_cliente);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_Plataformas_Federadas_de_Usuario")
+                .withSchemaName("dbo")
+                .returningResultSet("plataformasFederadas", BeanPropertyRowMapper.newInstance(PlataformaDeStreamingBean.class));;
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<PlataformaDeStreamingBean> plataformasFederadas = (List<PlataformaDeStreamingBean>) out.get("plataformasFederadas");
+        Set<PlataformaDeStreamingBean> conjuntoPlataformasFederadas = new HashSet<>(plataformasFederadas);
+        return conjuntoPlataformasFederadas;
     }
 }

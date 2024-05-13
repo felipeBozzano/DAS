@@ -2,32 +2,21 @@ package ar.edu.ubp.das.streamingstudio.sstudio.models;
 import java.util.Date;
 
 public class CatalogoBean {
-    private int id_contenido;
+    private String id_contenido;
     private int id_plataforma;
     private boolean reciente;
     private boolean destacado;
-    private String id_en_plataforma;
     private Date fecha_de_alta;
     private Date fecha_de_baja;
-
-    public CatalogoBean(int id_contenido, int id_plataforma, boolean reciente, boolean destacado, String id_en_plataforma, Date fecha_de_alta, Date fecha_de_baja) {
-        this.id_contenido = id_contenido;
-        this.id_plataforma = id_plataforma;
-        this.reciente = reciente;
-        this.destacado = destacado;
-        this.id_en_plataforma = id_en_plataforma;
-        this.fecha_de_alta = fecha_de_alta;
-        this.fecha_de_baja = fecha_de_baja;
-    }
 
     public CatalogoBean() {
     }
 
-    public int getId_contenido() {
+    public String getId_contenido() {
         return id_contenido;
     }
 
-    public void setId_contenido(int id_contenido) {
+    public void setId_contenido(String id_contenido) {
         this.id_contenido = id_contenido;
     }
 
@@ -53,14 +42,6 @@ public class CatalogoBean {
 
     public void setDestacado(boolean destacado) {
         this.destacado = destacado;
-    }
-
-    public String getId_en_plataforma() {
-        return id_en_plataforma;
-    }
-
-    public void setId_en_plataforma(String id_en_plataforma) {
-        this.id_en_plataforma = id_en_plataforma;
     }
 
     public Date getFecha_de_alta() {

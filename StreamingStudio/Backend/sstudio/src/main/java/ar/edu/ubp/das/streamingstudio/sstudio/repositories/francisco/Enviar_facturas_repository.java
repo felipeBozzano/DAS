@@ -46,7 +46,7 @@ public class Enviar_facturas_repository {
             List<PublicidadBean> listaPublicadades = publicidades_agrupadas.get(id_publicista);
             double total = 0;
             for(PublicidadBean  publicidad : listaPublicadades){
-                double costoBanner = obtenerCostoDeBanner(publicidad.getId_banner());
+                double costoBanner = obtenerCostoDeBanner(publicidad.getId_tipo_banner());
                 total += costoBanner * publicidad.getCantidad_de_dias();
                 crearDetalleFacturaPublicista(id_factura, costoBanner, publicidad.getCantidad_de_dias(), costoBanner * publicidad.getCantidad_de_dias(), "Publicidad " + id_factura);
             }

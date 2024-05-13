@@ -3,10 +3,9 @@ package ar.edu.ubp.das.streamingstudio.sstudio.models;
 import java.util.Date;
 
 public class PublicidadBean {
+    private int id_tipo_banner;
     private int id_publicidad;
     private int id_publicista;
-    private int id_banner;
-    private int id_tipo_banner;
     private String codigo_publicidad;
     private String url_de_imagen;
     private String url_de_publicidad;
@@ -14,21 +13,8 @@ public class PublicidadBean {
     private Date fecha_final;
     private int cantidad_de_dias;
 
-    public PublicidadBean(int id_banner, int id_tipo_banner, String url_de_imagen, String url_de_publicidad) {
-        this.id_banner = id_banner;
-        this.id_tipo_banner = id_tipo_banner;
-        this.url_de_imagen = url_de_imagen;
-        this.url_de_publicidad = url_de_publicidad;
+    public PublicidadBean() {
     }
-
-    public PublicidadBean(int id_banner, int id_publicista, int id_publicidad, String codigo_publicidad) {
-        this.id_banner = id_banner;
-        this.id_publicista = id_publicista;
-        this.id_publicidad = id_publicidad;
-        this.codigo_publicidad = codigo_publicidad;
-    }
-
-    public PublicidadBean(){}
 
     public int getId_publicidad() {
         return id_publicidad;
@@ -44,14 +30,6 @@ public class PublicidadBean {
 
     public void setId_publicista(int id_publicista) {
         this.id_publicista = id_publicista;
-    }
-
-    public int getId_banner() {
-        return id_banner;
-    }
-
-    public void setId_banner(int id_banner) {
-        this.id_banner = id_banner;
     }
 
     public String getCodigo_publicidad() {
@@ -98,6 +76,10 @@ public class PublicidadBean {
         return id_tipo_banner;
     }
 
+    public void setId_tipo_banner(int id_tipo_banner) {
+        this.id_tipo_banner = id_tipo_banner;
+    }
+
     public int getCantidad_de_dias() {
         return cantidad_de_dias;
     }
@@ -108,15 +90,15 @@ public class PublicidadBean {
 
     @Override
     public String toString() {
-        return "id_publicidad: "       + id_publicidad     + "\n"
-             + "id_publicista: "       + id_publicista     + "\n"
-             +  "id_banner: "          + id_banner         + "\n"
-             +  "codigo_publicidad"    + codigo_publicidad + "\n"
-             +  "url_de_imagen: "      + url_de_imagen     + "\n"
-             +  "url_de_publiocidad: " + url_de_publicidad + "\n"
-             +  "fecha_de_alta: "      + fecha_inicio      + "\n"
-             +  "fecha_de_baja: "      + fecha_final       + "\n"
-             +  "id_tipo_banner: "     + id_tipo_banner    + "\n";
+        return "id_publicidad: " + id_publicidad + "\n"
+                + "id_publicista: " + id_publicista + "\n"
+                + "id_tipo_banner" + id_tipo_banner + "\n"
+                + "codigo_publicidad" + codigo_publicidad + "\n"
+                + "url_de_imagen: " + url_de_imagen + "\n"
+                + "url_de_publiocidad: " + url_de_publicidad + "\n"
+                + "fecha_de_alta: " + fecha_inicio + "\n"
+                + "fecha_de_baja: " + fecha_final + "\n"
+                + "id_tipo_banner: " + id_tipo_banner + "\n";
 
     }
 }
