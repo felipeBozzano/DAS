@@ -33,8 +33,12 @@ public class FederarClienteRepository implements IFederarClienteRepository {
             respuesta.put("mensaje", "El cliente ya esta federado");
         } else {
             Map<String, String> transaccion = verificarFederacionCurso(id_plataforma, id_cliente);
-            if (!transaccion.containsKey("existe")) {
+            if (!respuesta.containsKey("existe")) {
                 respuesta = comenzarFederacion(id_plataforma, id_cliente, tipo_transaccion);
+            }
+            else {
+                respuesta = transaccion;
+                respuesta.put("mensaje", "Redirigir al cliente a la plataforma de Streaming");
             }
         }
         return respuesta;

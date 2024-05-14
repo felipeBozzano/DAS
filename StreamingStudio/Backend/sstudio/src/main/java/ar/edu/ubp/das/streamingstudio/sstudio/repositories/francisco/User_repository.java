@@ -21,8 +21,6 @@ public class User_repository {
     @Autowired
     private JdbcTemplate jdbcTpl;
 
-    private Map<String, String> respuesta;
-
     @Transactional
     public List<ClienteUsuarioBean> createUser(ClienteUsuarioBean cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
@@ -41,7 +39,6 @@ public class User_repository {
         return (List<ClienteUsuarioBean>)out.get("Crear_Usuario");
     }
 
-    @Transactional
     public int verificarUsuario(String usuario, String contrasena) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("usuario", usuario)
@@ -55,9 +52,16 @@ public class User_repository {
         return resultado;
     }
 
-    @Transactional
-    public List<ClienteUsuarioBean> getUser(String email) {
-        return jdbcTpl.query("SELECT * FROM dbo.Cliente_Usuario WHERE email = ?",new Object[]{email}, BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class));
+    public ClienteUsuarioBean obtenerInformacionUsuario(int id_cliente) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_cliente", id_cliente);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_Informacion_de_Usuario")
+                .withSchemaName("dbo")
+                .returningResultSet("usuario", BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class));;
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<ClienteUsuarioBean> lista_usuario = (List<ClienteUsuarioBean>) out.get("usuario");
+        return lista_usuario.getFirst();
     }
 
     public Map<String, List<PlataformaDeStreamingBean>> obtenerFederaciones(int id_cliente) {

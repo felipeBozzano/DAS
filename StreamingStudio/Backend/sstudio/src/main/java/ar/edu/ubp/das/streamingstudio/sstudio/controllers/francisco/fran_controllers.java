@@ -58,19 +58,14 @@ public class fran_controllers {
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
-    @GetMapping("/obtener_usuario")
-    public ResponseEntity<List<ClienteUsuarioBean>> getUser(@RequestParam("email") String email) {
-        return new ResponseEntity<>(user_repository.getUser(email), HttpStatus.OK);
-    }
-
-    /* Federacion usaurio*/
-
     @GetMapping(
             path="/usuario/{id_cliente}/mi_perfil"
     )
-    public ResponseEntity<?> verPerfilUsuario(@PathVariable("id_cliente") Integer id_cliente) {
-        return new ResponseEntity<>(id_cliente, HttpStatus.OK);
+    public ResponseEntity<ClienteUsuarioBean> verPerfilUsuario(@PathVariable("id_cliente") Integer id_cliente) {
+        return new ResponseEntity<>(user_repository.obtenerInformacionUsuario(id_cliente), HttpStatus.OK);
     }
+
+    /* Federacion usaurio*/
 
     @GetMapping(
             path="/usuario/{id_cliente}/federaciones"

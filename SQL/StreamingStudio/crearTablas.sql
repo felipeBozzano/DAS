@@ -274,7 +274,7 @@ CREATE TABLE [Transaccion]
             ON DELETE CASCADE
 );
 
-CREATE TABLE [Federacion]
+    CREATE TABLE [Federacion]
 (
     [id_plataforma]    INT          NOT NULL,
     [id_cliente]       INT          NOT NULL,

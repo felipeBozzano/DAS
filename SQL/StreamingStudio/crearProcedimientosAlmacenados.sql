@@ -72,6 +72,15 @@ BEGIN
 END;
 go
 
+CREATE OR ALTER PROCEDURE Obtener_Informacion_de_Usuario @id_cliente INT
+AS
+BEGIN
+    SELECT usuario, email, nombre, apellido, valido
+    FROM dbo.Cliente_Usuario
+    WHERE id_cliente = @id_cliente
+END;
+go
+
 /* Plataforma_de_Streaming */
 
 CREATE OR ALTER PROCEDURE Anadir_Plataforma_de_Streaming @nombre_de_fantasia VARCHAR(255),
@@ -231,7 +240,7 @@ AS
 BEGIN
     SELECT f.id_plataforma, url_imagen, url_api
     FROM dbo.Federacion f
-        JOIN dbo.Plataforma_de_Streaming p ON f.id_plataforma = p.id_plataforma
+             JOIN dbo.Plataforma_de_Streaming p ON f.id_plataforma = p.id_plataforma
     WHERE id_cliente = @id_cliente
 END;
 go
