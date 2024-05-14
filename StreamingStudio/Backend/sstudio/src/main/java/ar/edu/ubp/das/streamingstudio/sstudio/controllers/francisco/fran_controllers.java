@@ -57,6 +57,10 @@ public class fran_controllers {
         Map<String, String> respuesta = new HashMap<>();
         if(user == 1){
             respuesta.put("mensaje", "Usuario existente");
+            respuesta.put("id_cliente", String.valueOf(cliente.getId_cliente()));
+            respuesta.put("nombre", cliente.getNombre());
+            respuesta.put("apellido", cliente.getApellido());
+            respuesta.put("email", cliente.getEmail());
         }else {
             respuesta.put("mensaje", "Usuario no existente");
         }

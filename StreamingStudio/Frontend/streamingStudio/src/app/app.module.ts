@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {ErrorHandler, Injectable, NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import {RouterModule} from '@angular/router';
@@ -10,7 +10,6 @@ import {AppErrorHandler} from './core/handlers/app-error-handler';
 import {CoreModule} from './core/core.module';
 import { ResourceModule } from '@kkoehn/ngx-resource-handler-ngx-http';
 import {MainModule} from './main/main.module';
-import {StreamingStudioResources} from './main/api/resources/streaming-studio.services';
 
 class IResourceRequestBody {
 }
