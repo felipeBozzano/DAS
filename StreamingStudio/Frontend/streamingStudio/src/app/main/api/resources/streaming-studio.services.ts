@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import {ILogin} from '../models/login.model';
 import {ILoginResponse} from '../models/ILoginResponse.model';
 import {IUser} from '../models/IUser.model';
+import {IListadoFederaciones} from '../models/IListadoFederacion.model';
 
 @Injectable()
 @ResourceParams({
@@ -26,4 +27,11 @@ export class StreamingStudioResources extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   registro!: IResourceMethodObservable<IUser,void>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Get,
+    path: `/usuario/{!id_cliente}/federaciones`,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  federaciones!: IResourceMethodObservable<{ id_cliente: string }, IListadoFederaciones>;
 }

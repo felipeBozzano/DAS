@@ -7,11 +7,15 @@ import {RegisterComponent} from './pages/register/register.component';
 import {CommonModule} from '@angular/common';
 import {MainRoutingModule} from './main-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HeaderComponent} from './components/header/header.component';
+import {FederacionesComponent} from './pages/federaciones/federaciones.component';
 
 
 // @ts-ignore
 @NgModule({
   declarations: [
+    FederacionesComponent,
+    HeaderComponent,
     HomeComponent,
     LoginComponent,
     RegisterComponent
