@@ -1,6 +1,5 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.concurrent.*;
 
 @Repository
 public class User_repository {
@@ -74,8 +72,9 @@ public class User_repository {
         List<PlataformaDeStreamingBean> plataformasAFederar = new ArrayList<>(conjuntoPlataformasActivas);
         List<PlataformaDeStreamingBean> plataformasFederadas = new ArrayList<>(conjuntoPlataformasFederadas);
 
-        plataformas.put("Plataformas A Federar", plataformasAFederar);
-        plataformas.put("Plataformas Federadas", plataformasFederadas);
+        plataformas.put("Plataformas_a_Federar", plataformasAFederar);
+        plataformas.put("Plataformas_Federadas", plataformasFederadas);
+
 
         return plataformas;
     }
