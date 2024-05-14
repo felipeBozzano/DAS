@@ -33,7 +33,7 @@ public class FederarClienteRepository implements IFederarClienteRepository {
             respuesta.put("mensaje", "El cliente ya esta federado");
         } else {
             Map<String, String> transaccion = verificarFederacionCurso(id_plataforma, id_cliente);
-            if (!respuesta.containsKey("existe")) {
+            if (!transaccion.containsKey("codigo_de_transaccion")) {
                 respuesta = comenzarFederacion(id_plataforma, id_cliente, tipo_transaccion);
             }
             else {
@@ -69,8 +69,9 @@ public class FederarClienteRepository implements IFederarClienteRepository {
 
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String,String>> resultado = (List<Map<String,String>>) out.get("#result-set-1");
-        if (resultado.isEmpty())
+        if (resultado.isEmpty()) {
             resultado.add(new HashMap<>());
+        }
 
         return resultado.getFirst();
     }
