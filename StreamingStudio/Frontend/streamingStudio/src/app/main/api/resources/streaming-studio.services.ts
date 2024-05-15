@@ -33,5 +33,5 @@ export class StreamingStudioResources extends Resource{
     path: `/usuario/{!id_cliente}/federaciones`,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  federaciones!: IResourceMethodObservable<{ id_cliente: string }, IListadoFederaciones>;
+  federaciones!: IResourceMethodObservable<{ id_cliente: string | null }, IListadoFederaciones>;
 }

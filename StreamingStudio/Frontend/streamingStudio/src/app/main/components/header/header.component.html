@@ -1,17 +1,19 @@
-
 <header class="header-container" *ngIf="isAuthenticated(); else unauthenticated">
   <div class="logo">
-    <img src="../../../../assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
+    <img (click)="navigateTo('home')"  src="../../../../assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
+  </div>
+  <div class="header-title">
+    {{ pageTitle }}
   </div>
   <div class="nav-buttons" *ngIf="isLoggedIn">
     <button (click)="navigateTo('series')">Series</button>
     <button (click)="navigateTo('peliculas')">Películas</button>
     <button (click)="navigateTo('busqueda-avanzada')">Búsqueda Avanzada</button>
     <div class="user-menu">
-      <button (click)="toggleUserMenu()">Usuario</button>
-      <div class="user-menu-options" *ngIf="userMenuVisible">
+      <button (click)="toggleUserMenu()" class="user-button">Usuario</button>
+      <div class="dropdown" [class.show]="userMenuVisible">
         <button (click)="navigateTo('mi-usuario')">Mi Usuario</button>
-        <button (click)="navigateTo('federaciones')">Federaciones</button>
+        <button (click)="navigateToFederaciones()">Federaciones</button>
         <button (click)="logout()">Cerrar Sesión</button>
       </div>
     </div>
@@ -20,9 +22,8 @@
 <ng-template #unauthenticated>
   <div class="header-container centered">
     <div class="logo">
-      <img src="../../../../assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
+      <img (click)="navigateTo('home')" src="../../../../assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
       <h1>Streaming Studio</h1>
     </div>
   </div>
 </ng-template>
-

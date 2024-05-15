@@ -1,5 +1,15 @@
 <div class="home-container">
-  <app-header></app-header>
+  <app-header [pageTitle]="'Home'" [id_cliente]=client_id></app-header>
 </div>
-<h1 class="home-title">HOME</h1>
+<div *ngIf="currentUser">
+  <h1>Bienvenido, {{ currentUser.usuario }}</h1>
+  <!-- Aquí puedes mostrar más información del usuario -->
+  <p>ID de Usuario: {{ currentUser.id_cliente }}</p>
+  <p>Apellido: {{ currentUser.apellido }}</p>
+  <p>Nombre: {{ currentUser.nombre }}</p>
+  <p>email: {{ currentUser.email }}</p>
+</div>
+<div *ngIf="!currentUser">
+  <h1>Por favor, inicia sesión</h1>
+</div>
 

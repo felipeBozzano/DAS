@@ -43,7 +43,7 @@ export class LoginComponent {
             // Si la respuesta es exitosa, redirige al home
             console.log('Respuesta del servidor:', response);
             if (response.mensaje === 'Usuario existente') {
-              this.authService.login();
+              this.authService.login(response);
               this.showError = false;
               // this.spinnerService.hide();
               this.router.navigate(['/home']);

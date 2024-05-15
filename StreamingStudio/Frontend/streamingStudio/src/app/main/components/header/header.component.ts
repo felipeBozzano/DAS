@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AuthService} from '../../AuthService';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {StreamingStudioResources} from '../../api/resources/streaming-studio.services';
 import { IListadoFederaciones } from '../../api/models/IListadoFederacion.model';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -12,9 +13,10 @@ import { IListadoFederaciones } from '../../api/models/IListadoFederacion.model'
 export class HeaderComponent implements OnInit {
   isLoggedIn = true; // Suponiendo que este valor determina si el usuario está logueado
   userMenuVisible = false;
-  id_cliente: string | null = null;
+  @Input() pageTitle: string = '';
+  @Input() id_cliente: string = '';
 
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute, private streamingStudioResources: StreamingStudioResources) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   toggleUserMenu() {
     this.userMenuVisible = !this.userMenuVisible;
@@ -37,6 +39,13 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.id_cliente = this.route.snapshot.paramMap.get('id_cliente');
+    console.log("this.id_cliente: ", this.id_cliente);
+
+  }
+
+  navigateToFederaciones() {
+    const ruta = `usuario/${this.id_cliente}/federaciones`
+    console.log("ruuta: ", ruta);
+    this.router.navigate([ruta]);
   }
 }

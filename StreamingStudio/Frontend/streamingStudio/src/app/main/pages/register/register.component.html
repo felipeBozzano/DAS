@@ -1,9 +1,7 @@
-<div class="title-container">
-  <h1>STREAMING STUDIO</h1>
-</div>
+<app-header [pageTitle]="'Registro'"></app-header>
 <div class="register-container">
   <div class="register-form">
-    <h2>REGISTRO</h2>
+    <h2 class="title-container">REGISTRO</h2>
     <form (ngSubmit)="onSubmit()" [formGroup]="formRegister">
       <div class="form-group">
         <label for="usuario">Usuario:</label>

@@ -48,12 +48,21 @@ body {
   background-color: #005bb5; /* Azul un poco más oscuro */
 }
 
-main {
-  padding-top: 60px; /* Espacio para el header fijo */
+.user-menu {
+  position: relative; /* Necesario para el dropdown */
 }
 
-h1{
-  margin-left: 20px;
+.user-button {
+  background-color: #0066cc;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.user-button:hover {
+  background-color: #005bb5;
 }
 
 .dropdown {
@@ -64,15 +73,16 @@ h1{
   background-color: #0044cc;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
+  flex-direction: column; /* Asegura que los botones se alineen verticalmente */
 }
 
 .dropdown button {
-  display: flex;
   width: 100%;
   text-align: left;
   padding: 10px;
   background-color: #0044cc;
   border: none;
+  color: white;
 }
 
 .dropdown button:hover {
@@ -80,5 +90,21 @@ h1{
 }
 
 .show {
-  display: block;
+  display: flex; /* Cambia de display: none a display: flex para mostrar el dropdown */
+  flex-direction: column;
+}
+
+main {
+  padding-top: 60px; /* Espacio para el header fijo */
+}
+
+h1 {
+  margin-left: 20px;
+}
+
+.header-title {
+  color: white;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
 }
