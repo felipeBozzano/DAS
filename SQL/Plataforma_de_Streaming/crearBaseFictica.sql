@@ -16,5 +16,5 @@ go
 
 -- Crear partner
 INSERT INTO Partner (nombre, token_de_servicio)
-VALUES ('StreamingStudio', '123456789');
+VALUES ('StreamingStudio', 'Netflix123');
 go
