@@ -3,6 +3,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.Enviar_facturas_repository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.FederarClienteRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.FiltrarContenidoRepository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.User_repository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class fran_controllers {
     @Autowired
     Enviar_facturas_repository enviar_facturas_repository;
 
+    @Autowired
+    FiltrarContenidoRepository buscar_contenido_repository;
+
 
     @PostMapping(
             path="/create_user",
@@ -51,11 +55,14 @@ public class fran_controllers {
         int user = user_repository.verificarUsuario(cliente.getUsuario(), cliente.getcontrasena());
         Map<String, String> respuesta = new HashMap<>();
         if(user == 1){
+            Map<String, Integer> info_usuario = user_repository.informacion_usuario(cliente.getUsuario(), cliente.getcontrasena());
+            respuesta.put("id_cliente", String.valueOf(info_usuario.get("id_cliente")));
+            respuesta.put("nombre", String.valueOf(info_usuario.get("nombre")));
+            respuesta.put("apellido", String.valueOf(info_usuario.get("apellido")));
+            respuesta.put("email", String.valueOf(info_usuario.get("email")));
+        }
+        if(user == 1){
             respuesta.put("mensaje", "Usuario existente");
-            respuesta.put("id_cliente", String.valueOf(cliente.getId_cliente()));
-            respuesta.put("nombre", cliente.getNombre());
-            respuesta.put("apellido", cliente.getApellido());
-            respuesta.put("email", cliente.getEmail());
         }else {
             respuesta.put("mensaje", "Usuario no existente");
         }
@@ -143,6 +150,14 @@ public class fran_controllers {
     @GetMapping("/obtener_fees_plataforma")
     public ResponseEntity<List<Fee>> obtener_fees_plataforma(@RequestParam("id_plataforma") int id_plataforma) {
         return new ResponseEntity<>(enviar_facturas_repository.obtenerFeesPlataforma(id_plataforma), HttpStatus.OK);
+    }
+
+    /* BUSCAR CONTENIDO POR FILTROS */
+    @PostMapping(
+            path="/contenido_por_filtros"
+    )
+    public ResponseEntity<ContenidoBean> buscarContenidoPorFiltros(@RequestBody ContenidoBean body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        return new ResponseEntity<>(buscar_contenido_repository.buscarContenidoPorFiltros(body.getId_contenido(), body.getTitulo(), body.isReciente(), body.isDestacado(), body.getClasificacion(), body.getMas_visto(), body.getGenero()), HttpStatus.OK);
     }
 
 

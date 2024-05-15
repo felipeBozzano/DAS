@@ -1,21 +1,29 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-import java.util.Date;
-
 public class ContenidoBean {
 
-    private String id_contenido;
+    private Integer id_contenido;
     private int id_plataforma;
     private String titulo;
     private String descripcion;
     private String url_imagen;
-    private int clasificacion;
+    private String clasificacion;
     private Boolean mas_visto;
     private boolean reciente;
     private boolean destacado;
     private boolean valido;
 
-    public ContenidoBean(String id_contenido, int id_plataforma, String titulo, String descripcion, String url_imagen, int clasificacion,
+    private String genero;
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public ContenidoBean(Integer id_contenido, int id_plataforma, String titulo, String descripcion, String url_imagen, String clasificacion,
                          boolean destacado, boolean reciente, boolean valido) {
         this.id_contenido = id_contenido;
         this.id_plataforma = id_plataforma;
@@ -32,11 +40,11 @@ public class ContenidoBean {
     public ContenidoBean() {
     }
 
-    public String getId_contenido() {
+    public Integer getId_contenido() {
         return id_contenido;
     }
 
-    public void setId_contenido(String id_contenido) {
+    public void setId_contenido(Integer id_contenido) {
         this.id_contenido = id_contenido;
     }
 
@@ -64,11 +72,11 @@ public class ContenidoBean {
         this.url_imagen = url_imagen;
     }
 
-    public int getClasificacion() {
+    public String getClasificacion() {
         return clasificacion;
     }
 
-    public void setClasificacion(int clasificacion) {
+    public void setClasificacion(String clasificacion) {
         this.clasificacion = clasificacion;
     }
 

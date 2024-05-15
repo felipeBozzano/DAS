@@ -48,6 +48,19 @@ BEGIN
 END;
 go
 
+CREATE OR ALTER PROCEDURE Login_Usuario1 @usuario VARCHAR(255),
+                                        @contrasena VARCHAR(255)
+AS
+BEGIN
+    SELECT *
+    FROM Cliente_Usuario
+    WHERE usuario = @usuario
+      AND contrasena = @contrasena
+END;
+go
+
+
+
 CREATE OR ALTER PROCEDURE Login_Usuario @usuario VARCHAR(255),
                                         @contrasena VARCHAR(255)
 AS

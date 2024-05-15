@@ -37,6 +37,19 @@ public class User_repository {
         return (List<ClienteUsuarioBean>)out.get("Crear_Usuario");
     }
 
+    public Map<String, Integer> informacion_usuario(String usuario, String contrasena) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("usuario", usuario)
+                .addValue("contrasena", contrasena);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Login_Usuario1")
+                .withSchemaName("dbo");
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
+        Map<String, Integer> resultado = resulset.get(0);
+        return resultado;
+    }
+
     public int verificarUsuario(String usuario, String contrasena) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("usuario", usuario)
@@ -46,7 +59,7 @@ public class User_repository {
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
-        Integer resultado = resulset.getFirst().get("ExisteUsuario");
+        int resultado = resulset.getFirst().get("ExisteUsuario");
         return resultado;
     }
 

@@ -1,4 +1,4 @@
-USE Plataforma_de_Streaming;
+
 
 /* Cliente_Usuario */
 
