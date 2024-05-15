@@ -131,12 +131,15 @@ go
 
 -- Crear 3 Plataformas de Streaming
 INSERT INTO Plataforma_de_Streaming (nombre_de_fantasia, razón_social, url_imagen, token_de_servicio, url_api, valido)
-VALUES ('Plataforma1', N'Razón Social 1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', '123456789',
-        'https://www.urlapi1.com', 1),
-       ('Plataforma2', N'Razón Social 2', 'https://www.urlimagen2.com/imagenes/imagen.jpg', '123456789',
-        'https://www.urlapi2.com', 1),
-       ('Plataforma3', N'Razón Social 3', 'https://www.urlimagen3.com/imagenes/imagen.jpg', '123456789',
-        'https://www.urlapi3.com', 1);
+VALUES ('Netflix', N'Netflix Argentina S.R.L.',
+        'https://www.google.com/imgres?q=imagen%20netflix&imgurl=https%3A%2F%2Fyt3.googleusercontent.com%2Fytc%2FAIdro_lqG0qurkPqLKpy2Rtdfsn5SYZxQteQ0f2X7ZGW9tI6uBk%3Ds900-c-k-c0x00ffffff-no-rj&imgrefurl=https%3A%2F%2Fwww.youtube.com%2Fchannel%2FUC5ZiUaIJ2b5dYBYGf5iEUrA&docid=K_khdtviFevFhM&tbnid=YDkcpMGMLbuRqM&vet=12ahUKEwjgzI3x2JCGAxXCF7kGHXBlAP0QM3oECBYQAA..i&w=900&h=900&hcb=2&itg=1&ved=2ahUKEwjgzI3x2JCGAxXCF7kGHXBlAP0QM3oECBYQAA',
+        'Netflix123', 'http://localhost:8081/netflix', 1),
+       ('Prime Video', N'Prime Video Argentina S.R.L.',
+        'https://www.google.com/imgres?q=imagen%20primer%20video&imgurl=https%3A%2F%2Fyt3.googleusercontent.com%2Fpn_3JEt2nFaRA6dY08NzFM2w8A7NtUbaniamEnObxtLX3ZhT9w41KW0W0pjl-RiczGS0rgzZ%3Ds900-c-k-c0x00ffffff-no-rj&imgrefurl=https%3A%2F%2Fwww.youtube.com%2Fc%2Famazonprimevideolatam&docid=72ysqm1v7GrDwM&tbnid=wpA9rV1pk-wwuM&vet=12ahUKEwjituuV2ZCGAxX2OrkGHYZsAMoQM3oECBMQAA..i&w=900&h=900&hcb=2&ved=2ahUKEwjituuV2ZCGAxX2OrkGHYZsAMoQM3oECBMQAA',
+        'Netflix123', 'http://localhost:8081/prime_video', 1),
+       ('Star Plus', N'Star Plus S.R.L.',
+        'https://www.google.com/imgres?q=star%20plus%20logo&imgurl=https%3A%2F%2Flogowik.com%2Fcontent%2Fuploads%2Fimages%2Fstar2099.jpg&imgrefurl=https%3A%2F%2Flogowik.com%2Fstar-logo-vector-svg-pdf-ai-eps-cdr-free-download-9392.html&docid=mII5UomTayBCYM&tbnid=EcsW8PXNKa3aWM&vet=12ahUKEwiM-bPM2ZCGAxVJpJUCHaYQC4QQM3oECGIQAA..i&w=866&h=650&hcb=2&ved=2ahUKEwiM-bPM2ZCGAxVJpJUCHaYQC4QQM3oECGIQAA',
+        'StarPlus123', 'http://localhost:8081/star_plus', 1);
 go
 
 -- Llenar Catálogo

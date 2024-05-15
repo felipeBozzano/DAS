@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "extract-i18n": "ng extract-i18n --output-path=src/locale && xliffmerge --profile xliffmerge.json",
-    "start": "ng serve --open ",
-    "start-en": "ng serve --open --configuration=en",
+    "start": "ng serve --open --configuration development",
+    "start-en": "ng serve --open --configuration en",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"

@@ -1,23 +1,20 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
+package ar.edu.ubp.das.streamingstudio.sstudio.utils;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.TransaccionBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.FederarClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
-public class FederacionesPendientesRepository {
-
-    @Autowired
+public class FederacionesPendientes {
     static JdbcTemplate jdbcTpl;
     static Map<String,String> respuesta;
     private static final FederarClienteRepository federarCliente = new FederarClienteRepository();

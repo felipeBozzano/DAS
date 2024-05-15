@@ -9,7 +9,7 @@ import {MainRoutingModule} from './main-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HeaderComponent} from './components/header/header.component';
 import {FederacionesComponent} from './pages/federaciones/federaciones.component';
-import {ResolverService} from './api/resolvers/resolver.service';
+import {ListadoFederacionesResolver} from './api/resolvers/resolver.service';
 import {HttpClientModule} from '@angular/common/http';
 
 
@@ -29,7 +29,7 @@ import {HttpClientModule} from '@angular/common/http';
     FormsModule,
   ],
   providers: [
-    ResolverService,
+    ListadoFederacionesResolver,
     StreamingStudioResources
   ]
 })

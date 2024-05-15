@@ -1,7 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers.felipe;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe.*;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.FederacionesPendientesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -46,6 +46,6 @@ export class HeaderComponent implements OnInit {
   navigateToFederaciones() {
     const ruta = `usuario/${this.id_cliente}/federaciones`
     console.log("ruuta: ", ruta);
-    this.router.navigate([ruta]);
+    this.router.navigate(["usuario", this.id_cliente, "federaciones"]);
   }
 }
