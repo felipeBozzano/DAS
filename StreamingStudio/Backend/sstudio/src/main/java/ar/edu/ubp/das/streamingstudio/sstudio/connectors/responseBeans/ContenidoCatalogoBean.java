@@ -10,7 +10,17 @@ public class ContenidoCatalogoBean extends AbstractBean{
     private boolean destacado;
     private boolean valido;
 
+    private boolean id_cliente;
+
     public ContenidoCatalogoBean() {
+    }
+
+    public boolean isId_cliente() {
+        return id_cliente;
+    }
+
+    public void setId_cliente(boolean id_cliente) {
+        this.id_cliente = id_cliente;
     }
 
     public String getId_contenido() {
@@ -49,7 +59,7 @@ public class ContenidoCatalogoBean extends AbstractBean{
         return clasificacion;
     }
 
-    public void setClasificacion(int clasificacion) {
+    public void setClasificacion(Integer clasificacion) {
         this.clasificacion = clasificacion;
     }
 
@@ -57,7 +67,7 @@ public class ContenidoCatalogoBean extends AbstractBean{
         return reciente;
     }
 
-    public void setReciente(boolean reciente) {
+    public void setReciente(Boolean reciente) {
         this.reciente = reciente;
     }
 
@@ -65,7 +75,7 @@ public class ContenidoCatalogoBean extends AbstractBean{
         return destacado;
     }
 
-    public void setDestacado(boolean destacado) {
+    public void setDestacado(Boolean destacado) {
         this.destacado = destacado;
     }
 
@@ -73,7 +83,7 @@ public class ContenidoCatalogoBean extends AbstractBean{
         return valido;
     }
 
-    public void setValido(boolean valido) {
+    public void setValido(Boolean valido) {
         this.valido = valido;
     }
 }

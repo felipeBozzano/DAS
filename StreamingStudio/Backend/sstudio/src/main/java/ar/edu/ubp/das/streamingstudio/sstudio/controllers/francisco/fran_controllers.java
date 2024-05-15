@@ -1,10 +1,14 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.Enviar_facturas_repository;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.FederacionBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.EnviarFacturasRepository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.FederarClienteRepository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.FiltrarContenidoRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.User_repository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.UsuarioClienteRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//@RestController
 @Controller
 @RequestMapping(
         path = "/ss")
@@ -27,17 +30,21 @@ import java.util.Map;
 public class fran_controllers {
 
     @Autowired
-    User_repository user_repository;
+    UsuarioClienteRepository user_repository;
 
     @Autowired
     FederarClienteRepository federar_clienteRepository;
 
     @Autowired
-    Enviar_facturas_repository enviar_facturas_repository;
+    EnviarFacturasRepository enviar_facturasRepository;
 
     @Autowired
     FiltrarContenidoRepository buscar_contenido_repository;
 
+
+    /* ----------------------------------------------------------------------------------------------------- */
+    /* ----------------------------------------------  Usuario  -------------------------------------------- */
+    /* ----------------------------------------------------------------------------------------------------- */
 
     @PostMapping(
             path="/create_user",
@@ -76,7 +83,9 @@ public class fran_controllers {
         return new ResponseEntity<>(user_repository.obtenerInformacionUsuario(id_cliente), HttpStatus.OK);
     }
 
-    /* Federacion usaurio*/
+    /* ----------------------------------------------------------------------------------------------------- */
+    /* ----------------------------------------  Federacion_Usuario  --------------------------------------- */
+    /* ----------------------------------------------------------------------------------------------------- */
 
     @GetMapping(
             path="/usuario/{id_cliente}/federaciones"
@@ -102,9 +111,10 @@ public class fran_controllers {
                                                                    @PathVariable("id_cliente") Integer id_cliente,
                                                                    @RequestBody Map<String,String> body,
                                                                    HttpServletResponse response) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+
         String codigo_de_transaccion = body.get("codigo_de_transaccion");
-        int id_cliente_plataforma = Integer.parseInt(body.get("id_cliente_plataforma"));
-        Map<String, String> respuesta = federar_clienteRepository.finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion, id_cliente_plataforma);
+        String id_cliente_plataforma = body.get("id_cliente_plataforma");
+        Map<String, String> respuesta = federar_clienteRepository.finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion, id_cliente_plataforma, true);
 
         // Construye la URL de redirección con id_cliente
         String urlRedireccion = ServletUriComponentsBuilder
@@ -120,45 +130,41 @@ public class fran_controllers {
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
-    /* Facturacion */
+    /* ----------------------------------------------------------------------------------------------------- */
+    /* --------------------------------------------  Facturacion  ------------------------------------------ */
+    /* ----------------------------------------------------------------------------------------------------- */
 
     @GetMapping("/datos_publiciadad")
     public ResponseEntity<List<PublicidadBean>> getPublicadades() {
-        return new ResponseEntity<>(enviar_facturas_repository.buscarDatoPublicidades(), HttpStatus.OK);
+        return new ResponseEntity<>(enviar_facturasRepository.buscarDatoPublicidades(), HttpStatus.OK);
     }
 
     @GetMapping("/costo_banner")
     public ResponseEntity<Double> getCostoBanner(@RequestParam("id_banner") int id_banner) {
-        return new ResponseEntity<>(enviar_facturas_repository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
+        return new ResponseEntity<>(enviar_facturasRepository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
     }
 
     @GetMapping("/enviar_facturas_publicistas")
     public ResponseEntity<String> enviar_facturacion_publicistas() {
-        return new ResponseEntity<String>(enviar_facturas_repository.enviarFacturasPublicistas(), HttpStatus.OK);
+        return new ResponseEntity<String>(enviar_facturasRepository.enviarFacturasPublicistas(), HttpStatus.OK);
     }
 
     @GetMapping("/enviar_facturas_plataformas")
     public ResponseEntity<String> enviar_facturacion_plataformas() {
-        return new ResponseEntity<String>(enviar_facturas_repository.enviarFacturasPlataformas(), HttpStatus.OK);
+        return new ResponseEntity<String>(enviar_facturasRepository.enviarFacturasPlataformas(), HttpStatus.OK);
     }
 
     @GetMapping("/enviar_facturas_plataforma")
     public ResponseEntity<List<FederacionBean>> facturacion_plataforma() {
-        return new ResponseEntity<>(enviar_facturas_repository.buscarDatosFederaciones(), HttpStatus.OK);
-    }
-
-    @GetMapping("/obtener_fees_plataforma")
-    public ResponseEntity<List<Fee>> obtener_fees_plataforma(@RequestParam("id_plataforma") int id_plataforma) {
-        return new ResponseEntity<>(enviar_facturas_repository.obtenerFeesPlataforma(id_plataforma), HttpStatus.OK);
+        return new ResponseEntity<>(enviar_facturasRepository.buscarDatosFederaciones(), HttpStatus.OK);
     }
 
     /* BUSCAR CONTENIDO POR FILTROS */
     @PostMapping(
             path="/contenido_por_filtros"
     )
-    public ResponseEntity<ContenidoBean> buscarContenidoPorFiltros(@RequestBody ContenidoBean body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        return new ResponseEntity<>(buscar_contenido_repository.buscarContenidoPorFiltros(body.getId_contenido(), body.getTitulo(), body.isReciente(), body.isDestacado(), body.getClasificacion(), body.getMas_visto(), body.getGenero()), HttpStatus.OK);
+    public ResponseEntity<List<ContenidoBean>> buscarContenidoPorFiltros(@RequestBody ContenidoBean body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        List<ContenidoBean> contenido = buscar_contenido_repository.buscarContenidoPorFiltros(body.getId_cliente(), body.getTitulo(), body.isReciente(), body.isDestacado(), body.getClasificacion(), body.getMas_visto(), body.getGenero());
+        return new ResponseEntity<>(contenido, HttpStatus.OK);
     }
-
-
 }

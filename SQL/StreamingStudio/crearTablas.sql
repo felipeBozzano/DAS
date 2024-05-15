@@ -259,6 +259,7 @@ CREATE TABLE [Transaccion]
     [url_redireccion_propia]        VARCHAR(255) NOT NULL,
     [tipo_transaccion]              VARCHAR(1)   NOT NULL,
     [facturada]                     BIT          NOT NULL,
+    [url_token]                     VARCHAR(255),
     [token]                         VARCHAR(255),
     [fecha_baja]                    DATETIME,
     PRIMARY KEY ([id_plataforma], [id_cliente], [fecha_alta]),

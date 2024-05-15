@@ -3,17 +3,27 @@ package ar.edu.ubp.das.streamingstudio.sstudio.models;
 public class ContenidoBean {
 
     private Integer id_contenido;
-    private int id_plataforma;
+    private Integer  id_plataforma;
     private String titulo;
     private String descripcion;
     private String url_imagen;
     private String clasificacion;
     private Boolean mas_visto;
-    private boolean reciente;
-    private boolean destacado;
-    private boolean valido;
+    private Boolean reciente;
+    private Boolean destacado;
+    private Boolean valido;
 
     private String genero;
+
+    private int id_cliente;
+
+    public int getId_cliente() {
+        return id_cliente;
+    }
+
+    public void setId_cliente(int id_cliente) {
+        this.id_cliente = id_cliente;
+    }
 
     public String getGenero() {
         return genero;
@@ -23,8 +33,8 @@ public class ContenidoBean {
         this.genero = genero;
     }
 
-    public ContenidoBean(Integer id_contenido, int id_plataforma, String titulo, String descripcion, String url_imagen, String clasificacion,
-                         boolean destacado, boolean reciente, boolean valido) {
+    public ContenidoBean(Integer id_contenido, Integer id_plataforma, String titulo, String descripcion, String url_imagen, String clasificacion,
+                         Boolean destacado, Boolean reciente, Boolean valido) {
         this.id_contenido = id_contenido;
         this.id_plataforma = id_plataforma;
         this.titulo = titulo;
@@ -88,7 +98,7 @@ public class ContenidoBean {
         this.mas_visto = mas_visto;
     }
 
-    public int getId_plataforma() {
+    public Integer getId_plataforma() {
         return id_plataforma;
     }
 
@@ -96,7 +106,7 @@ public class ContenidoBean {
         this.id_plataforma = id_plataforma;
     }
 
-    public boolean isReciente() {
+    public Boolean isReciente() {
         return reciente;
     }
 
@@ -104,7 +114,7 @@ public class ContenidoBean {
         this.reciente = reciente;
     }
 
-    public boolean isDestacado() {
+    public Boolean isDestacado() {
         return destacado;
     }
 
@@ -112,7 +122,7 @@ public class ContenidoBean {
         this.destacado = destacado;
     }
 
-    public boolean isValido() {
+    public Boolean isValido() {
         return valido;
     }
 

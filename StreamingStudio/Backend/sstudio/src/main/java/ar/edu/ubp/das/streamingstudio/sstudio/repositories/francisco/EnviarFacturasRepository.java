@@ -19,9 +19,8 @@ import java.sql.Types;
 import java.util.*;
 
 @Repository
-public class Enviar_facturas_repository {
+public class EnviarFacturasRepository {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JdbcTemplate jdbcTpl;
 
@@ -67,8 +66,8 @@ public class Enviar_facturas_repository {
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, Double >> resulset = (List<Map<String, Double>>) out.get("#result-set-1");
-        double cotsto_banner = resulset.get(0).get("costo");
-        return cotsto_banner;
+        double costo_banner = resulset.getFirst().get("costo");
+        return costo_banner;
     }
 
     @Transactional

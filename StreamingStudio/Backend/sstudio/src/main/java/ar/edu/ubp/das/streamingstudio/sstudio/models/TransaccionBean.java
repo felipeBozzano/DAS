@@ -10,6 +10,7 @@ public class TransaccionBean {
     private String codigo_de_transaccion;
     private String url_login_registro_plataforma;
     private String url_redireccion_propia;
+    private String url_token;
     private String token;
     private String tipo_usuario;
     private Date fecha_baja;
@@ -121,5 +122,13 @@ public class TransaccionBean {
 
     public void setFacturada(Boolean facturada) {
         this.facturada = facturada;
+    }
+
+    public String getUrl_token() {
+        return url_token;
+    }
+
+    public void setUrl_token(String url_token) {
+        this.url_token = url_token;
     }
 }

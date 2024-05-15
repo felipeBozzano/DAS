@@ -1,7 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers.felipe;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.models.EstadisticaPlataformaBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe.*;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.FederacionesPendientesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +32,6 @@ public class controllers {
     @Autowired
     EstadisticasPlataformaRepository estadisticasPlataformasRepository;
 
-    @Autowired
-    FederacionesPendientesRepository federacionesPendientesRepository;
-
     @GetMapping("/home")
     public ResponseEntity<Map<String, Map<?, List<?>>>> mostrarHome(@RequestParam("id_cliente") int id_cliente){
         return new ResponseEntity<>(homeRepository.getHome(id_cliente), HttpStatus.OK);
@@ -53,10 +50,5 @@ public class controllers {
     @GetMapping("/estadisticasPlataformas")
     public ResponseEntity<String> getEstadisticasPlataformas(){
         return new ResponseEntity<>(estadisticasPlataformasRepository.reportesPlataformas(), HttpStatus.OK);
-    }
-
-    @GetMapping("/terminarFederacionesPendientes")
-    public ResponseEntity<String> terminarFederacionesPendientes(){
-        return new ResponseEntity<>(federacionesPendientesRepository.terminarFederacionesPendientes(), HttpStatus.OK);
     }
 }

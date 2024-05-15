@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Repository
-public class User_repository {
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+public class UsuarioClienteRepository implements IUsuarioClienteRepository {
+
     @Autowired
     private JdbcTemplate jdbcTpl;
 
@@ -34,7 +34,9 @@ public class User_repository {
                 .withSchemaName("dbo");
 
         Map<String, Object> out = jdbcCall.execute(in);
-        return (List<ClienteUsuarioBean>)out.get("Crear_Usuario");
+
+        List<ClienteUsuarioBean> usuario = (List<ClienteUsuarioBean>)out.get("Crear_Usuario");
+        return usuario;
     }
 
     public Map<String, Integer> informacion_usuario(String usuario, String contrasena) {
@@ -54,10 +56,13 @@ public class User_repository {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("usuario", usuario)
                 .addValue("contrasena", contrasena);
+
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Login_Usuario")
                 .withSchemaName("dbo");
+
         Map<String, Object> out = jdbcCall.execute(in);
+
         List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
         int resultado = resulset.getFirst().get("ExisteUsuario");
         return resultado;
@@ -66,11 +71,14 @@ public class User_repository {
     public ClienteUsuarioBean obtenerInformacionUsuario(int id_cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_cliente", id_cliente);
+
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Informacion_de_Usuario")
                 .withSchemaName("dbo")
-                .returningResultSet("usuario", BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class));;
+                .returningResultSet("usuario", BeanPropertyRowMapper.newInstance(ClienteUsuarioBean.class));
+
         Map<String, Object> out = jdbcCall.execute(in);
+
         List<ClienteUsuarioBean> lista_usuario = (List<ClienteUsuarioBean>) out.get("usuario");
         return lista_usuario.getFirst();
     }
@@ -85,9 +93,8 @@ public class User_repository {
         List<PlataformaDeStreamingBean> plataformasAFederar = new ArrayList<>(conjuntoPlataformasActivas);
         List<PlataformaDeStreamingBean> plataformasFederadas = new ArrayList<>(conjuntoPlataformasFederadas);
 
-        plataformas.put("Plataformas_a_Federar", plataformasAFederar);
-        plataformas.put("Plataformas_Federadas", plataformasFederadas);
-
+        plataformas.put("Plataformas_a_federar", plataformasAFederar);
+        plataformas.put("Plataformas_federadas", plataformasFederadas);
 
         return plataformas;
     }
