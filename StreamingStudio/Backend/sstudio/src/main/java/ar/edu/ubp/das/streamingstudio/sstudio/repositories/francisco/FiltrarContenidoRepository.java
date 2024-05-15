@@ -20,7 +20,7 @@ public class FiltrarContenidoRepository {
     @Autowired
     private JdbcTemplate jdbcTpl;
 
-    public List<ContenidoBean> buscarContenidoPorFiltros(int id_cliente, String titulo, @Nullable boolean reciente, @Nullable boolean destacado, String clasificacion, @Nullable boolean masVisto, String genero) {
+    public List<ContenidoBean> buscarContenidoPorFiltros(int id_cliente, String titulo, @Nullable boolean reciente, @Nullable boolean destacado, @Nullable String clasificacion, @Nullable boolean masVisto, @Nullable String genero) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_cliente", id_cliente);
         if (titulo != null && !titulo.isEmpty()) {

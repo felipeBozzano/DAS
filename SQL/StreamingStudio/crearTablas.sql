@@ -61,6 +61,7 @@ CREATE TABLE [Plataforma_de_Streaming]
     [url_imagen]         VARCHAR(255) NOT NULL,
     [token_de_servicio]  VARCHAR(255) NOT NULL,
     [url_api]            VARCHAR(255) NOT NULL,
+    [protocolo_api]      VARCHAR(255) NOT NULL,
     [valido]             BIT          NOT NULL
 );
 
@@ -275,7 +276,7 @@ CREATE TABLE [Transaccion]
             ON DELETE CASCADE
 );
 
-    CREATE TABLE [Federacion]
+CREATE TABLE [Federacion]
 (
     [id_plataforma]    INT          NOT NULL,
     [id_cliente]       INT          NOT NULL,
@@ -388,7 +389,7 @@ CREATE TABLE [Preferencia]
 CREATE TABLE [Genero_Contenido]
 (
     [id_contenido] VARCHAR(255) NOT NULL,
-    [id_genero]    INT NOT NULL,
+    [id_genero]    INT          NOT NULL,
     PRIMARY KEY ([id_contenido], [id_genero]),
     CONSTRAINT [FK_Genero_Contenido.Genero]
         FOREIGN KEY ([id_genero])
@@ -412,7 +413,7 @@ CREATE TABLE [Actor]
 CREATE TABLE [Actor_Contenido]
 (
     [id_contenido] VARCHAR(255) NOT NULL,
-    [id_actor]     INT NOT NULL,
+    [id_actor]     INT          NOT NULL,
     PRIMARY KEY ([id_contenido], [id_actor]),
     CONSTRAINT [FK_Actor_Contenido.Contenido]
         FOREIGN KEY ([id_contenido])
@@ -436,7 +437,7 @@ CREATE TABLE [Director]
 CREATE TABLE [Director_Contenido]
 (
     [id_contenido] VARCHAR(255) NOT NULL,
-    [id_director]  INT NOT NULL,
+    [id_director]  INT          NOT NULL,
     PRIMARY KEY ([id_contenido], [id_director]),
     CONSTRAINT [FK_Director_Contenido.Contenido]
         FOREIGN KEY ([id_contenido])
