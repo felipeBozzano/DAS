@@ -179,11 +179,10 @@ BEGIN
                                            and id_cliente = @id_cliente
                                            and facturada = 1), 1, 0))
     INSERT INTO dbo.Transaccion(id_plataforma, id_cliente, fecha_alta, codigo_de_transaccion,
-                                url_login_registro_plataforma, url_redireccion_propia, tipo_transaccion, token,
-                                fecha_baja,
-                                facturada)
+                                url_login_registro_plataforma, url_redireccion_propia, url_token, tipo_transaccion,
+                                token, fecha_baja, facturada)
     VALUES (@id_plataforma, @id_cliente, GETDATE(), @codigo_de_transaccion, @url_login_registro_plataforma,
-            @url_redireccion_propia, @tipo_transaccion, NULL, NULL, @facturada)
+            @url_redireccion_propia, NULL, @tipo_transaccion, NULL, NULL, @facturada)
 END;
 go
 
@@ -1265,14 +1264,17 @@ go
 /* Comenzar_Federacion */
 /* PUNTO 2 -- PEGARLE A LA API PARA CONSULTAR EL TOKEN DEL USUARIO */
 
-CREATE OR ALTER PROCEDURE ObtenerUltimaTransaccion @id_cliente INT
+CREATE OR ALTER PROCEDURE actualizarUrlToken @id_cliente INT,
+                                             @id_plataforma INT,
+                                             @codigo_de_transaccion VARCHAR(255),
+                                             @url_token VARCHAR(255)
 AS
 BEGIN
-    SELECT TOP 1 id_plataforma, codigo_de_transaccion
-    FROM dbo.Transaccion
+    UPDATE dbo.Transaccion
+    SET url_token = @url_token
     WHERE id_cliente = @id_cliente
-      AND fecha_baja IS NOT NULL
-    ORDER BY fecha_alta DESC;
+      AND id_plataforma = @id_plataforma
+      AND codigo_de_transaccion = @codigo_de_transaccion;
 END;
 go
 
@@ -1280,13 +1282,13 @@ go
 
 
 /* ------------------------------------------------------------------------------------------------------------------ */
-/* ---------------------------------------- TERMINAR FEDERACIONES PEND;IENTES ---------------------------------------- */
+/* ---------------------------------------- TERMINAR FEDERACIONES PENDIENTES ---------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 CREATE OR ALTER PROCEDURE Consultar_Federaciones_Pendientes
 AS
 BEGIN
-    SELECT id_plataforma, id_cliente, codigo_de_transaccion, tipo_transaccion, url_login_registro_plataforma
+    SELECT id_plataforma, id_cliente, codigo_de_transaccion, url_token
     FROM dbo.Transaccion
     WHERE token IS NULL
       AND fecha_baja IS NULL

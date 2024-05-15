@@ -102,9 +102,10 @@ public class fran_controllers {
                                                                    @PathVariable("id_cliente") Integer id_cliente,
                                                                    @RequestBody Map<String,String> body,
                                                                    HttpServletResponse response) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+
         String codigo_de_transaccion = body.get("codigo_de_transaccion");
-        int id_cliente_plataforma = Integer.parseInt(body.get("id_cliente_plataforma"));
-        Map<String, String> respuesta = federar_clienteRepository.finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion, id_cliente_plataforma);
+        String id_cliente_plataforma = body.get("id_cliente_plataforma");
+        Map<String, String> respuesta = federar_clienteRepository.finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion, id_cliente_plataforma, true);
 
         // Construye la URL de redirección con id_cliente
         String urlRedireccion = ServletUriComponentsBuilder
