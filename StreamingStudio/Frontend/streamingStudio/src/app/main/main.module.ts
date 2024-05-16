@@ -12,6 +12,7 @@ import {FederacionesComponent} from './pages/federaciones/federaciones.component
 import {ListadoFederacionesResolver} from './api/resolvers/resolver.service';
 import {HttpClientModule} from '@angular/common/http';
 import {ContenidoComponent} from './pages/contenido/contenido.component';
+import {HomeResolver} from './api/resolvers/home.resolver';
 
 
 // @ts-ignore
@@ -31,6 +32,7 @@ import {ContenidoComponent} from './pages/contenido/contenido.component';
     FormsModule,
   ],
   providers: [
+    HomeResolver,
     ListadoFederacionesResolver,
     StreamingStudioResources
   ]

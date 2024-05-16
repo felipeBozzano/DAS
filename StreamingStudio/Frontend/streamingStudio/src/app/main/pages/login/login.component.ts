@@ -11,8 +11,6 @@ import {StreamingStudioResources} from '../../api/resources/streaming-studio.ser
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: string = "";
-  password: string = "";
   showError = false;
   public formLogin!: FormGroup;
 
@@ -26,9 +24,7 @@ export class LoginComponent {
               }) }
 
   // tslint:disable-next-line:typedef
-  async onSubmit() {
-    // this.spinnerService.show();
-    // setTimeout(() => {
+  onSubmit() {
     if (this.formLogin.valid) {
       const { usuario, contrasena } = this.formLogin.value
       const login: ILogin = {
@@ -40,13 +36,15 @@ export class LoginComponent {
       this.streamingStudioResources.login(login)
         .subscribe(
           (response) => {
+            const clienteId = response.id_cliente;
+            console.log(typeof clienteId );
             // Si la respuesta es exitosa, redirige al home
             console.log('Respuesta del servidor:', response);
             if (response.mensaje === 'Usuario existente') {
+              console.log("response.id_clinte: ", response.id_cliente);
               this.authService.login(response);
               this.showError = false;
-              // this.spinnerService.hide();
-              this.router.navigate(['/home']);
+              this.router.navigate(['/home'], { queryParams: { id_cliente: "1" }});
             } else {
               this.showError = true;
             }
@@ -57,7 +55,6 @@ export class LoginComponent {
             // Aquí puedes manejar el error y mostrar un mensaje de error al usuario
           }
         );
-      // }, 2000);
     }
   }
 

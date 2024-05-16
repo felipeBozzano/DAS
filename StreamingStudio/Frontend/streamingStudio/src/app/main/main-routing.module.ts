@@ -7,11 +7,12 @@ import {AuthGuard} from './AuthGuard';
 import {ListadoFederacionesResolver} from './api/resolvers/resolver.service';
 import {FederacionesComponent} from './pages/federaciones/federaciones.component';
 import {ContenidoComponent} from './pages/contenido/contenido.component';
+import {HomeResolver} from './api/resolvers/home.resolver';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: "full"}, // Ruta por defecto a tu formulario de inicio de sesión
   {path: 'login', component: LoginComponent},
-  {path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  {path: 'home', component: HomeComponent, canActivate: [AuthGuard] ,resolve: {home: HomeResolver}},
   {path: 'register', component: RegisterComponent},
   {path: 'contenido', component: ContenidoComponent, canActivate: [AuthGuard]},
   {
