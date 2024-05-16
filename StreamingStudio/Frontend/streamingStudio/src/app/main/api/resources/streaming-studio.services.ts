@@ -5,6 +5,8 @@ import {ILogin} from '../models/login.model';
 import {ILoginResponse} from '../models/ILoginResponse.model';
 import {IUser} from '../models/IUser.model';
 import {IListadoFederaciones} from '../models/IListadoFederacion.model';
+import {IContenido} from '../models/IContenido.model';
+import {IContenidoResponse} from '../models/IContenidoResponse.model';
 
 @Injectable()
 @ResourceParams({
@@ -34,4 +36,12 @@ export class StreamingStudioResources extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   federaciones!: IResourceMethodObservable<{ id_cliente: string }, IListadoFederaciones>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Post,
+    path: `/contenido_por_filtros`,
+    requestBodyType: ResourceRequestBodyType.JSON,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  contenido!: IResourceMethodObservable<IContenido, IContenidoResponse[]>;
 }
