@@ -13,11 +13,3 @@
   <h1>Por favor, inicia sesión</h1>
 </div>
 
-<div *ngIf="contenido" class="card">
-  <div *ngFor="let contenido of contenido" class="card">
-    <h2>{{ contenido.id_contenido }}</h2>
-    <p>ID Plataforma: {{ contenido.id_plataforma }}</p>
-    <img [src]="contenido.url_imagen" alt="Imagen del contenido">
-  </div>
-</div>
-

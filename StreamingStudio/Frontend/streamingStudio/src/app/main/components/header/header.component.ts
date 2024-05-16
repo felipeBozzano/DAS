@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit {
 
   navigateTo(path: string) {
     this.router.navigate([`/${path}`]);
+    this.enviarMensaje(this.id_cliente);
     this.userMenuVisible = false;
   }
 
@@ -63,40 +64,8 @@ export class HeaderComponent implements OnInit {
     console.log("ruuta: ", ruta);
     this.router.navigate(["usuario", this.id_cliente, "federaciones"]);
   }
-  toggleAdvancedSearch() {
-    this.advancedSearchVisible = !this.advancedSearchVisible;
-  }
-  async onSubmit() {
-    if (this.formContenido.valid) {
-      const {titulo, reciente, destacado, mas_visto, clasificacion, genero} = this.formContenido.value
-      const filtro: IContenido = {
-        id_cliente: parseInt(this.id_cliente),
-        titulo: titulo,
-        reciente: reciente,
-        destacado: destacado,
-        mas_visto: mas_visto,
-        clasificacion: clasificacion,
-        genero: genero
-      }
-      console.log("filtro: ", filtro);
-      this.streamingStudioResources.contenido(filtro)
-        .subscribe(
-          (response) => {
-            // Si la respuesta es exitosa, redirige al home
-            console.log('Respuesta del servidor:', response);
-            // aca mando del header al home la resuesta
-            this.enviarMensaje(response);
-          },
-          (error) => {
-            // Si hay un error en la respuesta, muestra un mensaje de error
-            console.error('Error en la solicitud:', error);
-            // Aquí puedes manejar el error y mostrar un mensaje de error al usuario
-          }
-        );
-    }
-  }
 
   enviarMensaje(response: any) {
-    this.mensajeEvent.emit(response);
+    this.mensajeEvent.emit(this.id_cliente);
   }
 }

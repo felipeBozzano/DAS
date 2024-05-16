@@ -8,7 +8,7 @@
   <div class="nav-buttons" *ngIf="isLoggedIn">
     <button (click)="navigateTo('series')">Series</button>
     <button (click)="navigateTo('peliculas')">Películas</button>
-    <button (click)="toggleAdvancedSearch()">Búsqueda Avanzada</button>
+    <button (click)="navigateTo('contenido')">Búsqueda Avanzada</button>
     <div class="user-menu">
       <button (click)="toggleUserMenu()" class="user-button">Usuario</button>
       <div class="dropdown" [class.show]="userMenuVisible">
@@ -28,35 +28,3 @@
     </div>
   </div>
 </ng-template>
-
-<!-- Formulario de Búsqueda Avanzada -->
-<div *ngIf="advancedSearchVisible" id="advanced-search-form">
-  <h3>Búsqueda Avanzada</h3>
-  <form (ngSubmit)="onSubmit()" [formGroup]="formContenido">
-    <div>
-      <label for="titulo">Título:</label>
-      <input type="text" id="titulo" name="titulo" formControlName="titulo">
-    </div>
-    <div>
-      <label for="reciente">Reciente:</label>
-      <input type="checkbox" id="reciente" name="reciente" formControlName="reciente">
-    </div>
-    <div>
-      <label for="destacado">Destacado:</label>
-      <input type="checkbox" id="destacado" name="destacado" formControlName="destacado">
-    </div>
-    <div>
-      <label for="clasificacion">Clasificación:</label>
-      <input type="text" id="clasificacion" name="clasificacion" formControlName="clasificacion">
-    </div>
-    <div>
-      <label for="mas_visto">Más Visto:</label>
-      <input type="checkbox" id="mas_visto" name="mas_visto" formControlName="mas_visto">
-    </div>
-    <div>
-      <label for="genero">Género:</label>
-      <input type="text" id="genero" name="genero" formControlName="genero">
-    </div>
-    <button type="submit">Buscar</button>
-  </form>
-</div>

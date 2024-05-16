@@ -7,6 +7,7 @@ import {IUser} from '../models/IUser.model';
 import {IListadoFederaciones} from '../models/IListadoFederacion.model';
 import {IContenido} from '../models/IContenido.model';
 import {IContenidoResponse} from '../models/IContenidoResponse.model';
+import {IInformacionContenidoResponseModel} from '../models/IInformacionContenidoResponse.model';
 
 @Injectable()
 @ResourceParams({
@@ -44,4 +45,11 @@ export class StreamingStudioResources extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   contenido!: IResourceMethodObservable<IContenido, IContenidoResponse[]>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Get,
+    path: `/informacion_contenido/{!id_contenido}/{!id_cliente}`,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  informacionContenido!: IResourceMethodObservable<{ id_contenido: string, id_cliente: number }, IInformacionContenidoResponseModel>;
 }

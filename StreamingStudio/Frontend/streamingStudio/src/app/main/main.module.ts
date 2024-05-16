@@ -11,6 +11,7 @@ import {HeaderComponent} from './components/header/header.component';
 import {FederacionesComponent} from './pages/federaciones/federaciones.component';
 import {ListadoFederacionesResolver} from './api/resolvers/resolver.service';
 import {HttpClientModule} from '@angular/common/http';
+import {ContenidoComponent} from './pages/contenido/contenido.component';
 
 
 // @ts-ignore
@@ -20,7 +21,8 @@ import {HttpClientModule} from '@angular/common/http';
     HeaderComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ContenidoComponent
   ],
   imports: [
     CommonModule,
