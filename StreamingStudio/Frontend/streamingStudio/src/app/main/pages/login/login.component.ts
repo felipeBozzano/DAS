@@ -44,7 +44,7 @@ export class LoginComponent {
               console.log("response.id_clinte: ", response.id_cliente);
               this.authService.login(response);
               this.showError = false;
-              this.router.navigate(['/home'], { queryParams: { id_cliente: "1" }});
+              this.router.navigate(['/home'], { queryParams: {id_cliente: clienteId }});
             } else {
               this.showError = true;
             }

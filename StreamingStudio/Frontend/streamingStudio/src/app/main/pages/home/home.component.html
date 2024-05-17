@@ -1,15 +1,55 @@
 <div class="home-container">
   <app-header [pageTitle]="'Home'" [id_cliente]=client_id (mensajeEvent)="recibirMensaje($event)"></app-header>
 </div>
-<div *ngIf="currentUser">
-  <h1>Bienvenido, {{ currentUser.usuario }}</h1>
-  <!-- Aquí puedes mostrar más información del usuario -->
-  <p>ID de Usuario: {{ currentUser.id_cliente }}</p>
-  <p>Apellido: {{ currentUser.apellido }}</p>
-  <p>Nombre: {{ currentUser.nombre }}</p>
-  <p>email: {{ currentUser.email }}</p>
+<div class="publicidades">
+  <div class="publicidad-banner tipo1" *ngFor="let pub of publicidadesTipo1">
+    <a [href]="pub.url_de_publicidad" target="_blank">
+      <img [src]="pub.url_de_imagen" alt="Publicidad Tipo 1">
+    </a>
+  </div>
+  <div class="publicidad-banner tipo3" *ngFor="let pub of publicidadesTipo3">
+    <a [href]="pub.url_de_publicidad" target="_blank">
+      <img [src]="pub.url_de_imagen" alt="Publicidad Tipo 3">
+    </a>
+  </div>
+  <div class="publicidad-banner tipo5" *ngFor="let pub of publicidadesTipo5">
+    <a [href]="pub.url_de_publicidad" target="_blank">
+      <img [src]="pub.url_de_imagen" alt="Publicidad Tipo 5">
+    </a>
+  </div>
 </div>
-<div *ngIf="!currentUser">
-  <h1>Por favor, inicia sesión</h1>
+
+<div class="otras-publicidades">
+  <div class="publicidad-cuadrado" *ngFor="let pub of otrasPublicidades">
+    <a [href]="pub.url_de_publicidad" target="_blank">
+      <img [src]="pub.url_de_imagen" alt="Publicidad">
+    </a>
+  </div>
 </div>
+
+<div class="contenidos">
+  <h2>Contenido Destacado</h2>
+  <div class="fila-contenido">
+    <div *ngFor="let contenido of destacados" class="contenido-item">
+      <img [src]="contenido.url_imagen" alt="Destacado">
+    </div>
+  </div>
+
+  <h2>Más Visto</h2>
+  <div class="fila-contenido">
+    <div *ngFor="let contenido of masVistos" class="contenido-item">
+      <img [src]="contenido.url_imagen" alt="Más Visto">
+    </div>
+  </div>
+
+  <h2>Reciente</h2>
+  <div class="fila-contenido">
+    <div *ngFor="let contenido of recientes" class="contenido-item">
+      <img [src]="contenido.url_imagen" alt="Reciente">
+    </div>
+  </div>
+</div>
+
+
+
 

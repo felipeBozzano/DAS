@@ -10,7 +10,7 @@ export class HomeResolver implements Resolve<IHome> {
   constructor(private _service: StreamingStudioResources) { }
 
   resolve(route: ActivatedRouteSnapshot): IHome | Observable<IHome> | Promise<IHome> {
-    console.log("route.params['id_cliente']: ", route.paramMap.get('id_cliente'));
-    return this._service.home({id_cliente: route.params['id_cliente']});
+    return this._service.home({id_cliente: route.queryParams['id_cliente']});
   }
 }
+
