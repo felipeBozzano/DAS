@@ -1,32 +1,7 @@
 <div class="home-container">
   <app-header [pageTitle]="'Home'" [id_cliente]=client_id (mensajeEvent)="recibirMensaje($event)"></app-header>
 </div>
-<div class="publicidades">
-  <div class="publicidad-banner tipo1" *ngFor="let pub of publicidadesTipo1">
-    <a [href]="pub.url_de_publicidad" target="_blank">
-      <img [src]="pub.url_de_imagen" alt="Publicidad Tipo 1">
-    </a>
-  </div>
-  <div class="publicidad-banner tipo3" *ngFor="let pub of publicidadesTipo3">
-    <a [href]="pub.url_de_publicidad" target="_blank">
-      <img [src]="pub.url_de_imagen" alt="Publicidad Tipo 3">
-    </a>
-  </div>
-  <div class="publicidad-banner tipo5" *ngFor="let pub of publicidadesTipo5">
-    <a [href]="pub.url_de_publicidad" target="_blank">
-      <img [src]="pub.url_de_imagen" alt="Publicidad Tipo 5">
-    </a>
-  </div>
-</div>
-
-<div class="otras-publicidades">
-  <div class="publicidad-cuadrado" *ngFor="let pub of otrasPublicidades">
-    <a [href]="pub.url_de_publicidad" target="_blank">
-      <img [src]="pub.url_de_imagen" alt="Publicidad">
-    </a>
-  </div>
-</div>
-
+<app-publicidad [publicidades]="publicidades" tipo="exclusiva"></app-publicidad>
 <div class="contenidos">
   <h2>Contenido Destacado</h2>
   <div class="fila-contenido">
@@ -49,6 +24,7 @@
     </div>
   </div>
 </div>
+<app-publicidad [publicidades]="publicidades" tipo="no_exclusiva"></app-publicidad>
 
 
 

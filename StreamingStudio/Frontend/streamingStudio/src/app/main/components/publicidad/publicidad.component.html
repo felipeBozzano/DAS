@@ -1,0 +1,16 @@
+
+    <div *ngIf="tipo === 'exclusiva'" class="publicidades">
+      <div class="publicidad-cuadrado" *ngFor="let pub of exclusivas">
+        <a [href]="pub.url_de_publicidad" target="_blank">
+          <img [src]="pub.url_de_imagen" alt="Publicidad Exclusiva">
+        </a>
+      </div>
+    </div>
+
+<div *ngIf="tipo === 'no_exclusiva'" class="otras-publicidades">
+  <div class="publicidad-cuadrado" *ngFor="let pub of no_exclusivas">
+    <a [href]="pub.url_de_publicidad" target="_blank">
+      <img [src]="pub.url_de_imagen" alt="Publicidad No Exclusiva">
+    </a>
+  </div>
+</div>

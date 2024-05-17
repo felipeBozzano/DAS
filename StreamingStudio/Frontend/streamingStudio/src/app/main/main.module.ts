@@ -13,6 +13,7 @@ import {ListadoFederacionesResolver} from './api/resolvers/resolver.service';
 import {HttpClientModule} from '@angular/common/http';
 import {ContenidoComponent} from './pages/contenido/contenido.component';
 import {HomeResolver} from './api/resolvers/home.resolver';
+import {PublicidadComponent} from './components/publicidad/publicidad.component';
 
 
 // @ts-ignore
@@ -23,7 +24,8 @@ import {HomeResolver} from './api/resolvers/home.resolver';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    ContenidoComponent
+    ContenidoComponent,
+    PublicidadComponent
   ],
   imports: [
     CommonModule,
