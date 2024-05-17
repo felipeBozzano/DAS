@@ -1,14 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.FederacionBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.EnviarFacturasRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.FederarClienteRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.FiltrarContenidoRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.UsuarioClienteRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.*;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,6 +33,9 @@ public class fran_controllers {
 
     @Autowired
     FiltrarContenidoRepository buscar_contenido_repository;
+
+    @Autowired
+    PublicidadesRepository publicidadesRepository;
 
 
     /* ----------------------------------------------------------------------------------------------------- */
@@ -163,8 +159,26 @@ public class fran_controllers {
     @PostMapping(
             path="/contenido_por_filtros"
     )
-    public ResponseEntity<List<ContenidoBean>> buscarContenidoPorFiltros(@RequestBody ContenidoBean body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        List<ContenidoBean> contenido = buscar_contenido_repository.buscarContenidoPorFiltros(body.getId_cliente(), body.getTitulo(), body.isReciente(), body.isDestacado(), body.getClasificacion(), body.getMas_visto(), body.getGenero());
+    public ResponseEntity<List<ContenidoHomeBean>> buscarContenidoPorFiltros(@RequestBody ContenidoBean body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        List<ContenidoHomeBean> contenido = buscar_contenido_repository.buscarContenidoPorFiltros(body.getId_cliente(), body.getTitulo(), body.isReciente(), body.isDestacado(), body.getClasificacion(), body.getMas_visto(), body.getGenero());
         return new ResponseEntity<>(contenido, HttpStatus.OK);
     }
+
+    @GetMapping(
+            path="/informacion_contenido/{id_contenido}/{id_cliente}"
+    )
+    public ResponseEntity<InformacionContenido> obtenerInformacionContenido(@PathVariable("id_contenido") String id_contenido, @PathVariable("id_cliente") int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        InformacionContenido infoContenido = buscar_contenido_repository.informacionContenido(id_contenido, id_cliente);
+        return new ResponseEntity<>(infoContenido, HttpStatus.OK);
+    }
+
+    /* PUBLICIDADES */
+    @GetMapping(
+            path="/publicidades_activas"
+    )
+    public ResponseEntity<Map<String, Map<?, List<?>>>> obtenerPublicidadesActivas() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        Map<String, Map<?, List<?>>>  publicidades = publicidadesRepository.obtenerPublicidadesAgrupadas();
+        return new ResponseEntity<>(publicidades, HttpStatus.OK);
+    }
+
 }
