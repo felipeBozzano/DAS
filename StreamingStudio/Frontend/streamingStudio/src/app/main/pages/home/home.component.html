@@ -3,21 +3,21 @@
 </div>
 <app-publicidad [publicidades]="publicidades" tipo="exclusiva"></app-publicidad>
 <div class="contenidos">
-  <h2>Contenido Destacado</h2>
+  <h2 class="title" >Contenido Destacado</h2>
   <div class="fila-contenido">
     <div *ngFor="let contenido of destacados" class="contenido-item">
       <img [src]="contenido.url_imagen" alt="Destacado">
     </div>
   </div>
 
-  <h2>Más Visto</h2>
+  <h2 class="title">Más Visto</h2>
   <div class="fila-contenido">
     <div *ngFor="let contenido of masVistos" class="contenido-item">
       <img [src]="contenido.url_imagen" alt="Más Visto">
     </div>
   </div>
 
-  <h2>Reciente</h2>
+  <h2 class="title">Reciente</h2>
   <div class="fila-contenido">
     <div *ngFor="let contenido of recientes" class="contenido-item">
       <img [src]="contenido.url_imagen" alt="Reciente">

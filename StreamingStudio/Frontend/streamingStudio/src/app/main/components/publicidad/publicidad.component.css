@@ -30,3 +30,9 @@
   height: 100px; /* Ajusta el tamaño según sea necesario */
   object-fit: cover;
 }
+
+h2{
+  color: #0056b3;
+  font-family: "Arial", sans-serif;
+}
+
