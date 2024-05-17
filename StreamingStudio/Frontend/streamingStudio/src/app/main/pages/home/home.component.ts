@@ -1,9 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from '../../AuthService';
-import {HeaderComponent} from '../../components/header/header.component';
+import {AuthService} from '../../services/./authService/AuthService';
 import {ActivatedRoute} from '@angular/router';
-import {IListadoFederaciones} from '../../api/models/IListadoFederacion.model';
 import {IHome} from '../../api/models/IHome.model';
+
 
 @Component({
   selector: 'app-home',
@@ -26,15 +25,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     this.client_id = this.currentUser.id_cliente;
-    console.log("user: ", this.currentUser);
-    console.log("client_id: ", this.client_id);
     this.route.data.subscribe(data => {
-      console.log("Data: ", data);
       this.home = data['home'];
-      this.publicidades = Object.values(this.home.Publicidades).flat();
       this.processData(this.home);
-      console.log("publicidades: ", this.publicidades);
-      console.log("home: ", this.home);
     })
   }
 

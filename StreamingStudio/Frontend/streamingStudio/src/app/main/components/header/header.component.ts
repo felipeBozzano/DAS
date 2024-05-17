@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AuthService} from '../../AuthService';
+import {AuthService} from '../../services/./authService/AuthService';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {StreamingStudioResources} from '../../api/resources/streaming-studio.services';
 import { IListadoFederaciones } from '../../api/models/IListadoFederacion.model';

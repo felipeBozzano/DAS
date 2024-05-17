@@ -60,4 +60,11 @@ export class StreamingStudioResources extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   home!: IResourceMethodObservable<{ id_cliente: number }, IHome>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Get,
+    path: `/publicidades_activas`,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  publicidades!: IResourceMethodObservable<{}, IHome>;
 }

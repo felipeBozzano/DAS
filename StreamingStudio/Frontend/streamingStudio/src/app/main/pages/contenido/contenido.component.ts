@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {StreamingStudioResources} from '../../api/resources/streaming-studio.services';
 import {IContenido} from '../../api/models/IContenido.model';
-import {AuthService} from '../../AuthService';
+import {AuthService} from '../../services/./authService/AuthService';
 import {IInformacionContenidoResponseModel} from '../../api/models/IInformacionContenidoResponse.model';
 
 @Component({

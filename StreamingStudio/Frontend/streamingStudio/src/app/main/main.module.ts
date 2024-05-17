@@ -14,6 +14,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {ContenidoComponent} from './pages/contenido/contenido.component';
 import {HomeResolver} from './api/resolvers/home.resolver';
 import {PublicidadComponent} from './components/publicidad/publicidad.component';
+import {PublicationService} from './services/publicationService/publicationService';
 
 
 // @ts-ignore
@@ -36,7 +37,8 @@ import {PublicidadComponent} from './components/publicidad/publicidad.component'
   providers: [
     HomeResolver,
     ListadoFederacionesResolver,
-    StreamingStudioResources
+    StreamingStudioResources,
+    PublicationService
   ]
 })
 export class MainModule { }

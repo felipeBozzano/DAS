@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import {AuthService} from '../../AuthService';
+import {AuthService} from '../../services/authService/AuthService';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ILogin } from '../../api/models/login.model';
 import {StreamingStudioResources} from '../../api/resources/streaming-studio.services';
+import {PublicationService} from '../../services/publicationService/publicationService';
+import {IPublicidad} from '../../api/models/IPublicidad';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +19,8 @@ export class LoginComponent {
   constructor(private router: Router,
               private authService: AuthService,
               private _fb: FormBuilder,
-              private streamingStudioResources: StreamingStudioResources)
+              private streamingStudioResources: StreamingStudioResources,
+              private publicidadesService: PublicationService)
               { this.formLogin = this._fb.group({
                 usuario: new FormControl('',[Validators.required, Validators.maxLength(16)]),
                 contrasena: new FormControl('',[Validators.required, Validators.maxLength(16)])
@@ -44,6 +47,11 @@ export class LoginComponent {
               console.log("response.id_clinte: ", response.id_cliente);
               this.authService.login(response);
               this.showError = false;
+              // obtengo las publicidades
+              this.streamingStudioResources.publicidades().subscribe( (response) => {
+                  this.publicidadesService.setCurrentPublications(Object.values(response.Publicidades).flat())
+              }
+              )
               this.router.navigate(['/home'], { queryParams: {id_cliente: clienteId }});
             } else {
               this.showError = true;

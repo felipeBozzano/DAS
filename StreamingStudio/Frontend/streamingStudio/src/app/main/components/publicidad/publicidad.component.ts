@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import {PublicationService} from '../../services/publicationService/publicationService';
 
 interface Publicidad {
   id_tipo_banner: number;
@@ -18,7 +19,10 @@ export class PublicidadComponent {
   exclusivas: any  = []
   no_exclusivas: any = []
 
+  constructor(private publicidadesService: PublicationService){}
+
   processPublicidades(){
+    console.log(this.publicidades);
     this.publicidades.map(pub => {
       if(pub.id_tipo_banner == 3 || pub.id_tipo_banner == 5 || pub.id_tipo_banner == 1){
         this.exclusivas.push(pub)
@@ -28,6 +32,7 @@ export class PublicidadComponent {
     })
   }
   ngOnInit(): void {
+    this.publicidades = this.publicidadesService.getCurrenPublications();
     this.processPublicidades()
   }
 
