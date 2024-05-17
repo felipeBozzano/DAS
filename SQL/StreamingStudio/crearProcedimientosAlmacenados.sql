@@ -1598,7 +1598,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Informacion_de_Contenido @id_contenido INT
+CREATE OR ALTER PROCEDURE Obtener_Informacion_de_Contenido @id_contenido VARCHAR(255)
 AS
 BEGIN
     SELECT Co.url_imagen, Co.titulo, Co.descripcion
@@ -1607,7 +1607,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Generos @id_contenido INT
+CREATE OR ALTER PROCEDURE Obtener_Generos @id_contenido VARCHAR(255)
 AS
 BEGIN
     SELECT G.descripcion
@@ -1618,7 +1618,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Directores @id_contenido INT
+CREATE OR ALTER PROCEDURE Obtener_Directores @id_contenido VARCHAR(255)
 AS
 BEGIN
     SELECT D.nombre, D.apellido
@@ -1629,7 +1629,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Actores @id_contenido INT
+CREATE OR ALTER PROCEDURE Obtener_Actores @id_contenido VARCHAR(255)
 AS
 BEGIN
     SELECT A.nombre, A.apellido
@@ -1641,7 +1641,7 @@ END;
 go
 
 CREATE OR ALTER PROCEDURE Obtener_Informacion_de_Plataforma @id_cliente INT = NULL,
-                                                            @id_contenido INT
+                                                            @id_contenido VARCHAR(255)
 AS
 BEGIN
     WITH Plataformas_Disponibles AS (SELECT DISTINCT(P.id_plataforma)
