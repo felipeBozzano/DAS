@@ -159,7 +159,7 @@ public class fran_controllers {
     @PostMapping(
             path="/contenido_por_filtros"
     )
-    public ResponseEntity<List<ContenidoHomeBean>> buscarContenidoPorFiltros(@RequestBody ContenidoBean body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public ResponseEntity<List<ContenidoHomeBean>> buscarContenidoPorFiltros(@RequestBody ContenidoFiltroBean body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<ContenidoHomeBean> contenido = buscar_contenido_repository.buscarContenidoPorFiltros(body.getId_cliente(), body.getTitulo(), body.isReciente(), body.isDestacado(), body.getClasificacion(), body.getMas_visto(), body.getGenero());
         return new ResponseEntity<>(contenido, HttpStatus.OK);
     }

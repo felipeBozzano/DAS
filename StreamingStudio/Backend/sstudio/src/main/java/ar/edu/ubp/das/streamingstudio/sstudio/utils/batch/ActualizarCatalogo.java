@@ -1,6 +1,5 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoCatalogoBean;
@@ -16,10 +15,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import static ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.BatchUtils.crearJdbcTemplate;
-import static ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.BatchUtils.obtenerInformacionDeConexionAPlataforma;
 
 @Repository
-public class CatalogoRepository {
+public class ActualizarCatalogo {
     private static JdbcTemplate jdbcTpl;
     static Map<String,String> respuesta;
     private static final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();

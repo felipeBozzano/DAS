@@ -167,7 +167,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Plataformas_de_Streaming_Activas
+CREATE OR ALTER PROCEDURE Obtener_Informacion_de_Plataformas_de_Streaming_Activas
 AS
 BEGIN
     SELECT id_plataforma, url_imagen, url_api, protocolo_api

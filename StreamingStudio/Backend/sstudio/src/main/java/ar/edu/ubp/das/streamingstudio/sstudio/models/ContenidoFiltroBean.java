@@ -1,6 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-public class ContenidoBean {
+public class ContenidoFiltroBean {
 
     private String id_contenido;
     private Integer  id_plataforma;
@@ -33,8 +33,8 @@ public class ContenidoBean {
         this.genero = genero;
     }
 
-    public ContenidoBean(String id_contenido, Integer id_plataforma, String titulo, String descripcion, String url_imagen, String clasificacion,
-                         Boolean destacado, Boolean reciente, Boolean valido) {
+    public ContenidoFiltroBean(String id_contenido, Integer id_plataforma, String titulo, String descripcion, String url_imagen, String clasificacion,
+                               Boolean destacado, Boolean reciente, Boolean valido) {
         this.id_contenido = id_contenido;
         this.id_plataforma = id_plataforma;
         this.titulo = titulo;
@@ -47,7 +47,7 @@ public class ContenidoBean {
         this.valido = valido;
     }
 
-    public ContenidoBean() {
+    public ContenidoFiltroBean() {
     }
 
     public String getId_contenido() {
