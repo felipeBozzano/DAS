@@ -1,9 +1,9 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe;
+package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.EstadisticaPlataformaBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaEstadisticaBean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.SqlOutParameter;
@@ -12,45 +12,49 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.BatchUtils.crearJdbcTemplate;
+
 @Repository
-public class EstadisticasPlataformaRepository implements IEstadisticasPlataformaRepository{
+public class EstadisticasPlataforma {
+    private static JdbcTemplate jdbcTpl;
+    static Map<String,Object> reporte;
+    private static final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
 
-    @Autowired
-    private JdbcTemplate jdbcTpl;
-
-    private final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
-
-    @Override
-    public String reportesPlataformas() {
+    public static void reportesPlataformas() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Map<Integer, List<EstadisticaPlataformaBean>> estadisticasPlataformas = obtenerEstadisticasPlataformas();
         for (Integer id_plataforma : estadisticasPlataformas.keySet()) {
-            int clics_totales = 0;
+            reporte = new HashMap<>();
+
+            PlataformaEstadisticaBean plataforma = obtenerDatosDePlataforma(id_plataforma);
             int id_reporte = crearReportePlataforma(id_plataforma);
+            reporte.put("plataforma", plataforma.getNombre_de_fantasia());
+            reporte.put("razon_social", plataforma.getRazon_social());
+            Map<String, String> detalle_reporte = new HashMap<>();
+
+            int clics_totales = 0;
             List<EstadisticaPlataformaBean> estadisticas = estadisticasPlataformas.get(id_plataforma);
             for (EstadisticaPlataformaBean datos: estadisticas) {
                 crearDetalleReporte(id_reporte, datos);
-                clics_totales = clics_totales + datos.getCantidad_de_clics();
+                detalle_reporte.put(String.valueOf(datos.getId_contenido()), String.valueOf(datos.getCantidad_de_clics()));
+                clics_totales += datos.getCantidad_de_clics();
             }
+
+            reporte.put("clics_totales", String.valueOf(clics_totales));
+            reporte.put("detalle", detalle_reporte);
             finalizarReporte(id_reporte, clics_totales);
-            PlataformaDeStreamingBean plataforma = obtenerDatosDePlataforma(id_plataforma);
             enviarReporte(id_reporte, plataforma);
+            System.out.println(reporte);
         }
-        return "OK";
     }
 
-//    public Map<Integer, List<EstadisticaPlataformaBean>> reportesPlataformas() {
-//        Map<Integer, List<EstadisticaPlataformaBean>> estadisticasPlataformas = obtenerEstadisticasPlataformas();
-//        return estadisticasPlataformas;
-//    }
-
-    @Override
-    public Map<Integer, List<EstadisticaPlataformaBean>> obtenerEstadisticasPlataformas() {
+    public static Map<Integer, List<EstadisticaPlataformaBean>> obtenerEstadisticasPlataformas() {
         SqlParameterSource in = new MapSqlParameterSource();
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Estadisticas_para_Plataformas")
@@ -69,8 +73,19 @@ public class EstadisticasPlataformaRepository implements IEstadisticasPlataforma
         return estadisticas_agrupadas;
     }
 
-    @Override
-    public int crearReportePlataforma(int id_plataforma) {
+    public static PlataformaEstadisticaBean obtenerDatosDePlataforma(int id_plataforma) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_plataforma", id_plataforma);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_Datos_de_Plataforma")
+                .withSchemaName("dbo")
+                .returningResultSet("plataforma", BeanPropertyRowMapper.newInstance(PlataformaEstadisticaBean.class));
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<PlataformaEstadisticaBean> plataforma = (List<PlataformaEstadisticaBean>) out.get("plataforma");
+        return plataforma.getFirst();
+    }
+
+    public static int crearReportePlataforma(int id_plataforma) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
@@ -81,9 +96,8 @@ public class EstadisticasPlataformaRepository implements IEstadisticasPlataforma
         return (int) out.get("id_reporte");
     }
 
-    @Override
-    public void crearDetalleReporte(int id_reporte, EstadisticaPlataformaBean detalle) {
-        String descripcion = "Contenido " + detalle.getId_en_plataforma() + ": " + detalle.getCantidad_de_clics() + " clics";
+    public static void crearDetalleReporte(int id_reporte, EstadisticaPlataformaBean detalle) {
+        String descripcion = "Contenido " + detalle.getId_contenido() + ": " + detalle.getCantidad_de_clics() + " clics";
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_reporte", id_reporte)
                 .addValue("descripcion", descripcion)
@@ -91,38 +105,27 @@ public class EstadisticasPlataformaRepository implements IEstadisticasPlataforma
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Crear_Detalle_Reporte")
                 .withSchemaName("dbo");
-        Map<String, Object> out = jdbcCall.execute(in);
+        jdbcCall.execute(in);
     }
 
-    @Override
-    public void finalizarReporte(int id_reporte, int clics_totales) {
+    public static void finalizarReporte(int id_reporte, int clics_totales) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_reporte", id_reporte)
                 .addValue("total", clics_totales);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Finalizar_Reporte")
                 .withSchemaName("dbo");
-        Map<String, Object> out = jdbcCall.execute(in);
+        jdbcCall.execute(in);
     }
 
-    @Override
-    public PlataformaDeStreamingBean obtenerDatosDePlataforma(int id_plataforma) {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_plataforma", id_plataforma);
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Obtener_Datos_de_Plataforma")
-                .withSchemaName("dbo")
-                .returningResultSet("plataforma", BeanPropertyRowMapper.newInstance(PlataformaDeStreamingBean.class));
-        Map<String, Object> out = jdbcCall.execute(in);
-        List<PlataformaDeStreamingBean> plataforma = (List<PlataformaDeStreamingBean>) out.get("plataforma");
-        return plataforma.getFirst();
-    }
+    public static void enviarReporte(int id_reporte, PlataformaEstadisticaBean plataforma) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        AbstractConnector conector = conectorFactory.crearConector(plataforma.getProtocolo_api());
 
-    @Override
-    public void enviarReporte(int id_reporte, PlataformaDeStreamingBean plataforma) {
-/*
+        Map<String, Object> body = new HashMap<>();
+        body.put("token_de_servicio", plataforma.getToken_de_servicio());
+        body.put("reporte", reporte);
 
-        -) CREAR EL REPORTE A ENVIAR.
+        /*
 
         -) PEGARLE A LA API DEL PUBLICISTA CARGANDOLE EL REPORTE CREADO.
 
@@ -133,6 +136,11 @@ public class EstadisticasPlataformaRepository implements IEstadisticasPlataforma
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Enviar_Reporte")
                 .withSchemaName("dbo");
-        Map<String, Object> out = jdbcCall.execute(in);
+        jdbcCall.execute(in);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        jdbcTpl = crearJdbcTemplate();
+        reportesPlataformas();
     }
 }

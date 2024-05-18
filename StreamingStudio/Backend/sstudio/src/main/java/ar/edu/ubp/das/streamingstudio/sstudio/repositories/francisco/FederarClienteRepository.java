@@ -78,31 +78,32 @@ public class FederarClienteRepository implements IFederarClienteRepository {
     }
 
     @Override
-    public String obtenerTokenDeServicioDePlataforma(int id_plataforma) {
+    public Map<String, String> obtenerInformacionDeConexionAPlataforma(int id_plataforma) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Obtener_Token_de_Servicio_de_Plataforma")
+                .withProcedureName("Obtener_Datos_de_Conexion_a_Plataforma")
                 .withSchemaName("dbo");
 
         Map<String, Object> out = jdbcCall.execute(in);
-        List<Map<String,String>> mapa_token = (List<Map<String,String>>) out.get("#result-set-1");
-        String token = mapa_token.getFirst().get("token_de_servicio");
-        return token;
+        List<Map<String,String>> lista_mapa = (List<Map<String,String>>) out.get("#result-set-1");
+        Map<String, String> info_plataforma = lista_mapa.getFirst();
+        return info_plataforma;
     }
 
     @Override
     @Transactional
     public Map<String, String> comenzarFederacion(int id_plataforma, int id_cliente, String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         respuesta = new HashMap<>();
-        AbstractConnector conector = conectorFactory.crearConector("REST");
+        Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma);
+        AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
         Map<String, String> body = new HashMap<>();
         String url_de_redireccion = "https://localhost:8080/ss/usuario/" + id_cliente + "/finalizar_federacion/" + id_plataforma;
         body.put("url_de_redireccion", url_de_redireccion);
-        body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
+        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
         body.put("id_cliente", String.valueOf(id_cliente));
         body.put("tipo_de_transaccion", tipo_transaccion);
-        FederacionBean bean = (FederacionBean) conector.execute_post_request("http://localhost:8081/netflix/federar", body, "FederacionBean");
+        FederacionBean bean = (FederacionBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/federar", body, "FederacionBean");
 
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
@@ -126,46 +127,43 @@ public class FederarClienteRepository implements IFederarClienteRepository {
     @Transactional
     public Map<String, String> finalizarFederacion(int id_plataforma, int id_cliente, String codigo_de_transaccion,
                                                    String id_cliente_plataforma, boolean actualizar_info) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        String url_token;
+
+        Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma);
+        String url_token = conexion_plataforma.get("url_api") + "/usuario/" + id_cliente_plataforma + "/obtener_token";
+
         if (actualizar_info)
-            url_token =  actualizarUrlToken(id_plataforma, id_cliente, codigo_de_transaccion, id_cliente_plataforma);
-        else
-            url_token = id_cliente_plataforma;
+            actualizarUrlToken(id_plataforma, id_cliente, codigo_de_transaccion, url_token);
 
         respuesta = new HashMap<>();
-        AbstractConnector conector = conectorFactory.crearConector("REST");
+        AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
         Map<String, String> body = new HashMap<>();
         body.put("codigo_de_transaccion", codigo_de_transaccion);
-        body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
+        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
         FederacionBean bean = (FederacionBean) conector.execute_post_request(url_token, body, "FederacionBean");
 
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_plataforma", id_plataforma)
-                .addValue("id_cliente", id_cliente)
-                .addValue("token", bean.getToken());
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Finalizar_Federacion")
-                .withSchemaName("dbo");
-        Map<String, Object> out = jdbcCall.execute(in);
+//        SqlParameterSource in = new MapSqlParameterSource()
+//                .addValue("id_plataforma", id_plataforma)
+//                .addValue("id_cliente", id_cliente)
+//                .addValue("token", bean.getToken());
+//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+//                .withProcedureName("Finalizar_Federacion")
+//                .withSchemaName("dbo");
+//        jdbcCall.execute(in);
 
         respuesta.put("mensaje", "Federacion finalizada");
         return respuesta;
     }
 
     @Override
-    public String actualizarUrlToken(int id_plataforma, int id_cliente, String codigo_de_transaccion, String id_cliente_plataforma) {
-        String url_token = "http://localhost:8081/netflix/usuario/" + id_cliente_plataforma + "/obtener_token";
-
+    public void actualizarUrlToken(int id_plataforma, int id_cliente, String codigo_de_transaccion, String url_plataforma) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_cliente", id_cliente)
                 .addValue("id_plataforma", id_plataforma)
                 .addValue("codigo_de_transaccion", codigo_de_transaccion)
-                .addValue("url_token", url_token);
+                .addValue("url_token", url_plataforma);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("actualizarUrlToken")
                 .withSchemaName("dbo");
         jdbcCall.execute(in);
-
-        return url_token;
     }
 }

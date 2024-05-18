@@ -97,7 +97,7 @@ go
 /* Plataforma_de_Streaming */
 
 CREATE OR ALTER PROCEDURE Anadir_Plataforma_de_Streaming @nombre_de_fantasia VARCHAR(255),
-                                                         @razón_social VARCHAR(255),
+                                                         @razon_social VARCHAR(255),
                                                          @url_imagen VARCHAR(255),
                                                          @token_de_servicio VARCHAR(255),
                                                          @url_api VARCHAR(255),
@@ -105,15 +105,15 @@ CREATE OR ALTER PROCEDURE Anadir_Plataforma_de_Streaming @nombre_de_fantasia VAR
                                                          @valido BIT
 AS
 BEGIN
-    INSERT INTO dbo.Plataforma_de_Streaming(nombre_de_fantasia, razón_social, url_imagen, token_de_servicio,
+    INSERT INTO dbo.Plataforma_de_Streaming(nombre_de_fantasia, razon_social, url_imagen, token_de_servicio,
                                             url_api, protocolo_api, valido)
-    VALUES (@nombre_de_fantasia, @razón_social, @url_imagen, @token_de_servicio, @url_api, @protocolo_api, @valido)
+    VALUES (@nombre_de_fantasia, @razon_social, @url_imagen, @token_de_servicio, @url_api, @protocolo_api, @valido)
 END;
 go
 
 CREATE OR ALTER PROCEDURE Editar_Plataforma_de_Streaming @id_plataforma INT,
                                                          @nombre_de_fantasia VARCHAR(255),
-                                                         @razón_social VARCHAR(255),
+                                                         @razon_social VARCHAR(255),
                                                          @url_imagen VARCHAR(255),
                                                          @token_de_servicio VARCHAR(255),
                                                          @url_api VARCHAR(255),
@@ -122,7 +122,7 @@ AS
 BEGIN
     UPDATE Plataforma_de_Streaming
     SET nombre_de_fantasia = @nombre_de_fantasia,
-        razón_social       = @razón_social,
+        razon_social       = @razon_social,
         url_imagen         = @url_imagen,
         token_de_servicio  = @token_de_servicio,
         url_api            = @url_api,
@@ -140,7 +140,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Datos_de_Sesion @id_plataforma INT
+CREATE OR ALTER PROCEDURE Obtener_Datos_de_Conexion_a_Plataforma @id_plataforma INT
 AS
 BEGIN
     SELECT url_api, token_de_servicio, protocolo_api
@@ -313,34 +313,38 @@ go
 /* Publicista */
 
 CREATE OR ALTER PROCEDURE Registrar_Publicista @nombre_de_fantasia VARCHAR(255),
-                                               @razón_social VARCHAR(255),
+                                               @razon_social VARCHAR(255),
                                                @email VARCHAR(255),
                                                @contrasena VARCHAR(255),
                                                @token_de_servicio VARCHAR(255),
-                                               @url_api VARCHAR(255)
+                                               @url_api VARCHAR(255),
+                                               @protocolo_api VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Publicista(nombre_de_fantasia, razón_social, email, contrasena, token_de_servicio, url_api)
-    VALUES (@nombre_de_fantasia, @razón_social, @email, @contrasena, @token_de_servicio, @url_api)
+    INSERT INTO dbo.Publicista(nombre_de_fantasia, razon_social, email, contrasena, token_de_servicio, url_api,
+                               protocolo_api)
+    VALUES (@nombre_de_fantasia, @razon_social, @email, @contrasena, @token_de_servicio, @url_api, @protocolo_api)
 END;
 go
 
 CREATE OR ALTER PROCEDURE Editar_Publicista @id_publicista INT,
                                             @nombre_de_fantasia VARCHAR(255),
-                                            @razón_social VARCHAR(255),
+                                            @razon_social VARCHAR(255),
                                             @email VARCHAR(255),
                                             @contrasena VARCHAR(255),
                                             @token_de_servicio VARCHAR(255),
-                                            @url_api VARCHAR(255)
+                                            @url_api VARCHAR(255),
+                                            @protocolo_api VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Publicista
     SET nombre_de_fantasia = @nombre_de_fantasia,
-        razón_social       = @razón_social,
+        razon_social       = @razon_social,
         email              = @email,
         contrasena         = @contrasena,
         token_de_servicio  = @token_de_servicio,
-        url_api            = @url_api
+        url_api            = @url_api,
+        protocolo_api      = @protocolo_api
     WHERE id_publicista = @id_publicista
 END;
 go
@@ -1079,7 +1083,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Datos_de_Publicista @id_publicista INT
 AS
 BEGIN
-    SELECT nombre_de_fantasia, razón_social, token_de_servicio, url_api
+    SELECT nombre_de_fantasia, razon_social, token_de_servicio, url_api, protocolo_api
     FROM dbo.Publicista
     WHERE id_publicista = @id_publicista
 END;
@@ -1114,7 +1118,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Datos_de_Plataforma @id_plataforma INT
 AS
 BEGIN
-    SELECT nombre_de_fantasia, razón_social, token_de_servicio, url_api, protocolo_api
+    SELECT nombre_de_fantasia, razon_social, token_de_servicio, url_api, protocolo_api
     FROM dbo.Plataforma_de_Streaming
     WHERE id_plataforma = @id_plataforma
 END;
@@ -1265,14 +1269,7 @@ go
 
 /* SI HAY UNA FEDERACION EN CURSO, IR DIRECTAMENTE AL PUNTO 2 */
 
-CREATE OR ALTER PROCEDURE Obtener_Token_de_Servicio_de_Plataforma @id_plataforma INT
-AS
-BEGIN
-    SELECT token_de_servicio
-    FROM dbo.Plataforma_de_Streaming
-    WHERE id_plataforma = @id_plataforma
-END;
-go
+/* Obtener_Datos_de_Conexion_a_Plataforma */
 
 /* PEGARLE A LA API DE LA PLATAFORMA PARA OBTENER LA URL DE LOGIN Y EL CÓDIGO DE TRANSACCIÓN. */
 /* Comenzar_Federacion */
@@ -1311,7 +1308,8 @@ go
 
 /* POR CADA FEDERACION PENDIENTE */
 
-/* Obtener_Token_de_Servicio_de_Plataforma */
+/* Obtener_Datos_de_Conexion_a_Plataforma */
+
 /* PEGARLE A LA API DE LA PLATAFORMA PARA OBTENER LA URL DE LOGIN Y EL CÓDIGO DE TRANSACCIÓN. */
 /* Finalizar_Federacion */
 
@@ -1664,7 +1662,7 @@ go
 
 -- buscar federaion
 
-/* Obtener_Datos_de_Sesion */ --> ESTO ESTÁ CREADO, ES PARA OBTENER EL TOKEN_DE_SERVICIO Y LA URL_API DE LA PLATAFORMA
+/* Obtener_Datos_de_Conexion_a_Plataforma */ --> ESTO ESTÁ CREADO, ES PARA OBTENER EL TOKEN_DE_SERVICIO Y LA URL_API DE LA PLATAFORMA
 
 /* PEGARLE A LA API DE LA PLATAFORMA DE STREAMING PARA OBTENER LA SESION DEL USUARIO */
 

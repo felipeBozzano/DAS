@@ -57,7 +57,7 @@ CREATE TABLE [Plataforma_de_Streaming]
 (
     [id_plataforma]      INT IDENTITY (1,1) PRIMARY KEY,
     [nombre_de_fantasia] VARCHAR(255) NOT NULL,
-    [razón_social]       VARCHAR(255) NOT NULL,
+    [razon_social]       VARCHAR(255) NOT NULL,
     [url_imagen]         VARCHAR(255) NOT NULL,
     [token_de_servicio]  VARCHAR(255) NOT NULL,
     [url_api]            VARCHAR(255) NOT NULL,
@@ -69,11 +69,12 @@ CREATE TABLE [Publicista]
 (
     [id_publicista]      INT IDENTITY (1,1) PRIMARY KEY,
     [nombre_de_fantasia] VARCHAR(255) NOT NULL,
-    [razón_social]       VARCHAR(255) NOT NULL,
+    [razon_social]       VARCHAR(255) NOT NULL,
     [email]              VARCHAR(255) NOT NULL,
     [contrasena]         VARCHAR(255) NOT NULL,
     [token_de_servicio]  VARCHAR(255) NOT NULL,
     [url_api]            VARCHAR(255) NOT NULL,
+    [protocolo_api]      VARCHAR(255) NOT NULL,
 );
 
 CREATE TABLE [Reporte]

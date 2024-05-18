@@ -188,7 +188,7 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE Verificar_Token_de_Partner @token INT
+CREATE OR ALTER PROCEDURE Verificar_Token_de_Partner @token VARCHAR(255)
 AS
 BEGIN
     SELECT CASE

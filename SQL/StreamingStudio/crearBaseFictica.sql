@@ -130,7 +130,7 @@ VALUES ('P-1', 1),
 go
 
 -- Crear 3 Plataformas de Streaming
-INSERT INTO Plataforma_de_Streaming (nombre_de_fantasia, razón_social, url_imagen, token_de_servicio, url_api,
+INSERT INTO Plataforma_de_Streaming (nombre_de_fantasia, razon_social, url_imagen, token_de_servicio, url_api,
                                      protocolo_api, valido)
 VALUES ('Netflix', N'Netflix Argentina S.R.L.',
         'https://img.jpg', 'Netflix123', 'http://localhost:8081/netflix', 'REST', 1),
@@ -189,10 +189,10 @@ go
 -- Crear 6 Tipo_Banner
 INSERT INTO Tipo_Banner (fecha_alta, tamano, exclusividad, fecha_baja)
 VALUES (GETDATE(), '10*20', 'E', null),
-       (GETDATE(), '30*40', 'N', null),
-       (GETDATE(), '50*50', 'E', null),
+       (GETDATE(), '30*40', 'E', null),
+       (GETDATE(), '50*50', 'N', null),
        (GETDATE(), '20*30', 'N', null),
-       (GETDATE(), '10*20', 'E', null),
+       (GETDATE(), '10*20', 'N', null),
        (GETDATE(), '15*15', 'N', null);
 go
 
@@ -207,13 +207,13 @@ VALUES (1, GETDATE(), 9.5, null),
 go
 
 -- Crear 3 Publicista
-INSERT INTO Publicista (nombre_de_fantasia, razón_social, email, contrasena, token_de_servicio, url_api)
+INSERT INTO Publicista (nombre_de_fantasia, razon_social, email, contrasena, token_de_servicio, url_api, protocolo_api)
 VALUES ('Publicista1', N'Razón Social 1', 'publicista1@email.com', N'contrasena1', '123456789',
-        'https://www.urlapi1.com'),
+        'https://www.urlapi1.com', 'REST'),
        ('Publicista2', N'Razón Social 2', 'publicista2@email.com', N'contrasena2', '123456789',
-        'https://www.urlapi2.com'),
+        'https://www.urlapi2.com', 'REST'),
        ('Publicista3', N'Razón Social 3', 'publicista3@email.com', N'contrasena3', '123456789',
-        'https://www.urlapi3.com');
+        'https://www.urlapi3.com', 'REST');
 go
 
 -- Crear 9 Publicidades
