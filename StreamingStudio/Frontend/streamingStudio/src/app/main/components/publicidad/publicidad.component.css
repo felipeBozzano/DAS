@@ -1,7 +1,9 @@
 .publicidades {
+  margin-top: 100px;
   display: flex;
   justify-content: space-between;
   padding: 10px;
+  background-color: lightskyblue;
 }
 
 .publicidad-banner {

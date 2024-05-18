@@ -1,30 +1,31 @@
 <div class="home-container">
   <app-header [pageTitle]="'Home'" [id_cliente]=client_id (mensajeEvent)="recibirMensaje($event)"></app-header>
-</div>
-<app-publicidad [publicidades]="publicidades" tipo="exclusiva"></app-publicidad>
-<div class="contenidos">
-  <h2 class="title" >Contenido Destacado</h2>
-  <div class="fila-contenido">
-    <div *ngFor="let contenido of destacados" class="contenido-item">
-      <img [src]="contenido.url_imagen" alt="Destacado">
+  <app-publicidad tipo="exclusiva"></app-publicidad>
+  <div class="contenidos">
+    <h2 class="title" >Contenido Destacado</h2>
+    <div class="fila-contenido">
+      <div *ngFor="let contenido of destacados" class="contenido-item">
+        <img [src]="contenido.url_imagen" alt="Destacado">
+      </div>
     </div>
-  </div>
 
-  <h2 class="title">Más Visto</h2>
-  <div class="fila-contenido">
-    <div *ngFor="let contenido of masVistos" class="contenido-item">
-      <img [src]="contenido.url_imagen" alt="Más Visto">
+    <h2 class="title">Más Visto</h2>
+    <div class="fila-contenido">
+      <div *ngFor="let contenido of masVistos" class="contenido-item">
+        <img [src]="contenido.url_imagen" alt="Más Visto">
+      </div>
     </div>
-  </div>
 
-  <h2 class="title">Reciente</h2>
-  <div class="fila-contenido">
-    <div *ngFor="let contenido of recientes" class="contenido-item">
-      <img [src]="contenido.url_imagen" alt="Reciente">
+    <h2 class="title">Reciente</h2>
+    <div class="fila-contenido">
+      <div *ngFor="let contenido of recientes" class="contenido-item">
+        <img [src]="contenido.url_imagen" alt="Reciente">
+      </div>
     </div>
   </div>
+  <app-publicidad tipo="no_exclusiva"></app-publicidad>
 </div>
-<app-publicidad [publicidades]="publicidades" tipo="no_exclusiva"></app-publicidad>
+
 
 
 

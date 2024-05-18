@@ -56,16 +56,19 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log("this.id_cliente: ", this.id_cliente);
+    this.id_cliente = this.authService.getCurrentUser().id_cliente;
   }
 
   navigateToFederaciones() {
     const ruta = `usuario/${this.id_cliente}/federaciones`
-    console.log("ruuta: ", ruta);
     this.router.navigate(["usuario", this.id_cliente, "federaciones"]);
   }
 
   enviarMensaje(response: any) {
     this.mensajeEvent.emit(this.id_cliente);
+  }
+
+  navigateToHome(){
+    this.router.navigate(['/home'], { queryParams: {id_cliente: this.id_cliente }});
   }
 }

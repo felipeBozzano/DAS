@@ -44,7 +44,6 @@ export class HomeComponent implements OnInit {
 
   recibirMensaje(response: any) {
     this.contenido = response;
-    console.log("desde el home: ", this.contenido);
   }
 
 }

@@ -53,7 +53,6 @@ export class RegisterComponent {
         .subscribe(
           (response) => {
             // Si la respuesta es exitosa, redirige al home
-            console.log('Respuesta del servidor:', response);
             this.router.navigate(['/login']);
           },
           (error) => {

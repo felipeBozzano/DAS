@@ -1,2 +1,22 @@
-<app-header [pageTitle]="'Federaciones'"></app-header>
+<app-header [id_cliente]="id_cliente"  [pageTitle]="'Federaciones'"></app-header>
 <app-publicidad tipo="exclusiva"></app-publicidad>
+<div class="platform-container">
+  <h2>Plataformas a Federar</h2>
+  <div class="platform-list">
+    <div class="platform-item" *ngFor="let plataforma of plataformas_a_federar">
+      <img *ngIf="plataforma.url_imagen" [src]="plataforma.url_imagen" alt="Plataforma {{ plataforma.id_plataforma }}">
+      <img *ngIf="!plataforma.url_imagen" src="https://via.placeholder.com/150" alt="No disponible">
+    </div>
+  </div>
+</div>
+
+<div class="platform-container">
+  <h2>Plataformas Federadas</h2>
+  <div class="platform-list">
+    <div class="platform-item" *ngFor="let plataforma of plataformas_federadas">
+      <img [src]="plataforma.url_imagen" alt="Plataforma {{ plataforma.id_plataforma }}">
+    </div>
+  </div>
+</div>
+
+
