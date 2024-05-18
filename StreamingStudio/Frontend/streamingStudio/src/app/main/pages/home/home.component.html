@@ -1,15 +1,31 @@
 <div class="home-container">
-  <app-header [pageTitle]="'Home'" [id_cliente]=client_id></app-header>
+  <app-header [pageTitle]="'Home'" [id_cliente]=client_id (mensajeEvent)="recibirMensaje($event)"></app-header>
 </div>
-<div *ngIf="currentUser">
-  <h1>Bienvenido, {{ currentUser.usuario }}</h1>
-  <!-- Aquí puedes mostrar más información del usuario -->
-  <p>ID de Usuario: {{ currentUser.id_cliente }}</p>
-  <p>Apellido: {{ currentUser.apellido }}</p>
-  <p>Nombre: {{ currentUser.nombre }}</p>
-  <p>email: {{ currentUser.email }}</p>
+<app-publicidad [publicidades]="publicidades" tipo="exclusiva"></app-publicidad>
+<div class="contenidos">
+  <h2 class="title" >Contenido Destacado</h2>
+  <div class="fila-contenido">
+    <div *ngFor="let contenido of destacados" class="contenido-item">
+      <img [src]="contenido.url_imagen" alt="Destacado">
+    </div>
+  </div>
+
+  <h2 class="title">Más Visto</h2>
+  <div class="fila-contenido">
+    <div *ngFor="let contenido of masVistos" class="contenido-item">
+      <img [src]="contenido.url_imagen" alt="Más Visto">
+    </div>
+  </div>
+
+  <h2 class="title">Reciente</h2>
+  <div class="fila-contenido">
+    <div *ngFor="let contenido of recientes" class="contenido-item">
+      <img [src]="contenido.url_imagen" alt="Reciente">
+    </div>
+  </div>
 </div>
-<div *ngIf="!currentUser">
-  <h1>Por favor, inicia sesión</h1>
-</div>
+<app-publicidad [publicidades]="publicidades" tipo="no_exclusiva"></app-publicidad>
+
+
+
 

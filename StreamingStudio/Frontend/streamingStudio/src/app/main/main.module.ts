@@ -11,6 +11,10 @@ import {HeaderComponent} from './components/header/header.component';
 import {FederacionesComponent} from './pages/federaciones/federaciones.component';
 import {ListadoFederacionesResolver} from './api/resolvers/resolver.service';
 import {HttpClientModule} from '@angular/common/http';
+import {ContenidoComponent} from './pages/contenido/contenido.component';
+import {HomeResolver} from './api/resolvers/home.resolver';
+import {PublicidadComponent} from './components/publicidad/publicidad.component';
+import {PublicationService} from './services/publicationService/publicationService';
 
 
 // @ts-ignore
@@ -20,7 +24,9 @@ import {HttpClientModule} from '@angular/common/http';
     HeaderComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ContenidoComponent,
+    PublicidadComponent
   ],
   imports: [
     CommonModule,
@@ -29,8 +35,10 @@ import {HttpClientModule} from '@angular/common/http';
     FormsModule,
   ],
   providers: [
+    HomeResolver,
     ListadoFederacionesResolver,
-    StreamingStudioResources
+    StreamingStudioResources,
+    PublicationService
   ]
 })
 export class MainModule { }

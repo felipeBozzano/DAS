@@ -5,6 +5,10 @@ import {ILogin} from '../models/login.model';
 import {ILoginResponse} from '../models/ILoginResponse.model';
 import {IUser} from '../models/IUser.model';
 import {IListadoFederaciones} from '../models/IListadoFederacion.model';
+import {IContenido} from '../models/IContenido.model';
+import {IContenidoResponse} from '../models/IContenidoResponse.model';
+import {IInformacionContenidoResponseModel} from '../models/IInformacionContenidoResponse.model';
+import {IHome} from '../models/IHome.model';
 
 @Injectable()
 @ResourceParams({
@@ -34,4 +38,33 @@ export class StreamingStudioResources extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   federaciones!: IResourceMethodObservable<{ id_cliente: string }, IListadoFederaciones>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Post,
+    path: `/contenido_por_filtros`,
+    requestBodyType: ResourceRequestBodyType.JSON,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  contenido!: IResourceMethodObservable<IContenido, IContenidoResponse[]>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Get,
+    path: `/informacion_contenido/{!id_contenido}/{!id_cliente}`,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  informacionContenido!: IResourceMethodObservable<{ id_contenido: string, id_cliente: number }, IInformacionContenidoResponseModel>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Get,
+    path: `/home`,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  home!: IResourceMethodObservable<{ id_cliente: number }, IHome>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Get,
+    path: `/publicidades_activas`,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  publicidades!: IResourceMethodObservable<{}, IHome>;
 }

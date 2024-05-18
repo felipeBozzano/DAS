@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import {AuthService} from '../../AuthService';
+import {AuthService} from '../../services/authService/AuthService';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ILogin } from '../../api/models/login.model';
 import {StreamingStudioResources} from '../../api/resources/streaming-studio.services';
+import {PublicationService} from '../../services/publicationService/publicationService';
+import {IPublicidad} from '../../api/models/IPublicidad';
 
 @Component({
   selector: 'app-login',
@@ -11,24 +13,21 @@ import {StreamingStudioResources} from '../../api/resources/streaming-studio.ser
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  username: string = "";
-  password: string = "";
   showError = false;
   public formLogin!: FormGroup;
 
   constructor(private router: Router,
               private authService: AuthService,
               private _fb: FormBuilder,
-              private streamingStudioResources: StreamingStudioResources)
+              private streamingStudioResources: StreamingStudioResources,
+              private publicidadesService: PublicationService)
               { this.formLogin = this._fb.group({
                 usuario: new FormControl('',[Validators.required, Validators.maxLength(16)]),
                 contrasena: new FormControl('',[Validators.required, Validators.maxLength(16)])
               }) }
 
   // tslint:disable-next-line:typedef
-  async onSubmit() {
-    // this.spinnerService.show();
-    // setTimeout(() => {
+  onSubmit() {
     if (this.formLogin.valid) {
       const { usuario, contrasena } = this.formLogin.value
       const login: ILogin = {
@@ -40,13 +39,20 @@ export class LoginComponent {
       this.streamingStudioResources.login(login)
         .subscribe(
           (response) => {
+            const clienteId = response.id_cliente;
+            console.log(typeof clienteId );
             // Si la respuesta es exitosa, redirige al home
             console.log('Respuesta del servidor:', response);
             if (response.mensaje === 'Usuario existente') {
+              console.log("response.id_clinte: ", response.id_cliente);
               this.authService.login(response);
               this.showError = false;
-              // this.spinnerService.hide();
-              this.router.navigate(['/home']);
+              // obtengo las publicidades
+              this.streamingStudioResources.publicidades().subscribe( (response) => {
+                  this.publicidadesService.setCurrentPublications(Object.values(response.Publicidades).flat())
+              }
+              )
+              this.router.navigate(['/home'], { queryParams: {id_cliente: clienteId }});
             } else {
               this.showError = true;
             }
@@ -57,7 +63,6 @@ export class LoginComponent {
             // Aquí puedes manejar el error y mostrar un mensaje de error al usuario
           }
         );
-      // }, 2000);
     }
   }
 
