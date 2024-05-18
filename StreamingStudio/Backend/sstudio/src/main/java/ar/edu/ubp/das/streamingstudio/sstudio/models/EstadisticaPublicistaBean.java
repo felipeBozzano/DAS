@@ -1,13 +1,9 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 public class EstadisticaPublicistaBean {
-
     private int id_publicista;
-
     private int id_publicidad;
-
     private String codigo_publicidad;
-
     private int cantidad_de_clics;
 
     public EstadisticaPublicistaBean() {

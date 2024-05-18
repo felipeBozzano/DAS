@@ -1,13 +1,14 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-public class PublicistaBean {
+public class PlataformaEstadisticaBean {
     private String nombre_de_fantasia;
     private String razon_social;
     private String token_de_servicio;
     private String url_api;
     private String protocolo_api;
 
-    public PublicistaBean(){}
+    public PlataformaEstadisticaBean() {
+    }
 
     public String getNombre_de_fantasia() {
         return nombre_de_fantasia;
@@ -33,6 +34,14 @@ public class PublicistaBean {
         this.token_de_servicio = token_de_servicio;
     }
 
+    public String getProtocolo_api() {
+        return protocolo_api;
+    }
+
+    public void setProtocolo_api(String protocolo_api) {
+        this.protocolo_api = protocolo_api;
+    }
+
     public String getUrl_api() {
         return url_api;
     }
@@ -41,11 +50,4 @@ public class PublicistaBean {
         this.url_api = url_api;
     }
 
-    public String getProtocolo_api() {
-        return protocolo_api;
-    }
-
-    public void setProtocolo_api(String protocolo_api) {
-        this.protocolo_api = protocolo_api;
-    }
 }

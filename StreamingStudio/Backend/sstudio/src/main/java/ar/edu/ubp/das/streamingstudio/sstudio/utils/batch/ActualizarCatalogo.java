@@ -1,12 +1,9 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe;
+package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
-import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.FederacionBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoCatalogoBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,29 +14,27 @@ import org.springframework.stereotype.Repository;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+import static ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.BatchUtils.crearJdbcTemplate;
+
 @Repository
-public class CatalogoRepository implements ICatalogoRepository {
+public class ActualizarCatalogo {
+    private static JdbcTemplate jdbcTpl;
+    static Map<String,String> respuesta;
+    private static final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
 
-    @Autowired
-    private JdbcTemplate jdbcTpl;
-    private final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
-
-    @Override
-    public String actualizarCatalogo() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static void actualizarCatalogo() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<CatalogoBean> catalogoStreamingStudio = obtenerCatalogo();
         List<PlataformaDeStreamingBean> plataformasActivas = obtenerPlataformasActivas();
         for (PlataformaDeStreamingBean plataforma : plataformasActivas) {
 
             // Obtenemos el catálogo de la plataforma de streaming
             int id_plataforma = plataforma.getId_plataforma();
-            String tokenDePlataforma = obtenerTokenDeServicioDePlataforma(id_plataforma);
-            List<ContenidoCatalogoBean> catalogoDePlataforma = obtenerCatalogoDePlataforma(id_plataforma, tokenDePlataforma);
+            List<ContenidoCatalogoBean> catalogoDePlataforma = obtenerCatalogoDePlataforma(id_plataforma);
 
             // Filtramos nuestro catalogo para obtener solo el contenido referente a esta plataforma de streaming
             List<CatalogoBean> catalogoStreamingStudioFiltrado = catalogoStreamingStudio.stream()
                     .filter(contenido -> contenido.getId_plataforma() == id_plataforma)
                     .toList();
-
 
             // Filtramos el contenido de nuestra plataforma que está activo
             List<CatalogoBean> contenidoStreamingStudioActivo = catalogoStreamingStudioFiltrado.stream()
@@ -77,11 +72,9 @@ public class CatalogoRepository implements ICatalogoRepository {
             // Buscamos el contenido que esté en ambas plataformas y lo actualizamos si cambió
             actualizarContenido(id_plataforma, catalogoStreamingStudioFiltrado, catalogoDePlataforma);
         }
-        return "OK";
     }
 
-    @Override
-    public List<CatalogoBean> obtenerCatalogo() {
+    public static List<CatalogoBean> obtenerCatalogo() {
         SqlParameterSource in = new MapSqlParameterSource();
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Catalogo_Actual")
@@ -92,8 +85,7 @@ public class CatalogoRepository implements ICatalogoRepository {
         return (List<CatalogoBean>) out.get("catalogo");
     }
 
-    @Override
-    public List<PlataformaDeStreamingBean> obtenerPlataformasActivas() {
+    public static List<PlataformaDeStreamingBean> obtenerPlataformasActivas() {
         SqlParameterSource in = new MapSqlParameterSource();
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Plataformas_de_Streaming_Activas")
@@ -104,28 +96,12 @@ public class CatalogoRepository implements ICatalogoRepository {
         return (List<PlataformaDeStreamingBean>) out.get("plataforma");
     }
 
-    @Override
-    public String obtenerTokenDeServicioDePlataforma(int id_plataforma) {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_plataforma", id_plataforma);
-        ;
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Obtener_Token_de_Servicio_de_Plataforma")
-                .withSchemaName("dbo");
-
-        Map<String, Object> out = jdbcCall.execute(in);
-        List<Map<String, String>> resultset = (List<Map<String, String>>) out.get("#result-set-1");
-        String token = resultset.getFirst().get("token_de_servicio");
-        return token;
-    }
-
-    @Override
-    public List<ContenidoCatalogoBean> obtenerCatalogoDePlataforma(int id_plataforma, String tokenDeServicio) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-
-//        AbstractConnector conector = conectorFactory.crearConector("REST");
+    public static List<ContenidoCatalogoBean> obtenerCatalogoDePlataforma(int id_plataforma) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+//        Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma, jdbcTpl);
+//        AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
 //        Map<String, String> body = new HashMap<>();
-//        body.put("token_de_servicio", obtenerTokenDeServicioDePlataforma(id_plataforma));
-//        List<ContenidoCatalogoBean> catalogo = (List<ContenidoCatalogoBean>) conector.execute_post_request("http://localhost:8081/netflix/catalogo", body, "ContenidoCatalogoBean");
+//        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
+//        List<ContenidoCatalogoBean> catalogo = (List<ContenidoCatalogoBean>) conector.execute_post_request(conexion_plataforma.get("url_api") + "/catalogo", body, "ContenidoCatalogoBean");
 //        catalogo
 
         List<ContenidoCatalogoBean> catalogo = new ArrayList<>();
@@ -148,8 +124,7 @@ public class CatalogoRepository implements ICatalogoRepository {
         return catalogo;
     }
 
-    @Override
-    public void darDeBajaContenido(List<CatalogoBean> contenidoStreamingStudioActivo, List<ContenidoCatalogoBean> contenidoPlataformaInactivo) {
+    public static void darDeBajaContenido(List<CatalogoBean> contenidoStreamingStudioActivo, List<ContenidoCatalogoBean> contenidoPlataformaInactivo) {
 
         List<CatalogoBean> contenidoADarDeBaja = cruzarContenido(contenidoStreamingStudioActivo, contenidoPlataformaInactivo);
 
@@ -163,12 +138,11 @@ public class CatalogoRepository implements ICatalogoRepository {
             SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                     .withProcedureName("Dar_de_Baja_Item_en_Catalogo")
                     .withSchemaName("dbo");
-            Map<String, Object> out = jdbcCall.execute(in);
+            jdbcCall.execute(in);
         }
     }
 
-    @Override
-    public void habilitarContenido(List<CatalogoBean> contenidoStreamingStudioInactivo, List<ContenidoCatalogoBean> contenidoPlataformaActivo) {
+    public static void habilitarContenido(List<CatalogoBean> contenidoStreamingStudioInactivo, List<ContenidoCatalogoBean> contenidoPlataformaActivo) {
 
         List<CatalogoBean> contenidoAActivar = cruzarContenido(contenidoStreamingStudioInactivo, contenidoPlataformaActivo);
 
@@ -182,7 +156,7 @@ public class CatalogoRepository implements ICatalogoRepository {
             SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                     .withProcedureName("Activar_Item_en_Catalogo")
                     .withSchemaName("dbo");
-            Map<String, Object> out = jdbcCall.execute(in);
+            jdbcCall.execute(in);
         }
     }
 
@@ -203,8 +177,7 @@ public class CatalogoRepository implements ICatalogoRepository {
         return contenidoAActivar;
     }
 
-    @Override
-    public void agregarContenidoNuevo(int id_plataforma, List<CatalogoBean> catalogoStreamingStudioFiltrado, List<ContenidoCatalogoBean> contenidoPlataformaActivo) {
+    public static void agregarContenidoNuevo(int id_plataforma, List<CatalogoBean> catalogoStreamingStudioFiltrado, List<ContenidoCatalogoBean> contenidoPlataformaActivo) {
 
         // Crear un HashSet con los id_en_plataforma de la plataforma de streaming
         Set<String> idEnPlataformaContenidoActivo = new HashSet<>();
@@ -242,9 +215,9 @@ public class CatalogoRepository implements ICatalogoRepository {
             SimpleJdbcCall jdbcCall_existe_contenido = new SimpleJdbcCall(jdbcTpl)
                     .withProcedureName("Buscar_Contenido")
                     .withSchemaName("dbo");
-            Map<String, Object> out_existe_contenido = jdbcCall_existe_contenido.execute(in_existe_contenido);
-            List<Map<String, Integer>> resultset = (List<Map<String, Integer>>) out_existe_contenido.get("#result-set-1");
-            Integer existe_contenido = resultset.get(0).get("contenido");
+            Map<String, Object> out = jdbcCall_existe_contenido.execute(in_existe_contenido);
+            List<Map<String, Integer>> resultset = (List<Map<String, Integer>>) out.get("#result-set-1");
+            Integer existe_contenido = resultset.getFirst().get("contenido");
 
             // Si no existe, lo creamos
             if (existe_contenido == 0) {
@@ -257,7 +230,7 @@ public class CatalogoRepository implements ICatalogoRepository {
                 SimpleJdbcCall jdbcCall_crear_contenido = new SimpleJdbcCall(jdbcTpl)
                         .withProcedureName("Crear_Contenido")
                         .withSchemaName("dbo");
-                Map<String, Object> out_crear_contenido = jdbcCall_crear_contenido.execute(in_crear_contenido);
+                jdbcCall_crear_contenido.execute(in_crear_contenido);
             }
 
             // Agregamos dicho contenido a la tabla catálogo
@@ -269,12 +242,11 @@ public class CatalogoRepository implements ICatalogoRepository {
             SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                     .withProcedureName("Agregar_Item_al_Catalogo")
                     .withSchemaName("dbo");
-            Map<String, Object> out = jdbcCall.execute(in);
+            jdbcCall.execute(in);
         }
     }
 
-    @Override
-    public void actualizarContenido(int id_plataforma, List<CatalogoBean> catalogoStreamingStudioFiltrado, List<ContenidoCatalogoBean> catalogoDePlataforma) {
+    public static void actualizarContenido(int id_plataforma, List<CatalogoBean> catalogoStreamingStudioFiltrado, List<ContenidoCatalogoBean> catalogoDePlataforma) {
 
         // Crear un HashSet con los id_en_plataforma de la plataforma de streaming
         Set<String> idEnPlataformaPlataformaStreaming = new HashSet<>();
@@ -309,7 +281,12 @@ public class CatalogoRepository implements ICatalogoRepository {
             SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                     .withProcedureName("Actualizar_Catalogo")
                     .withSchemaName("dbo");
-            Map<String, Object> out = jdbcCall.execute(in);
+            jdbcCall.execute(in);
         }
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        jdbcTpl = crearJdbcTemplate();
+        actualizarCatalogo();
     }
 }

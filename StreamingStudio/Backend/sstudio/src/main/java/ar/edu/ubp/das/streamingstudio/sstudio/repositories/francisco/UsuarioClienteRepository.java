@@ -102,7 +102,7 @@ public class UsuarioClienteRepository implements IUsuarioClienteRepository {
     public Set<PlataformaDeStreamingBean> obtenerPlataformasActivas() {
         SqlParameterSource in = new MapSqlParameterSource();
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Obtener_Plataformas_de_Streaming_Activas")
+                .withProcedureName("Obtener_Informacion_de_Plataformas_de_Streaming_Activas")
                 .withSchemaName("dbo")
                 .returningResultSet("plataformas", BeanPropertyRowMapper.newInstance(PlataformaDeStreamingBean.class));;
         Map<String, Object> out = jdbcCall.execute(in);
