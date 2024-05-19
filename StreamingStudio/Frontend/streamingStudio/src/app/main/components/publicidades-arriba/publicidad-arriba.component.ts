@@ -9,11 +9,11 @@ interface Publicidad {
 }
 
 @Component({
-  selector: 'app-publicidad',
-  templateUrl: './publicidad.component.html',
-  styleUrls: ['./publicidad.component.css']
+  selector: 'app-publicidad-arriba',
+  templateUrl: './publicidad-arriba.component.html',
+  styleUrls: ['./publicidad-arriba.component.css']
 })
-export class PublicidadComponent {
+export class PublicidadArribaComponent {
   @Input() publicidades: Publicidad[] = [];
   @Input() tipo: 'exclusiva' | 'no_exclusiva' = 'no_exclusiva';
   public publicidad_arriba_izquierda: any;

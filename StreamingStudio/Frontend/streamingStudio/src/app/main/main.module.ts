@@ -10,11 +10,11 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HeaderComponent} from './components/header/header.component';
 import {FederacionesComponent} from './pages/federaciones/federaciones.component';
 import {ListadoFederacionesResolver} from './api/resolvers/resolver.service';
-import {HttpClientModule} from '@angular/common/http';
 import {ContenidoComponent} from './pages/contenido/contenido.component';
 import {HomeResolver} from './api/resolvers/home.resolver';
-import {PublicidadComponent} from './components/publicidad/publicidad.component';
+import {PublicidadArribaComponent} from './components/publicidades-arriba/publicidad-arriba.component';
 import {PublicationService} from './services/publicationService/publicationService';
+import { PublicidadAbajoComponent } from './components/publicidades-abajo/publicidades-abajo.component';
 
 
 // @ts-ignore
@@ -26,7 +26,8 @@ import {PublicationService} from './services/publicationService/publicationServi
     LoginComponent,
     RegisterComponent,
     ContenidoComponent,
-    PublicidadComponent
+    PublicidadArribaComponent,
+    PublicidadAbajoComponent,
   ],
   imports: [
     CommonModule,

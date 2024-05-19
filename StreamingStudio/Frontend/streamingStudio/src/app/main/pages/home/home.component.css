@@ -1,3 +1,4 @@
+
 .home-container {
   align-items: center;
   height: 144vh; /* Ajusta la altura según tus necesidades */
@@ -36,7 +37,7 @@
 }
 
 .contenidos {
-  margin-top: 223px;
+  background-color: lightskyblue;
 }
 
 .fila-contenido {
@@ -66,7 +67,11 @@
   font-family: "Arial", sans-serif;
 }
 
-.body{
+body{
+  background-color: lightskyblue;
+}
+
+html{
   background-color: lightskyblue;
 }
 

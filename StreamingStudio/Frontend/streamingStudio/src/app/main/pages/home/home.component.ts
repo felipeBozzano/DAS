@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {AuthService} from '../../services/./authService/AuthService';
+import {AuthService} from '../../services/authService/AuthService';
 import {ActivatedRoute} from '@angular/router';
 import {IHome} from '../../api/models/IHome.model';
 
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
+  templateUrl: '../../components/publicidades-abajo/home.component.html',
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
