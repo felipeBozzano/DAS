@@ -56,7 +56,9 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.id_cliente = this.authService.getCurrentUser().id_cliente;
+    if(this.authService.isLoggedIn()) {
+      this.id_cliente = this.authService.getCurrentUser().id_cliente;
+    }
   }
 
   navigateToFederaciones() {

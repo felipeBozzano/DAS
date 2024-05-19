@@ -1,16 +1,33 @@
 
-    <div *ngIf="tipo === 'exclusiva'" class="publicidades">
-      <div class="publicidad-cuadrado" *ngFor="let pub of exclusivas">
-        <a [href]="pub.url_de_publicidad" target="_blank">
-          <img [src]="pub.url_de_imagen" alt="Publicidad Exclusiva">
-        </a>
-      </div>
-    </div>
+<div class="top-ads">
+  <div class="top-right-ad">
+    <a target="_blank">
+      <img [src]="publicidades_arriba_derecha_radom.url_de_imagen" alt="Top Right Ad">
+    </a>
+  </div>
 
-<div *ngIf="tipo === 'no_exclusiva'" class="otras-publicidades">
-  <div class="publicidad-cuadrado" *ngFor="let pub of no_exclusivas">
-    <a [href]="pub.url_de_publicidad" target="_blank">
-      <img [src]="pub.url_de_imagen" alt="Publicidad No Exclusiva">
+  <!-- Publicidad superior derecha -->
+  <div class="top-left-ad">
+    <a target="_blank">
+      <img [src]="publicidades_arriba_izquierda_random.url_de_imagen" alt="Top Right Ad">
     </a>
   </div>
 </div>
+
+<div class="bottom-ads">
+  <div class="bottom-left-ad">
+    <a target="_blank">
+      <img [src]="publicidad_abajo_izquierda.url_de_imagen" alt="Bottom Left Ad">
+    </a>
+  </div>
+
+  <!-- Publicidad inferior derecha -->
+  <div class="bottom-right-ad">
+    <a target="_blank">
+      <img [src]="publicidad_abajo_derecha.url_de_imagen" alt="Bottom Right Ad">
+    </a>
+  </div>
+</div>
+
+
+

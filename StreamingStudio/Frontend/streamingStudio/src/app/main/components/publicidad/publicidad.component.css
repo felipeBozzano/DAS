@@ -1,12 +1,46 @@
-.publicidades {
-  margin-top: 100px;
+/* Estilos generales */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: lightskyblue; /* Fondo para todo el cuerpo */
+}
+
+.top-ads, .bottom-ads {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.top-left-ad, .top-right-ad, .bottom-left-ad, .bottom-right-ad {
+  border: 3px solid black;
+  background-color: white; /* Fondo blanco para el contenedor */
+  margin: 20px;
+}
+
+.top-left-ad {
+  height: 100px; /* Forma vertical */
+  width: 50px;  /* Forma vertical */
+}
+
+.top-right-ad img, .top-left-ad img, .bottom-left-ad img, .bottom-right-ad img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.publicidades {
+  display: flow-root;
   padding: 10px;
   background-color: lightskyblue;
 }
 
 .publicidad-banner {
+  width: 30%;
+}
+
+.publicidad-banner.tipo1,
+.publicidad-banner.tipo3,
+.publicidad-banner.tipo5 {
   width: 30%;
 }
 
@@ -21,20 +55,37 @@
   margin-bottom: 20px;
 }
 
-.publicidad-banner img,
-.publicidad-cuadrado img {
+.contenidos {
+  margin-top: 223px;
+}
+
+.fila-contenido {
+  border: solid 2px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.contenido-item {
+  padding: 30px;
+  margin-bottom: 20px;
+  flex: 0 1 30%;
+  position: relative;
+}
+
+.contenido-item img {
   width: 100%;
   height: 200px; /* Altura fija para todas las imágenes */
+  object-fit: cover; /* Ajusta la imagen para llenar el contenedor sin deformarla */
 }
 
-.publicidad-banner img, .publicidad-cuadrado img {
-  width: 100px; /* Ajusta el tamaño según sea necesario */
-  height: 100px; /* Ajusta el tamaño según sea necesario */
-  object-fit: cover;
-}
-
-h2{
+.title {
   color: #0056b3;
   font-family: "Arial", sans-serif;
 }
 
+.body {
+  background-color: lightskyblue;
+}
