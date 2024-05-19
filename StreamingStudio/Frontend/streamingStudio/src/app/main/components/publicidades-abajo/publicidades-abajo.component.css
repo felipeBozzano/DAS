@@ -14,13 +14,29 @@
 
 /* Estilos específicos para el contenedor de anuncios de la izquierda */
 .bott-left-ad {
-  height: 400px;
+  height: 200px;
+  width: 100px;
+}
+
+.bott-right-ad {
+  height: 100px;
   width: 200px;
 }
 
 /* Estilos para las imágenes dentro de los contenedores de anuncios */
+.bott-left-ad img {
+  width: 100px;
+  height: 200px;
+}
+
+.bott-right-ad img {
+  width: 200px;
+  height: 100px;
+}
+
+/* Estilos para las imágenes dentro de los contenedores de anuncios */
 .bott-left-ad img, .bott-right-ad img {
-  width: 100%;
-  height: 100%;
+  width: 100px;
+  height: 200px;
   object-fit: cover;
 }

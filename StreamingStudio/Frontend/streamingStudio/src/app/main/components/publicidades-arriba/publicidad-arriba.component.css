@@ -14,13 +14,22 @@
 
 /* Estilos específicos para el contenedor de anuncios de la izquierda */
 .top-left-ad {
-  height: 400px;
+  height: 200px;
+  width: 100px;
+}
+
+.top-right-ad {
+  height: 100px;
   width: 200px;
 }
 
 /* Estilos para las imágenes dentro de los contenedores de anuncios */
-.top-right-ad img, .top-left-ad img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.top-left-ad img {
+  width: 100px;
+  height: 200px;
+}
+
+.top-right-ad img {
+  width: 200px;
+  height: 100px;
 }
