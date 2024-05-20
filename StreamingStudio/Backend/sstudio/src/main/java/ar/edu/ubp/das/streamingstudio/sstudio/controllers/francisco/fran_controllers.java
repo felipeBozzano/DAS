@@ -182,9 +182,8 @@ public class fran_controllers {
     @GetMapping(
             path="/publicidades_activas"
     )
-    public ResponseEntity<Map<String, Map<?, List<?>>>> obtenerPublicidadesActivas() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Map<String, Map<?, List<?>>>  publicidades = publicidadesRepository.obtenerPublicidadesAgrupadas();
-        return new ResponseEntity<>(publicidades, HttpStatus.OK);
+    public ResponseEntity<Map<String, Map<Integer, List<PublicidadHomeBean>>>> obtenerPublicidadesActivas() {
+        return new ResponseEntity<>(publicidadesRepository.obtenerPublicidadesAgrupadas(), HttpStatus.OK);
     }
 
 }

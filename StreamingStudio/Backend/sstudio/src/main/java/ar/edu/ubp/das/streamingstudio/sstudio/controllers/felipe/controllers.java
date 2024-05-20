@@ -26,7 +26,7 @@ public class controllers {
     ReproducirContenidoRepository reproducirContenidoRepository;
 
     @GetMapping("/home")
-    public ResponseEntity<Map<String, Map<?, List<?>>>> mostrarHome(@RequestParam("id_cliente") int id_cliente) {
+    public ResponseEntity<Map<String, Map<String, List<ContenidoHomeBean>>>> mostrarHome(@RequestParam("id_cliente") int id_cliente) {
         return new ResponseEntity<>(homeRepository.getHome(id_cliente), HttpStatus.OK);
     }
 
