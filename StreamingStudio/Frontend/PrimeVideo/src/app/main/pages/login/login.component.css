@@ -1,0 +1,117 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #1c80b1; /* Fondo gris claro */
+}
+
+body {
+  background-color: #b3d1ff; /* Color de fondo menos fuerte, un tono más claro de azul */
+}
+
+.login-form {
+  border: 1px solid #ddd; /* Borde gris claro */
+  padding: 30px;
+  border-radius: 8px;
+  width: 300px;
+  background-color: black; /* Fondo blanco */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+.login-form h2 {
+  text-align: center;
+  color: #333; /* Color de texto gris oscuro */
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  color: #555; /* Color de texto gris */
+}
+
+input[type="text"],
+input[type="password"] {
+  width: calc(100% - 12px); /* Toma en cuenta el ancho del borde */
+  padding: 10px;
+  border: 1px solid #ccc; /* Borde gris */
+  border-radius: 5px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color: #ffc107; /* Amarillo suave */
+  color: #fff; /* Texto blanco */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Transición suave */
+}
+
+button[type="submit"]:hover {
+  background-color: #ffa000; /* Amarillo más intenso al pasar el mouse */
+}
+
+.register-button {
+  background-color: transparent;
+  border: none;
+  color: #1c80b1; /* Color azul */
+  cursor: pointer;
+}
+
+.register-button:hover {
+  text-decoration: underline;
+  color: #5bc3dc; /* Azul más oscuro al pasar el mouse */
+  font-weight: bold;
+}
+
+.title-container {
+  text-align: center; /* Para centrar el título */
+  margin-bottom: 30px;
+  color:  #1c80b1;
+  font-family: "Arial", sans-serif;
+}
+
+.login-form h2 {
+  text-align: center;
+  color:  #1c80b1; /* Color azul */
+  font-family: "Arial", sans-serif;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.register-container {
+  text-align: center; /* Centra el texto */
+  margin-top: 20px; /* Espacio superior */
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background-color:  #1c80b1; /* Azul */
+  color: #fff; /* Texto negro */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Transición suave */
+}
+
+button[type="submit"]:hover {
+  background-color: #5bc3dc; /* Azul más oscuro al pasar el mouse */
+}
+
+label{
+  color: white;
+}
+
+span{
+  color: white;
+}
