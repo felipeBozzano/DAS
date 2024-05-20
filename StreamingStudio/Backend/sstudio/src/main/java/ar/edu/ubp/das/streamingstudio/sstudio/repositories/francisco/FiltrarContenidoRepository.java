@@ -17,11 +17,12 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class FiltrarContenidoRepository {
+public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
 
     @Autowired
     private JdbcTemplate jdbcTpl;
 
+    @Override
     public List<ContenidoHomeBean> buscarContenidoPorFiltros(int id_cliente, String titulo, @Nullable boolean reciente, @Nullable boolean destacado, @Nullable String clasificacion, @Nullable boolean masVisto, @Nullable String genero) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_cliente", id_cliente);
@@ -52,7 +53,8 @@ public class FiltrarContenidoRepository {
         return contenido;
     }
 
-        public InformacionContenido informacionContenido(String id_contenido, int id_cliente) {
+    @Override
+    public InformacionContenido informacionContenido(String id_contenido, int id_cliente) {
         Map<String,String> infoContenido = obtenerInformacionContenido(id_contenido);
         Map<String,String> genero = obtenerGenero(id_contenido);
         List<Map<String,String>> directores = obtenerDirectores(id_contenido);
@@ -69,8 +71,7 @@ public class FiltrarContenidoRepository {
         return contenidoInfo;
     }
 
-
-    @Transactional
+    @Override
     public Map<String,String> obtenerInformacionContenido(String id_contenido) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_contenido" , id_contenido);
@@ -83,7 +84,7 @@ public class FiltrarContenidoRepository {
         return informacionContenido;
     }
 
-    @Transactional
+    @Override
     public Map<String,String> obtenerGenero(String id_contenido) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_contenido" , id_contenido);
@@ -96,7 +97,7 @@ public class FiltrarContenidoRepository {
         return genero;
     }
 
-    @Transactional
+    @Override
     public List<Map<String,String>> obtenerDirectores(String id_contenido) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_contenido", id_contenido);
@@ -109,7 +110,7 @@ public class FiltrarContenidoRepository {
         return directores;
     }
 
-    @Transactional
+    @Override
     public List<Map<String,String>> obtenerActores(String id_contenido) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_contenido" , id_contenido);
@@ -118,11 +119,11 @@ public class FiltrarContenidoRepository {
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, String>> resulset = (List<Map<String, String>>) out.get("#result-set-1");
-        List<Map<String, String>> actrores = resulset;
-        return actrores;
+        List<Map<String, String>> actores = resulset;
+        return actores;
     }
 
-    @Transactional
+    @Override
     public List<Map<String,String>> obtenerInformacionPlataformas(String id_contenido, int id_cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_contenido" , id_contenido)
@@ -135,6 +136,4 @@ public class FiltrarContenidoRepository {
         List<Map<String, String>> plataformas = resulset;
         return plataformas;
     }
-
-
 }

@@ -1,6 +1,8 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaEstadisticaBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicistaBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.TransaccionBean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -32,6 +34,20 @@ public class BatchUtils {
         List<Map<String,String>> lista_mapa = (List<Map<String,String>>) out.get("#result-set-1");
         Map<String, String> info_plataforma = lista_mapa.getFirst();
         return info_plataforma;
+    }
+
+    public static PublicistaBean obtenerInformacionDeConexionAPublicista(int id_publicista, JdbcTemplate conectorBD) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_publicista", id_publicista);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(conectorBD)
+                .withProcedureName("Obtener_Datos_de_Conexion_a_Publicista")
+                .withSchemaName("dbo")
+                .returningResultSet("publicista", BeanPropertyRowMapper.newInstance(PublicistaBean.class));
+
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<PublicistaBean> lista_mapa = (List<PublicistaBean>) out.get("publicista");
+        PublicistaBean info_publicista = lista_mapa.getFirst();
+        return info_publicista;
     }
 
     public static Map<String,String> imprimirMapa(Map<String,String> mapa) {

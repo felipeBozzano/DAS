@@ -141,14 +141,14 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
         FederacionBean bean = (FederacionBean) conector.execute_post_request(url_token, body, "FederacionBean");
 
-//        SqlParameterSource in = new MapSqlParameterSource()
-//                .addValue("id_plataforma", id_plataforma)
-//                .addValue("id_cliente", id_cliente)
-//                .addValue("token", bean.getToken());
-//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-//                .withProcedureName("Finalizar_Federacion")
-//                .withSchemaName("dbo");
-//        jdbcCall.execute(in);
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_plataforma", id_plataforma)
+                .addValue("id_cliente", id_cliente)
+                .addValue("token", bean.getToken());
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Finalizar_Federacion")
+                .withSchemaName("dbo");
+        jdbcCall.execute(in);
 
         respuesta.put("mensaje", "Federacion finalizada");
         return respuesta;

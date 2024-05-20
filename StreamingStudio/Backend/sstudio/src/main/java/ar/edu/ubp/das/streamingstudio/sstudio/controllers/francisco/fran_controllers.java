@@ -2,6 +2,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.*;
+import ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.EnviarFacturasRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -126,36 +127,38 @@ public class fran_controllers {
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
+//    /* ----------------------------------------------------------------------------------------------------- */
+//    /* --------------------------------------------  Facturacion  ------------------------------------------ */
+//    /* ----------------------------------------------------------------------------------------------------- */
+//
+//    @GetMapping("/datos_publiciadad")
+//    public ResponseEntity<List<PublicidadFacturasBean>> getPublicadades() {
+//        return new ResponseEntity<>(enviar_facturasRepository.buscarDatoPublicidades(), HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/costo_banner")
+//    public ResponseEntity<Double> getCostoBanner(@RequestParam("id_banner") int id_banner) {
+//        return new ResponseEntity<>(enviar_facturasRepository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/enviar_facturas_publicistas")
+//    public ResponseEntity<String> enviar_facturacion_publicistas() {
+//        return new ResponseEntity<String>(enviar_facturasRepository.enviarFacturasPublicistas(), HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/enviar_facturas_plataformas")
+//    public ResponseEntity<String> enviar_facturacion_plataformas() {
+//        return new ResponseEntity<String>(enviar_facturasRepository.enviarFacturasPlataformas(), HttpStatus.OK);
+//    }
+//
+//    @GetMapping("/enviar_facturas_plataforma")
+//    public ResponseEntity<List<FederacionBean>> facturacion_plataforma() {
+//        return new ResponseEntity<>(enviar_facturasRepository.buscarDatosFederaciones(), HttpStatus.OK);
+//    }
+
     /* ----------------------------------------------------------------------------------------------------- */
-    /* --------------------------------------------  Facturacion  ------------------------------------------ */
+    /* ---------------------------------- Buscar contenido por filtros --------------------------------------*/
     /* ----------------------------------------------------------------------------------------------------- */
-
-    @GetMapping("/datos_publiciadad")
-    public ResponseEntity<List<PublicidadBean>> getPublicadades() {
-        return new ResponseEntity<>(enviar_facturasRepository.buscarDatoPublicidades(), HttpStatus.OK);
-    }
-
-    @GetMapping("/costo_banner")
-    public ResponseEntity<Double> getCostoBanner(@RequestParam("id_banner") int id_banner) {
-        return new ResponseEntity<>(enviar_facturasRepository.obtenerCostoDeBanner(id_banner), HttpStatus.OK);
-    }
-
-    @GetMapping("/enviar_facturas_publicistas")
-    public ResponseEntity<String> enviar_facturacion_publicistas() {
-        return new ResponseEntity<String>(enviar_facturasRepository.enviarFacturasPublicistas(), HttpStatus.OK);
-    }
-
-    @GetMapping("/enviar_facturas_plataformas")
-    public ResponseEntity<String> enviar_facturacion_plataformas() {
-        return new ResponseEntity<String>(enviar_facturasRepository.enviarFacturasPlataformas(), HttpStatus.OK);
-    }
-
-    @GetMapping("/enviar_facturas_plataforma")
-    public ResponseEntity<List<FederacionBean>> facturacion_plataforma() {
-        return new ResponseEntity<>(enviar_facturasRepository.buscarDatosFederaciones(), HttpStatus.OK);
-    }
-
-    /* BUSCAR CONTENIDO POR FILTROS */
     @PostMapping(
             path="/contenido_por_filtros"
     )
@@ -172,7 +175,10 @@ public class fran_controllers {
         return new ResponseEntity<>(infoContenido, HttpStatus.OK);
     }
 
-    /* PUBLICIDADES */
+
+    /* ----------------------------------------------------------------------------------------------------- */
+    /* ------------------------------------------ Publicidades --------------------------------------------- */
+    /* ----------------------------------------------------------------------------------------------------- */
     @GetMapping(
             path="/publicidades_activas"
     )

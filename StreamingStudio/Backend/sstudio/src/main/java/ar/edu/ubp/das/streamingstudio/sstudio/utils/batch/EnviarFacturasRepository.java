@@ -1,10 +1,10 @@
 
 
-package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
+package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.FederacionBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.Fee;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadFacturasBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,12 +28,12 @@ public class EnviarFacturasRepository {
 
     @Transactional
     public String enviarFacturasPublicistas() {
-        List<PublicidadBean> datosPublicidades = buscarDatoPublicidades();
+        List<PublicidadFacturasBean> datosPublicidades = buscarDatoPublicidades();
 
         // ** FACTURAS PUBLICISTAS ** //
         // agrupar publicidades por publicista
-        Map<Integer, List<PublicidadBean>> publicidades_agrupadas = new HashMap<>();
-        for (PublicidadBean publicidad : datosPublicidades) {
+        Map<Integer, List<PublicidadFacturasBean>> publicidades_agrupadas = new HashMap<>();
+        for (PublicidadFacturasBean publicidad : datosPublicidades) {
             if (!publicidades_agrupadas.containsKey(publicidad.getId_publicista())) {
                 publicidades_agrupadas.put(publicidad.getId_publicista(), new ArrayList<>());
             }
@@ -42,9 +42,9 @@ public class EnviarFacturasRepository {
 
         for (Integer id_publicista : publicidades_agrupadas.keySet()) {
             int id_factura = crearFacturaPublicista(id_publicista);
-            List<PublicidadBean> listaPublicadades = publicidades_agrupadas.get(id_publicista);
+            List<PublicidadFacturasBean> listaPublicadades = publicidades_agrupadas.get(id_publicista);
             double total = 0;
-            for(PublicidadBean  publicidad : listaPublicadades){
+            for(PublicidadFacturasBean publicidad : listaPublicadades){
                 double costoBanner = obtenerCostoDeBanner(publicidad.getId_tipo_banner());
                 total += costoBanner * publicidad.getCantidad_de_dias();
                 crearDetalleFacturaPublicista(id_factura, costoBanner, publicidad.getCantidad_de_dias(), costoBanner * publicidad.getCantidad_de_dias(), "Publicidad " + id_factura);
@@ -71,14 +71,14 @@ public class EnviarFacturasRepository {
     }
 
     @Transactional
-    public List<PublicidadBean> buscarDatoPublicidades() {
+    public List<PublicidadFacturasBean> buscarDatoPublicidades() {
         SqlParameterSource in = new MapSqlParameterSource();
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Datos_de_Publicidades")
                 .withSchemaName("dbo")
-                .returningResultSet("publicidad", BeanPropertyRowMapper.newInstance(PublicidadBean.class));
+                .returningResultSet("publicidad", BeanPropertyRowMapper.newInstance(PublicidadFacturasBean.class));
         Map<String, Object> out = jdbcCall.execute(in);
-        return (List<PublicidadBean>)out.get("publicidad");
+        return (List<PublicidadFacturasBean>)out.get("publicidad");
     }
 
     // FACTURAS PUBLICISTAS //

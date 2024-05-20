@@ -107,18 +107,18 @@ public class ActualizarCatalogo {
         List<ContenidoCatalogoBean> catalogo = new ArrayList<>();
         if (id_plataforma == 1) {
             ContenidoCatalogoBean bean_1 = new ContenidoCatalogoBean("101", "Pelicula1",
-                    "Descripción de Pelicula1", "url_imagen1.jpg", 2, false,
-                    false, true);
+                    "Descripción de Pelicula1", "url_imagen1.jpg", 2, true,
+                    true, true);
             catalogo.add(bean_1);
         } else if (id_plataforma == 2) {
             ContenidoCatalogoBean bean_2 = new ContenidoCatalogoBean("109", "Pelicula6",
-                    "Descripción de Pelicula6", "url_imagen9.jpg", 2, false,
-                    true, true);
+                    "Descripción de Pelicula6", "url_imagen9.jpg", 2, true,
+                    false, true);
             catalogo.add(bean_2);
         } else {
             ContenidoCatalogoBean bean_3 = new ContenidoCatalogoBean("101", "Serie5",
-                    "Descripción de Serie5", "url_imagen1.jpg", 2, true,
-                    false, true);
+                    "Descripción de Serie5", "url_imagen1.jpg", 2, false,
+                    true, true);
             catalogo.add(bean_3);
         }
         return catalogo;

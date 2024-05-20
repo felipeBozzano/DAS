@@ -1,16 +1,19 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class AbstractBeanFactory {
 
-    private Map<String, Class<? extends AbstractBean>> beanMap;
+    private final Map<String, Class<? extends AbstractBean>> beanMap;
 
     public AbstractBeanFactory() {
         beanMap = new HashMap<>();
         // Asocia el nombre de la clase con el tipo de objeto correspondiente
         beanMap.put("FederacionBean", FederacionBean.class);
-        // Agrega más asociaciones según sea necesario para tus otros beans
+        beanMap.put("ContenidoCatalogoBean", ContenidoCatalogoBean.class);
+        beanMap.put("SesionBean", SesionBean.class);
+        beanMap.put("ContenidoUrlBean", ContenidoUrlBean.class);
     }
 
     public AbstractBean obtenerBean(String beanName) throws InstantiationException, IllegalAccessException {
@@ -25,9 +28,8 @@ public class AbstractBeanFactory {
         }
     }
 
-    public Class<? extends AbstractBean> obtenerClase(String nombreBean){
-        return  beanMap.get(nombreBean);
+    public Class<? extends AbstractBean> obtenerClase(String nombreBean) {
+        return beanMap.get(nombreBean);
     }
 
-//    public abstract BaseBean execute_post_request(String url, Map<String,String> body, String header, String return_bean) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException;
 }

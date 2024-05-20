@@ -598,7 +598,7 @@ go
 
 /* Director_Contenido */
 
-CREATE OR ALTER PROCEDURE Crear_Director_Contenido @id_contenido INT,
+CREATE OR ALTER PROCEDURE Crear_Director_Contenido @id_contenido VARCHAR(255),
                                                    @id_director INT
 AS
 BEGIN
@@ -607,7 +607,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Eliminar_Director_Contenido @id_contenido INT,
+CREATE OR ALTER PROCEDURE Eliminar_Director_Contenido @id_contenido VARCHAR(255),
                                                       @id_director INT
 AS
 BEGIN
@@ -620,7 +620,7 @@ go
 
 /* Actor_Contenido */
 
-CREATE OR ALTER PROCEDURE Crear_Actor_Contenido @id_contenido INT,
+CREATE OR ALTER PROCEDURE Crear_Actor_Contenido @id_contenido VARCHAR(255),
                                                 @id_actor INT
 AS
 BEGIN
@@ -629,7 +629,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Eliminar_Actor_Contenido @id_contenido INT,
+CREATE OR ALTER PROCEDURE Eliminar_Actor_Contenido @id_contenido VARCHAR(255),
                                                    @id_actor INT
 AS
 BEGIN
@@ -693,7 +693,7 @@ go
 
 /* Contenido */
 
-CREATE OR ALTER PROCEDURE Crear_Contenido @id_contenido INT,
+CREATE OR ALTER PROCEDURE Crear_Contenido @id_contenido VARCHAR(255),
                                           @titulo VARCHAR(255),
                                           @descripcion VARCHAR(255),
                                           @url_imagen VARCHAR(255),
@@ -705,7 +705,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Modificar_Contenido @id_contenido INT,
+CREATE OR ALTER PROCEDURE Modificar_Contenido @id_contenido VARCHAR(255),
                                               @titulo VARCHAR(255),
                                               @descripcion VARCHAR(255),
                                               @url_imagen VARCHAR(255),
@@ -723,7 +723,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Eliminar_Contenido @id_contenido INT
+CREATE OR ALTER PROCEDURE Eliminar_Contenido @id_contenido VARCHAR(255)
 AS
 BEGIN
     DELETE
@@ -734,7 +734,7 @@ go
 
 /* Catalogo */
 
-CREATE OR ALTER PROCEDURE Agregar_Item_al_Catalogo @id_contenido INT,
+CREATE OR ALTER PROCEDURE Agregar_Item_al_Catalogo @id_contenido VARCHAR(255),
                                                    @id_plataforma VARCHAR(255),
                                                    @reciente BIT,
                                                    @destacado BIT
@@ -751,7 +751,7 @@ go
 CREATE OR ALTER PROCEDURE Registrar_Clic @id_cliente INT,
                                          @id_publicidad INT,
                                          @id_plataforma INT,
-                                         @id_contenido INT
+                                         @id_contenido VARCHAR(255)
 AS
 BEGIN
     INSERT INTO dbo.Clic(id_cliente, id_publicidad, id_plataforma, id_contenido, fecha)
@@ -1080,7 +1080,7 @@ go
 /* Crear_Detalle_Reporte */
 /* Finalizar_Reporte */
 
-CREATE OR ALTER PROCEDURE Obtener_Datos_de_Publicista @id_publicista INT
+CREATE OR ALTER PROCEDURE Obtener_Datos_de_Conexion_a_Publicista @id_publicista INT
 AS
 BEGIN
     SELECT nombre_de_fantasia, razon_social, token_de_servicio, url_api, protocolo_api
@@ -1179,7 +1179,7 @@ go
 
 /* Crear_Detalle_Factura */
 /* Finalizar_Factura */
-/* Obtener_Datos_de_Publicista */
+/* Obtener_Datos_de_Conexion_a_Publicista */
 /* PEGARLE A LA API DEL PUBLICISTA PARA CARGAR LA FACTURA */
 /* Enviar_Factura */
 
@@ -1341,7 +1341,7 @@ go
 /* POR PLATAFORMA, CONVERTIR AMBOS CONTENIDOS EN HASHSET Y VER CUALES SON LAS PELÍCULAS QUE ESTAN EN STREAMING STUDIO
    PERO NO EN LA PLATAFORMA */
 
-CREATE OR ALTER PROCEDURE Dar_de_Baja_Item_en_Catalogo @id_contenido INT,
+CREATE OR ALTER PROCEDURE Dar_de_Baja_Item_en_Catalogo @id_contenido VARCHAR(255),
                                                        @id_plataforma INT
 AS
 BEGIN
@@ -1355,7 +1355,7 @@ go
 /* VER CUALES SON LAS PELÍCULAS QUE ESTAN EN LA PLATAFORMA DE STREAMING PERO NO EN STREAMING STUDIO*/
 /* VERIFICAR QUE CONTENIDO YA ESTA CARGADO EN EL CATALOGO */
 
-CREATE OR ALTER PROCEDURE Activar_Item_en_Catalogo @id_contenido INT,
+CREATE OR ALTER PROCEDURE Activar_Item_en_Catalogo @id_contenido VARCHAR(255),
                                                    @id_plataforma INT
 AS
 BEGIN
@@ -1400,10 +1400,6 @@ go
 /* -------------------------------------- OBTENER DATOS DE PUBLICIDADES --------------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-/* POR CADA PUBLICISTA */
-/* Obtener_Datos_de_Publicista */
-/* PEGARLE A LA API PARA CONSEGUIR LAS PUBLICIDADES DE LOS PUBLICISTAS */
-
 CREATE OR ALTER PROCEDURE Obtener_Datos_de_Publicidades_Activas
 AS
 BEGIN
@@ -1414,11 +1410,26 @@ BEGIN
            url_de_publicidad
     FROM dbo.Publicidad
     WHERE fecha_de_baja >= CONVERT(DATE, GETDATE())
+      AND fecha_de_alta <= CONVERT(DATE, GETDATE())
 END;
 go
 
+CREATE OR ALTER PROCEDURE Obtener_Publicistas_Activos
+AS
+BEGIN
+    SELECT id_publicista
+    FROM dbo.Publicista
+END;
+go
+
+/* POR CADA PUBLICISTA */
+/* Obtener_Datos_de_Conexion_a_Publicista */
+
+/* PEGARLE A LA API PARA CONSEGUIR LAS PUBLICIDADES DE LOS PUBLICISTAS */
+
 /* CONVERTIR AMBOS RESULTADOS EN HASHSET Y VER CUALES SON LAS PUBLICIDADES QUE ESTAN EN STREAMING STUDIO Y EN EL
    PUBLICISTA */
+
 /* VERIFICAR CUALES SON LAS PUBLICIDADES QUE NECESITAN SER ACTUALIZADAS */
 
 CREATE OR ALTER PROCEDURE Actualizar_Publicidades @id_publicidad INT,
@@ -1463,7 +1474,7 @@ go
 /* CONVERTIR AMBOS RESULTADOS EN HASHSET Y VER CUALES SON LOS CONTENIDOS MAS VISTOS DEL MES ANTERIOR QUE NO ESTÁN
    DENTRO DE LOS CONTENIDOS MAS VISTOS ACTUALES */
 
-CREATE OR ALTER PROCEDURE Actualizar_a_Contenido_mas_Visto @id_contenido INT
+CREATE OR ALTER PROCEDURE Actualizar_a_Contenido_mas_Visto @id_contenido VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Contenido
@@ -1474,7 +1485,7 @@ go
 
 /* VER CUALES SON LOS CONTENIDOS MAS VISTOS ACTUALES QUE NO ESTÁN DENTRO DE LOS CONTENIDOS MAS VISTOS ACTUALES */
 
-CREATE OR ALTER PROCEDURE Quitar_de_Contenido_mas_Visto @id_contenido INT
+CREATE OR ALTER PROCEDURE Quitar_de_Contenido_mas_Visto @id_contenido VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Contenido
@@ -1660,7 +1671,16 @@ go
 /* ------------------------------------ CONSULTAR URL DE CONTENIDO A REPRODUCIR ------------------------------------- */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
--- buscar federaion
+CREATE OR ALTER PROCEDURE Obtener_token @id_cliente INT,
+                                        @id_plataforma INT
+AS
+BEGIN
+    SELECT token
+    FROM dbo.Federacion
+    WHERE id_cliente = @id_cliente
+      AND id_plataforma = @id_plataforma
+END;
+go
 
 /* Obtener_Datos_de_Conexion_a_Plataforma */ --> ESTO ESTÁ CREADO, ES PARA OBTENER EL TOKEN_DE_SERVICIO Y LA URL_API DE LA PLATAFORMA
 
