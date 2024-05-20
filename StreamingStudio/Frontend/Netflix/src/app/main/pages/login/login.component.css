@@ -41,10 +41,10 @@ input[type="password"] {
   border-radius: 5px;
 }
 
-button[type="submit"] {
+.login-form button[type="submit"] {
   width: 100%;
   padding: 12px;
-  background-color: #ffc107; /* Amarillo suave */
+  background-color: darkred; /* Amarillo suave */
   color: #fff; /* Texto blanco */
   border: none;
   border-radius: 5px;
@@ -52,8 +52,8 @@ button[type="submit"] {
   transition: background-color 0.3s; /* Transición suave */
 }
 
-button[type="submit"]:hover {
-  background-color: #ffa000; /* Amarillo más intenso al pasar el mouse */
+.login-form button:hover {
+  background-color: red; /* Amarillo más intenso al pasar el mouse */
 }
 
 .register-button {
@@ -64,9 +64,13 @@ button[type="submit"]:hover {
 }
 
 .register-button:hover {
-  text-decoration: underline;
-  color: red; /* Azul más oscuro al pasar el mouse */
-  font-weight: bold;
+   text-decoration: underline;
+   color: red; /* Azul más oscuro al pasar el mouse */
+   font-weight: bold;
+ }
+
+.submit-button:hover {
+  background-color: red; /* Azul más oscuro al pasar el mouse */
 }
 
 .title-container {
