@@ -15,6 +15,7 @@ import {IPublicidad} from '../../api/models/IPublicidad';
 export class LoginComponent {
   showError = false;
   public formLogin!: FormGroup;
+  public routeHome: string = '';
 
   constructor(private router: Router,
               private authService: AuthService,
@@ -32,7 +33,7 @@ export class LoginComponent {
       const { usuario, contrasena } = this.formLogin.value
       const login: ILogin = {
         usuario: usuario,
-        contrasena: contrasena
+        contrasena: contrasena,
       }
 
       console.log(login);
@@ -40,18 +41,16 @@ export class LoginComponent {
         .subscribe(
           (response) => {
             const clienteId = response.id_cliente;
-            console.log(typeof clienteId );
+            this.routeHome = `/home/${clienteId}`;
             // Si la respuesta es exitosa, redirige al home
-            console.log('Respuesta del servidor:', response);
             if (response.mensaje === 'Usuario existente') {
-              console.log("response.id_clinte: ", response.id_cliente);
               this.authService.login(response);
               this.showError = false;
               // obtengo las publicidades
               this.streamingStudioResources.publicidades().subscribe( (response) => {
                   this.publicidadesService.setCurrentPublications(Object.values(response.Publicidades).flat())
-              }
-              )
+              })
+              console.log(this.routeHome);
               this.router.navigate(['/home'], { queryParams: {id_cliente: clienteId }});
             } else {
               this.showError = true;

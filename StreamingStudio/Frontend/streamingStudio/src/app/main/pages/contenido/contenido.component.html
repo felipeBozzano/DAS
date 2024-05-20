@@ -1,68 +1,73 @@
-<app-header [pageTitle]="'Busqueda Avanzada'"></app-header>
-<!-- Formulario de Búsqueda Avanzada -->
-<div *ngIf="advancedSearchVisible" id="advanced-search-form">
-  <div class="register-container">
-    <div class="register-form">
-      <h2 class="title-container">Búsqueda Avanzada</h2>
-      <form (ngSubmit)="onSubmit()" [formGroup]="formContenido">
-        <div class="form-group">
-          <label for="titulo">Titulo:</label>
-          <input type="text" id="titulo" name="titulo" formControlName="titulo">
+<html>
+  <body>
+    <app-header [pageTitle]="'Busqueda Avanzada'"></app-header>
+    <app-publicidad-arriba tipo="exclusiva"></app-publicidad-arriba>
+    <!-- Formulario de Búsqueda Avanzada -->
+    <div *ngIf="advancedSearchVisible" id="advanced-search-form">
+      <div class="register-container">
+        <div class="register-form">
+          <h2 class="title-container">Búsqueda Avanzada</h2>
+          <form (ngSubmit)="onSubmit()" [formGroup]="formContenido">
+            <div class="form-group">
+              <label for="titulo">Titulo:</label>
+              <input type="text" id="titulo" name="titulo" formControlName="titulo">
+            </div>
+            <div class="form-group">
+              <label for="reciente">Reciente:</label>
+              <input type="checkbox" id="reciente" name="reciente" formControlName="reciente">
+            </div>
+            <div class="form-group">
+              <label for="destacado">Destacado:</label>
+              <input type="checkbox" id="destacado" name="destacado" formControlName="destacado">
+            </div>
+            <div class="form-group">
+              <label for="clasificacion">Clasificacion:</label>
+              <input type="text" id="clasificacion" name="clasificacion" formControlName="clasificacion">
+            </div>
+            <div class="form-group">
+              <label for="mas_visto">Más visto:</label>
+              <input type="checkbox" id="mas_visto" name="mas_visto" formControlName="mas_visto">
+            </div>
+            <div class="form-group">
+              <label for="genero">Género:</label>
+              <input type="text" id="genero" name="genero" formControlName="genero">
+            </div>
+            <div class="form-group">
+              <button type="submit">Buscar</button>
+            </div>
+          </form>
         </div>
-        <div class="form-group">
-          <label for="reciente">Reciente:</label>
-          <input type="checkbox" id="reciente" name="reciente" formControlName="reciente">
-        </div>
-        <div class="form-group">
-          <label for="destacado">Destacado:</label>
-          <input type="checkbox" id="destacado" name="destacado" formControlName="destacado">
-        </div>
-        <div class="form-group">
-          <label for="clasificacion">Clasificacion:</label>
-          <input type="text" id="clasificacion" name="clasificacion" formControlName="clasificacion">
-        </div>
-        <div class="form-group">
-          <label for="mas_visto">Más visto:</label>
-          <input type="checkbox" id="mas_visto" name="mas_visto" formControlName="mas_visto">
-        </div>
-        <div class="form-group">
-          <label for="genero">Género:</label>
-          <input type="text" id="genero" name="genero" formControlName="genero">
-        </div>
-        <div class="form-group">
-          <button type="submit">Buscar</button>
-        </div>
-      </form>
+      </div>
     </div>
-  </div>
-</div>
-<div *ngIf="contenido && contenido.length > 0; else noContent" class="content-container">
-  <div *ngFor="let contenido of contenido; let i = index" class="card">
-    <img [src]="contenido.url_imagen" alt="Imagen del contenido">
-    <div class="form-group">
-      <button (click)="verDescripcion(i)">Ver Descripción</button> <!-- Asegúrate de pasar el id_cliente correcto -->
+    <div *ngIf="contenido && contenido.length > 0" class="content-container">
+      <div *ngFor="let contenido of contenido; let i = index" class="card">
+        <img [src]="contenido.url_imagen" alt="Imagen del contenido">
+        <div class="form-group">
+          <button (click)="verDescripcion(i)">Ver Descripción</button> <!-- Asegúrate de pasar el id_cliente correcto -->
+        </div>
+        <div *ngIf="contenidoSeleccionado && contenidoSeleccionado.infoContenido.url_imagen === contenido.url_imagen">
+          <h3>{{ contenidoSeleccionado.infoContenido.titulo }}</h3>
+          <p>{{ contenidoSeleccionado.infoContenido.descripcion }}</p>
+          <p>Género: {{ contenidoSeleccionado.genero.descripcion }}</p>
+          <h4>Directores</h4>
+          <ul>
+            <li *ngFor="let director of contenidoSeleccionado.directores">
+              {{ director.nombre }} {{ director.apellido }}
+            </li>
+          </ul>
+          <h4>Actores</h4>
+          <ul>
+            <li *ngFor="let actor of contenidoSeleccionado.actores">
+              {{ actor.nombre }} {{ actor.apellido }}
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <div *ngIf="contenidoSeleccionado && contenidoSeleccionado.infoContenido.url_imagen === contenido.url_imagen">
-      <h3>{{ contenidoSeleccionado.infoContenido.titulo }}</h3>
-      <p>{{ contenidoSeleccionado.infoContenido.descripcion }}</p>
-      <p>Género: {{ contenidoSeleccionado.genero.descripcion }}</p>
-      <h4>Directores</h4>
-      <ul>
-        <li *ngFor="let director of contenidoSeleccionado.directores">
-          {{ director.nombre }} {{ director.apellido }}
-        </li>
-      </ul>
-      <h4>Actores</h4>
-      <ul>
-        <li *ngFor="let actor of contenidoSeleccionado.actores">
-          {{ actor.nombre }} {{ actor.apellido }}
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-<ng-template #noContent>
-  <h2>No hay contenido</h2>
-</ng-template>
+  </body>
+</html>
+
+
+
 
 

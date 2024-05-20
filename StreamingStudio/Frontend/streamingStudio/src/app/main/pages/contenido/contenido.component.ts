@@ -74,7 +74,6 @@ export class ContenidoComponent implements OnInit {
       id_contenido:this.contenido[index].id_contenido,
       id_cliente:  parseInt(this.id_cliente)
     }
-    console.log("descricionParametros: ", descricionParametros);
     this.streamingStudioResources.informacionContenido(descricionParametros)
       .subscribe((response)=>{
         this.contenidoSeleccionado = response;

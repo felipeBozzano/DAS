@@ -1,0 +1,35 @@
+/* Estilos generales para los contenedores de anuncios */
+.top-ads {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 82px;
+}
+
+/* Estilos para los contenedores de anuncios individuales */
+.top-left-ad, .top-right-ad {
+  border: 3px solid black;
+  background-color: white;
+  margin: 20px;
+}
+
+/* Estilos específicos para el contenedor de anuncios de la izquierda */
+.top-left-ad {
+  height: 200px;
+  width: 100px;
+}
+
+.top-right-ad {
+  height: 100px;
+  width: 200px;
+}
+
+/* Estilos para las imágenes dentro de los contenedores de anuncios */
+.top-left-ad img {
+  width: 100px;
+  height: 200px;
+}
+
+.top-right-ad img {
+  width: 200px;
+  height: 100px;
+}

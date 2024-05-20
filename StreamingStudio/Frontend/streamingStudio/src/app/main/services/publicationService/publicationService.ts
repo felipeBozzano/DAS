@@ -11,7 +11,6 @@ export class PublicationService {
 
   // Método para realizar el inicio de sesión
   setCurrentPublications(publications: any) {
-    console.log(publications);
     localStorage.setItem('publicidades', JSON.stringify(publications));
   }
 

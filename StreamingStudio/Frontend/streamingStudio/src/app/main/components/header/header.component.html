@@ -1,6 +1,6 @@
 <header class="header-container" *ngIf="isAuthenticated(); else unauthenticated">
   <div class="logo">
-    <img (click)="navigateTo('home')" src="../../../../assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
+    <img (click)="navigateToHome()" src="../../../../assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
   </div>
   <div class="header-title">
     {{ pageTitle }}
@@ -23,7 +23,7 @@
 <ng-template #unauthenticated>
   <div class="header-container centered">
     <div class="logo">
-      <img (click)="navigateTo('home')" src="../../../../assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
+      <img (click)="navigateToHome()" src="../../../../assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
       <h1>Streaming Studio</h1>
     </div>
   </div>

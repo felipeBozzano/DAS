@@ -1,0 +1,22 @@
+<header class="header-container" *ngIf="isAuthenticated(); else unauthenticated">
+  <div class="logo">
+    <img (click)="navigateTo('login')" src="../../../../assets/starplus.jpeg" alt="Logo de Streaming Studio">
+  </div>
+  <div class="nav-buttons" *ngIf="isLoggedIn">
+    <div class="user-menu">
+      <button (click)="toggleUserMenu()" class="user-button">Usuario</button>
+      <div class="dropdown" [class.show]="userMenuVisible">
+        <button (click)="navigateTo('mi-usuario')">Mi Usuario</button>
+        <button (click)="logout()">Cerrar Sesión</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<ng-template #unauthenticated>
+  <div class="header-container centered">
+    <div class="logo">
+      <img (click)="navigateTo('login')" src="../../../../assets/starplus.jpeg" alt="Logo de Streaming Studio">
+    </div>
+  </div>
+</ng-template>
