@@ -22,27 +22,33 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
     private JdbcTemplate jdbcTpl;
 
     @Override
-    public List<ContenidoHomeBean> buscarContenidoPorFiltros(int id_cliente, String titulo, @Nullable boolean reciente, @Nullable boolean destacado, @Nullable String clasificacion, @Nullable boolean masVisto, @Nullable String genero) {
+    public List<ContenidoHomeBean> buscarContenidoPorFiltros(int id_cliente, @Nullable String titulo, boolean reciente, boolean destacado, @Nullable String clasificacion, boolean masVisto, @Nullable String genero) {
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_cliente", id_cliente);
-        if (titulo != null && !titulo.isEmpty()) {
+                .addValue("id_cliente", id_cliente)
+                .addValue("reciente", reciente)
+                .addValue("destacado", destacado)
+                .addValue("mas_visto", masVisto);
+
+        if (titulo != null && !titulo.isEmpty())
             ((MapSqlParameterSource) in).addValue("titulo", titulo);
-        }
+        else
+            ((MapSqlParameterSource) in).addValue("titulo", null);
 
-        ((MapSqlParameterSource) in).addValue("reciente", reciente);
-        ((MapSqlParameterSource) in).addValue("destacado", destacado);
-
-        if (clasificacion != null && !clasificacion.isEmpty()) {
+        if (clasificacion != null && !clasificacion.isEmpty())
             ((MapSqlParameterSource) in).addValue("clasificacion", clasificacion);
-        }
-            ((MapSqlParameterSource) in).addValue("mas_visto", masVisto);
-        if (genero != null && !genero.isEmpty()) {
+        else
+            ((MapSqlParameterSource) in).addValue("clasificacion", null);
+
+        if (genero != null && !genero.isEmpty())
             ((MapSqlParameterSource) in).addValue("genero", genero);
-        }
+        else
+            ((MapSqlParameterSource) in).addValue("genero", null);
+
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Buscar_Contenido_por_Filtros")
                 .withSchemaName("dbo")
                 .returningResultSet("contenido", BeanPropertyRowMapper.newInstance(ContenidoHomeBean.class));
+
         Map<String, Object> out = jdbcCall.execute(in);
         List<ContenidoHomeBean> contenido = (List<ContenidoHomeBean>) out.get("contenido");
         if (contenido == null) {
@@ -54,11 +60,11 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
 
     @Override
     public InformacionContenidoBean informacionContenido(String id_contenido, int id_cliente) {
-        Map<String,String> infoContenido = obtenerInformacionContenido(id_contenido);
-        Map<String,String> genero = obtenerGenero(id_contenido);
-        List<Map<String,String>> directores = obtenerDirectores(id_contenido);
-        List<Map<String,String>> actores = obtenerActores(id_contenido);
-        List<Map<String,String>> plataformas = obtenerInformacionPlataformas(id_contenido, id_cliente);
+        Map<String, String> infoContenido = obtenerInformacionContenido(id_contenido);
+        Map<String, String> genero = obtenerGenero(id_contenido);
+        List<Map<String, String>> directores = obtenerDirectores(id_contenido);
+        List<Map<String, String>> actores = obtenerActores(id_contenido);
+        List<Map<String, String>> plataformas = obtenerInformacionPlataformas(id_contenido, id_cliente);
 
         InformacionContenidoBean contenidoInfo = new InformacionContenidoBean();
         contenidoInfo.setInfoContenido(infoContenido);
@@ -71,9 +77,9 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
     }
 
     @Override
-    public Map<String,String> obtenerInformacionContenido(String id_contenido) {
+    public Map<String, String> obtenerInformacionContenido(String id_contenido) {
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_contenido" , id_contenido);
+                .addValue("id_contenido", id_contenido);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Informacion_de_Contenido")
                 .withSchemaName("dbo");
@@ -84,9 +90,9 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
     }
 
     @Override
-    public Map<String,String> obtenerGenero(String id_contenido) {
+    public Map<String, String> obtenerGenero(String id_contenido) {
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_contenido" , id_contenido);
+                .addValue("id_contenido", id_contenido);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Generos")
                 .withSchemaName("dbo");
@@ -97,7 +103,7 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
     }
 
     @Override
-    public List<Map<String,String>> obtenerDirectores(String id_contenido) {
+    public List<Map<String, String>> obtenerDirectores(String id_contenido) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_contenido", id_contenido);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
@@ -110,9 +116,9 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
     }
 
     @Override
-    public List<Map<String,String>> obtenerActores(String id_contenido) {
+    public List<Map<String, String>> obtenerActores(String id_contenido) {
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_contenido" , id_contenido);
+                .addValue("id_contenido", id_contenido);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Actores")
                 .withSchemaName("dbo");
@@ -123,10 +129,10 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
     }
 
     @Override
-    public List<Map<String,String>> obtenerInformacionPlataformas(String id_contenido, int id_cliente) {
+    public List<Map<String, String>> obtenerInformacionPlataformas(String id_contenido, int id_cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_contenido" , id_contenido)
-                .addValue("id_cliente" , id_cliente);
+                .addValue("id_contenido", id_contenido)
+                .addValue("id_cliente", id_cliente);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Informacion_de_Plataforma")
                 .withSchemaName("dbo");

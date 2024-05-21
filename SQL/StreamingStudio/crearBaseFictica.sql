@@ -47,9 +47,9 @@ VALUES (1, 1),
 go
 
 -- Crear clasificaciones "Serie" y "Película"
-INSERT INTO Clasificacion (descripcion)
-VALUES ('Serie'),
-       (N'Película');
+INSERT INTO Clasificacion (id_clasificacion, descripcion)
+VALUES ('S', 'Serie'),
+       ('P', 'Pelicula');
 go
 
 -- Crear 8 actores
@@ -75,14 +75,14 @@ go
 
 -- Crear 8 contenidos
 INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, clasificacion, mas_visto)
-VALUES ('P-1', 'Toy Story', N'Descripcion de Toy Story', 'https://es.web.img3.acsta.net/pictures/14/03/17/10/20/509771.jpg', 2, 0),
-       ('S-1', 'Spiderman', N'Descripción de Spiderman', 'https://image.api.playstation.com/vulcan/ap/rnd/202009/3021/B2aUYFC0qUAkNnjbTHRyhrg3.png', 1, 1),
-       ('P-2', 'Batman', N'Descripción de Batman', 'https://es.web.img2.acsta.net/medias/nmedia/18/66/74/01/20350623.jpg', 2, 0),
-       ('S-2', 'Superman', N'Descripción de Superman', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkFIzNYyYVW1MQg2PBUJun45u95dCWpWTaj-baRad6w&s', 1, 1),
-       ('P-3', 'Thor', N'Descripción de Thor', 'https://es.web.img3.acsta.net/medias/nmedia/18/79/89/52/19711203.jpg', 2, 0),
-       ('S-3', 'Shrek', N'Descripción de Shrek', 'https://static.wikia.nocookie.net/doblaje/images/6/69/Shrekban.png/revision/latest?cb=20200731225428&path-prefix=es', 1, 0),
-       ('P-4', 'Drive', N'Descripción de Drive', 'https://i.blogs.es/d365ef/drive-2011/650_1200.jpg', 2, 1),
-       ('S-4', 'El padrino', N'Descripción de el padrino', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNvJucE9mgq6GvXtcJAPzaJ9huMajoCDRSHWgVfmp9Tg&s', 1, 0);
+VALUES ('P-1', 'Toy Story', N'Descripcion de Toy Story', 'https://es.web.img3.acsta.net/pictures/14/03/17/10/20/509771.jpg', 'P', 0),
+       ('S-1', 'Spiderman', N'Descripción de Spiderman', 'https://image.api.playstation.com/vulcan/ap/rnd/202009/3021/B2aUYFC0qUAkNnjbTHRyhrg3.png', 'S', 1),
+       ('P-2', 'Batman', N'Descripción de Batman', 'https://es.web.img2.acsta.net/medias/nmedia/18/66/74/01/20350623.jpg', 'P', 0),
+       ('S-2', 'Superman', N'Descripción de Superman', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkFIzNYyYVW1MQg2PBUJun45u95dCWpWTaj-baRad6w&s', 'S', 1),
+       ('P-3', 'Thor', N'Descripción de Thor', 'https://es.web.img3.acsta.net/medias/nmedia/18/79/89/52/19711203.jpg', 'P', 0),
+       ('S-3', 'Shrek', N'Descripción de Shrek', 'https://static.wikia.nocookie.net/doblaje/images/6/69/Shrekban.png/revision/latest?cb=20200731225428&path-prefix=es', 'S', 0),
+       ('P-4', 'Drive', N'Descripción de Drive', 'https://i.blogs.es/d365ef/drive-2011/650_1200.jpg', 'P', 1),
+       ('S-4', 'El padrino', N'Descripción de el padrino', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNvJucE9mgq6GvXtcJAPzaJ9huMajoCDRSHWgVfmp9Tg&s', 'S', 0);
 go
 
 -- Asignar directores a contenidos en Director_Contenido
@@ -236,6 +236,12 @@ VALUES (1, 'CP1', 'https://play-lh.googleusercontent.com/a6rUmDehKQQmNxss8tRWIQQ
        (2, 'CP8', 'https://media.elpatagonico.com/p/2f9bc7b90864bb9a69ec3d41a3ac6509/adjuntos/193/imagenes/041/169/0041169897/770x0/smart/imagenpng.png',
         'https://www.clubelterritorio.com.ar/img/comercios/hipermercado_libertad_sa/logo.jpg', '2024-05-15', '2024-06-15'),
        (3, 'CP9', 'https://media.elpatagonico.com/p/2f9bc7b90864bb9a69ec3d41a3ac6509/adjuntos/193/imagenes/041/169/0041169897/770x0/smart/imagenpng.png',
+        'https://sm.ign.com/ign_latam/tech/default/0a8gvr_37mb.jpg', '2024-05-15', '2024-06-15'),
+       (1, 'CP10', 'https://cdn.pixabay.com/photo/2017/09/01/00/15/png-2702691_640.png',
+        'https://sm.ign.com/ign_latam/tech/default/0a8gvr_37mb.jpg', '2024-05-15', '2024-06-15'),
+       (2, 'CP11', 'https://cdn.urbantecno.com/urbantecno/2024/05/sin-tixxxxtulo.png',
+        'https://sm.ign.com/ign_latam/tech/default/0a8gvr_37mb.jpg', '2024-05-15', '2024-06-15'),
+       (3, 'CP12', 'https://cdn.pixabay.com/photo/2017/09/17/02/02/png-2757379_640.png',
         'https://sm.ign.com/ign_latam/tech/default/0a8gvr_37mb.jpg', '2024-05-15', '2024-06-15');
 go
 
@@ -250,15 +256,9 @@ VALUES (1, 1),
        (1, 7),
        (2, 8),
        (3, 9),
-       (4, 1),
-       (5, 2),
-       (6, 3),
-       (1, 4),
-       (2, 5),
-       (3, 6),
-       (4, 7),
-       (5, 8),
-       (6, 9);
+       (4, 10),
+       (5, 11),
+       (6, 12);
 go
 
 -- Crear 4 Estado_Factura

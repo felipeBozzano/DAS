@@ -294,7 +294,7 @@ CREATE TABLE [Federacion]
 
 CREATE TABLE [Clasificacion]
 (
-    [id_clasificacion] INT IDENTITY (1,1) PRIMARY KEY,
+    [id_clasificacion] VARCHAR(255) PRIMARY KEY,
     [descripcion]      VARCHAR(255) NOT NULL
 );
 
@@ -304,7 +304,7 @@ CREATE TABLE [Contenido]
     [titulo]        VARCHAR(255) NOT NULL,
     [descripcion]   VARCHAR(255) NOT NULL,
     [url_imagen]    VARCHAR(255) NOT NULL,
-    [clasificacion] INT          NOT NULL,
+    [clasificacion] VARCHAR(255) NOT NULL,
     [mas_visto]     BIT          NOT NULL,
     CONSTRAINT [FK_Contenido.Clasificacion]
         FOREIGN KEY ([clasificacion])

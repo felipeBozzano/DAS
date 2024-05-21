@@ -810,15 +810,16 @@ go
 
 /* Clasificacion */
 
-CREATE OR ALTER PROCEDURE Crear_Clasificacion @descripcion VARCHAR(255)
+CREATE OR ALTER PROCEDURE Crear_Clasificacion @id_clasificacion VARCHAR(255),
+                                              @descripcion VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Clasificacion(descripcion)
-    VALUES (@descripcion)
+    INSERT INTO dbo.Clasificacion(id_clasificacion, descripcion)
+    VALUES (@id_clasificacion, @descripcion)
 END;
 go
 
-CREATE OR ALTER PROCEDURE Modificar_Clasificacion @id_clasificacion INT,
+CREATE OR ALTER PROCEDURE Modificar_Clasificacion @id_clasificacion VARCHAR(255),
                                                   @descripcion VARCHAR(255)
 AS
 BEGIN
@@ -828,7 +829,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Eliminar_Clasificacion @id_clasificacion INT
+CREATE OR ALTER PROCEDURE Eliminar_Clasificacion @id_clasificacion VARCHAR(255)
 AS
 BEGIN
     DELETE

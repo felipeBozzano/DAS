@@ -8,9 +8,6 @@ USE StreamingStudio;
  */
 
 /* FEDERAR CLIENTE 1 CON PLATAFORMA 1 */
-EXEC Buscar_Federacion @id_plataforma = 1, @id_cliente = 1;
-EXEC Verificar_Federacion_en_Curso @id_plataforma = 1, @id_cliente = 1;
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 1;
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 1, @codigo_de_transaccion = "Codigo1_Cliente1_Plataforma1",
      @tipo_transaccion = 'L', @url_login_registro_plataforma = 'https://www.plataforma1.com/login',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
@@ -22,18 +19,12 @@ EXEC Desvincular_Federacion @id_plataforma = 1, @id_cliente = 1;
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /* FEDERAR NUEVAMENTE CLIENTE 1 CON PLATAFORMA 1 */
-EXEC Buscar_Federacion @id_plataforma = 1, @id_cliente = 1;
-EXEC Verificar_Federacion_en_Curso @id_plataforma = 1, @id_cliente = 1;
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 1;
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 1, @codigo_de_transaccion = "Codigo2_Cliente1_Plataforma1",
      @tipo_transaccion = 'R', @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 1, @token = "Token2_Cliente1_Plataforma1";
 
 /* FEDERAR CLIENTE 1 CON PLATAFORMA 2 */
-EXEC Buscar_Federacion @id_plataforma = 2, @id_cliente = 1;
-EXEC Verificar_Federacion_en_Curso @id_plataforma = 2, @id_cliente = 1;
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 2;
 EXEC Comenzar_Federacion @id_plataforma = 2, @id_cliente = 1, @codigo_de_transaccion = "Codigo1_Cliente1_Plataforma2",
      @tipo_transaccion = 'R', @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
@@ -48,18 +39,12 @@ EXEC Validar_Usuario @id_cliente = 1;
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 /* FEDERAR NUEVAMENTE CLIENTE 1 CON PLATAFORMA 1 */
-EXEC Buscar_Federacion @id_plataforma = 1, @id_cliente = 1;
-EXEC Verificar_Federacion_en_Curso @id_plataforma = 1, @id_cliente = 1;
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 1;
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 1, @codigo_de_transaccion = "Codigo3_Cliente1_Plataforma1",
      @tipo_transaccion = 'L', @url_login_registro_plataforma = 'https://www.plataforma1.com/login',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 1, @token = "Token3_Cliente1_Plataforma1";
 
 /* FEDERAR CLIENTE 2 CON PLATAFORMA 1 */
-EXEC Buscar_Federacion @id_plataforma = 1, @id_cliente = 2;
-EXEC Verificar_Federacion_en_Curso @id_plataforma = 1, @id_cliente = 2;
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 1;
 EXEC Comenzar_Federacion @id_plataforma = 1, @id_cliente = 2, @codigo_de_transaccion = "Codigo1_Cliente2_Plataforma1",
      @tipo_transaccion = 'R', @url_login_registro_plataforma = 'https://www.plataforma1.com/registro',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
@@ -293,14 +278,11 @@ EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 5, @token = "Token2_
 
 EXEC Consultar_Federaciones_Pendientes;
 
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 1;
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 4, @token = 'Token1_Cliente4_Plataforma1';
 EXEC Finalizar_Federacion @id_plataforma = 1, @id_cliente = 5, @token = 'Token1_Cliente5_Plataforma1';
 
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 2;
 EXEC Finalizar_Federacion @id_plataforma = 2, @id_cliente = 5, @token = 'Token1_Cliente5_Plataforma2';
 
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 3;
 EXEC Finalizar_Federacion @id_plataforma = 3, @id_cliente = 3, @token = 'Token1_Cliente3_Plataforma3';
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -314,14 +296,11 @@ EXEC Finalizar_Federacion @id_plataforma = 3, @id_cliente = 3, @token = 'Token1_
 EXEC Obtener_Catalogo_Actual;
 EXEC Obtener_Plataformas_de_Streaming_Activas;
 
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 1;
 EXEC Dar_de_Baja_Item_en_Catalogo @id_contenido = 1, @id_plataforma = 1;
 EXEC Activar_Item_en_Catalogo @id_contenido = 1, @id_plataforma = 3;
 
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 2;
 EXEC Dar_de_Baja_Item_en_Catalogo @id_contenido = 7, @id_plataforma = 2;
 
-EXEC Obtener_Token_de_Servicio_de_Plataforma @id_plataforma = 3;
 
 EXEC Crear_Contenido @titulo = 'Pelicula5', @descripcion = 'Descripcion de Pelicula5', @url_imagen = 'url_imagen9.jpg',
      @clasificacion = 2;
