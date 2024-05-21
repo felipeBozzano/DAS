@@ -25,10 +25,8 @@ export class PublicidadAbajoComponent {
   processPublicidades(){
     this.publicidad_abajo_izquierda = this.publicidades.filter(pub => pub.id_tipo_banner === 3);
     this.publicidad_abajo_derecha = this.publicidades.filter(pub => pub.id_tipo_banner === 4);
-    //this.publicidades_abajo_izquierda_random = this.obtenerElementoAleatorio(this.publicidad_abajo_izquierda);
-    //this.publicidades_abajo_derecha_random = this.obtenerElementoAleatorio(this.publicidad_abajo_derecha);
-    //console.log("publicidades_abajo_izquierda_random: ", this.publicidades_abajo_izquierda_random);
-    //console.log("publicidades_abajo_derecha_radom: ", this.publicidades_abajo_derecha_random);
+    this.publicidades_abajo_izquierda_random = this.obtenerElementoAleatorio(this.publicidad_abajo_izquierda);
+    this.publicidades_abajo_derecha_random = this.obtenerElementoAleatorio(this.publicidad_abajo_derecha);
   }
 
   obtenerElementoAleatorio<T>(array: T[]): T {

@@ -75,14 +75,14 @@ go
 
 -- Crear 8 contenidos
 INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, clasificacion, mas_visto)
-VALUES ('P-1', 'Pelicula1', N'Descripción de Pelicula1', 'url_imagen1.jpg', 2, 0),
-       ('S-1', 'Serie1', N'Descripción de Serie1', 'url_imagen2.jpg', 1, 1),
-       ('P-2', 'Pelicula2', N'Descripción de Pelicula2', 'url_imagen3.jpg', 2, 0),
-       ('S-2', 'Serie2', N'Descripción de Serie2', 'url_imagen4.jpg', 1, 1),
-       ('P-3', 'Pelicula3', N'Descripción de Pelicula3', 'url_imagen5.jpg', 2, 0),
-       ('S-3', 'Serie3', N'Descripción de Serie3', 'url_imagen6.jpg', 1, 0),
-       ('P-4', 'Pelicula4', N'Descripción de Pelicula4', 'url_imagen7.jpg', 2, 1),
-       ('S-4', 'Serie4', N'Descripción de Serie4', 'url_imagen8.jpg', 1, 0);
+VALUES ('P-1', 'Toy Story', N'Descripcion de Toy Story', 'https://es.web.img3.acsta.net/pictures/14/03/17/10/20/509771.jpg', 2, 0),
+       ('S-1', 'Spiderman', N'Descripción de Spiderman', 'https://image.api.playstation.com/vulcan/ap/rnd/202009/3021/B2aUYFC0qUAkNnjbTHRyhrg3.png', 1, 1),
+       ('P-2', 'Batman', N'Descripción de Batman', 'https://es.web.img2.acsta.net/medias/nmedia/18/66/74/01/20350623.jpg', 2, 0),
+       ('S-2', 'Superman', N'Descripción de Superman', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkFIzNYyYVW1MQg2PBUJun45u95dCWpWTaj-baRad6w&s', 1, 1),
+       ('P-3', 'Thor', N'Descripción de Thor', 'https://es.web.img3.acsta.net/medias/nmedia/18/79/89/52/19711203.jpg', 2, 0),
+       ('S-3', 'Shrek', N'Descripción de Shrek', 'https://static.wikia.nocookie.net/doblaje/images/6/69/Shrekban.png/revision/latest?cb=20200731225428&path-prefix=es', 1, 0),
+       ('P-4', 'Drive', N'Descripción de Drive', 'https://i.blogs.es/d365ef/drive-2011/650_1200.jpg', 2, 1),
+       ('S-4', 'El padrino', N'Descripción de el padrino', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNvJucE9mgq6GvXtcJAPzaJ9huMajoCDRSHWgVfmp9Tg&s', 1, 0);
 go
 
 -- Asignar directores a contenidos en Director_Contenido
@@ -133,11 +133,11 @@ go
 INSERT INTO Plataforma_de_Streaming (nombre_de_fantasia, razon_social, url_imagen, token_de_servicio, url_api,
                                      protocolo_api, valido)
 VALUES ('Netflix', N'Netflix Argentina S.R.L.',
-        'https://img.jpg', 'Netflix123', 'http://localhost:8081/netflix', 'REST', 1),
+        'https://images.ctfassets.net/4cd45et68cgf/4nBnsuPq03diC5eHXnQYx/d48a4664cdc48b6065b0be2d0c7bc388/Netflix-Logo.jpg', 'Netflix123', 'http://localhost:8081/netflix', 'REST', 1),
        ('Prime Video', N'Prime Video Argentina S.R.L.',
-        'https://img.jpg', 'PrimeVideo123', 'http://localhost:8081/prime_video', 'REST', 1),
+        'https://yt3.googleusercontent.com/pn_3JEt2nFaRA6dY08NzFM2w8A7NtUbaniamEnObxtLX3ZhT9w41KW0W0pjl-RiczGS0rgzZ=s900-c-k-c0x00ffffff-no-rj', 'PrimeVideo123', 'http://localhost:8081/prime_video', 'REST', 1),
        ('Star Plus', N'Star Plus S.R.L.',
-        'https://img.jpg', 'StarPlus123', 'http://localhost:8081/star_plus', 'SOAP', 1);
+        'https://media.ambito.com/p/050f05a32403fba3d95c8b783ccccee6/adjuntos/239/imagenes/039/297/0039297233/1200x675/smart/star-plusjpg.jpg', 'StarPlus123', 'http://localhost:8081/star_plus', 'SOAP', 1);
 go
 
 -- Llenar Catálogo
@@ -219,24 +219,24 @@ go
 -- Crear 9 Publicidades
 INSERT INTO Publicidad (id_publicista, codigo_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta,
                         fecha_de_baja)
-VALUES (1, 'CP1', 'https://www.urlimagen1.com/imagenes/imagen.jpg',
-        'https://www.urlpublicidad1.com/publicidad.jpg', '2024-03-28', '2024-04-10'),
-       (2, 'CP2', 'https://www.urlimagen2.com/imagenes/imagen.jpg',
-        'https://www.urlpublicidad2.com/publicidad.jpg', '2024-05-30', '2024-06-01'),
-       (3, 'CP3', 'https://www.urlimagen3.com/imagenes/imagen.jpg',
-        'https://www.urlpublicidad3.com/publicidad.jpg', '2024-05-01', '2024-05-02'),
-       (1, 'CP4', 'https://www.urlimagen4.com/imagenes/imagen.jpg',
-        'https://www.urlpublicidad4.com/publicidad.jpg', '2024-04-02', '2024-04-03'),
-       (2, 'CP5', 'https://www.urlimagen5.com/imagenes/imagen.jpg',
-        'https://www.urlpublicidad5.com/publicidad.jpg', '2024-04-03', '2024-06-04'),
-       (3, 'CP6', 'https://www.urlimagen6.com/imagenes/imagen.jpg',
-        'https://www.urlpublicidad6.com/publicidad.jpg', '2024-05-04', '2024-05-25'),
-       (1, 'CP7', 'https://www.urlimagen7.com/imagenes/imagen.jpg',
-        'https://www.urlpublicidad7.com/publicidad.jpg', '2024-04-05', '2024-05-01'),
-       (2, 'CP8', 'https://www.urlimagen8.com/imagenes/imagen.jpg',
-        'https://www.urlpublicidad8.com/publicidad.jpg', '2024-04-06', '2024-04-27'),
-       (3, 'CP9', 'https://www.urlimagen9.com/imagenes/imagen.jpg',
-        'https://www.urlpublicidad9.com/publicidad.jpg', '2024-04-07', '2024-06-18');
+VALUES (1, 'CP1', 'https://play-lh.googleusercontent.com/a6rUmDehKQQmNxss8tRWIQQsymc6M6K0Dbyj-QidfcOEX7sXiiIyRM1gXMj8gcbrUA',
+        'https://www.urlpublicidad1.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
+       (2, 'CP2', 'https://inforges.es/wp-content/uploads/2022/07/migracion-aws.png',
+        'https://www.urlpublicidad2.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
+       (3, 'CP3', 'https://pbs.twimg.com/profile_images/1599827064282140672/MSxVR5u6_400x400.jpg',
+        'https://www.urlpublicidad3.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
+       (1, 'CP4', 'https://images.ctfassets.net/4cd45et68cgf/4nBnsuPq03diC5eHXnQYx/d48a4664cdc48b6065b0be2d0c7bc388/Netflix-Logo.jpg',
+        'https://www.urlpublicidad4.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
+       (2, 'CP5', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_qjqmDxaGwHDTmC0E_d4kDenBxzZ0ZwVEooOLafWgwA&s',
+        'https://www.urlpublicidad5.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
+       (3, 'CP6', 'https://media.urgente24.com/p/8b8c7e91210db75522b55a2e09b67ac4/adjuntos/319/imagenes/002/664/0002664389/star-plus.png',
+        'https://www.urlpublicidad6.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
+       (1, 'CP7', 'https://www.globamaticmedia.com/wp-content/uploads/2023/02/logo-sony.jpg',
+        'https://media.elpatagonico.com/p/2f9bc7b90864bb9a69ec3d41a3ac6509/adjuntos/193/imagenes/041/169/0041169897/770x0/smart/imagenpng.png', '2024-05-15', '2024-06-15'),
+       (2, 'CP8', 'https://media.elpatagonico.com/p/2f9bc7b90864bb9a69ec3d41a3ac6509/adjuntos/193/imagenes/041/169/0041169897/770x0/smart/imagenpng.png',
+        'https://www.clubelterritorio.com.ar/img/comercios/hipermercado_libertad_sa/logo.jpg', '2024-05-15', '2024-06-15'),
+       (3, 'CP9', 'https://media.elpatagonico.com/p/2f9bc7b90864bb9a69ec3d41a3ac6509/adjuntos/193/imagenes/041/169/0041169897/770x0/smart/imagenpng.png',
+        'https://sm.ign.com/ign_latam/tech/default/0a8gvr_37mb.jpg', '2024-05-15', '2024-06-15');
 go
 
 -- Crear 18 Publicidad_Tipo_Banner
