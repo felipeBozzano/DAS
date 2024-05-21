@@ -52,7 +52,7 @@ export class StreamingStudioResources extends Resource{
     path: `/informacion_contenido/{!id_contenido}/{!id_cliente}`,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  informacionContenido!: IResourceMethodObservable<{ id_contenido: string, id_cliente: number }, IInformacionContenidoResponseModel>;
+  descripcion!: IResourceMethodObservable<{ id_cliente: number, id_contenido: string }, IInformacionContenidoResponseModel>;
 
   @ResourceAction({
     method: ResourceRequestMethod.Get,

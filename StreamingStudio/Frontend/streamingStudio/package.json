@@ -28,6 +28,7 @@
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.2",
+    "localforage": "^1.10.0",
     "ngx-i18nsupport": "^0.17.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

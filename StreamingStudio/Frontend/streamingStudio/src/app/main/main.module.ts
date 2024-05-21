@@ -15,6 +15,9 @@ import {HomeResolver} from './api/resolvers/home.resolver';
 import {PublicidadArribaComponent} from './components/publicidades-arriba/publicidad-arriba.component';
 import {PublicationService} from './services/publicationService/publicationService';
 import { PublicidadAbajoComponent } from './components/publicidades-abajo/publicidades-abajo.component';
+import {DescripcionComponent} from './pages/descripcion/descripcion.component';
+import {DescripcionContenidoResolverResolver} from './api/resolvers/descripcion-contenido.resolver';
+import {DescripcionContenidoHomeResolverResolver} from './api/resolvers/descripcion-contenido-home.resolver';
 
 
 // @ts-ignore
@@ -28,6 +31,7 @@ import { PublicidadAbajoComponent } from './components/publicidades-abajo/public
     ContenidoComponent,
     PublicidadArribaComponent,
     PublicidadAbajoComponent,
+    DescripcionComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +43,9 @@ import { PublicidadAbajoComponent } from './components/publicidades-abajo/public
     HomeResolver,
     ListadoFederacionesResolver,
     StreamingStudioResources,
-    PublicationService
+    PublicationService,
+    DescripcionContenidoResolverResolver,
+    DescripcionContenidoHomeResolverResolver
   ]
 })
 export class MainModule { }

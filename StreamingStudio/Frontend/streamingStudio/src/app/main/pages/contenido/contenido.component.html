@@ -41,27 +41,7 @@
     </div>
     <div *ngIf="contenido && contenido.length > 0" class="content-container">
       <div *ngFor="let contenido of contenido; let i = index" class="card">
-        <img [src]="contenido.url_imagen" alt="Imagen del contenido">
-        <div class="form-group">
-          <button (click)="verDescripcion(i)">Ver Descripción</button> <!-- Asegúrate de pasar el id_cliente correcto -->
-        </div>
-        <div *ngIf="contenidoSeleccionado && contenidoSeleccionado.infoContenido.url_imagen === contenido.url_imagen">
-          <h3>{{ contenidoSeleccionado.infoContenido.titulo }}</h3>
-          <p>{{ contenidoSeleccionado.infoContenido.descripcion }}</p>
-          <p>Género: {{ contenidoSeleccionado.genero.descripcion }}</p>
-          <h4>Directores</h4>
-          <ul>
-            <li *ngFor="let director of contenidoSeleccionado.directores">
-              {{ director.nombre }} {{ director.apellido }}
-            </li>
-          </ul>
-          <h4>Actores</h4>
-          <ul>
-            <li *ngFor="let actor of contenidoSeleccionado.actores">
-              {{ actor.nombre }} {{ actor.apellido }}
-            </li>
-          </ul>
-        </div>
+        <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" alt="Imagen del contenido">
       </div>
     </div>
     <div class="row">

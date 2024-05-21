@@ -87,15 +87,13 @@ body{
 }
 
 .card {
-  height: 90px;
   display: flex;
   justify-content: center;
   background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
+  border: 1px solid black;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  padding: 20px;
+  padding: 10px;
   position: relative;
 }
 .card-title {

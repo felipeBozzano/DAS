@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {IListadoFederaciones} from '../../api/models/IListadoFederacion.model';
 import {AuthService} from '../../services/authService/AuthService';
+import * as localForage from 'localforage';
 
 @Component({
   selector: 'app-federaciones',
@@ -19,6 +20,10 @@ export class FederacionesComponent implements OnInit {
   constructor(private authService: AuthService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    localForage.config({
+      driver: localForage.LOCALSTORAGE,
+      name: 'StreamingStudio'
+    });
     this.currentUser = this.authService.getCurrentUser();
     this.id_cliente = this.currentUser.id_cliente;
     this.route.data.subscribe(data => {
