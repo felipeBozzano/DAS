@@ -3,14 +3,12 @@ package ar.edu.ubp.das.streamingstudio.sstudio.models;
 import java.util.List;
 import java.util.Map;
 
-public class InformacionContenido {
+public class InformacionContenidoBean {
     private Map<String, String> infoContenido;
     private Map<String, String> genero;
     private List<Map<String, String>> directores;
     private List<Map<String, String>> actores;
     private List<Map<String, String>> plataformas;
-
-    // Getters y Setters
 
     public Map<String, String> getInfoContenido() {
         return infoContenido;

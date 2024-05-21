@@ -1,4 +1,4 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
+package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;

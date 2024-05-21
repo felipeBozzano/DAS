@@ -1,7 +1,12 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.controllers.francisco;
+package ar.edu.ubp.das.streamingstudio.sstudio.controllers;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco.*;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.HomeRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.ReproducirContenidoRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.FederarClienteRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.FiltrarContenidoRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.PublicidadesRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.UsuarioClienteRepository;
 import ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.EnviarFacturasRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +26,13 @@ import java.util.Map;
 @RequestMapping(
         path = "/ss")
 
-public class fran_controllers {
+public class controllers {
+
+    @Autowired
+    HomeRepository home_repository;
+
+    @Autowired
+    ReproducirContenidoRepository reproducir_contenido_repository;
 
     @Autowired
     UsuarioClienteRepository user_repository;
@@ -36,7 +47,7 @@ public class fran_controllers {
     FiltrarContenidoRepository buscar_contenido_repository;
 
     @Autowired
-    PublicidadesRepository publicidadesRepository;
+    PublicidadesRepository publicidades_repository;
 
 
     /* ----------------------------------------------------------------------------------------------------- */
@@ -170,8 +181,8 @@ public class fran_controllers {
     @GetMapping(
             path="/informacion_contenido/{id_contenido}/{id_cliente}"
     )
-    public ResponseEntity<InformacionContenido> obtenerInformacionContenido(@PathVariable("id_contenido") String id_contenido, @PathVariable("id_cliente") int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        InformacionContenido infoContenido = buscar_contenido_repository.informacionContenido(id_contenido, id_cliente);
+    public ResponseEntity<InformacionContenidoBean> obtenerInformacionContenido(@PathVariable("id_contenido") String id_contenido, @PathVariable("id_cliente") int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        InformacionContenidoBean infoContenido = buscar_contenido_repository.informacionContenido(id_contenido, id_cliente);
         return new ResponseEntity<>(infoContenido, HttpStatus.OK);
     }
 
@@ -183,7 +194,23 @@ public class fran_controllers {
             path="/publicidades_activas"
     )
     public ResponseEntity<Map<String, Map<Integer, List<PublicidadHomeBean>>>> obtenerPublicidadesActivas() {
-        return new ResponseEntity<>(publicidadesRepository.obtenerPublicidadesAgrupadas(), HttpStatus.OK);
+        return new ResponseEntity<>(publicidades_repository.obtenerPublicidadesAgrupadas(), HttpStatus.OK);
+    }
+
+    @GetMapping("/home")
+    public ResponseEntity<Map<String, Map<String, List<ContenidoHomeBean>>>> mostrarHome(@RequestParam("id_cliente") int id_cliente) {
+        return new ResponseEntity<>(home_repository.getHome(id_cliente), HttpStatus.OK);
+    }
+
+    /* ----------------------------------------------------------------------------------------------------- */
+    /* -------------------------------------- Reproducir contenido ------------------------------------------*/
+    /* ----------------------------------------------------------------------------------------------------- */
+
+    @PostMapping(
+            path = "/informacion_contenido/{id_contenido}/plataforma/{id_plataforma}"
+    )
+    public ResponseEntity<Map<String, String>> buscarContenidoPorFiltros(@PathVariable("id_contenido") String id_contenido, @PathVariable("id_plataforma") int id_plataforma, @RequestParam("id_cliente") int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        return new ResponseEntity<>(reproducir_contenido_repository.obtener_url_de_contenido(id_contenido, id_plataforma, id_cliente), HttpStatus.OK);
     }
 
 }

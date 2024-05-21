@@ -1,7 +1,7 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.repositories.francisco;
+package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoHomeBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.InformacionContenido;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.InformacionContenidoBean;
 import io.micrometer.common.lang.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -10,7 +10,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,14 +53,14 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
     }
 
     @Override
-    public InformacionContenido informacionContenido(String id_contenido, int id_cliente) {
+    public InformacionContenidoBean informacionContenido(String id_contenido, int id_cliente) {
         Map<String,String> infoContenido = obtenerInformacionContenido(id_contenido);
         Map<String,String> genero = obtenerGenero(id_contenido);
         List<Map<String,String>> directores = obtenerDirectores(id_contenido);
         List<Map<String,String>> actores = obtenerActores(id_contenido);
         List<Map<String,String>> plataformas = obtenerInformacionPlataformas(id_contenido, id_cliente);
 
-        InformacionContenido contenidoInfo = new InformacionContenido();
+        InformacionContenidoBean contenidoInfo = new InformacionContenidoBean();
         contenidoInfo.setInfoContenido(infoContenido);
         contenidoInfo.setGenero(genero);
         contenidoInfo.setDirectores(directores);

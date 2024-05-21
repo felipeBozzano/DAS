@@ -2,14 +2,14 @@ package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 import java.util.Date;
 
-public class Fee {
+public class FeeBean {
     private int id_fee;
     private float monto;
     private Date fecha_alta;
     private Date fecha_baja;
     private int tipo_de_fee;
 
-    public Fee(int id_fee, float monto, Date fecha_alta, Date fecha_baja, int tipo_de_fee) {
+    public FeeBean(int id_fee, float monto, Date fecha_alta, Date fecha_baja, int tipo_de_fee) {
         this.id_fee = id_fee;
         this.monto = monto;
         this.fecha_alta = fecha_alta;
@@ -17,7 +17,7 @@ public class Fee {
         this.tipo_de_fee = tipo_de_fee;
     }
 
-    public Fee(){}
+    public FeeBean(){}
 
     public int getId_fee() {
         return id_fee;

@@ -1,4 +1,4 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.repositories.felipe;
+package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.ContenidoUrlBean;

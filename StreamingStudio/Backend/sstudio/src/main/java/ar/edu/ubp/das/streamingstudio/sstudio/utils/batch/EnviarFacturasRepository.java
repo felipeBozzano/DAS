@@ -3,7 +3,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.FederacionBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.Fee;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.FeeBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadFacturasBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -153,8 +153,8 @@ public class EnviarFacturasRepository {
             double total = 0;
             double feeLogin = 0;
             double feeRegistro = 0;
-            List<Fee> feesPlataforma = obtenerFeesPlataforma(id_plataforma);
-            for(Fee fee : feesPlataforma){
+            List<FeeBean> feesPlataforma = obtenerFeesPlataforma(id_plataforma);
+            for(FeeBean fee : feesPlataforma){
                 if(fee.getTipo_de_fee() == 1){
                     feeLogin = - fee.getMonto();
                 } else if (fee.getTipo_de_fee() == 2) {
@@ -194,15 +194,15 @@ public class EnviarFacturasRepository {
     }
 
     @Transactional
-    public List<Fee> obtenerFeesPlataforma(int id_plataforma) {
+    public List<FeeBean> obtenerFeesPlataforma(int id_plataforma) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Fees_de_Plataforma")
                 .withSchemaName("dbo")
-                .returningResultSet("fees_plataforma", BeanPropertyRowMapper.newInstance(Fee.class));
+                .returningResultSet("fees_plataforma", BeanPropertyRowMapper.newInstance(FeeBean.class));
         Map<String, Object> out = jdbcCall.execute(in);
-        return (List<Fee>)out.get("fees_plataforma");
+        return (List<FeeBean>)out.get("fees_plataforma");
     }
 
     @Transactional
