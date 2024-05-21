@@ -50,7 +50,6 @@ export class LoginComponent {
               this.streamingStudioResources.publicidades().subscribe( (response) => {
                   this.publicidadesService.setCurrentPublications(Object.values(response.Publicidades).flat())
               })
-              console.log(this.routeHome);
               this.router.navigate(['/home'], { queryParams: {id_cliente: clienteId }});
             } else {
               this.showError = true;
