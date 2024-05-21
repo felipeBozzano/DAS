@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   // Método para realizar el cierre de sesión
-  logout() {
+  async logout() {
     // Aquí podrías realizar la lógica de cierre de sesión
     this.isAuthenticated = false;
     this.currentUser = null;

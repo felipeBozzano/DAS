@@ -9,6 +9,7 @@ import {IContenido} from '../models/IContenido.model';
 import {IContenidoResponse} from '../models/IContenidoResponse.model';
 import {IInformacionContenidoResponseModel} from '../models/IInformacionContenidoResponse.model';
 import {IHome} from '../models/IHome.model';
+import {IFinalizarFederacion} from '../models/IFinalizarFederacion.modal';
 
 @Injectable()
 @ResourceParams({
@@ -52,7 +53,7 @@ export class StreamingStudioResources extends Resource{
     path: `/informacion_contenido/{!id_contenido}/{!id_cliente}`,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  informacionContenido!: IResourceMethodObservable<{ id_contenido: string, id_cliente: number }, IInformacionContenidoResponseModel>;
+  descripcion!: IResourceMethodObservable<{ id_cliente: number, id_contenido: string }, IInformacionContenidoResponseModel>;
 
   @ResourceAction({
     method: ResourceRequestMethod.Get,
@@ -67,4 +68,12 @@ export class StreamingStudioResources extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   publicidades!: IResourceMethodObservable<{}, IHome>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Post,
+    path: `/usuario/{id_cliente}/finalizar_federacion/{id_plataforma}`,
+    requestBodyType: ResourceRequestBodyType.JSON,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  finalizar_federacion!: IResourceMethodObservable<{iFinalizarFederacion: IFinalizarFederacion, id_cliente: number, id_plataforma:number}, IHome>;
 }

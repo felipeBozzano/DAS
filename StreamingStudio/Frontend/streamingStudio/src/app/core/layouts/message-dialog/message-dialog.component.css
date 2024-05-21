@@ -14,15 +14,16 @@
 }
 
 .modal-content {
+  position: fixed;
+  top: 0;
+  z-index: 15000;
   border: solid 2px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   animation: slideDown 0.5s ease-out;
   position: fixed;
-  top: 10px; /* Ajusta esta posición según lo necesites */
   left: 50%;
   transform: translateX(-50%);
-  z-index: 1050; /* Asegura que esté encima de otros elementos */
 }
 
 .skip {
@@ -44,11 +45,13 @@
 
 /* Asegura que el modal esté centrado en la pantalla horizontalmente */
 .modal-dialog {
-  display: flex;
-  justify-content: center;
+  position: fixed;
+  top: 0;
+  z-index: 1900
 }
 
 .modal-body {
+  background-color: blanchedalmond;
   border: solid aquamarine 4px;
   padding: 20px;
 }

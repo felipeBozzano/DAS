@@ -1,15 +1,19 @@
-<div class="modal-header header">
-  <h4 class="modal-title">
-    <ng-container *ngIf="message?.title">{{ message?.title }}</ng-container>
-    <ng-container *ngIf="!message?.title" i18n>Mensaje de error</ng-container>
-  </h4>
-  <button type="button" class="btn close" aria-label="Close" (click)="activeModal.close()">
-    <span aria-hidden="true">&times;</span>
-  </button>
+<div class="modal-dialog">
+  <div class="modal-header header">
+    <h4 class="modal-title">
+      <ng-container *ngIf="message?.title">{{ message?.title }}</ng-container>
+      <ng-container *ngIf="!message?.title" i18n>Mensaje de error</ng-container>
+    </h4>
+    <button type="button" class="btn close" aria-label="Close" (click)="activeModal.close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+      <p [innerHTML]="message?.text"></p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" ngbAutofocus class="btn skip" (click)="activeModal.close()" i18n>Cerrar</button>
+    </div>
 </div>
-<div class="modal-body">
-  <p [innerHTML]="message?.text"></p>
-</div>
-<div class="modal-footer">
-  <button type="button" ngbAutofocus class="btn skip" (click)="activeModal.close()" i18n>Cerrar</button>
-</div>
+
+

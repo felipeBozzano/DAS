@@ -23,13 +23,10 @@ export class PublicidadArribaComponent {
   constructor(private publicidadesService: PublicationService){}
 
   processPublicidades(){
-    console.log("puublicidades: ", this.publicidades);
     this.publicidad_arriba_izquierda = this.publicidades.filter(pub => pub.id_tipo_banner === 1 || pub.id_tipo_banner === 5);
     this.publicidad_arriba_derecha = this.publicidades.filter(pub => pub.id_tipo_banner === 2 || pub.id_tipo_banner === 6);
     this.publicidades_arriba_izquierda_random = this.obtenerElementoAleatorio(this.publicidad_arriba_izquierda);
     this.publicidades_arriba_derecha_radom = this.obtenerElementoAleatorio(this.publicidad_arriba_derecha);
-    console.log("publicidades_arriba_izquierda_random: ", this.publicidades_arriba_izquierda_random);
-    console.log("publicidades_arriba_derecha_radom: ", this.publicidades_arriba_derecha_radom);
   }
 
   obtenerElementoAleatorio<T>(array: T[]): T {

@@ -4,6 +4,8 @@ import {StreamingStudioResources} from '../../api/resources/streaming-studio.ser
 import {IContenido} from '../../api/models/IContenido.model';
 import {AuthService} from '../../services/./authService/AuthService';
 import {IInformacionContenidoResponseModel} from '../../api/models/IInformacionContenidoResponse.model';
+import {Router} from '@angular/router';
+import * as localForage from 'localforage';
 
 @Component({
   selector: 'app-contenido',
@@ -16,8 +18,9 @@ export class ContenidoComponent implements OnInit {
   advancedSearchVisible = true;
   contenido: any;
   contenidoSeleccionado: IInformacionContenidoResponseModel | null = null;
+  isVisible = true;
 
-  constructor(private _fb: FormBuilder, private streamingStudioResources: StreamingStudioResources, private authService: AuthService) {
+  constructor(private _fb: FormBuilder, private streamingStudioResources: StreamingStudioResources, private authService: AuthService, private router: Router) {
     this.formContenido = this._fb.group({
       titulo: new FormControl('',[ Validators.maxLength(16)]),
       reciente: new FormControl(false,[]),
@@ -31,9 +34,12 @@ export class ContenidoComponent implements OnInit {
   public formContenido!: FormGroup;
 
   ngOnInit(): void {
+    localForage.config({
+      driver: localForage.LOCALSTORAGE,
+      name: 'StreamingStudio'
+    });
     this.currentUser = this.authService.getCurrentUser();
     this.id_cliente = this.currentUser.id_cliente;
-    console.log("id_cliente desde busqueda avanzada: ", this.id_cliente);
     this.contenido = null;
   }
 
@@ -54,10 +60,10 @@ export class ContenidoComponent implements OnInit {
       this.streamingStudioResources.contenido(filtro)
         .subscribe(
           (response) => {
-            // Si la respuesta es exitosa, redirige al home
-            console.log('Respuesta del servidor:', response);
-            this.contenido = response;
-            // aca mando del header al home la resuesta
+            this.contenido = response
+            if(this.contenido.length === 0){
+              this.isVisible = true;
+            }
             this.advancedSearchVisible = !this.advancedSearchVisible;
           },
           (error) => {
@@ -69,16 +75,14 @@ export class ContenidoComponent implements OnInit {
     }
   }
 
-  verDescripcion(index: any){
-    const descricionParametros = {
-      id_contenido:this.contenido[index].id_contenido,
-      id_cliente:  parseInt(this.id_cliente)
-    }
-    this.streamingStudioResources.informacionContenido(descricionParametros)
-      .subscribe((response)=>{
-        this.contenidoSeleccionado = response;
-        console.log("resonse: ", response);
-      })
+  navigateTo(id_contenido: any){
+    const path = `/descripcion/${this.id_cliente}/${id_contenido}`
+    console.log("path: ", path);
+    this.router.navigate([`/${path}`]);
+  }
 
+  closeCard() {
+    this.isVisible = false;
+    this.advancedSearchVisible = !this.advancedSearchVisible;
   }
 }

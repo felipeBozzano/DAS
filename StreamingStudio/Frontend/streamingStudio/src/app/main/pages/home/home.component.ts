@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../services/authService/AuthService';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {IHome} from '../../api/models/IHome.model';
 
 
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   public recientes: any[] = [];
   public publicidades: any[] = [];
 
-  constructor(private authService: AuthService, private route: ActivatedRoute) { }
+  constructor(private authService: AuthService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
@@ -47,4 +47,8 @@ export class HomeComponent implements OnInit {
     this.contenido = response;
   }
 
+  navigateTo(id_contenido: any){
+    const path = `/descripcion/${this.client_id}/${id_contenido}`
+    this.router.navigate([`/${path}`]);
+  }
 }

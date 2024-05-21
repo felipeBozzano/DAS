@@ -1,0 +1,27 @@
+<html>
+  <body>
+  <app-header></app-header>
+    <div class="content-container">
+      <div *ngIf="descripcion"  class="card">
+        <img [src]=descripcion.infoContenido.url_imagen class="card-img">
+        <h3>{{ descripcion.infoContenido.titulo }}</h3>
+        <p>{{ descripcion.infoContenido.descripcion }}</p>
+        <p>Género: {{ descripcion.genero.descripcion }}</p>
+        <h4>Directores</h4>
+        <ul>
+          <li *ngFor="let director of descripcion.directores">
+            {{ director.nombre }} {{ director.apellido }}
+          </li>
+        </ul>
+        <h4>Actores</h4>
+        <ul>
+          <li *ngFor="let actor of descripcion.actores">
+            {{ actor.nombre }} {{ actor.apellido }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
+
+

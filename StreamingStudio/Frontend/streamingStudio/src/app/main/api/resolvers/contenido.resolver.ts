@@ -9,7 +9,6 @@ export class ListadoFederacionesResolver implements Resolve<IListadoFederaciones
   constructor(private _service: StreamingStudioResources) { }
 
   resolve(route: ActivatedRouteSnapshot): IListadoFederaciones | Observable<IListadoFederaciones> | Promise<IListadoFederaciones> {
-    console.log("id_cliente: ", this._service.federaciones({id_cliente: route.params['id_cliente']!}));
     return this._service.federaciones({id_cliente: route.params['id_cliente']});
   }
 }
