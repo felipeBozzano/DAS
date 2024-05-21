@@ -64,6 +64,14 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="row">
+        <div class="card" *ngIf="contenido && contenido.length === 0 && isVisible">
+          <div class="card-title">No se encontró contenido asociado</div>
+          <button class="close-btn row" (click)="closeCard()">Cerrar</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
 

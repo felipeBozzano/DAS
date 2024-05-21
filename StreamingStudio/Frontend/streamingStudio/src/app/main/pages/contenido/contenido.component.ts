@@ -16,6 +16,7 @@ export class ContenidoComponent implements OnInit {
   advancedSearchVisible = true;
   contenido: any;
   contenidoSeleccionado: IInformacionContenidoResponseModel | null = null;
+  isVisible = true;
 
   constructor(private _fb: FormBuilder, private streamingStudioResources: StreamingStudioResources, private authService: AuthService) {
     this.formContenido = this._fb.group({
@@ -33,7 +34,6 @@ export class ContenidoComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     this.id_cliente = this.currentUser.id_cliente;
-    console.log("id_cliente desde busqueda avanzada: ", this.id_cliente);
     this.contenido = null;
   }
 
@@ -54,11 +54,12 @@ export class ContenidoComponent implements OnInit {
       this.streamingStudioResources.contenido(filtro)
         .subscribe(
           (response) => {
-            // Si la respuesta es exitosa, redirige al home
-            console.log('Respuesta del servidor:', response);
-            this.contenido = response;
-            // aca mando del header al home la resuesta
+            this.contenido = response
+            if(this.contenido.length === 0){
+              this.isVisible = true;
+            }
             this.advancedSearchVisible = !this.advancedSearchVisible;
+            console.log("contenido: ", this.contenido);
           },
           (error) => {
             // Si hay un error en la respuesta, muestra un mensaje de error
@@ -79,6 +80,10 @@ export class ContenidoComponent implements OnInit {
         this.contenidoSeleccionado = response;
         console.log("resonse: ", response);
       })
+  }
 
+  closeCard() {
+    this.isVisible = false;
+    this.advancedSearchVisible = !this.advancedSearchVisible;
   }
 }

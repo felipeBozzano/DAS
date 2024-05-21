@@ -16,9 +16,9 @@ import {IContenido} from '../../api/models/IContenido.model';
 export class HeaderComponent implements OnInit {
   isLoggedIn = true; // Suponiendo que este valor determina si el usuario está logueado
   userMenuVisible = false;
-  advancedSearchVisible = false;
   @Input() pageTitle: string = '';
   @Input() id_cliente: string = '';
+  @Output() advancedSearchVisible = "true";
   @Output() mensajeEvent = new EventEmitter<string>();
 
   public formContenido!: FormGroup;
@@ -37,6 +37,7 @@ export class HeaderComponent implements OnInit {
   toggleUserMenu() {
     this.userMenuVisible = !this.userMenuVisible;
   }
+
 
   navigateTo(path: string) {
     this.router.navigate([`/${path}`]);
@@ -68,6 +69,10 @@ export class HeaderComponent implements OnInit {
 
   enviarMensaje(response: any) {
     this.mensajeEvent.emit(this.id_cliente);
+  }
+
+  enviarMensajeContenido(response: any) {
+    this.mensajeEvent.emit(this.advancedSearchVisible);
   }
 
   navigateToHome(){
