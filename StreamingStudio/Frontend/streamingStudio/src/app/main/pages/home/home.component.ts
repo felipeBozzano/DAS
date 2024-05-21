@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
   }
 
   extractContenido(contenidoData: any): any[] {
+    console.log("data: ", Object.keys(contenidoData).flatMap(key => contenidoData[key]))
     return Object.keys(contenidoData).flatMap(key => contenidoData[key]);
   }
 
