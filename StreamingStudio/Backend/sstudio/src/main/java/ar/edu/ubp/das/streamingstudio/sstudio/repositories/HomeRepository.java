@@ -1,6 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoHomeBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoResponseHomeBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadHomeBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -9,30 +10,31 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
+
 import java.util.*;
 
 @Repository
-public class HomeRepository implements IHomeRepository{
+public class HomeRepository implements IHomeRepository {
 
     @Autowired
     private JdbcTemplate jdbcTpl;
 
     @Override
-    public Map<String, Map<String, List<ContenidoHomeBean>>> getHome(int id_cliente) {
+    public Map<String, Map<String, ContenidoResponseHomeBean>> getHome(int id_cliente) {
         List<ContenidoHomeBean> contenido_mas_visto = getMasVisto(id_cliente);
         List<ContenidoHomeBean> contenido_reciente = getReciente(id_cliente);
         List<ContenidoHomeBean> contenido_destacado = getDestacado(id_cliente);
 
-        Map<String, List<ContenidoHomeBean>> contenido_mas_visto_agrupado = agruparContenido(contenido_mas_visto);
-        Map<String, List<ContenidoHomeBean>> contenido_reciente_agrupado = agruparContenido(contenido_reciente);
-        Map<String, List<ContenidoHomeBean>> contenido_destacado_agrupado = agruparContenido(contenido_destacado);
+        Map<String, ContenidoResponseHomeBean> contenido_mas_visto_agrupado = agruparContenido(contenido_mas_visto);
+        Map<String, ContenidoResponseHomeBean> contenido_reciente_agrupado = agruparContenido(contenido_reciente);
+        Map<String, ContenidoResponseHomeBean> contenido_destacado_agrupado = agruparContenido(contenido_destacado);
 
-        Map<String, Map<String, List<ContenidoHomeBean>>> publicidades_contenido = new HashMap<>();
-        publicidades_contenido.put("Mas_Visto", contenido_mas_visto_agrupado);
-        publicidades_contenido.put("Reciente", contenido_reciente_agrupado);
-        publicidades_contenido.put("Destacado", contenido_destacado_agrupado);
+        Map<String, Map<String, ContenidoResponseHomeBean>> contenido = new HashMap<>();
+        contenido.put("Mas_Visto", contenido_mas_visto_agrupado);
+        contenido.put("Reciente", contenido_reciente_agrupado);
+        contenido.put("Destacado", contenido_destacado_agrupado);
 
-        return publicidades_contenido;
+        return contenido;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class HomeRepository implements IHomeRepository{
                 .returningResultSet("contenido_mas_visto", BeanPropertyRowMapper.newInstance(ContenidoHomeBean.class));
 
         Map<String, Object> out = jdbcCall.execute(in);
-        List<ContenidoHomeBean> contenidoMasVisto = (List<ContenidoHomeBean>)out.get("contenido_mas_visto");
+        List<ContenidoHomeBean> contenidoMasVisto = (List<ContenidoHomeBean>) out.get("contenido_mas_visto");
         return contenidoMasVisto;
     }
 
@@ -78,15 +80,20 @@ public class HomeRepository implements IHomeRepository{
     }
 
     @Override
-    public Map<String, List<ContenidoHomeBean>> agruparContenido(List<ContenidoHomeBean> listaContenidos) {
-        Map<String, List<ContenidoHomeBean>> contenido_agrupado = new HashMap<>();
+    public Map<String, ContenidoResponseHomeBean> agruparContenido(List<ContenidoHomeBean> listaContenidos) {
+        Map<String, ContenidoResponseHomeBean> contenido_agrupado = new HashMap<>();
         for (ContenidoHomeBean contenido : listaContenidos) {
             if (!contenido_agrupado.containsKey(contenido.getId_contenido())) {
-                contenido_agrupado.put(contenido.getId_contenido(), new ArrayList<>());
+                ContenidoResponseHomeBean responseBean = new ContenidoResponseHomeBean();
+                responseBean.setId_contenido(contenido.getId_contenido());
+                responseBean.setId_plataforma(new ArrayList<>(Collections.singletonList(contenido.getId_plataforma())));
+                responseBean.setUrl_imagen(contenido.getUrl_imagen());
+                contenido_agrupado.put(contenido.getId_contenido(), responseBean);
+            } else {
+                ContenidoResponseHomeBean existingContenido = contenido_agrupado.get(contenido.getId_contenido());
+                existingContenido.getId_plataforma().add(contenido.getId_plataforma());
             }
-            contenido_agrupado.get(contenido.getId_contenido()).add(contenido);
         }
-
         return contenido_agrupado;
     }
 }

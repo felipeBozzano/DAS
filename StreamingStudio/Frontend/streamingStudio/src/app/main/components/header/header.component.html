@@ -1,24 +1,29 @@
-<header class="header-container" *ngIf="isAuthenticated(); else unauthenticated">
-  <div class="logo">
-    <img (click)="navigateToHome()" src="../../../../assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
-  </div>
-  <div class="header-title">
-    {{ pageTitle }}
-  </div>
-  <div class="nav-buttons" *ngIf="isLoggedIn">
-    <button (click)="navigateTo('series')">Series</button>
-    <button (click)="navigateTo('peliculas')">Películas</button>
-    <button (click)="navigateTo('contenido')">Búsqueda Avanzada</button>
-    <div class="user-menu">
-      <button (click)="toggleUserMenu()" class="user-button">Usuario</button>
-      <div class="dropdown" [class.show]="userMenuVisible">
-        <button (click)="navigateTo('mi-usuario')">Mi Usuario</button>
-        <button (click)="navigateToFederaciones()">Federaciones</button>
-        <button (click)="logout()">Cerrar Sesión</button>
+<html>
+  <body>
+    <header class="header-container" *ngIf="isAuthenticated(); else unauthenticated">
+      <div class="logo">
+        <img (click)="navigateToHome()" src="../../../../assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
       </div>
-    </div>
-  </div>
-</header>
+      <div class="header-title">
+        {{ pageTitle }}
+      </div>
+      <div class="nav-buttons" *ngIf="isLoggedIn">
+        <button (click)="navigateTo('series')">Series</button>
+        <button (click)="navigateTo('peliculas')">Películas</button>
+        <button (click)="navigateTo('contenido')">Búsqueda Avanzada</button>
+        <div class="user-menu">
+          <button (click)="toggleUserMenu()" class="user-button">Usuario</button>
+          <div class="dropdown" [class.show]="userMenuVisible">
+            <button (click)="navigateTo('mi-usuario')">Mi Usuario</button>
+            <button (click)="navigateToFederaciones()">Federaciones</button>
+            <button (click)="logout()">Cerrar Sesión</button>
+          </div>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>
+
 
 <ng-template #unauthenticated>
   <div class="header-container centered">

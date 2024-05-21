@@ -199,7 +199,7 @@ public class controllers {
     }
 
     @GetMapping("/home")
-    public ResponseEntity<Map<String, Map<String, List<ContenidoHomeBean>>>> mostrarHome(@RequestParam("id_cliente") int id_cliente) {
+    public ResponseEntity<Map<String, Map<String, ContenidoResponseHomeBean>>> mostrarHome(@RequestParam("id_cliente") int id_cliente) {
         return new ResponseEntity<>(home_repository.getHome(id_cliente), HttpStatus.OK);
     }
 

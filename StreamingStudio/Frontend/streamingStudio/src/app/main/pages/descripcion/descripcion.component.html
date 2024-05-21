@@ -1,9 +1,10 @@
 <html>
-  <body>
-  <app-header></app-header>
-    <div class="content-container">
-      <div *ngIf="descripcion"  class="card">
-        <img [src]=descripcion.infoContenido.url_imagen class="card-img">
+<body>
+<app-header></app-header>
+<div class="content-container">
+  <div class="card-container">
+    <div *ngIf="descripcion" class="card-horizontal">
+      <div class="card-details">
         <h3>{{ descripcion.infoContenido.titulo }}</h3>
         <p>{{ descripcion.infoContenido.descripcion }}</p>
         <p>Género: {{ descripcion.genero.descripcion }}</p>
@@ -20,8 +21,14 @@
           </li>
         </ul>
       </div>
+      <img [src]=descripcion.infoContenido.url_imagen class="card-img">
     </div>
-  </body>
+    <div class="platform-images">
+      <div *ngFor="let image of descripcion.plataformas" class="image-item">
+        <img [src]="image.url_imagen" alt="Image">
+      </div>
+    </div>
+  </div>
+</div>
+</body>
 </html>
-
-

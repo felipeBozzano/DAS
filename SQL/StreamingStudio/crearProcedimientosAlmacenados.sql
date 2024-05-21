@@ -1650,7 +1650,7 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Informacion_de_Plataforma @id_cliente INT = NULL,
+CREATE OR ALTER PROCEDURE Obtener_Informacion_de_Plataforma @id_cliente INT,
                                                             @id_contenido VARCHAR(255)
 AS
 BEGIN
@@ -1664,7 +1664,7 @@ BEGIN
              JOIN dbo.Catalogo Ca ON Ps.id_plataforma = Ca.id_plataforma
     WHERE id_contenido = @id_contenido
       AND Ps.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
-      AND (Ca.fecha_de_baja IS NOT NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
+      AND (Ca.fecha_de_baja IS NULL OR Ca.fecha_de_alta > Ca.fecha_de_baja)
 END;
 go
 
