@@ -7,21 +7,21 @@
         <h2 class="title" >Contenido Destacado</h2>
         <div class="fila-contenido">
           <div *ngFor="let contenido of destacados" class="contenido-item">
-            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" alt="Destacado">
+            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont" alt="Destacado">
           </div>
         </div>
 
         <h2 class="title">Más Visto</h2>
         <div class="fila-contenido">
           <div *ngFor="let contenido of masVistos" class="contenido-item">
-            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" alt="Más Visto">
+            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont" alt="Más Visto">
           </div>
         </div>
 
         <h2 class="title">Reciente</h2>
         <div class="fila-contenido">
           <div *ngFor="let contenido of recientes" class="contenido-item">
-            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" alt="Reciente">
+            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont" alt="Reciente">
           </div>
         </div>
       </div>
