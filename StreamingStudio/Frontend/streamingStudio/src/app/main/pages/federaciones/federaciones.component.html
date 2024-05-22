@@ -6,8 +6,16 @@
       <h2>Plataformas a Federar</h2>
       <div class="platform-list">
         <div class="platform-item" *ngFor="let plataforma of plataformas_a_federar">
-          <img *ngIf="plataforma.url_imagen" [src]="plataforma.url_imagen" alt="Plataforma {{ plataforma.id_plataforma }}">
+          <img *ngIf="plataforma.url_imagen" [src]="plataforma.url_imagen" alt="Plataforma {{ plataforma.id_plataforma }}" (click)="openModal()">
           <img *ngIf="!plataforma.url_imagen" src="https://via.placeholder.com/150" alt="No disponible">
+          <div id="myModal" class="modal" [ngClass]="{'show': isModalOpen}" (click)="closeModal($event)">
+            <div class="modal-content" (click)="$event.stopPropagation()">
+              <span class="close" (click)="closeModal($event)">&times;</span>
+              <p>Selecciona una opción:</p>
+              <button (click)="navigateToLogin()">Login</button>
+              <button (click)="navigateToRegister()">Registro</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

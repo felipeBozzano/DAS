@@ -18,6 +18,7 @@ export class FederacionesComponent implements OnInit {
   public id_cliente: string = '';
   public plataformas_a_federar: any;
   public plataformas_federadas: any;
+  public isModalOpen = false;
 
   constructor(private authService: AuthService, private route: ActivatedRoute, private streamingStudioResources: StreamingStudioResources, private router: Router) { }
 
@@ -31,8 +32,26 @@ export class FederacionesComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.federaciones = data['federaciones'];
       this.plataformas_a_federar =  this.federaciones.Plataformas_a_federar;
+      console.log("plataformas_a_federar: ", this.plataformas_a_federar);
       this.plataformas_federadas = this.federaciones.Plataformas_federadas;
     })
+  }
+
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+
+  closeModal(event: MouseEvent): void {
+    event.preventDefault();
+    this.isModalOpen = false;
+  }
+
+  navigateToLogin(): void {
+    window.location.href = 'http://localhost:4203/login';
+  }
+
+  navigateToRegister(): void {
+    window.location.href = 'http://localhost:4203/register';
   }
 
   finalizarFederacion(plataforma: any){

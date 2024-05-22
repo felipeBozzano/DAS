@@ -22,13 +22,16 @@
           </li>
         </ul>
       </div>
-      <img [src]=descripcion.infoContenido.url_imagen class="card-img">
+      <img [src]="descripcion.infoContenido.url_imagen" class="card-img">
     </div>
     <div class="platform-images">
-      <div *ngFor="let image of descripcion.plataformas" class="image-item">
+      <div *ngFor="let image of descripcion.plataformas" class="image-item" (click)="obtenerUrlDeContenido(image.id_plataforma)">
         <img [src]="image.url_imagen" alt="Image">
       </div>
     </div>
+  </div>
+  <div *ngIf="video_flag">
+    <div class="video-container" [innerHTML]="video_tag_HTML"></div>
   </div>
 </div>
 </body>
