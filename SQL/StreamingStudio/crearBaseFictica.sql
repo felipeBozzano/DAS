@@ -80,7 +80,7 @@ VALUES ('P-1', 'Toy Story', N'Descripcion de Toy Story', 'https://es.web.img3.ac
        ('P-2', 'Batman', N'Descripción de Batman', 'https://es.web.img2.acsta.net/medias/nmedia/18/66/74/01/20350623.jpg', 'P', 0),
        ('S-2', 'Superman', N'Descripción de Superman', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkFIzNYyYVW1MQg2PBUJun45u95dCWpWTaj-baRad6w&s', 'S', 1),
        ('P-3', 'Thor', N'Descripción de Thor', 'https://es.web.img3.acsta.net/medias/nmedia/18/79/89/52/19711203.jpg', 'P', 0),
-       ('S-3', 'Shrek', N'Descripción de Shrek', 'https://static.wikia.nocookie.net/doblaje/images/6/69/Shrekban.png/revision/latest?cb=20200731225428&path-prefix=es', 'S', 0),
+       ('S-3', 'Kung fu Panda', N'Descripción de Kung fu Panda', 'https://m.media-amazon.com/images/S/pv-target-images/d775fb8599018935d1e28ed9cbc2fb67870d726d850f0eee13dc6f50f37b76d3.jpg', 'S', 0),
        ('P-4', 'Drive', N'Descripción de Drive', 'https://i.blogs.es/d365ef/drive-2011/650_1200.jpg', 'P', 1),
        ('S-4', 'El padrino', N'Descripción de el padrino', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNvJucE9mgq6GvXtcJAPzaJ9huMajoCDRSHWgVfmp9Tg&s', 'S', 0);
 go

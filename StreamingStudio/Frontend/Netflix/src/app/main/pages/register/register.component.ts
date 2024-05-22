@@ -15,7 +15,7 @@ export class RegisterComponent {
   public formRegister!: FormGroup;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private http: HttpClient, private router: Router, private _fb: FormBuilder,  private netflixResourceService: NetflixResourceService ) {
+  constructor(private router: Router, private _fb: FormBuilder,  private netflixResourceService: NetflixResourceService ) {
 
      function strongPasswordValidator(minLength: number): ValidatorFn {
       return (control: AbstractControl): { [key: string]: any } | null => {
@@ -26,13 +26,13 @@ export class RegisterComponent {
         const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(value);
         const isValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar && value.length >= minLength;
 
-        return isValid ? null : { strongPassword: true };
-      };
-    }
+        return isValid ? null : {strongPassword: true};
+      }
+     }
 
      this.formRegister = this._fb.group({
       usuario: new FormControl('', [Validators.required, Validators.maxLength(16)]),
-      contrasena: new FormControl('', [Validators.required, strongPasswordValidator(8)]),
+      contrasena: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.maxLength(16), Validators.email]),
       nombre: new FormControl('', [Validators.required, Validators.maxLength(16)]),
       apellido: new FormControl('', [Validators.required, Validators.maxLength(16)]),
@@ -51,6 +51,8 @@ export class RegisterComponent {
         apellido: apellido,
         valido: true
       };
+
+      console.log(user);
 
       this.netflixResourceService.registro(user)
         .subscribe(
