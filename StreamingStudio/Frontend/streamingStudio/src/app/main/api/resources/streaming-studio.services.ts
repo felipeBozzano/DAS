@@ -81,7 +81,7 @@ export class StreamingStudioResources extends Resource{
 
   @ResourceAction({
     method: ResourceRequestMethod.Post,
-    path: `/informacion_contenido/{id_contenido}/plataforma/{id_plataforma}`,
+    path: `/informacion_contenido/mostrar_video`,
     requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })

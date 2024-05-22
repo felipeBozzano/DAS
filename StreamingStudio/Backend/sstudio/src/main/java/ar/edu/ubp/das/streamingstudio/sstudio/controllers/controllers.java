@@ -208,10 +208,15 @@ public class controllers {
     /* ----------------------------------------------------------------------------------------------------- */
 
     @PostMapping(
-            path = "/informacion_contenido/{id_contenido}/plataforma/{id_plataforma}"
+            path = "/informacion_contenido/mostrar_video",
+            consumes={MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Map<String, String>> buscarContenidoPorFiltros(@PathVariable("id_contenido") String id_contenido, @PathVariable("id_plataforma") int id_plataforma, @RequestParam("id_cliente") int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        return new ResponseEntity<>(reproducir_contenido_repository.obtener_url_de_contenido(id_contenido, id_plataforma, id_cliente), HttpStatus.OK);
+    public ResponseEntity<Map<String, String>> buscarContenidoPorFiltros(@RequestBody Map<String, String> body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        Map<String, String> contenido = new HashMap<>();
+        contenido.put("id_contenido", "P-1");
+        contenido.put("url", "<iframe width=\"1519\" height=\"569\" src=\"https://www.youtube.com/embed/YbrZc8YnagQ\" title=\"Toy Story Toons: Fiesta Saurus Rex\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>");
+        return new ResponseEntity<>(contenido, HttpStatus.OK);
+//        return new ResponseEntity<>(reproducir_contenido_repository.obtener_url_de_contenido(id_contenido, id_plataforma, id_cliente), HttpStatus.OK);
     }
 
 }
