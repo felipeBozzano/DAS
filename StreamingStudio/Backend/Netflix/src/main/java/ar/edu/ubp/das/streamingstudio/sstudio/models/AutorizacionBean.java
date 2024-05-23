@@ -1,13 +1,19 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 public class AutorizacionBean {
-    public AutorizacionBean() {
-    }
-
     private String token_de_servicio;
     private String codigo_de_transaccion;
     private int id_cliente;
     private String url_de_redireccion;
+
+    public AutorizacionBean() {
+    }
+
+    public AutorizacionBean(String codigo_de_transaccion, int id_cliente, String url_de_redireccion) {
+        this.codigo_de_transaccion = codigo_de_transaccion;
+        this.id_cliente = id_cliente;
+        this.url_de_redireccion = url_de_redireccion;
+    }
 
     public String getToken_de_servicio() {
         return token_de_servicio;

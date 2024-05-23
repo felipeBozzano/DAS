@@ -2,11 +2,21 @@ package ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans;
 
 public abstract class AbstractBean {
     private Integer codigoRespuesta;
-    private String  mensajeRespuesta;
+    private String mensajeRespuesta;
 
-    public void setStatus(int i) {
+    public Integer getCodigoRespuesta() {
+        return codigoRespuesta;
     }
 
-    public void setMessage(String unexpectedError) {
+    public void setCodigoRespuesta(Integer codigoRespuesta) {
+        this.codigoRespuesta = codigoRespuesta;
+    }
+
+    public String getMensajeRespuesta() {
+        return mensajeRespuesta;
+    }
+
+    public void setMensajeRespuesta(String mensajeRespuesta) {
+        this.mensajeRespuesta = mensajeRespuesta;
     }
 }

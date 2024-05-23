@@ -9,9 +9,12 @@ import {IContenido} from '../models/IContenido.model';
 import {IContenidoResponse} from '../models/IContenidoResponse.model';
 import {IInformacionContenidoResponseModel} from '../models/IInformacionContenidoResponse.model';
 import {IHome} from '../models/IHome.model';
-import {IFinalizarFederacion} from '../models/IFinalizarFederacion.modal';
+import {IFinalizarFederacion} from '../models/IFinalizarFederacion.model';
 import {IUrlDeContenido} from "../models/IUrlDeContenido.model";
 import {IUrlDeContenidoResponse} from "../models/IUrlDeContenidoResponse.model";
+import {IListadoFederacionesResponse} from "../models/IListadoFederacionResponse.model";
+import {IComenzarFederacionModel} from "../models/IComenzarFederacion.model";
+import {IComenzarFederacionResponseModel} from "../models/IComenzarFederacionResponse.model";
 
 @Injectable()
 @ResourceParams({
@@ -36,11 +39,20 @@ export class StreamingStudioResources extends Resource{
   registro!: IResourceMethodObservable<IUser,void>;
 
   @ResourceAction({
-    method: ResourceRequestMethod.Get,
-    path: `/usuario/{!id_cliente}/federaciones`,
+    method: ResourceRequestMethod.Post,
+    path: `/usuario/federaciones`,
+    requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  federaciones!: IResourceMethodObservable<{ id_cliente: string }, IListadoFederaciones>;
+  listar_federaciones!: IResourceMethodObservable<IListadoFederaciones, IListadoFederacionesResponse>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Post,
+    path: `/usuario/comenzar_federacion`,
+    requestBodyType: ResourceRequestBodyType.JSON,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  comenzar_federacion!: IResourceMethodObservable<IComenzarFederacionModel, IComenzarFederacionResponseModel>;
 
   @ResourceAction({
     method: ResourceRequestMethod.Post,

@@ -63,8 +63,8 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToFederaciones() {
-    const ruta = `usuario/${this.id_cliente}/federaciones`
-    this.router.navigate(["usuario", this.id_cliente, "federaciones"]);
+    // const ruta = `usuario/federaciones`
+    this.router.navigate(["usuario/federaciones"]);
   }
 
   enviarMensaje(response: any) {

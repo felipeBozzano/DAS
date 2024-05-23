@@ -101,35 +101,35 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         String url_de_redireccion = "https://localhost:8080/ss/usuario/" + id_cliente + "/finalizar_federacion/" + id_plataforma;
         body.put("url_de_redireccion", url_de_redireccion);
         body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
-        body.put("id_cliente", String.valueOf(id_cliente));
+//        body.put("id_cliente", String.valueOf(id_cliente));
         body.put("tipo_de_transaccion", tipo_transaccion);
-        FederacionBean bean = (FederacionBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/federar", body, "FederacionBean");
+        FederacionBean bean = (FederacionBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/obtener_codigo_de_transaccion", body, "FederacionBean");
 
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
                 .addValue("id_cliente", id_cliente)
-                .addValue("codigo_de_transaccion", bean.getCodigoTransaccion())
+                .addValue("codigo_de_transaccion", bean.getCodigo_de_transaccion())
                 .addValue("url_login_registro_plataforma", bean.getUrl())
                 .addValue("url_redireccion_propia", url_de_redireccion)
                 .addValue("tipo_transaccion", tipo_transaccion);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Comenzar_Federacion")
                 .withSchemaName("dbo");
-        Map<String, Object> out = jdbcCall.execute(in);
+        jdbcCall.execute(in);
 
         respuesta.put("mensaje", "Federacion comenzada");
-        respuesta.put("url_redireccion", bean.getUrl());
-        respuesta.put("codigo_transaccion", bean.getCodigoTransaccion());
+//        respuesta.put("url_redireccion", bean.getUrl());
+        respuesta.put("codigo_transaccion", bean.getCodigo_de_transaccion());
         return respuesta;
     }
 
     @Override
     @Transactional
     public Map<String, String> finalizarFederacion(int id_plataforma, int id_cliente, String codigo_de_transaccion,
-                                                   String id_cliente_plataforma, boolean actualizar_info) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+                                                   boolean actualizar_info) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
 
         Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma);
-        String url_token = conexion_plataforma.get("url_api") + "/usuario/" + id_cliente_plataforma + "/obtener_token";
+        String url_token = conexion_plataforma.get("url_api") + "/obtener_token?codigo_de_transaccion=" + codigo_de_transaccion;
 
         if (actualizar_info)
             actualizarUrlToken(id_plataforma, id_cliente, codigo_de_transaccion, url_token);
@@ -143,8 +143,8 @@ public class FederarClienteRepository implements IFederarClienteRepository {
 
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
-                .addValue("id_cliente", id_cliente)
-                .addValue("token", bean.getToken());
+                .addValue("id_cliente", id_cliente);
+//                .addValue("token", bean.getToken());
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Finalizar_Federacion")
                 .withSchemaName("dbo");

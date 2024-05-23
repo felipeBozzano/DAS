@@ -55,37 +55,37 @@ public class controllers {
     /* ----------------------------------------------------------------------------------------------------- */
 
     @PostMapping(
-            path="/create_user",
-            consumes={MediaType.APPLICATION_JSON_VALUE}
+            path = "/create_user",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<List<ClienteUsuarioBean>> createUser(@RequestBody ClienteUsuarioBean cliente) {
         return new ResponseEntity<>(user_repository.createUser(cliente), HttpStatus.CREATED);
     }
 
     @PostMapping(
-            path="/login_user",
-            consumes={MediaType.APPLICATION_JSON_VALUE}
+            path = "/login_user",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Map<String,String>> loginUsuario(@RequestBody ClienteUsuarioBean cliente) {
+    public ResponseEntity<Map<String, String>> loginUsuario(@RequestBody ClienteUsuarioBean cliente) {
         int user = user_repository.verificarUsuario(cliente.getUsuario(), cliente.getcontrasena());
         Map<String, String> respuesta = new HashMap<>();
-        if(user == 1){
+        if (user == 1) {
             Map<String, Integer> info_usuario = user_repository.informacion_usuario(cliente.getUsuario(), cliente.getcontrasena());
             respuesta.put("id_cliente", String.valueOf(info_usuario.get("id_cliente")));
             respuesta.put("nombre", String.valueOf(info_usuario.get("nombre")));
             respuesta.put("apellido", String.valueOf(info_usuario.get("apellido")));
             respuesta.put("email", String.valueOf(info_usuario.get("email")));
         }
-        if(user == 1){
+        if (user == 1) {
             respuesta.put("mensaje", "Usuario existente");
-        }else {
+        } else {
             respuesta.put("mensaje", "Usuario no existente");
         }
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
     @GetMapping(
-            path="/usuario/{id_cliente}/mi_perfil"
+            path = "/usuario/{id_cliente}/mi_perfil"
     )
     public ResponseEntity<ClienteUsuarioBean> verPerfilUsuario(@PathVariable("id_cliente") Integer id_cliente) {
         return new ResponseEntity<>(user_repository.obtenerInformacionUsuario(id_cliente), HttpStatus.OK);
@@ -95,45 +95,35 @@ public class controllers {
     /* ----------------------------------------  Federacion_Usuario  --------------------------------------- */
     /* ----------------------------------------------------------------------------------------------------- */
 
-    @GetMapping(
-            path="/usuario/{id_cliente}/federaciones"
+    @PostMapping(
+            path = "/usuario/federaciones",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Map<String, List<PlataformaDeStreamingBean>>> verFederaciones(@PathVariable("id_cliente") Integer id_cliente) {
-        return new ResponseEntity<>(user_repository.obtenerFederaciones(id_cliente), HttpStatus.OK);
+    public ResponseEntity<Map<String, List<PlataformaDeStreamingBean>>> verFederaciones(@RequestBody Map<String, String> body) {
+        return new ResponseEntity<>(user_repository.obtenerFederaciones(Integer.parseInt(body.get("id_cliente"))), HttpStatus.OK);
     }
 
     @PostMapping(
-            path="/usuario/{id_cliente}/comenzar_federacion/{id_plataforma}/{tipo_de_transaccion}"
+            path = "/usuario/comenzar_federacion",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Map<String, String>> federarClientePlataforma(@PathVariable("id_plataforma") Integer id_plataforma,
-                                                                        @PathVariable("id_cliente") Integer id_cliente,
-                                                                        @PathVariable("tipo_de_transaccion") String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        return new ResponseEntity<>(federar_clienteRepository.federarClientePlataforma(id_plataforma, id_cliente, tipo_transaccion), HttpStatus.OK);
+    public ResponseEntity<Map<String, String>> federarClientePlataforma(@RequestBody Map<String, String> body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        int id_plataforma = Integer.parseInt(body.get("id_plataforma"));
+        int id_cliente = Integer.parseInt(body.get("id_cliente"));
+        String tipo_de_transaccion = body.get("tipo_de_transaccion");
+
+        return new ResponseEntity<>(federar_clienteRepository.federarClientePlataforma(id_plataforma, id_cliente, tipo_de_transaccion), HttpStatus.OK);
     }
 
     @PostMapping(
-            value="/usuario/{id_cliente}/finalizar_federacion/{id_plataforma}",
-            consumes={MediaType.APPLICATION_JSON_VALUE}
+            value = "/usuario/finalizar_federacion",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Map<String, String>> finalizarFederacion(@PathVariable("id_plataforma") Integer id_plataforma,
-                                                                   @PathVariable("id_cliente") Integer id_cliente,
-                                                                   @RequestBody Map<String,String> body,
-                                                                   HttpServletResponse response) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-
+    public ResponseEntity<Map<String, String>> finalizarFederacion(@RequestBody Map<String, String> body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String codigo_de_transaccion = body.get("codigo_de_transaccion");
-        String id_cliente_plataforma = body.get("id_cliente_plataforma");
-        Map<String, String> respuesta = federar_clienteRepository.finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion, id_cliente_plataforma, true);
-
-        // Construye la URL de redirección con id_cliente
-        String urlRedireccion = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path("/usuario/" + id_cliente + "/federaciones")
-                .buildAndExpand(id_cliente)
-                .toUriString();
-
-        // Redirige al cliente a la nueva URL
-        response.setHeader("Location", urlRedireccion);
-        response.setStatus(302);
+        int id_cliente = Integer.parseInt(body.get("id_cliente"));
+        int id_plataforma = Integer.parseInt(body.get("id_plataforma"));
+        Map<String, String> respuesta = federar_clienteRepository.finalizarFederacion(id_plataforma, id_cliente, codigo_de_transaccion, true);
 
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
@@ -171,7 +161,7 @@ public class controllers {
     /* ---------------------------------- Buscar contenido por filtros --------------------------------------*/
     /* ----------------------------------------------------------------------------------------------------- */
     @PostMapping(
-            path="/contenido_por_filtros"
+            path = "/contenido_por_filtros"
     )
     public ResponseEntity<List<ContenidoHomeBean>> buscarContenidoPorFiltros(@RequestBody ContenidoFiltroBean body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         System.out.println(body);
@@ -180,7 +170,7 @@ public class controllers {
     }
 
     @GetMapping(
-            path="/informacion_contenido/{id_contenido}/{id_cliente}"
+            path = "/informacion_contenido/{id_contenido}/{id_cliente}"
     )
     public ResponseEntity<InformacionContenidoBean> obtenerInformacionContenido(@PathVariable("id_contenido") String id_contenido, @PathVariable("id_cliente") int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         InformacionContenidoBean infoContenido = buscar_contenido_repository.informacionContenido(id_contenido, id_cliente);
@@ -192,7 +182,7 @@ public class controllers {
     /* ------------------------------------------ Publicidades --------------------------------------------- */
     /* ----------------------------------------------------------------------------------------------------- */
     @GetMapping(
-            path="/publicidades_activas"
+            path = "/publicidades_activas"
     )
     public ResponseEntity<Map<String, Map<Integer, List<PublicidadHomeBean>>>> obtenerPublicidadesActivas() {
         return new ResponseEntity<>(publicidades_repository.obtenerPublicidadesAgrupadas(), HttpStatus.OK);
@@ -209,7 +199,7 @@ public class controllers {
 
     @PostMapping(
             path = "/informacion_contenido/mostrar_video",
-            consumes={MediaType.APPLICATION_JSON_VALUE}
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Map<String, String>> buscarContenidoPorFiltros(@RequestBody Map<String, String> body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Map<String, String> contenido = new HashMap<>();

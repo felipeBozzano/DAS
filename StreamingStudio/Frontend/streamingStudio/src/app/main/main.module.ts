@@ -9,7 +9,7 @@ import {MainRoutingModule} from './main-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HeaderComponent} from './components/header/header.component';
 import {FederacionesComponent} from './pages/federaciones/federaciones.component';
-import {ListadoFederacionesResolver} from './api/resolvers/resolver.service';
+import {ListadoFederacionesResolver} from './api/resolvers/listado-federaciones.service';
 import {ContenidoComponent} from './pages/contenido/contenido.component';
 import {HomeResolver} from './api/resolvers/home.resolver';
 import {PublicidadArribaComponent} from './components/publicidades-arriba/publicidad-arriba.component';

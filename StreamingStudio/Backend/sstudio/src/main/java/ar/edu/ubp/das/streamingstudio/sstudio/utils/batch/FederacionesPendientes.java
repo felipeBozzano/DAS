@@ -63,8 +63,8 @@ public class FederacionesPendientes {
 
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
-                .addValue("id_cliente", id_cliente)
-                .addValue("token", bean.getToken());
+                .addValue("id_cliente", id_cliente);
+//                .addValue("token", bean.getToken());
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Finalizar_Federacion")
                 .withSchemaName("dbo");

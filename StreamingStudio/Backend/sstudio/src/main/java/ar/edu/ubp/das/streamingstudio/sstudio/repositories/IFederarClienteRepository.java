@@ -13,6 +13,6 @@ public interface IFederarClienteRepository {
     Map<String, String> obtenerInformacionDeConexionAPlataforma(int id_plataforma);
     Map<String, String> comenzarFederacion(int id_plataforma, int id_cliente, String tipo_transaccion) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
     Map<String, String> finalizarFederacion(int id_plataforma, int id_cliente, String codigo_de_transaccion,
-                                            String id_cliente_plataforma, boolean actualizar_info) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+                                            boolean actualizar_info) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
     void actualizarUrlToken(int id_plataforma, int id_cliente, String codigo_de_transaccion, String id_cliente_plataforma);
 }

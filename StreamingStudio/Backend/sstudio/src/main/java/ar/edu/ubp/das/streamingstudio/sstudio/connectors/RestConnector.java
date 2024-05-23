@@ -39,8 +39,8 @@ public class RestConnector extends AbstractConnector {
             return bean;
         } catch (Exception e) {
             bean = beanFactory.obtenerBean(return_bean);
-            bean.setStatus(-1);
-            bean.setMessage("Unexpected Error");
+            bean.setCodigoRespuesta(-1);
+            bean.setMensajeRespuesta("Unexpected Error");
             return bean;
         }
     }

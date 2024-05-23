@@ -4,7 +4,8 @@ import {IListadoFederaciones} from '../../api/models/IListadoFederacion.model';
 import {AuthService} from '../../services/authService/AuthService';
 import * as localForage from 'localforage';
 import {StreamingStudioResources} from '../../api/resources/streaming-studio.services';
-import {IFinalizarFederacion} from '../../api/models/IFinalizarFederacion.modal';
+import {IFinalizarFederacion} from '../../api/models/IFinalizarFederacion.model';
+import {IComenzarFederacionModel} from "../../api/models/IComenzarFederacion.model";
 
 @Component({
   selector: 'app-federaciones',
@@ -19,6 +20,7 @@ export class FederacionesComponent implements OnInit {
   public plataformas_a_federar: any;
   public plataformas_federadas: any;
   public isModalOpen = false;
+  public plataforma_seleccionada: any;
 
   constructor(private authService: AuthService, private route: ActivatedRoute, private streamingStudioResources: StreamingStudioResources, private router: Router) { }
 
@@ -37,7 +39,8 @@ export class FederacionesComponent implements OnInit {
     })
   }
 
-  openModal(): void {
+  openModal(plataforma: any): void {
+    this.plataforma_seleccionada = plataforma;
     this.isModalOpen = true;
   }
 
@@ -46,12 +49,38 @@ export class FederacionesComponent implements OnInit {
     this.isModalOpen = false;
   }
 
-  navigateToLogin(): void {
-    window.location.href = 'http://localhost:4203/login';
+  navigateToLogin(plataforma: any, tipo_de_transaccion: string): void {
+    console.log(plataforma)
+
+    const info_federacion: IComenzarFederacionModel = {
+      id_plataforma: plataforma.id_plataforma,
+      id_cliente: this.id_cliente,
+      tipo_de_transaccion: tipo_de_transaccion
+    }
+
+    this.streamingStudioResources.comenzar_federacion(info_federacion).subscribe((response) => {
+      console.log("Respuesta de back", response.mensaje)
+      const ruta: any = plataforma.url_api + '/login?codigo_de_transaccion=' + response.codigo_transaccion
+      console.log("Redireccion:", ruta)
+      // window.location.href = ruta;
+    })
   }
 
-  navigateToRegister(): void {
-    window.location.href = 'http://localhost:4203/register';
+  navigateToRegister(plataforma: any, tipo_de_transaccion: string): void {
+    console.log(plataforma)
+
+    const info_federacion: IComenzarFederacionModel = {
+      id_plataforma: plataforma.id_plataforma,
+      id_cliente: this.id_cliente,
+      tipo_de_transaccion: tipo_de_transaccion
+    }
+
+    this.streamingStudioResources.comenzar_federacion(info_federacion).subscribe((response) => {
+      console.log("Respuesta de back", response.mensaje)
+      const ruta: any = plataforma.url_api + '/register?codigo_de_transaccion=' + response.codigo_transaccion
+      console.log("Redireccion:", ruta)
+      // window.location.href = ruta;
+    })
   }
 
   finalizarFederacion(plataforma: any){
