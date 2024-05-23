@@ -1,21 +1,14 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.HomeRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.ReproducirContenidoRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.FederarClienteRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.FiltrarContenidoRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.PublicidadesRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.UsuarioClienteRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.*;
 import ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.EnviarFacturasRepository;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -67,18 +60,16 @@ public class controllers {
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Map<String, String>> loginUsuario(@RequestBody ClienteUsuarioBean cliente) {
-        int user = user_repository.verificarUsuario(cliente.getUsuario(), cliente.getcontrasena());
+        int user = user_repository.verificarUsuario(cliente.getEmail(), cliente.getcontrasena());
         Map<String, String> respuesta = new HashMap<>();
         if (user == 1) {
-            Map<String, Integer> info_usuario = user_repository.informacion_usuario(cliente.getUsuario(), cliente.getcontrasena());
+            Map<String, Integer> info_usuario = user_repository.informacion_usuario(cliente.getEmail(), cliente.getcontrasena());
             respuesta.put("id_cliente", String.valueOf(info_usuario.get("id_cliente")));
             respuesta.put("nombre", String.valueOf(info_usuario.get("nombre")));
             respuesta.put("apellido", String.valueOf(info_usuario.get("apellido")));
             respuesta.put("email", String.valueOf(info_usuario.get("email")));
-        }
-        if (user == 1) {
             respuesta.put("mensaje", "Usuario existente");
-        } else {
+        }else {
             respuesta.put("mensaje", "Usuario no existente");
         }
         return new ResponseEntity<>(respuesta, HttpStatus.OK);

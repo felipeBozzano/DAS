@@ -23,23 +23,18 @@ export class LoginComponent {
               private streamingStudioResources: StreamingStudioResources,
               private publicidadesService: PublicationService)
               { this.formLogin = this._fb.group({
-                usuario: new FormControl('',[Validators.required, Validators.maxLength(16)]),
-                contrasena: new FormControl('',[Validators.required, Validators.maxLength(16)])
+                email: new FormControl('',[Validators.required, Validators.maxLength(255), Validators.email]),
+                contrasena: new FormControl('',[Validators.required, Validators.maxLength(255)])
               }) }
 
   // tslint:disable-next-line:typedef
   onSubmit() {
     if (this.formLogin.valid) {
-      const { usuario, contrasena } = this.formLogin.value
-      const login: ILogin = {
-        usuario: usuario,
-        contrasena: contrasena,
-      }
-
-      console.log(login);
-      this.streamingStudioResources.login(login)
+      console.log(this.formLogin.value);
+      this.streamingStudioResources.login(this.formLogin.value)
         .subscribe(
           (response) => {
+            console.log(response);
             const clienteId = response.id_cliente;
             this.routeHome = `/home/${clienteId}`;
             // Si la respuesta es exitosa, redirige al home

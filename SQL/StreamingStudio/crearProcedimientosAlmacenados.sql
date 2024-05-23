@@ -1,14 +1,13 @@
 /* Cliente_Usuario */
 
-CREATE OR ALTER PROCEDURE Crear_Usuario @usuario VARCHAR(255),
-                                        @contrasena VARCHAR(255),
+CREATE OR ALTER PROCEDURE Crear_Usuario @contrasena VARCHAR(255),
                                         @email VARCHAR(255),
                                         @nombre VARCHAR(255),
                                         @apellido VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Cliente_Usuario(usuario, contrasena, email, nombre, apellido, valido)
-    VALUES (@usuario, @contrasena, @email, @nombre, @apellido, 0)
+    INSERT INTO dbo.Cliente_Usuario(contrasena, email, nombre, apellido, valido)
+    VALUES (@contrasena, @email, @nombre, @apellido, 0)
 END;
 go
 
@@ -21,8 +20,7 @@ CREATE OR ALTER PROCEDURE Editar_Usuario @id_cliente INT,
 AS
 BEGIN
     UPDATE Cliente_Usuario
-    SET usuario    = @usuario,
-        contrasena = @contrasena,
+    SET contrasena = @contrasena,
         email      = @email,
         nombre     = @nombre,
         apellido   = @apellido
@@ -48,20 +46,20 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Login_Usuario1 @usuario VARCHAR(255),
+CREATE OR ALTER PROCEDURE Informacion_Usuario @email VARCHAR(255),
                                          @contrasena VARCHAR(255)
 AS
 BEGIN
     SELECT *
     FROM Cliente_Usuario
-    WHERE usuario = @usuario
+    WHERE email = @email
       AND contrasena = @contrasena
 END;
 go
 
 
 
-CREATE OR ALTER PROCEDURE Login_Usuario @usuario VARCHAR(255),
+CREATE OR ALTER PROCEDURE Login_Usuario @email VARCHAR(255),
                                         @contrasena VARCHAR(255)
 AS
 BEGIN
@@ -70,7 +68,7 @@ BEGIN
     -- Verificar si existe el usuario y contrasena
     IF EXISTS (SELECT 1
                FROM Cliente_Usuario
-               WHERE usuario = @usuario
+               WHERE email = @email
                  AND contrasena = @contrasena)
         BEGIN
             SET @resultado = 1; -- Usuario y contrasena coinciden
@@ -88,7 +86,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Informacion_de_Usuario @id_cliente INT
 AS
 BEGIN
-    SELECT usuario, email, nombre, apellido, valido
+    SELECT email, nombre, apellido, valido
     FROM dbo.Cliente_Usuario
     WHERE id_cliente = @id_cliente
 END;

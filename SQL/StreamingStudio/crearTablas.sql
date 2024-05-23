@@ -243,7 +243,6 @@ CREATE TABLE [Fee_Plataforma]
 CREATE TABLE [Cliente_Usuario]
 (
     [id_cliente] INT IDENTITY (1,1) PRIMARY KEY,
-    [usuario]    VARCHAR(255)        NOT NULL,
     [contrasena] VARCHAR(255)        NOT NULL,
     [email]      VARCHAR(255) UNIQUE NOT NULL,
     [nombre]     VARCHAR(255)        NOT NULL,

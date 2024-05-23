@@ -1,8 +1,9 @@
 .home-container {
   display: flex;
   align-items: center;
-  height: 120vh; /* Ajusta la altura según tus necesidades */
+  height: 100vh;
   background-color: lightskyblue;
+  text-align: center;
 }
 
 .home-title {
@@ -11,7 +12,9 @@
 }
 
 .contenidos {
+  margin-top: 300px;
   background-color: lightskyblue;
+  width: 100%; /* Asegura que el contenido tome todo el ancho disponible */
 }
 
 .fila-contenido {
@@ -20,6 +23,7 @@
   display: flex;
   justify-content: space-around;
   margin-bottom: 20px;
+  width: 100%; /* Asegura que la fila tome todo el ancho disponible */
 }
 
 .contenido-item {
@@ -36,32 +40,34 @@
   object-fit: cover; /* Ajusta la imagen para llenar el contenedor sin deformarla */
 }
 
-.title{
+.title {
   color: #0056b3;
   font-family: "Arial", sans-serif;
 }
 
-body{
+body, html {
   background-color: lightskyblue;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-html{
-  background-color: lightskyblue;
-}
-
-.img-cont{
+.img-cont {
   border-radius: 5px;
   cursor: pointer;
 }
 
-.row{
+.row {
   display: flex;
-  margin-top: 100px;
+  justify-content: center; /* Centra horizontalmente los elementos en la fila */
+  align-items: center; /* Centra verticalmente los elementos en la fila */
+  height: 100%; /* Asegura que la fila tome toda la altura disponible */
+  width: 100%;
 }
 
-.col-2{
-  height: 104vh;
+.col-2 {
+  height: 100vh; /* Usa altura completa de la vista */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente los elementos dentro de col-2 */
 }
-
-
-

@@ -6,28 +6,28 @@
         <div class="col-2">
           <app-publicidad-derecha exclusiva="true" no_exclusiva="true"></app-publicidad-derecha>
         </div>
-        <div class="contenidos">
-          <h2 class="title" >Contenido Destacado</h2>
-          <div class="fila-contenido">
-            <div *ngFor="let contenido of destacados" class="contenido-item">
-              <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont" alt="Destacado">
+          <div class="contenidos">
+            <h2 class="title" >Contenido Destacado</h2>
+            <div class="fila-contenido">
+              <div *ngFor="let contenido of destacados" class="contenido-item">
+                <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont" alt="Destacado">
+              </div>
             </div>
-          </div>
 
-          <h2 class="title">Más Visto</h2>
-          <div class="fila-contenido">
-            <div *ngFor="let contenido of masVistos" class="contenido-item">
-              <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont" alt="Más Visto">
+            <h2 class="title">Más Visto</h2>
+            <div class="fila-contenido">
+              <div *ngFor="let contenido of masVistos" class="contenido-item">
+                <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont" alt="Más Visto">
+              </div>
             </div>
-          </div>
 
-          <h2 class="title">Reciente</h2>
-          <div class="fila-contenido">
-            <div *ngFor="let contenido of recientes" class="contenido-item">
-              <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont" alt="Reciente">
+            <h2 class="title">Reciente</h2>
+            <div class="fila-contenido">
+              <div *ngFor="let contenido of recientes" class="contenido-item">
+                <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont" alt="Reciente">
+              </div>
             </div>
           </div>
-        </div>
         <div class="col-2">
           <app-publicidad-izquierda exclusiva="true" no_exclusiva="true"></app-publicidad-izquierda>
         </div>
