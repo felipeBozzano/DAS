@@ -30,37 +30,31 @@ export class RegisterComponent {
     }
 
     this.formRegister = this._fb.group({
-      usuario: new FormControl('',[Validators.required, Validators.maxLength(16)]),
+      usuario: new FormControl('',[Validators.required, Validators.maxLength(25)]),
       contrasena: new FormControl('',[Validators.required, strongPasswordValidator(8)]),
-      email: new FormControl('',[Validators.required, Validators.maxLength(16),Validators.email]),
-      nombre: new FormControl('',[Validators.required, Validators.maxLength(16)]),
-      apellido: new FormControl('',[Validators.required, Validators.maxLength(16)]),
+      email: new FormControl('',[Validators.required, Validators.maxLength(255),Validators.email]),
+      nombre: new FormControl('',[Validators.required, Validators.maxLength(100)]),
+      apellido: new FormControl('',[Validators.required, Validators.maxLength(40)]),
     })
   }
-
-  async onSubmit() {
+  onSubmit() {
+    console.log(this.formRegister);
     if (this.formRegister.valid) {
-      const {usuario, contrasena, email, nombre, apellido} = this.formRegister.value
-      const user: IUser = {
-        usuario: usuario,
-        contrasena: contrasena,
-        email: email,
-        nombre: nombre,
-        apellido: apellido,
-        valido: true
+      this.streamingStudioResources.registro(this.formRegister.value)
+        .subscribe({
+          next: ()=>
+          {
+              // Si la respuesta es exitosa, redirige al home
+              this.router.navigate(['/login']);
+            }
+          ,
+        error: (error) => {
+        // Si hay un error en la respuesta, muestra un mensaje de error
+        console.error('Error en la solicitud:', error);
+        throw error;
+        // Aquí puedes manejar el error y mostrar un mensaje de error al usuario
       }
-      this.streamingStudioResources.registro(user)
-        .subscribe(
-          (response) => {
-            // Si la respuesta es exitosa, redirige al home
-            this.router.navigate(['/login']);
-          },
-          (error) => {
-            // Si hay un error en la respuesta, muestra un mensaje de error
-            console.error('Error en la solicitud:', error);
-            // Aquí puedes manejar el error y mostrar un mensaje de error al usuario
-          }
-        );
+    });
     }
   }
 }

@@ -12,12 +12,12 @@ import {FederacionesComponent} from './pages/federaciones/federaciones.component
 import {ListadoFederacionesResolver} from './api/resolvers/listado-federaciones.service';
 import {ContenidoComponent} from './pages/contenido/contenido.component';
 import {HomeResolver} from './api/resolvers/home.resolver';
-import {PublicidadArribaComponent} from './components/publicidades-arriba/publicidad-arriba.component';
+import {PublicidadDerechaComponent} from './components/publicidades-derecha/publicidad-derecha.component';
 import {PublicationService} from './services/publicationService/publicationService';
-import { PublicidadAbajoComponent } from './components/publicidades-abajo/publicidades-abajo.component';
 import {DescripcionComponent} from './pages/descripcion/descripcion.component';
 import {DescripcionContenidoResolverResolver} from './api/resolvers/descripcion-contenido.resolver';
 import {DescripcionContenidoHomeResolverResolver} from './api/resolvers/descripcion-contenido-home.resolver';
+import { PublicidadIzquierdaComponent } from './components/publicidades-izquierda/publicidades-izquierda.component';
 
 
 // @ts-ignore
@@ -29,8 +29,8 @@ import {DescripcionContenidoHomeResolverResolver} from './api/resolvers/descripc
     LoginComponent,
     RegisterComponent,
     ContenidoComponent,
-    PublicidadArribaComponent,
-    PublicidadAbajoComponent,
+    PublicidadDerechaComponent,
+    PublicidadIzquierdaComponent,
     DescripcionComponent
   ],
   imports: [

@@ -1,8 +1,8 @@
 /* Estilos generales para los contenedores de anuncios */
 .top-ads {
-  display: flex;
+  display: block;
   justify-content: space-between;
-  margin-top: 82px;
+  margin-top: 24px;
 }
 
 /* Estilos para los contenedores de anuncios individuales */
@@ -19,8 +19,8 @@
 }
 
 .top-right-ad {
-  height: 100px;
-  width: 200px;
+  height: 200px;
+  width: 100px;
 }
 
 /* Estilos para las imágenes dentro de los contenedores de anuncios */
@@ -30,6 +30,6 @@
 }
 
 .top-right-ad img {
-  width: 200px;
-  height: 100px;
+  width: 100px;
+  height: 200px;
 }

@@ -9,24 +9,26 @@ interface Publicidad {
 }
 
 @Component({
-  selector: 'app-publicidad-arriba',
-  templateUrl: './publicidad-arriba.component.html',
-  styleUrls: ['./publicidad-arriba.component.css']
+  selector: 'app-publicidad-derecha',
+  templateUrl: './publicidad-derecha.component.html',
+  styleUrls: ['./publicidad-derecha.component.css']
 })
-export class PublicidadArribaComponent {
+export class PublicidadDerechaComponent {
+  @Input() public no_exclusiva: any = null;
+  @Input() public exclusiva: any = null;
   @Input() publicidades: Publicidad[] = [];
-  public publicidad_arriba_izquierda: any;
+  public publicidad_abajo_derecha: any;
   public publicidad_arriba_derecha: any;
-  public publicidades_arriba_izquierda_random: any;
-  public publicidades_arriba_derecha_radom: any;
+  public publicidades_arriba_derecha_random: any;
+  public publicidades_abajo_derecha_radom: any;
 
   constructor(private publicidadesService: PublicationService){}
 
   processPublicidades(){
-    this.publicidad_arriba_izquierda = this.publicidades.filter(pub => pub.id_tipo_banner === 1 || pub.id_tipo_banner === 5);
+    this.publicidad_abajo_derecha = this.publicidades.filter(pub => pub.id_tipo_banner === 3 );
     this.publicidad_arriba_derecha = this.publicidades.filter(pub => pub.id_tipo_banner === 2 || pub.id_tipo_banner === 6);
-    this.publicidades_arriba_izquierda_random = this.obtenerElementoAleatorio(this.publicidad_arriba_izquierda);
-    this.publicidades_arriba_derecha_radom = this.obtenerElementoAleatorio(this.publicidad_arriba_derecha);
+    this.publicidades_arriba_derecha_random = this.obtenerElementoAleatorio(this.publicidad_arriba_derecha);
+    this.publicidades_abajo_derecha_radom = this.obtenerElementoAleatorio(this.publicidad_abajo_derecha);
   }
 
   obtenerElementoAleatorio<T>(array: T[]): T {

@@ -1,0 +1,13 @@
+<div class="top-ads">
+  <div *ngIf="exclusiva" class="top-right-ad">
+    <a target="_blank">
+      <img [src]="publicidades_arriba_derecha_random.url_de_imagen" alt="Top Right Ad">
+    </a>
+  </div>
+
+  <div *ngIf="no_exclusiva" class="top-left-ad">
+    <a target="_blank">
+      <img [src]="publicidades_abajo_derecha_radom.url_de_imagen" alt="Top Left Ad">
+    </a>
+  </div>
+</div>

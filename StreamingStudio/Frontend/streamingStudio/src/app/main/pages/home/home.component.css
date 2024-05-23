@@ -1,6 +1,7 @@
 .home-container {
+  display: flex;
   align-items: center;
-  height: 144vh; /* Ajusta la altura según tus necesidades */
+  height: 120vh; /* Ajusta la altura según tus necesidades */
   background-color: lightskyblue;
 }
 
@@ -51,6 +52,15 @@ html{
 .img-cont{
   border-radius: 5px;
   cursor: pointer;
+}
+
+.row{
+  display: flex;
+  margin-top: 100px;
+}
+
+.col-2{
+  height: 104vh;
 }
 
 

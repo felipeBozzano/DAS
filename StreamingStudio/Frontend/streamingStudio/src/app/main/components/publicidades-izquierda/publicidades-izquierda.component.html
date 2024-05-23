@@ -1,11 +1,11 @@
 <div class="top-ads">
-  <div class="bott-right-ad">
+  <div *ngIf="exclusiva" class="bott-right-ad">
     <a target="_blank">
-      <img [src]="publicidades_abajo_derecha_random.url_de_imagen" alt="Bottom Right Ad">
+      <img [src]="publicidades_arriba_izquierda_random.url_de_imagen" alt="Bottom Right Ad">
     </a>
   </div>
 
-  <div class="bott-left-ad">
+  <div *ngIf="no_exclusiva" class="bott-left-ad">
     <a target="_blank">
       <img [src]="publicidades_abajo_izquierda_random.url_de_imagen" alt="Bottom Left Ad">
     </a>

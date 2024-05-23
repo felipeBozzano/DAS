@@ -75,3 +75,17 @@ body {
   width: 560px; /* Ancho del reproductor de video */
   height: 315px; /* Altura del reproductor de video */
 }
+
+.row{
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pub-der{
+  margin-top: 40px;
+}
+
+.pub-izq{
+  margin-top: 100px;
+}

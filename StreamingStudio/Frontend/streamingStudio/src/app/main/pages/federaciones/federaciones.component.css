@@ -93,4 +93,9 @@ button {
   cursor: pointer;
 }
 
+.row{
+  display: flex;
+  margin-top: 100px;
+}
+
 

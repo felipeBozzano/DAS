@@ -1,7 +1,6 @@
 /* Estilos generales para los contenedores de anuncios */
 .top-ads {
-  display: flex;
-  justify-content: space-between;
+  display: block;
   background-color: lightskyblue;
 }
 
@@ -27,8 +26,8 @@
 }
 
 .bott-right-ad img {
-  width: 200px;
-  height: 100px;
+  width: 100px;
+  height: 200px;
 }
 
 /* Estilos para las imágenes dentro de los contenedores de anuncios */

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PublicidadArribaComponent } from './publicidad-arriba.component';
+import { PublicidadDerechaComponent } from './publicidad-derecha.component';
 
 describe('PublicidadComponent', () => {
-  let component: PublicidadArribaComponent;
-  let fixture: ComponentFixture<PublicidadArribaComponent>;
+  let component: PublicidadDerechaComponent;
+  let fixture: ComponentFixture<PublicidadDerechaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PublicidadArribaComponent ]
+      declarations: [ PublicidadDerechaComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PublicidadArribaComponent);
+    fixture = TestBed.createComponent(PublicidadDerechaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
