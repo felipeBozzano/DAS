@@ -22,7 +22,6 @@ public class UsuarioClienteRepository implements IUsuarioClienteRepository {
     @Transactional
     public List<ClienteUsuarioBean> createUser(ClienteUsuarioBean cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("usuario", cliente.getUsuario())
                 .addValue("contrasena", cliente.getcontrasena())
                 .addValue("email", cliente.getEmail())
                 .addValue("nombre", cliente.getNombre())
@@ -39,12 +38,12 @@ public class UsuarioClienteRepository implements IUsuarioClienteRepository {
         return usuario;
     }
 
-    public Map<String, Integer> informacion_usuario(String usuario, String contrasena) {
+    public Map<String, Integer> informacion_usuario(String email, String contrasena) {
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("usuario", usuario)
+                .addValue("email", email)
                 .addValue("contrasena", contrasena);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Login_Usuario1")
+                .withProcedureName("Informacion_Usuario")
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
@@ -52,9 +51,9 @@ public class UsuarioClienteRepository implements IUsuarioClienteRepository {
         return resultado;
     }
 
-    public int verificarUsuario(String usuario, String contrasena) {
+    public int verificarUsuario(String email, String contrasena) {
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("usuario", usuario)
+                .addValue("email", email)
                 .addValue("contrasena", contrasena);
 
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)

@@ -2,6 +2,7 @@
 .top-ads {
   display: block;
   background-color: lightskyblue;
+  margin-left: 10px;
 }
 
 /* Estilos para los contenedores de anuncios individuales */
