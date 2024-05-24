@@ -4,6 +4,7 @@ import {AuthService} from '../../services/authService/AuthService';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ILogin } from '../../api/models/login.model';
 import {NetflixResourceService} from '../../api/resources/netflix-resource.service';
+import {INuevaAutorizacionModel} from '../../api/models/INuevaAutorizacion.model';
 
 
 @Component({
@@ -24,8 +25,8 @@ export class LoginComponent {
               private netflixResourceService: NetflixResourceService,
               private route: ActivatedRoute)
               { this.formLogin = this._fb.group({
-                usuario: new FormControl('',[Validators.required, Validators.maxLength(16)]),
-                contrasena: new FormControl('',[Validators.required, Validators.maxLength(16)])
+                email: new FormControl('',[Validators.required, Validators.maxLength(255), Validators.email]),
+                contrasena: new FormControl('',[Validators.required, Validators.maxLength(255)])
               }) }
 
   ngOnInit(): void {
@@ -38,9 +39,9 @@ export class LoginComponent {
   // tslint:disable-next-line:typedef
   onSubmit() {
     if (this.formLogin.valid) {
-      const { usuario, contrasena } = this.formLogin.value
+      const { email, contrasena } = this.formLogin.value
       const login: ILogin = {
-        usuario: usuario,
+        email: email,
         contrasena: contrasena,
       }
 
@@ -48,14 +49,20 @@ export class LoginComponent {
       this.netflixResourceService.login(login)
         .subscribe(
           (response) => {
+            console.log("response: ", response);
             // Si la respuesta es exitosa, redirige al home
             if (response.mensaje === 'Usuario existente') {
               this.authService.login(response);
               this.showError = false;
               this.route.queryParams.subscribe(params => {
-                this.codigoTransaccion = params['codigo_transaccion'];
+                this.codigoTransaccion = params['codigo_de_transaccion'];
               });
-              this.netflixResourceService.crear_autorizacion(this.codigoTransaccion, response.id_cliente).subscribe(
+              const body: INuevaAutorizacionModel = {
+                codigo_de_transaccion:  this.codigoTransaccion,
+                id_cliente: response.id_cliente
+              }
+              console.log("body: ", body);
+              this.netflixResourceService.crear_autorizacion(body).subscribe(
                 (response) => {
                   console.log(response);
                   window.location.href = "http://localhost:4200/usuario"+ "?codigo_de_transaccion=" + response.codigo_de_transaccion + "&ic_cliente=" + response.id_cliente;

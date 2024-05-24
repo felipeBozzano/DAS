@@ -7,7 +7,7 @@ import {LogiResolver} from './api/resolvers/LoginResolver';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: 'full'}, // Ruta por defecto a tu formulario de inicio de sesión
-  {path: 'login', component: LoginComponent, resolve: {autorizacion: LogiResolver}},
+  {path: 'login', component: LoginComponent,},
   {path: 'register', component: RegisterComponent},
   // Otras rutas que necesites
 ];

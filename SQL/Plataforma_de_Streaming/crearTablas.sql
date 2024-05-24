@@ -72,9 +72,8 @@ CREATE TABLE [Partner]
 CREATE TABLE [Cliente_Usuario]
 (
     [id_cliente] INT IDENTITY (1,1) NOT NULL,
-    [usuario]    VARCHAR(255)       NOT NULL,
     [contrasena] VARCHAR(255)       NOT NULL,
-    [email]      VARCHAR(255)       NOT NULL,
+    [email]      VARCHAR(255)  UNIQUE     NOT NULL,
     [nombre]     VARCHAR(255)       NOT NULL,
     [apellido]   VARCHAR(255)       NOT NULL,
     [valido]     BIT                NOT NULL,

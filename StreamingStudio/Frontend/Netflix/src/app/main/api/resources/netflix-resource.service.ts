@@ -6,11 +6,12 @@ import {ILogin} from '../models/login.model';
 import {ILoginResponse} from '../models/ILoginResponse.model';
 import {IVerificacionAutorizacionResponseModel} from '../models/IVerificacionAutorizacionResponse.model';
 import {IAutorizacionModel} from '../models/IAutorizacion.model';
+import {INuevaAutorizacionModel} from '../models/INuevaAutorizacion.model';
 
 
 @Injectable()
 @ResourceParams({
-  pathPrefix: `${environment.apiUrl}/Netflix`
+  pathPrefix: `${environment.apiUrl}/netflix`
 })
 export class NetflixResourceService extends Resource{
 
@@ -43,6 +44,6 @@ export class NetflixResourceService extends Resource{
     path: '/crear_autorizacion',
     responseBodyType: ResourceResponseBodyType.Json
   })
-  crear_autorizacion!: IResourceMethodObservable<{codigo_de_transaccion: string, id_cliente: number}, IAutorizacionModel>;
+  crear_autorizacion!: IResourceMethodObservable<INuevaAutorizacionModel, IAutorizacionModel>;
 
 }

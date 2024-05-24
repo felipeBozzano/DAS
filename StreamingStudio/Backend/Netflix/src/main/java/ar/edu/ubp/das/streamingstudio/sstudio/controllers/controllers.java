@@ -30,6 +30,26 @@ public class controllers {
     @Autowired
     PartnerRepository partnerRepository;
 
+    @PostMapping(
+            path = "/login_user",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> loginUsuario(@RequestBody ClienteUsuarioBean cliente) {
+        int user = clienteRepository.verificarUsuario(cliente.getEmail(), cliente.getcontrasena());
+        Map<String, String> respuesta = new HashMap<>();
+        if (user == 1) {
+            Map<String, Integer> info_usuario = clienteRepository.informacion_usuario(cliente.getEmail(), cliente.getcontrasena());
+            respuesta.put("id_cliente", String.valueOf(info_usuario.get("id_cliente")));
+            respuesta.put("nombre", String.valueOf(info_usuario.get("nombre")));
+            respuesta.put("apellido", String.valueOf(info_usuario.get("apellido")));
+            respuesta.put("email", String.valueOf(info_usuario.get("email")));
+            respuesta.put("mensaje", "Usuario existente");
+        }else {
+            respuesta.put("mensaje", "Usuario no existente");
+        }
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
+
     @PostMapping("/obtener_codigo_de_transaccion")
     public ResponseEntity<VerificacionTransaccionBean> crearTransaccion(@RequestBody TransaccionBean transaccionBean) {
         // Verificar que el partner esté registrado
@@ -47,11 +67,11 @@ public class controllers {
     }
 
     @GetMapping("/crear_autorizacion")
-    public  ResponseEntity<AutorizacionBean> login(@RequestParam("id_cliente") int id_cliente, @RequestParam("codigo_transaccion") String codigo_transaccion) {
-        autorizacionRepository.crearAutorizacion(id_cliente, codigo_transaccion);
-        String url_de_redireccion = autorizacionRepository.obtenerUrlDeRedireccion(codigo_transaccion);
-        AutorizacionBean autorizacion = new AutorizacionBean(codigo_transaccion, id_cliente, url_de_redireccion);
-        return new ResponseEntity<>(autorizacion, HttpStatus.OK);
+    public  ResponseEntity<AutorizacionBean> crear_autorizacion(@RequestBody AutorizacionBean autorizacion ) {
+        autorizacionRepository.crearAutorizacion(autorizacion.getId_cliente(), autorizacion.getCodigo_de_transaccion());
+        String url_de_redireccion = autorizacionRepository.obtenerUrlDeRedireccion(autorizacion.getCodigo_de_transaccion());
+        AutorizacionBean nueva_autorizacion = new AutorizacionBean(autorizacion.getCodigo_de_transaccion(), autorizacion.getId_cliente(), url_de_redireccion);
+        return new ResponseEntity<>(nueva_autorizacion, HttpStatus.OK);
     }
 
     @PostMapping(
