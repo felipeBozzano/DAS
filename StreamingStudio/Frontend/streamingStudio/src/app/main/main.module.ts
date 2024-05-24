@@ -18,6 +18,7 @@ import {DescripcionComponent} from './pages/descripcion/descripcion.component';
 import {DescripcionContenidoResolverResolver} from './api/resolvers/descripcion-contenido.resolver';
 import {DescripcionContenidoHomeResolverResolver} from './api/resolvers/descripcion-contenido-home.resolver';
 import { PublicidadIzquierdaComponent } from './components/publicidades-izquierda/publicidades-izquierda.component';
+import {UsuarioComponent} from './pages/usuario/usuario.component';
 
 
 // @ts-ignore
@@ -31,7 +32,8 @@ import { PublicidadIzquierdaComponent } from './components/publicidades-izquierd
     ContenidoComponent,
     PublicidadDerechaComponent,
     PublicidadIzquierdaComponent,
-    DescripcionComponent
+    DescripcionComponent,
+    UsuarioComponent
   ],
   imports: [
     CommonModule,

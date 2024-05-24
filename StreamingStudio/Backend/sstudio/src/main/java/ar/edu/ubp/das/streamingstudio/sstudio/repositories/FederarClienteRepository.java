@@ -118,7 +118,7 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         jdbcCall.execute(in);
 
         respuesta.put("mensaje", "Federacion comenzada");
-//        respuesta.put("url_redireccion", bean.getUrl());
+        respuesta.put("url_redireccion", bean.getUrl());
         respuesta.put("codigo_transaccion", bean.getCodigo_de_transaccion());
         return respuesta;
     }

@@ -173,6 +173,8 @@ CREATE TABLE [Autorizacion]
     [id_cliente]            INT,
     [token]                 VARCHAR(255) NOT NULL,
     [fecha_de_alta]         DATETIME     NOT NULL,
+    [url_de_redireccion]    VARCHAR(255) NOT NULL,
+    [tipo_de_transaccion]   VARCHAR(1)   NOT NULL,
     [fecha_de_baja]         DATETIME,
     PRIMARY KEY ([codigo_de_transaccion], [id_cliente]),
     CONSTRAINT [FK_Autorizacion.codigo_de_transaccion]

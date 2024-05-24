@@ -32,9 +32,9 @@ public class AutorizacionRepository {
         String codigo_de_transaccion_string = codigo_de_transaccion.toString();
         String url_de_redireccion;
         if (tipo_de_transaccion.equals("L"))
-            url_de_redireccion = "http://localhost:8081/netflix/login";
+            url_de_redireccion = "http://localhost:4201/netflix/login";
         else
-            url_de_redireccion = "http://localhost:8081/netflix/register";
+            url_de_redireccion = "http://localhost:4201/netflix/register";
 
         // Crear transacción
         SqlParameterSource in = new MapSqlParameterSource()

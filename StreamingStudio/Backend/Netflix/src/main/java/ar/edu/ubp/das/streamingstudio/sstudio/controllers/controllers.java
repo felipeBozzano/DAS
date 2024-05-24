@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,18 +47,10 @@ public class controllers {
     }
 
     @GetMapping("/crear_autorizacion")
-    public ResponseEntity<AutorizacionBean> login(@RequestBody Map<String, String> body) {
-        int id_cliente = Integer.parseInt(body.get("id_cliente"));
-        String codigoTransaccion = body.get("codigo_transaccion");
-        autorizacionRepository.crearAutorizacion(id_cliente, codigoTransaccion);
-        String url_de_redireccion = autorizacionRepository.obtenerUrlDeRedireccion(codigoTransaccion);
-
-        AutorizacionBean autorizacion = new AutorizacionBean(codigoTransaccion, id_cliente, url_de_redireccion);
-
-        // REDIRIGIR AL URL DE REDIRECCION DE STREAMING STUDIO
-        // La información que devuelve este endpoint es para redirigir a streaming studio
-        // redirect(url_de_redireccion).body(id_cliente_plataforma, codigo_de_transaccion)
-
+    public  ResponseEntity<AutorizacionBean> login(@RequestParam("id_cliente") int id_cliente, @RequestParam("codigo_transaccion") String codigo_transaccion) {
+        autorizacionRepository.crearAutorizacion(id_cliente, codigo_transaccion);
+        String url_de_redireccion = autorizacionRepository.obtenerUrlDeRedireccion(codigo_transaccion);
+        AutorizacionBean autorizacion = new AutorizacionBean(codigo_transaccion, id_cliente, url_de_redireccion);
         return new ResponseEntity<>(autorizacion, HttpStatus.OK);
     }
 
