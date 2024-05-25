@@ -58,7 +58,7 @@ public class controllers {
             return new ResponseEntity<>(respuesta, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity<>(autorizacionRepository.crearTransaccion(transaccionBean.getTipo_de_transaccion()),HttpStatus.OK);
+        return new ResponseEntity<>(autorizacionRepository.crearTransaccion(transaccionBean.getTipo_de_transaccion(), transaccionBean.getUrl_de_redireccion()),HttpStatus.OK);
     }
 
     @GetMapping("/verificar_autorizacion")
@@ -66,7 +66,7 @@ public class controllers {
         return new ResponseEntity<>(autorizacionRepository.verificarAutorizacion(codigoTransaccion), HttpStatus.OK);
     }
 
-    @GetMapping("/crear_autorizacion")
+    @PostMapping(path="/crear_autorizacion",  consumes={MediaType.APPLICATION_JSON_VALUE})
     public  ResponseEntity<AutorizacionBean> crear_autorizacion(@RequestBody AutorizacionBean autorizacion ) {
         autorizacionRepository.crearAutorizacion(autorizacion.getId_cliente(), autorizacion.getCodigo_de_transaccion());
         String url_de_redireccion = autorizacionRepository.obtenerUrlDeRedireccion(autorizacion.getCodigo_de_transaccion());
@@ -82,15 +82,14 @@ public class controllers {
         return new ResponseEntity<>(clienteRepository.createUser(cliente), HttpStatus.CREATED);
     }
 
-    @PostMapping("/usuario/{id_cliente}/obtener_token")
-    public ResponseEntity<VereficacionAutorizacionBean> obtenerToken(@PathVariable("id_cliente") Integer id_cliente,
-                                                            @RequestBody AutorizacionBean autorizacionBean) {
+    @PostMapping("/obtener_token")
+    public ResponseEntity<VereficacionAutorizacionBean> obtenerToken(@RequestBody AutorizacionBean autorizacionBean) {
         if (!partnerRepository.verificarTokenDePartner(autorizacionBean.getToken_de_servicio())) {
             VereficacionAutorizacionBean respuesta = new VereficacionAutorizacionBean(false);
             return new ResponseEntity<>(respuesta, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        String token = autorizacionRepository.obtenerToken(id_cliente, autorizacionBean.getCodigo_de_transaccion());
+        String token = autorizacionRepository.obtenerToken(autorizacionBean.getCodigo_de_transaccion());
         VereficacionAutorizacionBean respuesta = new VereficacionAutorizacionBean(true, token);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }

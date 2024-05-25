@@ -170,15 +170,12 @@ CREATE TABLE [Autorizacion]
 (
     [codigo_de_transaccion] VARCHAR(255),
     [id_cliente]            INT,
-    [token]                 VARCHAR(255) NOT NULL,
+    [token]                 VARCHAR(255) ,
     [fecha_de_alta]         DATETIME     NOT NULL,
     [url_de_redireccion]    VARCHAR(255) NOT NULL,
     [tipo_de_transaccion]   VARCHAR(1)   NOT NULL,
     [fecha_de_baja]         DATETIME,
-    PRIMARY KEY ([codigo_de_transaccion], [id_cliente]),
-    CONSTRAINT [FK_Autorizacion.codigo_de_transaccion]
-        FOREIGN KEY ([codigo_de_transaccion])
-            REFERENCES [Transaccion] ([codigo_de_transaccion]),
+    PRIMARY KEY ([codigo_de_transaccion]),
     CONSTRAINT [FK_Autorizacion.id_cliente]
         FOREIGN KEY ([id_cliente])
             REFERENCES [Cliente_Usuario] ([id_cliente]),

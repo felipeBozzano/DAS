@@ -19,7 +19,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard], resolve: {home: HomeResolver}},
   {path: 'register', component: RegisterComponent},
   {path: 'contenido', component: ContenidoComponent, canActivate: [AuthGuard]},
-  {path: 'contenido', component: UsuarioComponent, canActivate: [AuthGuard], resolve: {}},
+  {path: 'usuario/:id_cliente/finalizar_federacion/:id_plataforma', component: UsuarioComponent, resolve: {}},
   {
     path: 'descripcion/:id_cliente/:id_contenido',
     component: DescripcionComponent,

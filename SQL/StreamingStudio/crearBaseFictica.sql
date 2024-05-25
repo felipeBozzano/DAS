@@ -11,7 +11,8 @@ VALUES (N'contrasena1', 'usuario1@example.com', 'Juan', N'Pérez', 1),
        (N'contrasena7', 'usuario7@example.com', 'Roberto', N'García', 1),
        (N'contrasena8', 'usuario8@example.com', 'Elena', N'Fernández', 1),
        (N'contrasena9', 'usuario9@example.com', 'Miguel', N'Díaz', 1),
-       (N'contrasena10', 'usuario10@example.com', 'Carmen', N'Rodríguez', 1);
+       (N'contrasena10', 'usuario10@example.com', 'Carmen', N'Rodríguez', 1),
+       (N'Contrasena1@', 'francisco1@gmail.com', 'Carmen', N'Rodríguez', 1);
 go
 
 -- Crear 3 géneros

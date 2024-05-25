@@ -59,13 +59,13 @@ export class LoginComponent {
               });
               const body: INuevaAutorizacionModel = {
                 codigo_de_transaccion:  this.codigoTransaccion,
-                id_cliente: response.id_cliente
+                id_cliente: response.id_cliente,
               }
               console.log("body: ", body);
               this.netflixResourceService.crear_autorizacion(body).subscribe(
                 (response) => {
                   console.log(response);
-                  window.location.href = "http://localhost:4200/usuario"+ "?codigo_de_transaccion=" + response.codigo_de_transaccion + "&ic_cliente=" + response.id_cliente;
+                  window.location.href = response.url_de_redireccion + "?codigo_de_transaccion=" + response.codigo_de_transaccion;
                 }
               )
             } else {

@@ -15,6 +15,7 @@ import {IUrlDeContenidoResponse} from "../models/IUrlDeContenidoResponse.model";
 import {IListadoFederacionesResponse} from "../models/IListadoFederacionResponse.model";
 import {IComenzarFederacionModel} from "../models/IComenzarFederacion.model";
 import {IComenzarFederacionResponseModel} from "../models/IComenzarFederacionResponse.model";
+import {IFederacionFinalizadaModel} from '../models/IFederacionFinalizada.model';
 
 @Injectable()
 @ResourceParams({
@@ -85,11 +86,11 @@ export class StreamingStudioResources extends Resource{
 
   @ResourceAction({
     method: ResourceRequestMethod.Post,
-    path: `/usuario/{id_cliente}/finalizar_federacion/{id_plataforma}`,
+    path: `/usuario/{!id_cliente}/finalizar_federacion/{!id_plataforma}`,
     requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  finalizar_federacion!: IResourceMethodObservable<{iFinalizarFederacion: IFinalizarFederacion, id_cliente: number, id_plataforma:number}, IHome>;
+  finalizar_federacion!: IResourceMethodObservable<IFinalizarFederacion, IFederacionFinalizadaModel>;
 
   @ResourceAction({
     method: ResourceRequestMethod.Post,

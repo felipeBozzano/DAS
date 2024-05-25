@@ -40,8 +40,9 @@ export class NetflixResourceService extends Resource{
   verificar_autorizacion!: IResourceMethodObservable<{codigo_de_transaccion: string}, IVerificacionAutorizacionResponseModel>;
 
   @ResourceAction({
-    method: ResourceRequestMethod.Get,
+    method: ResourceRequestMethod.Post,
     path: '/crear_autorizacion',
+    requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
   crear_autorizacion!: IResourceMethodObservable<INuevaAutorizacionModel, IAutorizacionModel>;
