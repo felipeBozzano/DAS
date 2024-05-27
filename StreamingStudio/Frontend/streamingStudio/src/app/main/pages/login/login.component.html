@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <app-header></app-header>
+  <div class="container-fluid">
+
+    <div class="row">
+      <app-header></app-header>
+    </div>
+
     <div class="login-container">
       <div class="login-form">
-        <div></div>
         <h2>LOGIN</h2>
         <form (ngSubmit)="onSubmit() " [formGroup]="formLogin">
           <div class="form-group">
@@ -30,5 +34,6 @@
         </div>
       </div>
     </div>
+  </div>
   </body>
 </html>

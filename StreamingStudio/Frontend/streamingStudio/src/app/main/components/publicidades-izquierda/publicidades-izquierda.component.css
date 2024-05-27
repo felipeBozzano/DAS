@@ -1,38 +1,13 @@
-/* Estilos generales para los contenedores de anuncios */
-.top-ads {
-  display: block;
-  background-color: lightskyblue;
-  margin-left: 10px;
-}
-
 /* Estilos para los contenedores de anuncios individuales */
-.bott-left-ad {
+.left-bot-ad, .left-top-ad {
   border: 3px solid black;
-  margin: 20px;
-  height: 200px;
-  width: 100px;
+  background-color: white;
+  flex: 0 0 10%;
+  margin: auto;
 }
 
-.bott-right-ad {
-  border: 3px solid black;
-  margin: 20px;
-  height: 200px;
-  width: 100px;
-}
-
-/* Estilos para las imágenes dentro de los contenedores de anuncios */
-.bott-left-ad img {
-  width: 100px;
-  height: 200px;
-}
-
-.bott-right-ad img {
-  width: 100px;
-  height: 200px;
-}
-
-/* Estilos para las imágenes dentro de los contenedores de anuncios */
-.bott-left-ad img, .bott-right-ad img {
-  width: 100px;
-  height: 200px;
+/*!* Estilos para las imágenes dentro de los contenedores de anuncios *!*/
+.left-img {
+  width: 100%;
+  height: 100%;
 }
