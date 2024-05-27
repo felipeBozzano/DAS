@@ -136,9 +136,9 @@ INSERT INTO Plataforma_de_Streaming (nombre_de_fantasia, razon_social, url_image
 VALUES ('Netflix', N'Netflix Argentina S.R.L.',
         'https://images.ctfassets.net/4cd45et68cgf/4nBnsuPq03diC5eHXnQYx/d48a4664cdc48b6065b0be2d0c7bc388/Netflix-Logo.jpg', 'Netflix123', 'http://localhost:8081/netflix', 'REST', 1),
        ('Prime Video', N'Prime Video Argentina S.R.L.',
-        'https://yt3.googleusercontent.com/pn_3JEt2nFaRA6dY08NzFM2w8A7NtUbaniamEnObxtLX3ZhT9w41KW0W0pjl-RiczGS0rgzZ=s900-c-k-c0x00ffffff-no-rj', 'PrimeVideo123', 'http://localhost:8081/prime_video', 'REST', 1),
+        'https://yt3.googleusercontent.com/pn_3JEt2nFaRA6dY08NzFM2w8A7NtUbaniamEnObxtLX3ZhT9w41KW0W0pjl-RiczGS0rgzZ=s900-c-k-c0x00ffffff-no-rj', 'PrimeVideo123', 'http://localhost:8082/prime_video', 'REST', 1),
        ('Star Plus', N'Star Plus S.R.L.',
-        'https://media.ambito.com/p/050f05a32403fba3d95c8b783ccccee6/adjuntos/239/imagenes/039/297/0039297233/1200x675/smart/star-plusjpg.jpg', 'StarPlus123', 'http://localhost:8081/star_plus', 'SOAP', 1);
+        'https://media.ambito.com/p/050f05a32403fba3d95c8b783ccccee6/adjuntos/239/imagenes/039/297/0039297233/1200x675/smart/star-plusjpg.jpg', 'StarPlus123', 'http://localhost:8083/star_plus', 'SOAP', 1);
 go
 
 -- Llenar Catálogo

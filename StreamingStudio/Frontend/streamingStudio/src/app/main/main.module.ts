@@ -19,6 +19,10 @@ import {DescripcionContenidoResolverResolver} from './api/resolvers/descripcion-
 import {DescripcionContenidoHomeResolverResolver} from './api/resolvers/descripcion-contenido-home.resolver';
 import { PublicidadIzquierdaComponent } from './components/publicidades-izquierda/publicidades-izquierda.component';
 import {UsuarioComponent} from './pages/usuario/usuario.component';
+import {PeliculasComponent} from './pages/peliculas/peliculas.component';
+import {SeriesComponent} from './pages/series/series.component';
+import {PeliculasResolver} from './api/resolvers/peliculas.resolver';
+import {SeriesResolver} from './api/resolvers/series.resolver';
 
 
 // @ts-ignore
@@ -33,7 +37,9 @@ import {UsuarioComponent} from './pages/usuario/usuario.component';
     PublicidadDerechaComponent,
     PublicidadIzquierdaComponent,
     DescripcionComponent,
-    UsuarioComponent
+    UsuarioComponent,
+    PeliculasComponent,
+    SeriesComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +53,9 @@ import {UsuarioComponent} from './pages/usuario/usuario.component';
     StreamingStudioResources,
     PublicationService,
     DescripcionContenidoResolverResolver,
-    DescripcionContenidoHomeResolverResolver
+    DescripcionContenidoHomeResolverResolver,
+    PeliculasResolver,
+    SeriesResolver
   ]
 })
 export class MainModule { }

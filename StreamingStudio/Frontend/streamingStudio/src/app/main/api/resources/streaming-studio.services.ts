@@ -16,6 +16,8 @@ import {IListadoFederacionesResponse} from "../models/IListadoFederacionResponse
 import {IComenzarFederacionModel} from "../models/IComenzarFederacion.model";
 import {IComenzarFederacionResponseModel} from "../models/IComenzarFederacionResponse.model";
 import {IFederacionFinalizadaModel} from '../models/IFederacionFinalizada.model';
+import {IPeliculasModelResonse} from '../models/IPeliculas.model';
+import {ISeriesModelResponse} from '../models/ISeries.model';
 
 @Injectable()
 @ResourceParams({
@@ -99,4 +101,20 @@ export class StreamingStudioResources extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   obtener_url_de_contenido!: IResourceMethodObservable<{iUrlDeContenido: IUrlDeContenido}, IUrlDeContenidoResponse>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Post,
+    path: '/series',
+    requestBodyType: ResourceRequestBodyType.JSON,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  series!: IResourceMethodObservable<void,ISeriesModelResponse>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Post,
+    path: '/peliculas',
+    requestBodyType: ResourceRequestBodyType.JSON,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  peliculas!: IResourceMethodObservable<void,IPeliculasModelResonse>;
 }

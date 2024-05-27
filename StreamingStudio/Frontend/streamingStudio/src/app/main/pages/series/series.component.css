@@ -1,0 +1,27 @@
+.series-container {
+  margin-top: 100px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  border-radius: 5px;
+  border: solid 3px;
+  justify-content: center;
+}
+
+.serie {
+  flex: 1 1 200px; /* Ajusta el tamaño base y permite flexibilidad */
+  max-width: 200px; /* Ajusta el tamaño máximo */
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.serie img {
+  width: 100%;
+  height: auto; /* Mantiene la proporción de la imagen */
+  display: block;
+}
+
+.publicidades {
+  flex-direction: column;
+  display: flex;
+}

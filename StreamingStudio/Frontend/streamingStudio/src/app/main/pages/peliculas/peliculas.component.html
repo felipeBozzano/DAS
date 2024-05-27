@@ -1,0 +1,20 @@
+<html>
+<body>
+<div class="container-fluid">
+  <div class="row justify-content-center b">
+    <app-header [pageTitle]="'Peliculas'"></app-header>
+  </div>
+  <div class="row">
+
+    <app-publicidad-izquierda class="col-2 publicidades" exclusiva="true"></app-publicidad-izquierda>
+    <div class="col-8">
+      <div class="peliculas-container">
+        <div class="pelicula" *ngFor="let pelicula of peliculas">
+          <h2>{{ pelicula.titulo }}</h2>
+          <img [src]="pelicula.url_imagen" alt="{{ pelicula.titulo }}">
+        </div>
+      </div>
+    </div>
+    <app-publicidad-derecha  class="col-2 publicidades" exclusiva="true"></app-publicidad-derecha>
+  </div>
+</div>

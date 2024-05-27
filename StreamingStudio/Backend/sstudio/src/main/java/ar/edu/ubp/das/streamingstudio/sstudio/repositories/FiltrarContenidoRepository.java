@@ -2,6 +2,8 @@ package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoHomeBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.InformacionContenidoBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PeliculaBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.SerieBean;
 import io.micrometer.common.lang.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -143,5 +145,27 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
         }
         List<Map<String, String>> plataformas = resulset;
         return plataformas;
+    }
+
+    public List<SerieBean> obtenerSeries() {
+        SqlParameterSource in = new MapSqlParameterSource();
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_Series")
+                .withSchemaName("dbo")
+                .returningResultSet("series", BeanPropertyRowMapper.newInstance(SerieBean.class));;
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<SerieBean> series = (List<SerieBean>) out.get("series");
+        return series;
+    }
+
+    public List<PeliculaBean> obtenerPeliculas() {
+        SqlParameterSource in = new MapSqlParameterSource();
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_Peliculas")
+                .withSchemaName("dbo")
+                .returningResultSet("peliculas", BeanPropertyRowMapper.newInstance(PeliculaBean.class));
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<PeliculaBean> peliculas = (List<PeliculaBean>) out.get("peliculas");
+        return peliculas;
     }
 }

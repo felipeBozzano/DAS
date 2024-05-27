@@ -11,6 +11,7 @@ import {CoreModule} from './core/core.module';
 import { ResourceModule } from '@kkoehn/ngx-resource-handler-ngx-http';
 import {MainModule} from './main/main.module';
 
+
 @NgModule({
     declarations: [
         AppComponent,

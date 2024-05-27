@@ -168,6 +168,22 @@ public class controllers {
         return new ResponseEntity<>(infoContenido, HttpStatus.OK);
     }
 
+    @PostMapping(
+            path = "/series"
+    )
+    public ResponseEntity<List<SerieBean>> obtenerSeries() {
+        List<SerieBean> series = buscar_contenido_repository.obtenerSeries();
+        return new ResponseEntity<>(series, HttpStatus.OK);
+    }
+
+    @PostMapping(
+            path = "/peliculas"
+    )
+    public ResponseEntity<List<PeliculaBean>> obtenerPeliculas() {
+        List<PeliculaBean> peliculas = buscar_contenido_repository.obtenerPeliculas();
+        return new ResponseEntity<>(peliculas, HttpStatus.OK);
+    }
+
 
     /* ----------------------------------------------------------------------------------------------------- */
     /* ------------------------------------------ Publicidades --------------------------------------------- */

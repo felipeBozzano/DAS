@@ -78,4 +78,10 @@ export class HeaderComponent implements OnInit {
   navigateToHome(){
     this.router.navigate(['/home'], { queryParams: {id_cliente: this.id_cliente }});
   }
+
+  navigateToUser(){
+    this.router.navigate([`mi-usuario/${this.id_cliente}`]);
+  }
+
+  protected readonly toString = toString;
 }
