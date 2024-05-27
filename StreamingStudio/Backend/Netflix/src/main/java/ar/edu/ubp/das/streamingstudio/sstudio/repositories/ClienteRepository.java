@@ -3,6 +3,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.AutorizacionBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -104,4 +105,33 @@ public class ClienteRepository {
         List<ClienteUsuarioBean> usuario = (List<ClienteUsuarioBean>)out.get("Crear_Usuario");
         return usuario;
     }
+
+    public int verificarUsuario(String email, String contrasena) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("email", email)
+                .addValue("contrasena", contrasena);
+
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Login_Usuario")
+                .withSchemaName("dbo");
+
+        Map<String, Object> out = jdbcCall.execute(in);
+
+        List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
+        int resultado = resulset.getFirst().get("ExisteUsuario");
+        return resultado;
+    }
+    public Map<String, Integer> informacion_usuario(String email, String contrasena) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("email", email)
+                .addValue("contrasena", contrasena);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Informacion_Usuario")
+                .withSchemaName("dbo");
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
+        Map<String, Integer> resultado = resulset.get(0);
+        return resultado;
+    }
+
 }

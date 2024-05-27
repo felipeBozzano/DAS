@@ -11,6 +11,7 @@ import {HomeResolver} from './api/resolvers/home.resolver';
 import {DescripcionContenidoResolverResolver} from './api/resolvers/descripcion-contenido.resolver';
 import {DescripcionComponent} from './pages/descripcion/descripcion.component';
 import {DescripcionContenidoHomeResolverResolver} from './api/resolvers/descripcion-contenido-home.resolver';
+import {UsuarioComponent} from './pages/usuario/usuario.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/login', pathMatch: "full"}, // Ruta por defecto a tu formulario de inicio de sesión
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard], resolve: {home: HomeResolver}},
   {path: 'register', component: RegisterComponent},
   {path: 'contenido', component: ContenidoComponent, canActivate: [AuthGuard]},
+  {path: 'usuario/:id_cliente/finalizar_federacion/:id_plataforma', component: UsuarioComponent, resolve: {}},
   {
     path: 'descripcion/:id_cliente/:id_contenido',
     component: DescripcionComponent,

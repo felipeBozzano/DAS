@@ -8,13 +8,13 @@ USE StreamingStudio;
  */
 
 /* FEDERAR CLIENTE 1 CON PLATAFORMA 1 */
-EXEC Comenzar_Federacion @id_plataforma = 2, @id_cliente = 13, @codigo_de_transaccion = "Codigo1_Cliente1_Plataforma1",
+EXEC Comenzar_Federacion @id_plataforma = 3, @id_cliente = 1, @codigo_de_transaccion = "Codigo1_Cliente1_Plataforma1",
      @tipo_transaccion = 'L', @url_login_registro_plataforma = 'https://www.plataforma1.com/login',
      @url_redireccion_propia = 'https://www.streamingstudio.com/terminarfederacion';
-EXEC Finalizar_Federacion @id_plataforma = 2, @id_cliente = 13, @token = "Token1_Cliente1_Plataforma1";
+EXEC Finalizar_Federacion @id_plataforma = 3, @id_cliente = 1, @token = "Token1_Cliente1_Plataforma1";
 
 /* DESVINCULAR FEDERACION DE CLIENTE 1 CON PLATAFORMA 1 */
-EXEC Desvincular_Federacion @id_plataforma = 3, @id_cliente = 1;
+EXEC Desvincular_Federacion @id_plataforma = 1, @id_cliente = 13;
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 

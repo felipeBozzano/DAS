@@ -107,7 +107,7 @@ public class controllers {
     }
 
     @PostMapping(
-            value = "/usuario/finalizar_federacion",
+            value = "/usuario/{id_cliente}/finalizar_federacion/{id_plataforma}",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Map<String, String>> finalizarFederacion(@RequestBody Map<String, String> body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {

@@ -72,9 +72,8 @@ CREATE TABLE [Partner]
 CREATE TABLE [Cliente_Usuario]
 (
     [id_cliente] INT IDENTITY (1,1) NOT NULL,
-    [usuario]    VARCHAR(255)       NOT NULL,
     [contrasena] VARCHAR(255)       NOT NULL,
-    [email]      VARCHAR(255)       NOT NULL,
+    [email]      VARCHAR(255)  UNIQUE     NOT NULL,
     [nombre]     VARCHAR(255)       NOT NULL,
     [apellido]   VARCHAR(255)       NOT NULL,
     [valido]     BIT                NOT NULL,
@@ -171,13 +170,12 @@ CREATE TABLE [Autorizacion]
 (
     [codigo_de_transaccion] VARCHAR(255),
     [id_cliente]            INT,
-    [token]                 VARCHAR(255) NOT NULL,
+    [token]                 VARCHAR(255) ,
     [fecha_de_alta]         DATETIME     NOT NULL,
+    [url_de_redireccion]    VARCHAR(255) NOT NULL,
+    [tipo_de_transaccion]   VARCHAR(1)   NOT NULL,
     [fecha_de_baja]         DATETIME,
-    PRIMARY KEY ([codigo_de_transaccion], [id_cliente]),
-    CONSTRAINT [FK_Autorizacion.codigo_de_transaccion]
-        FOREIGN KEY ([codigo_de_transaccion])
-            REFERENCES [Transaccion] ([codigo_de_transaccion]),
+    PRIMARY KEY ([codigo_de_transaccion]),
     CONSTRAINT [FK_Autorizacion.id_cliente]
         FOREIGN KEY ([id_cliente])
             REFERENCES [Cliente_Usuario] ([id_cliente]),

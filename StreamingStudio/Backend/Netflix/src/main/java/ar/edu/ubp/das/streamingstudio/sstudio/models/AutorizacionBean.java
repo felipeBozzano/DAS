@@ -15,6 +15,11 @@ public class AutorizacionBean {
         this.url_de_redireccion = url_de_redireccion;
     }
 
+    public AutorizacionBean(String codigo_de_transaccion, int id_cliente) {
+        this.codigo_de_transaccion = codigo_de_transaccion;
+        this.id_cliente = id_cliente;
+    }
+
     public String getToken_de_servicio() {
         return token_de_servicio;
     }

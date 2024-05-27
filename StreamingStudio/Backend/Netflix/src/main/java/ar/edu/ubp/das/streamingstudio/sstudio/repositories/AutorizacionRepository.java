@@ -24,7 +24,7 @@ public class AutorizacionRepository {
     private Map<String, String> respuesta;
 
     @Transactional
-    public VerificacionTransaccionBean crearTransaccion(String tipo_de_transaccion) {
+    public VerificacionTransaccionBean crearTransaccion(String tipo_de_transaccion, String url_redireccion_ss) {
 //        respuesta = new HashMap<>();
 
         // Crear codigo de transacción y url para redireccionar
@@ -32,14 +32,14 @@ public class AutorizacionRepository {
         String codigo_de_transaccion_string = codigo_de_transaccion.toString();
         String url_de_redireccion;
         if (tipo_de_transaccion.equals("L"))
-            url_de_redireccion = "http://localhost:8081/netflix/login";
+            url_de_redireccion = "http://localhost:4201/login";
         else
-            url_de_redireccion = "http://localhost:8081/netflix/register";
+            url_de_redireccion = "http://localhost:4201/register";
 
         // Crear transacción
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("codigo_de_transaccion", codigo_de_transaccion_string)
-                .addValue("url_de_redireccion", url_de_redireccion)
+                .addValue("url_de_redireccion", url_redireccion_ss)
                 .addValue("tipo_de_transaccion", tipo_de_transaccion);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Crear_Transaccion")
@@ -96,9 +96,8 @@ public class AutorizacionRepository {
         return url_de_redireccion;
     }
 
-    public String obtenerToken(int id_cliente, String codigo_de_transaccion) {
+    public String obtenerToken(String codigo_de_transaccion) {
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_cliente", id_cliente)
                 .addValue("codigo_de_transaccion", codigo_de_transaccion);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Token")

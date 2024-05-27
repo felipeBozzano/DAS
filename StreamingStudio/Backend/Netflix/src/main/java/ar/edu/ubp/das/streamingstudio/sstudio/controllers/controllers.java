@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,26 @@ public class controllers {
     @Autowired
     PartnerRepository partnerRepository;
 
+    @PostMapping(
+            path = "/login_user",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> loginUsuario(@RequestBody ClienteUsuarioBean cliente) {
+        int user = clienteRepository.verificarUsuario(cliente.getEmail(), cliente.getcontrasena());
+        Map<String, String> respuesta = new HashMap<>();
+        if (user == 1) {
+            Map<String, Integer> info_usuario = clienteRepository.informacion_usuario(cliente.getEmail(), cliente.getcontrasena());
+            respuesta.put("id_cliente", String.valueOf(info_usuario.get("id_cliente")));
+            respuesta.put("nombre", String.valueOf(info_usuario.get("nombre")));
+            respuesta.put("apellido", String.valueOf(info_usuario.get("apellido")));
+            respuesta.put("email", String.valueOf(info_usuario.get("email")));
+            respuesta.put("mensaje", "Usuario existente");
+        }else {
+            respuesta.put("mensaje", "Usuario no existente");
+        }
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
+
     @PostMapping("/obtener_codigo_de_transaccion")
     public ResponseEntity<VerificacionTransaccionBean> crearTransaccion(@RequestBody TransaccionBean transaccionBean) {
         // Verificar que el partner esté registrado
@@ -37,7 +58,7 @@ public class controllers {
             return new ResponseEntity<>(respuesta, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return new ResponseEntity<>(autorizacionRepository.crearTransaccion(transaccionBean.getTipo_de_transaccion()),HttpStatus.OK);
+        return new ResponseEntity<>(autorizacionRepository.crearTransaccion(transaccionBean.getTipo_de_transaccion(), transaccionBean.getUrl_de_redireccion()),HttpStatus.OK);
     }
 
     @GetMapping("/verificar_autorizacion")
@@ -45,20 +66,12 @@ public class controllers {
         return new ResponseEntity<>(autorizacionRepository.verificarAutorizacion(codigoTransaccion), HttpStatus.OK);
     }
 
-    @GetMapping("/crear_autorizacion")
-    public ResponseEntity<AutorizacionBean> login(@RequestBody Map<String, String> body) {
-        int id_cliente = Integer.parseInt(body.get("id_cliente"));
-        String codigoTransaccion = body.get("codigo_transaccion");
-        autorizacionRepository.crearAutorizacion(id_cliente, codigoTransaccion);
-        String url_de_redireccion = autorizacionRepository.obtenerUrlDeRedireccion(codigoTransaccion);
-
-        AutorizacionBean autorizacion = new AutorizacionBean(codigoTransaccion, id_cliente, url_de_redireccion);
-
-        // REDIRIGIR AL URL DE REDIRECCION DE STREAMING STUDIO
-        // La información que devuelve este endpoint es para redirigir a streaming studio
-        // redirect(url_de_redireccion).body(id_cliente_plataforma, codigo_de_transaccion)
-
-        return new ResponseEntity<>(autorizacion, HttpStatus.OK);
+    @PostMapping(path="/crear_autorizacion",  consumes={MediaType.APPLICATION_JSON_VALUE})
+    public  ResponseEntity<AutorizacionBean> crear_autorizacion(@RequestBody AutorizacionBean autorizacion ) {
+        autorizacionRepository.crearAutorizacion(autorizacion.getId_cliente(), autorizacion.getCodigo_de_transaccion());
+        String url_de_redireccion = autorizacionRepository.obtenerUrlDeRedireccion(autorizacion.getCodigo_de_transaccion());
+        AutorizacionBean nueva_autorizacion = new AutorizacionBean(autorizacion.getCodigo_de_transaccion(), autorizacion.getId_cliente(), url_de_redireccion);
+        return new ResponseEntity<>(nueva_autorizacion, HttpStatus.OK);
     }
 
     @PostMapping(
@@ -69,15 +82,14 @@ public class controllers {
         return new ResponseEntity<>(clienteRepository.createUser(cliente), HttpStatus.CREATED);
     }
 
-    @PostMapping("/usuario/{id_cliente}/obtener_token")
-    public ResponseEntity<VereficacionAutorizacionBean> obtenerToken(@PathVariable("id_cliente") Integer id_cliente,
-                                                            @RequestBody AutorizacionBean autorizacionBean) {
+    @PostMapping("/obtener_token")
+    public ResponseEntity<VereficacionAutorizacionBean> obtenerToken(@RequestBody AutorizacionBean autorizacionBean) {
         if (!partnerRepository.verificarTokenDePartner(autorizacionBean.getToken_de_servicio())) {
             VereficacionAutorizacionBean respuesta = new VereficacionAutorizacionBean(false);
             return new ResponseEntity<>(respuesta, HttpStatus.NOT_ACCEPTABLE);
         }
 
-        String token = autorizacionRepository.obtenerToken(id_cliente, autorizacionBean.getCodigo_de_transaccion());
+        String token = autorizacionRepository.obtenerToken(autorizacionBean.getCodigo_de_transaccion());
         VereficacionAutorizacionBean respuesta = new VereficacionAutorizacionBean(true, token);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }

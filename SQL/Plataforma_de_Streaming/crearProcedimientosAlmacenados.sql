@@ -2,15 +2,14 @@
 
 /* Cliente_Usuario */
 
-CREATE OR ALTER PROCEDURE Crear_Usuario @usuario VARCHAR(255),
-                                        @contrasena VARCHAR(255),
+CREATE OR ALTER PROCEDURE Crear_Usuario @contrasena VARCHAR(255),
                                         @email VARCHAR(255),
                                         @nombre VARCHAR(255),
                                         @apellido VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Cliente_Usuario(usuario, contrasena, email, nombre, apellido, valido)
-    VALUES (@usuario, @contrasena, @email, @nombre, @apellido, 0)
+    INSERT INTO dbo.Cliente_Usuario(contrasena, email, nombre, apellido, valido)
+    VALUES (@contrasena, @email, @nombre, @apellido, 0)
 END
 go
 
@@ -23,8 +22,7 @@ CREATE OR ALTER PROCEDURE Editar_Usuario @id_cliente INT,
 AS
 BEGIN
     UPDATE Cliente_Usuario
-    SET usuario    = @usuario,
-        contrasena = @contrasena,
+    SET contrasena = @contrasena,
         email      = @email,
         nombre     = @nombre,
         apellido   = @apellido
@@ -50,16 +48,39 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE Login_Usuario @usuario VARCHAR(255),
+CREATE OR ALTER PROCEDURE Informacion_Usuario @email VARCHAR(255),
+                                              @contrasena VARCHAR(255)
+AS
+BEGIN
+    SELECT *
+    FROM Cliente_Usuario
+    WHERE email = @email
+      AND contrasena = @contrasena
+END;
+go
+
+CREATE OR ALTER PROCEDURE Login_Usuario @email VARCHAR(255),
                                         @contrasena VARCHAR(255)
 AS
 BEGIN
-    SELECT id_cliente
-    FROM dbo.Cliente_Usuario CU
-    WHERE CU.usuario = @usuario
-      AND CU.contrasena = @contrasena
-      AND CU.valido = 1
-END
+    DECLARE @resultado INT;
+
+    -- Verificar si existe el usuario y contrasena
+    IF EXISTS (SELECT 1
+               FROM Cliente_Usuario
+               WHERE email = @email
+                 AND contrasena = @contrasena)
+        BEGIN
+            SET @resultado = 1; -- Usuario y contrasena coinciden
+        END
+    ELSE
+        BEGIN
+            SET @resultado = 0; -- Usuario y/o contrasena no coinciden
+        END
+
+    -- Devolver el resultado
+    SELECT @resultado AS 'ExisteUsuario';
+END;
 go
 
 /* Transaccion */
@@ -69,8 +90,8 @@ CREATE OR ALTER PROCEDURE Crear_Transaccion @codigo_de_transaccion VARCHAR(255),
                                             @tipo_de_transaccion VARCHAR(1)
 AS
 BEGIN
-    INSERT INTO dbo.Transaccion(codigo_de_transaccion, fecha_de_alta, url_de_redireccion, tipo_de_transaccion)
-    VALUES (@codigo_de_transaccion, GETDATE(), @url_de_redireccion, @tipo_de_transaccion)
+    INSERT INTO dbo.Autorizacion(codigo_de_transaccion, id_cliente, token, fecha_de_alta, url_de_redireccion, tipo_de_transaccion, fecha_de_baja)
+    VALUES (@codigo_de_transaccion, NULL, NULL, GETDATE(), @url_de_redireccion, @tipo_de_transaccion, NULL)
 END
 go
 
@@ -79,7 +100,7 @@ AS
 BEGIN
     SELECT CASE
                WHEN EXISTS (SELECT 1
-                            FROM dbo.Transaccion
+                            FROM dbo.Autorizacion
                             WHERE codigo_de_transaccion = @codigo_de_transaccion) THEN 'true'
                ELSE 'false'
                END AS ExisteValor;
@@ -94,8 +115,10 @@ CREATE OR ALTER PROCEDURE Crear_Autorizacion @id_cliente INT,
                                              @token VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Autorizacion(codigo_de_transaccion, id_cliente, token, fecha_de_alta, fecha_de_baja)
-    VALUES (@codigo_de_transaccion, @id_cliente, @token, GETDATE(), NULL)
+    UPDATE dbo.Autorizacion
+    SET id_cliente = @id_cliente,
+        token = @token
+    WHERE codigo_de_transaccion = @codigo_de_transaccion
 END
 go
 
@@ -110,14 +133,12 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Token @id_cliente INT,
-                                        @codigo_de_transaccion VARCHAR(255)
+CREATE OR ALTER PROCEDURE Obtener_Token @codigo_de_transaccion VARCHAR(255)
 AS
 BEGIN
     SELECT token
     FROM dbo.Autorizacion
-    WHERE id_cliente = @id_cliente
-      AND codigo_de_transaccion = @codigo_de_transaccion
+    WHERE codigo_de_transaccion = @codigo_de_transaccion
       AND fecha_de_baja IS NULL
 END
 go
@@ -458,7 +479,7 @@ CREATE OR ALTER PROCEDURE Obtener_codigo_de_redireccion @codigo_de_transaccion V
 AS
 BEGIN
     SELECT url_de_redireccion
-    FROM dbo.Transaccion
+    FROM dbo.Autorizacion
     WHERE codigo_de_transaccion = @codigo_de_transaccion
 END
 go
@@ -470,7 +491,7 @@ AS
 BEGIN
     SELECT A.id_cliente, T.url_de_redireccion
     FROM dbo.Autorizacion A
-        JOIN dbo.Transaccion T ON A.codigo_de_transaccion = T.codigo_de_transaccion
+        JOIN dbo.Autorizacion T ON A.codigo_de_transaccion = T.codigo_de_transaccion
     WHERE A.codigo_de_transaccion = @codigo_de_transaccion
 END
 go

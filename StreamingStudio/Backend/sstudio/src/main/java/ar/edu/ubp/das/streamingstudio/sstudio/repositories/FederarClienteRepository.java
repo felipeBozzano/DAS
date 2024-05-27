@@ -98,7 +98,7 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma);
         AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
         Map<String, String> body = new HashMap<>();
-        String url_de_redireccion = "https://localhost:8080/ss/usuario/" + id_cliente + "/finalizar_federacion/" + id_plataforma;
+        String url_de_redireccion = "http://localhost:4200/usuario/" + id_cliente + "/finalizar_federacion/" + id_plataforma;
         body.put("url_de_redireccion", url_de_redireccion);
         body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
 //        body.put("id_cliente", String.valueOf(id_cliente));
@@ -118,7 +118,7 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         jdbcCall.execute(in);
 
         respuesta.put("mensaje", "Federacion comenzada");
-//        respuesta.put("url_redireccion", bean.getUrl());
+        respuesta.put("url_redireccion", bean.getUrl());
         respuesta.put("codigo_transaccion", bean.getCodigo_de_transaccion());
         return respuesta;
     }
@@ -140,10 +140,11 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         body.put("codigo_de_transaccion", codigo_de_transaccion);
         body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
         FederacionBean bean = (FederacionBean) conector.execute_post_request(url_token, body, "FederacionBean");
-
+        System.out.println(bean.getToken());
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
-                .addValue("id_cliente", id_cliente);
+                .addValue("id_cliente", id_cliente)
+                .addValue("token", bean.getToken());
 //                .addValue("token", bean.getToken());
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Finalizar_Federacion")
