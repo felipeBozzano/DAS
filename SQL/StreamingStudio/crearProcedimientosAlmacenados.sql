@@ -1700,3 +1700,21 @@ BEGIN
     WHERE id_tipo_de_fee = @id_tipo_de_fee
 END;
 go
+
+CREATE OR ALTER PROCEDURE Obtener_Series
+AS
+BEGIN
+    SELECT *
+    FROM Contenido as c
+    WHERE c.clasificacion = 'S'
+END;
+go
+
+CREATE OR ALTER PROCEDURE Obtener_Peliculas
+AS
+BEGIN
+    SELECT *
+    FROM Contenido as c
+    WHERE c.clasificacion = 'P'
+END;
+go

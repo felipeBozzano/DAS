@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import {AuthService} from '../../services/authService/AuthService';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {ILogin } from '../../api/models/login.model';
 import {StreamingStudioResources} from '../../api/resources/streaming-studio.services';
 import {PublicationService} from '../../services/publicationService/publicationService';
-import {IPublicidad} from '../../api/models/IPublicidad';
+
 
 @Component({
   selector: 'app-login',

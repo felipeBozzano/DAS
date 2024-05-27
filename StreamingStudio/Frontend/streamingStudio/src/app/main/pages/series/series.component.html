@@ -1,0 +1,20 @@
+<html>
+<body>
+<div class="container-fluid">
+  <div class="row justify-content-center b">
+    <app-header [pageTitle]="'Series'"></app-header>
+  </div>
+  <div class="row">
+
+    <app-publicidad-izquierda class="col-2 publicidades" exclusiva="true"></app-publicidad-izquierda>
+      <div class="col-8">
+        <div class="series-container">
+          <div class="serie" *ngFor="let serie of series">
+            <h2>{{ serie.titulo }}</h2>
+            <img [src]="serie.url_imagen" alt="{{ serie.titulo }}">
+          </div>
+        </div>
+      </div>
+    <app-publicidad-derecha  class="col-2 publicidades" exclusiva="true"></app-publicidad-derecha>
+    </div>
+  </div>
