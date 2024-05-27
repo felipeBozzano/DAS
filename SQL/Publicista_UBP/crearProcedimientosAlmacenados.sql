@@ -1,4 +1,4 @@
-USE Publicista;
+USE Publicista_UBP;
 
 /* Publicidad */
 

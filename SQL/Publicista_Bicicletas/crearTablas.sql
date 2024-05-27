@@ -1,4 +1,4 @@
-USE Publicista;
+USE Publicista_Bicicletas;
 
 DROP TABLE IF EXISTS dbo.Factura
 DROP TABLE IF EXISTS dbo.Reporte

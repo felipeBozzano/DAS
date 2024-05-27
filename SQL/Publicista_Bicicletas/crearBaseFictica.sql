@@ -1,4 +1,4 @@
-USE Publicista;
+USE Publicista_Bicicletas;
 
 INSERT INTO Publicidad (id_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta, fecha_de_baja)
 VALUES ('CP1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'https://www.urlpublicidad1.com/publicidad.jpg', '2024-01-30', '2024-02-10'),
@@ -17,5 +17,5 @@ VALUES (155.45, '2024-03-10', 'CP1 BANNER 20X20 CON PRESENCIA EN LA PAGINA PRINC
 go
 
 INSERT INTO Partner (nombre, token_de_servicio)
-VALUES ('Streaming Studio', 'CP24MGJ_asd749$aS');
+VALUES ('Streaming Studio', 'Bicicletas123');
 go
