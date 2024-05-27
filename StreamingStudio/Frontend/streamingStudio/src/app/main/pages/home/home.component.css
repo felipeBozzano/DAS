@@ -1,18 +1,24 @@
-.home-container {
-  display: flex;
-  align-items: center;
-  height: 100vh;
+body, html {
   background-color: lightskyblue;
-  text-align: center;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-.home-title {
-  font-size: 3em; /* Tamaño del título */
-  text-align: center;
+.row-header {
+  height: 70px;
+}
+
+.publicidades {
+  flex-direction: column;
+  display: flex;
+}
+
+.publicidad-bot {
+  margin-top: 150%;
 }
 
 .contenidos {
-  margin-top: 300px;
   background-color: lightskyblue;
   width: 100%; /* Asegura que el contenido tome todo el ancho disponible */
 }
@@ -45,29 +51,7 @@
   font-family: "Arial", sans-serif;
 }
 
-body, html {
-  background-color: lightskyblue;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
 .img-cont {
   border-radius: 5px;
   cursor: pointer;
-}
-
-.row {
-  display: flex;
-  justify-content: center; /* Centra horizontalmente los elementos en la fila */
-  align-items: center; /* Centra verticalmente los elementos en la fila */
-  height: 100%; /* Asegura que la fila tome toda la altura disponible */
-  width: 100%;
-}
-
-.col-2 {
-  height: 100vh; /* Usa altura completa de la vista */
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Centra verticalmente los elementos dentro de col-2 */
 }

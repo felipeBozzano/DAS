@@ -253,9 +253,9 @@ CREATE TABLE [Cliente_Usuario]
 CREATE TABLE [Transaccion]
 (
     [id_plataforma]                 INT          NOT NULL,
+    [codigo_de_transaccion]         VARCHAR(255) NOT NULL,
     [id_cliente]                    INT          NOT NULL,
     [fecha_alta]                    DATETIME     NOT NULL,
-    [codigo_de_transaccion]         VARCHAR(255) NOT NULL,
     [url_login_registro_plataforma] VARCHAR(255) NOT NULL,
     [url_redireccion_propia]        VARCHAR(255) NOT NULL,
     [tipo_transaccion]              VARCHAR(1)   NOT NULL,
@@ -263,7 +263,7 @@ CREATE TABLE [Transaccion]
     [url_token]                     VARCHAR(255),
     [token]                         VARCHAR(255),
     [fecha_baja]                    DATETIME,
-    PRIMARY KEY ([id_plataforma], [id_cliente], [fecha_alta]),
+    PRIMARY KEY ([id_plataforma], [codigo_de_transaccion]),
     CONSTRAINT [FK_Transaccion.Plataforma_de_Streaming]
         FOREIGN KEY ([id_plataforma])
             REFERENCES [Plataforma_de_Streaming] ([id_plataforma])
@@ -284,6 +284,11 @@ CREATE TABLE [Federacion]
     [tipo_transaccion] VARCHAR(1)   NOT NULL,
     [facturada]        BIT          NOT NULL,
     PRIMARY KEY ([id_plataforma], [id_cliente]),
+    CONSTRAINT [FK_Federacion.Plataforma_de_Streaming]
+        FOREIGN KEY ([id_plataforma])
+            REFERENCES [Plataforma_de_Streaming] ([id_plataforma])
+            ON UPDATE CASCADE
+            ON DELETE CASCADE,
     CONSTRAINT [FK_Federacion.Cliente_Usuario]
         FOREIGN KEY ([id_cliente])
             REFERENCES [Cliente_Usuario] ([id_cliente])

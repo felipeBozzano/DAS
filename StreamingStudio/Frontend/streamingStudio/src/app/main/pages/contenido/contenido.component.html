@@ -1,70 +1,86 @@
 <html>
-  <body>
-    <app-header [pageTitle]="'Busqueda Avanzada'"></app-header>
-    <div class="row">
-      <div class="col-2">
-        <app-publicidad-derecha exclusiva="true"></app-publicidad-derecha>
-      </div>
-      <div class="col-10">
-        <!-- Formulario de Búsqueda Avanzada -->
-        <div *ngIf="advancedSearchVisible" id="advanced-search-form">
-          <div class="register-container">
-            <div class="register-form">
-              <h2 class="title-container">Búsqueda Avanzada</h2>
-              <form (ngSubmit)="onSubmit()" [formGroup]="formContenido">
-                <div class="form-group">
-                  <label for="titulo">Titulo:</label>
-                  <input type="text" id="titulo" name="titulo" formControlName="titulo">
-                </div>
-                <div class="form-group">
-                  <label for="reciente">Reciente:</label>
-                  <input type="checkbox" id="reciente" name="reciente" formControlName="reciente">
-                </div>
-                <div class="form-group">
-                  <label for="destacado">Destacado:</label>
-                  <input type="checkbox" id="destacado" name="destacado" formControlName="destacado">
-                </div>
-                <div class="form-group">
-                  <label for="clasificacion">Clasificacion:</label>
-                  <input type="text" id="clasificacion" name="clasificacion" formControlName="clasificacion">
-                </div>
-                <div class="form-group">
-                  <label for="mas_visto">Más visto:</label>
-                  <input type="checkbox" id="mas_visto" name="mas_visto" formControlName="mas_visto">
-                </div>
-                <div class="form-group">
-                  <label for="genero">Género:</label>
-                  <input type="text" id="genero" name="genero" formControlName="genero">
-                </div>
-                <div class="form-group">
-                  <button type="submit">Buscar</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="contenido && contenido.length > 0" class="content-container">
-          <div *ngFor="let contenido of contenido; let i = index" class="card">
-            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" alt="Imagen del contenido">
-          </div>
-        </div>
-        <div class="row">
-          <div class="row">
-            <div class="card" *ngIf="contenido && contenido.length === 0 && isVisible">
-              <div class="card-title">No se encontró contenido asociado</div>
-              <button class="close-btn row" (click)="closeCard()">Cerrar</button>
-            </div>
+<body>
+<div class="container-fluid">
+
+  <div class="row">
+    <app-header [pageTitle]="'Busqueda Avanzada'" class="row-header"></app-header>
+  </div>
+
+  <div class="row">
+    <app-publicidad-izquierda class="col-2 publicidades" exclusiva="true"></app-publicidad-izquierda>
+
+    <div class="col-8">
+      <!-- Formulario de Búsqueda Avanzada -->
+      <div *ngIf="advancedSearchVisible" id="advanced-search-form">
+        <div class="register-container">
+          <div class="register-form">
+            <h2 class="title-container">Búsqueda Avanzada</h2>
+            <form (ngSubmit)="onSubmit()" [formGroup]="formContenido">
+              <div class="form-group">
+                <label for="titulo">Titulo:</label>
+                <input type="text" id="titulo" name="titulo" formControlName="titulo">
+              </div>
+              <div class="form-group">
+                <label for="reciente">Reciente:</label>
+                <input type="checkbox" id="reciente" name="reciente" formControlName="reciente">
+              </div>
+              <div class="form-group">
+                <label for="destacado">Destacado:</label>
+                <input type="checkbox" id="destacado" name="destacado" formControlName="destacado">
+              </div>
+              <div class="form-group">
+                <label for="clasificacion">Clasificacion:</label>
+                <input type="text" id="clasificacion" name="clasificacion" formControlName="clasificacion">
+              </div>
+              <div class="form-group">
+                <label for="mas_visto">Más visto:</label>
+                <input type="checkbox" id="mas_visto" name="mas_visto" formControlName="mas_visto">
+              </div>
+              <div class="form-group">
+                <label for="genero">Género:</label>
+                <input type="text" id="genero" name="genero" formControlName="genero">
+              </div>
+              <div class="form-group">
+                <button type="submit">Buscar</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
-      <div class="col-2">
-        <app-publicidad-izquierda exclusiva="true"></app-publicidad-izquierda>
+
+      <div class="contenidos" *ngIf="contenido && contenido.length > 0">
+        <h2 class="title">Contenido</h2>
+        <div class="fila-contenido">
+          <div *ngFor="let contenido of contenido; let i = index" class="contenido-item">
+            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont"
+                 alt="Busqueda Avanzada">
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="contenido && contenido.length === 0 && isVisible">
+        <div class="card-title">No se encontró contenido asociado
+          <button class="close-btn row" (click)="closeCard()">Cerrar</button>
+        </div>
       </div>
     </div>
-  </body>
+
+    <app-publicidad-derecha class="col-2 publicidades" exclusiva="true"></app-publicidad-derecha>
+  </div>
+</div>
+</body>
 </html>
 
+<!--      <div *ngIf="contenido && contenido.length > 0" class="row movie-grid">-->
+<!--        <div *ngFor="let contenido of contenido; let i = index" class="col-2 col-sm-2 col-md-2 col-lg-2 movie-card">-->
+<!--          <div class="card">-->
+<!--            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" alt="Imagen del contenido" class="card-img-top">-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
 
-
-
-
+<!--      <div *ngIf="contenido && contenido.length > 0" class="content-container">-->
+<!--        <div *ngFor="let contenido of contenido; let i = index" class="card">-->
+<!--          <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" alt="Imagen del contenido">-->
+<!--        </div>-->
+<!--      </div>-->

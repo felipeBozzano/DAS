@@ -1,9 +1,8 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 public class ContenidoFiltroBean {
-
     private String id_contenido;
-    private Integer  id_plataforma;
+    private Integer id_plataforma;
     private String titulo;
     private String descripcion;
     private String url_imagen;
@@ -12,10 +11,11 @@ public class ContenidoFiltroBean {
     private Boolean reciente;
     private Boolean destacado;
     private Boolean valido;
-
     private String genero;
-
     private int id_cliente;
+
+    public ContenidoFiltroBean() {
+    }
 
     public int getId_cliente() {
         return id_cliente;
@@ -31,23 +31,6 @@ public class ContenidoFiltroBean {
 
     public void setGenero(String genero) {
         this.genero = genero;
-    }
-
-    public ContenidoFiltroBean(String id_contenido, Integer id_plataforma, String titulo, String descripcion, String url_imagen, String clasificacion,
-                               Boolean destacado, Boolean reciente, Boolean valido) {
-        this.id_contenido = id_contenido;
-        this.id_plataforma = id_plataforma;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.url_imagen = url_imagen;
-        this.clasificacion = clasificacion;
-        this.mas_visto = false;
-        this.destacado = destacado;
-        this.reciente = reciente;
-        this.valido = valido;
-    }
-
-    public ContenidoFiltroBean() {
     }
 
     public String getId_contenido() {
@@ -128,5 +111,23 @@ public class ContenidoFiltroBean {
 
     public void setValido(boolean valido) {
         this.valido = valido;
+    }
+
+    @Override
+    public String toString() {
+        return "ContenidoFiltroBean{" +
+                "id_contenido='" + id_contenido + '\'' +
+                ", id_plataforma=" + id_plataforma +
+                ", titulo='" + titulo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", url_imagen='" + url_imagen + '\'' +
+                ", clasificacion='" + clasificacion + '\'' +
+                ", mas_visto=" + mas_visto +
+                ", reciente=" + reciente +
+                ", destacado=" + destacado +
+                ", valido=" + valido +
+                ", genero='" + genero + '\'' +
+                ", id_cliente=" + id_cliente +
+                '}';
     }
 }

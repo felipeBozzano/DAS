@@ -138,7 +138,7 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, String>> resulset = (List<Map<String, String>>) out.get("#result-set-1");
-        for(Map<String,String> set: resulset) {
+        for (Map<String, String> set : resulset) {
             set.put("id_plataforma", String.valueOf(set.get("id_plataforma")));
         }
         List<Map<String, String>> plataformas = resulset;

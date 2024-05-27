@@ -1,11 +1,15 @@
 <html>
 <body>
+<div class="container-fluid">
+
   <div class="row">
-    <app-header></app-header>
-    <div class="col-2 pub-der" >
-      <app-publicidad-derecha exclusiva="exclusiva"></app-publicidad-derecha>
-    </div>
-    <div class="col-6">
+    <app-header [pageTitle]="'Busqueda Avanzada'" class="row-header"></app-header>
+  </div>
+
+  <div class="row">
+    <app-publicidad-derecha class="col-2 publicidades" exclusiva="true"></app-publicidad-derecha>
+
+    <div class="col-8">
       <div class="content-container">
         <div class="card-container">
           <div *ngIf="descripcion" class="card-horizontal">
@@ -29,19 +33,21 @@
             <img [src]="descripcion.infoContenido.url_imagen" class="card-img">
           </div>
           <div class="platform-images">
-            <div *ngFor="let image of descripcion.plataformas" class="image-item" (click)="obtenerUrlDeContenido(image.id_plataforma)">
+            <div *ngFor="let image of descripcion.plataformas" class="image-item"
+                 (click)="obtenerUrlDeContenido(image.id_plataforma)">
               <img [src]="image.url_imagen" alt="Image">
             </div>
           </div>
         </div>
-        <div *ngIf="video_flag">
-          <div class="video-container" [innerHTML]="video_tag_HTML"></div>
-        </div>
       </div>
     </div>
-    <div class="col-2 pub-izq">
-      <app-publicidad-izquierda exclusiva="exclusiva"></app-publicidad-izquierda>
-    </div>
+
+    <app-publicidad-derecha class="col-2 publicidades" exclusiva="true"></app-publicidad-derecha>
   </div>
+
+  <div class="row" *ngIf="video_flag">
+    <div class="video-container" [innerHTML]="video_tag_HTML"></div>
+  </div>
+</div>
 </body>
 </html>
