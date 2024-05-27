@@ -103,6 +103,7 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
 //        body.put("id_cliente", String.valueOf(id_cliente));
         body.put("tipo_de_transaccion", tipo_transaccion);
+        String conexion = conexion_plataforma.get("url_api");
         FederacionBean bean = (FederacionBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/obtener_codigo_de_transaccion", body, "FederacionBean");
 
         SqlParameterSource in = new MapSqlParameterSource()

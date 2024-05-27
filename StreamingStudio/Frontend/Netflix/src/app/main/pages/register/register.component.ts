@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
 import {IUser} from '../../api/models/IUser.model';
 import {NetflixResourceService} from '../../api/resources/netflix-resource.service';
 
@@ -30,13 +30,43 @@ export class RegisterComponent {
       }
      }
 
-     this.formRegister = this._fb.group({
-      usuario: new FormControl('', [Validators.required, Validators.maxLength(16)]),
-      contrasena: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.maxLength(16), Validators.email]),
-      nombre: new FormControl('', [Validators.required, Validators.maxLength(16)]),
-      apellido: new FormControl('', [Validators.required, Validators.maxLength(16)]),
-    })
+    function matchValidator(sourceKey: string, targetKey: string): ValidatorFn {
+      return (control: AbstractControl): ValidationErrors | null => {
+        const sourceControl = control.get(sourceKey);
+        const targetControl = control.get(targetKey);
+
+        if (!sourceControl || !targetControl) {
+          return null; // form controls are not yet available
+        }
+
+        if (targetControl.errors && !targetControl.errors['mustMatch']) {
+          return null; // another validator has already found an error
+        }
+
+        if (sourceControl.value !== targetControl.value) {
+          targetControl.setErrors({ mustMatch: true });
+        } else {
+          targetControl.setErrors(null);
+        }
+
+        return null;
+      };
+    }
+
+    this.formRegister = this._fb.group({
+      contrasena: new FormControl('',[Validators.required, strongPasswordValidator(8)]),
+      re_contrasena: new FormControl('',[Validators.required, strongPasswordValidator(8)]),
+      email: new FormControl('',[Validators.required, Validators.maxLength(255),Validators.email]),
+      re_email: new FormControl('',[Validators.required, Validators.maxLength(255),Validators.email]),
+      nombre: new FormControl('',[Validators.required, Validators.maxLength(100)]),
+      apellido: new FormControl('',[Validators.required, Validators.maxLength(40)]),
+      valid: new FormControl(true)
+    },{
+      validators: [
+        matchValidator('contrasena', 're_contrasena'),
+        matchValidator('email', 're_email')
+      ]
+    });
   }
 
   // tslint:disable-next-line:typedef
