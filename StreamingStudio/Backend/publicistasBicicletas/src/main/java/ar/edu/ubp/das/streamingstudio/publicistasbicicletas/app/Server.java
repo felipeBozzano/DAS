@@ -6,7 +6,7 @@ import jakarta.xml.ws.Endpoint;
 public class Server {
     public static void main(String[] args) {
         PublicidadBicicletasWS implementor = new PublicidadBicicletasWS();
-        String address = "http://localhost:8083/publicistaBicicletas";
+        String address = "http://localhost:8085/publicistaBicicletas";
         Endpoint.publish(address, implementor);
     }
 }

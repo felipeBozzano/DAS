@@ -2,6 +2,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.PublicidadResponseBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicistaBean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -88,7 +89,8 @@ public class DatosPublicidades {
 
     public static List<PublicidadBean> obtenerPublicidadesDePublicista(PublicistaBean publicista) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         AbstractConnector conector = conectorFactory.crearConector(publicista.getProtocolo_api());
-//            FederacionBean bean = (FederacionBean) conector.execute_post_request(url_token, body, "FederacionBean");
+        Map<String, String> body = new HashMap<>();
+        PublicidadResponseBean bean = (PublicidadResponseBean) conector.execute_post_request(publicista.getToken_de_servicio(), body, "PublicidadBean");
 
 
         List<PublicidadBean> publicidades = new ArrayList<>();

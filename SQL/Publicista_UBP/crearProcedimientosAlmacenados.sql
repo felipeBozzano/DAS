@@ -6,20 +6,23 @@ CREATE OR ALTER PROCEDURE Registrar_Publicidad @id_publicista VARCHAR(255),
                                                @url_de_imagen VARCHAR(255),
                                                @url_de_publicidad VARCHAR(255),
                                                @fecha_de_alta DATE,
-                                               @fecha_de_baja DATE
+                                               @fecha_de_baja DATE,
+                                               @tipo_banner VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Publicidad(id_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta, fecha_de_baja)
-    VALUES (@id_publicista, @url_de_imagen, @url_de_publicidad, @fecha_de_alta, @fecha_de_baja)
+    INSERT INTO dbo.Publicidad(id_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta, fecha_de_baja,
+                               tipo_banner)
+    VALUES (@id_publicista, @url_de_imagen, @url_de_publicidad, @fecha_de_alta, @fecha_de_baja, @tipo_banner)
 END
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Datos_de_Publicidades @id_publicidad VARCHAR(255)
+CREATE OR ALTER PROCEDURE Obtener_Datos_de_Publicidades
 AS
 BEGIN
-    SELECT url_de_publicidad, url_de_imagen
+    SELECT id_publicidad, url_de_publicidad, url_de_imagen, tipo_banner, fecha_de_alta, fecha_de_baja
     FROM dbo.Publicidad
-    WHERE id_publicidad = @id_publicidad
+    WHERE fecha_de_baja >= GETDATE()
+      AND fecha_de_alta <= GETDATE()
 END
 go
 
@@ -55,7 +58,7 @@ BEGIN
 END
 go
 
-CREATE OR ALTER PROCEDURE Verificar_Token_de_Partner @token INT
+CREATE OR ALTER PROCEDURE Verificar_Token_de_Partner @token VARCHAR(255)
 AS
 BEGIN
     SELECT CASE
