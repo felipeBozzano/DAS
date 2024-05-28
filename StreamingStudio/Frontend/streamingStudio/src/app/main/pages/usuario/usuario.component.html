@@ -1,1 +1,26 @@
-<p>usuario works!</p>
+
+<html>
+  <body>
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <app-header [pageTitle]="'Usuario'"></app-header>
+      </div>
+      <div class="row justify-content-center">
+        <app-publicidad-izquierda class="col-2 publicidades" exclusiva="true"></app-publicidad-izquierda>
+        <div class="col-8 card-container">
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title">Mi usuario</h5>
+                <ul>
+                  <li>Nombre: {{currentUser.nombre}}</li>
+                  <li>Apellido: {{currentUser.apellido}}</li>
+                  <li>Email: {{currentUser.email}}</li>
+                </ul>
+              </div>
+            </div>
+        </div>
+        <app-publicidad-derecha  class="col-2 publicidades" exclusiva="true"></app-publicidad-derecha>
+      </div>
+    </div>
+  </body>
+</html>

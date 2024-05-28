@@ -8,7 +8,7 @@ body {
   align-items: center;
   justify-content: space-around;
   background-color: #004080; /* Azul oscuro */
-  padding: 10px 10px;
+  padding: 10px;
   color: white;
   position: fixed; /* Fija el header en la parte superior */
   top: 0;
@@ -28,6 +28,13 @@ body {
   width: 88px;
   height: 88px;
   margin-right: 10px;
+}
+
+.header-title {
+  color: white;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .nav-buttons {
@@ -94,17 +101,52 @@ body {
   flex-direction: column;
 }
 
-main {
-  padding-top: 70px; /* Espacio para el header fijo */
-}
-
-h1 {
-  margin-left: 20px;
-}
-
-.header-title {
+.menu-toggle {
+  display: none;
+  background-color: transparent;
+  border: none;
   color: white;
-  text-align: center;
   font-size: 24px;
-  font-weight: bold;
+  cursor: pointer;
+}
+
+@media (max-width: 677px) {
+  .nav-buttons {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    background-color: #004080;
+    position: absolute;
+    top: 70px;
+    left: 0;
+  }
+
+  .nav-buttons.show {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .header-title {
+    font-size: 18px;
+  }
+
+  .nav-buttons button,
+  .dropdown button {
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+  }
+
+  .dropdown {
+    width: 100%;
+    left: 0;
+  }
+
+  .logo img {
+    width: 60px;
+    height: 60px;
+  }
 }

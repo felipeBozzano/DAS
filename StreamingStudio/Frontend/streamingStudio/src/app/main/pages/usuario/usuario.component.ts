@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {StreamingStudioResources} from '../../api/resources/streaming-studio.services';
 import {ActivatedRoute} from '@angular/router';
 import {IFinalizarFederacion} from '../../api/models/IFinalizarFederacion.model';
+import {AuthService} from '../../services/authService/AuthService';
 
 @Component({
   selector: 'app-usuario',
@@ -9,12 +10,14 @@ import {IFinalizarFederacion} from '../../api/models/IFinalizarFederacion.model'
   styleUrls: ['./usuario.component.css']
 })
 export class UsuarioComponent implements OnInit {
-  id_cliente: any
+  public currentUser: any;
+  id_cliente: any;
 
-  constructor(private route: ActivatedRoute, private streamingStudioResources: StreamingStudioResources) { }
+  constructor(private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.id_cliente = this.route.snapshot.paramMap.get('id_cliente');
+    this.currentUser = this.authService.getCurrentUser();
+    console.log("this.currentUser: ", this.currentUser);
   }
-
 }

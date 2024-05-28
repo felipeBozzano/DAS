@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit {
   @Input() id_cliente: string = '';
   @Output() advancedSearchVisible = "true";
   @Output() mensajeEvent = new EventEmitter<string>();
+  menuActive: boolean = false;
 
   public formContenido!: FormGroup;
 
@@ -81,6 +82,10 @@ export class HeaderComponent implements OnInit {
 
   navigateToUser(){
     this.router.navigate([`mi-usuario/${this.id_cliente}`]);
+  }
+
+  toggleMenu() {
+    this.menuActive = !this.menuActive;
   }
 
   protected readonly toString = toString;
