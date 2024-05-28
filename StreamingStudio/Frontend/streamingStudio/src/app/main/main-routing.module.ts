@@ -16,9 +16,10 @@ import {SeriesComponent} from './pages/series/series.component';
 import {PeliculasComponent} from './pages/peliculas/peliculas.component';
 import {PeliculasResolver} from './api/resolvers/peliculas.resolver';
 import {SeriesResolver} from './api/resolvers/series.resolver';
+import {SplashComponent} from './pages/splash/splash.component';
 
 const routes: Routes = [
-  {path: '', redirectTo: '/login', pathMatch: "full"}, // Ruta por defecto a tu formulario de inicio de sesión
+  { path: '', component: SplashComponent},
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard], resolve: {home: HomeResolver}},
   {path: 'register', component: RegisterComponent},
