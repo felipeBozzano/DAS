@@ -1568,8 +1568,6 @@ go
 /* ------------------------------------------ BUSCAR CONTENIDO POR FILTROS ------------------------------------------ */
 /* ------------------------------------------------------------------------------------------------------------------ */
 
-EXEC Buscar_Contenido_por_Filtros 1, null, 1, false, null, false, null
-
 CREATE OR ALTER PROCEDURE Buscar_Contenido_por_Filtros @id_cliente INT,
                                                        @titulo VARCHAR(255) = NULL,
                                                        @reciente BIT = NULL,

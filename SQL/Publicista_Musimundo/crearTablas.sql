@@ -35,4 +35,5 @@ CREATE TABLE [Publicidad]
     [url_de_publicidad] VARCHAR(255) NOT NULL,
     [fecha_de_alta]     DATE         NOT NULL,
     [fecha_de_baja]     DATE         NOT NULL,
+    [tipo_banner]       INT          NOT NULL,
 );
