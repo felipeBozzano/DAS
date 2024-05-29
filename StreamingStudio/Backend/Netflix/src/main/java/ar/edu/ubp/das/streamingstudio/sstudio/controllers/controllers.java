@@ -2,6 +2,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.controllers;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.AutorizacionRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.CatalogoRepository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.ClienteRepository;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.PartnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class controllers {
 
     @Autowired
     PartnerRepository partnerRepository;
+
+    @Autowired
+    CatalogoRepository catalogoRepository;
 
     @PostMapping(
             path = "/login_user",
@@ -91,6 +95,30 @@ public class controllers {
 
         String token = autorizacionRepository.obtenerToken(autorizacionBean.getCodigo_de_transaccion());
         VereficacionAutorizacionBean respuesta = new VereficacionAutorizacionBean(true, token);
+        return new ResponseEntity<>(respuesta,HttpStatus.OK);
+    }
+
+    @PostMapping("/catalogo")
+    public ResponseEntity<List<Map<String, Object>>> catalogo() {
+        List<Map<String, Object>> respuesta = catalogoRepository.obtenerCatalogo();
+        return new ResponseEntity<>(respuesta,HttpStatus.OK);
+    }
+
+    @PostMapping("/contenido")
+    public ResponseEntity<List<CatalogoBean>> contenido() {
+        List<CatalogoBean> respuesta = catalogoRepository.obtenerContenido();
+        return new ResponseEntity<>(respuesta,HttpStatus.OK);
+    }
+
+    @PostMapping("/directores")
+    public ResponseEntity<List<DirectorBean>> directores(@RequestParam int id_contenido) {
+        List<DirectorBean> respuesta = catalogoRepository.obtenerDirectores(id_contenido);
+        return new ResponseEntity<>(respuesta,HttpStatus.OK);
+    }
+
+    @PostMapping("/actores")
+    public ResponseEntity<List<ActorBean>> actores(@RequestParam int id_contenido) {
+        List<ActorBean> respuesta = catalogoRepository.obtenerActores(id_contenido);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 }

@@ -495,3 +495,32 @@ BEGIN
     WHERE A.codigo_de_transaccion = @codigo_de_transaccion
 END
 go
+
+CREATE OR ALTER PROCEDURE Obtener_Contenido_Actual
+AS
+BEGIN
+    SELECT *
+    FROM dbo.Contenido
+    WHERE fecha_alta <= GETDATE() AND fecha_baja IS NULL
+END;
+GO
+
+CREATE OR ALTER PROCEDURE Obtener_Directores @id_contenido INT
+AS
+BEGIN
+    SELECT d.id_director, d.apellido, d.nombre
+    FROM dbo.Director_Contenido as dc
+        join Director as d on dc.id_director = d.id_director
+    WHERE dc.id_contenido = @id_contenido
+END;
+GO
+
+CREATE OR ALTER PROCEDURE Obtener_Actores @id_contenido INT
+AS
+BEGIN
+    SELECT a.id_actor, a.apellido, a.nombre
+    FROM dbo.Actor_Contenido as ac
+             join Actor as a on ac.id_actor = a.id_actor
+    WHERE ac.id_contenido = @id_contenido
+END;
+GO

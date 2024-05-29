@@ -107,17 +107,17 @@ public class ActualizarCatalogo {
         List<ContenidoCatalogoBean> catalogo = new ArrayList<>();
         if (id_plataforma == 1) {
             ContenidoCatalogoBean bean_1 = new ContenidoCatalogoBean("101", "Pelicula1",
-                    "Descripción de Pelicula1", "url_imagen1.jpg", 2, true,
+                    "Descripción de Pelicula1", "url_imagen1.jpg", "S", true,
                     true, true);
             catalogo.add(bean_1);
         } else if (id_plataforma == 2) {
             ContenidoCatalogoBean bean_2 = new ContenidoCatalogoBean("109", "Pelicula6",
-                    "Descripción de Pelicula6", "url_imagen9.jpg", 2, true,
+                    "Descripción de Pelicula6", "url_imagen9.jpg", "S", true,
                     false, true);
             catalogo.add(bean_2);
         } else {
             ContenidoCatalogoBean bean_3 = new ContenidoCatalogoBean("101", "Serie5",
-                    "Descripción de Serie5", "url_imagen1.jpg", 2, false,
+                    "Descripción de Serie5", "url_imagen1.jpg", "S", false,
                     true, true);
             catalogo.add(bean_3);
         }
@@ -205,7 +205,7 @@ public class ActualizarCatalogo {
             String titulo = contenido.getTitulo();
             String descripcion = contenido.getDescripcion();
             String url_imagen = contenido.getUrl_imagen();
-            int clasificacion = contenido.getClasificacion();
+            String clasificacion = contenido.getClasificacion();
             boolean reciente = contenido.isReciente();
             boolean destacado = contenido.isDestacado();
 

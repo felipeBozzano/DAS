@@ -695,7 +695,7 @@ CREATE OR ALTER PROCEDURE Crear_Contenido @id_contenido VARCHAR(255),
                                           @titulo VARCHAR(255),
                                           @descripcion VARCHAR(255),
                                           @url_imagen VARCHAR(255),
-                                          @clasificacion INT
+                                          @clasificacion VARCHAR(255)
 AS
 BEGIN
     INSERT INTO dbo.Contenido(id_contenido, titulo, descripcion, url_imagen, clasificacion, mas_visto)

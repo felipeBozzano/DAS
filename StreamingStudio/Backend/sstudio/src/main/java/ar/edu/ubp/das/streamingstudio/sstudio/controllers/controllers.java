@@ -195,6 +195,13 @@ public class controllers {
         return new ResponseEntity<>(publicidades_repository.obtenerPublicidadesAgrupadas(), HttpStatus.OK);
     }
 
+    @GetMapping(
+            path = "/publicidades_activas1"
+    )
+    public ResponseEntity<List<PublicidadHomeBean>> obtenerPublicidadesActivas1() {
+        return new ResponseEntity<>(publicidades_repository.obtenerPublicidades(), HttpStatus.OK);
+    }
+
     @GetMapping("/home")
     public ResponseEntity<Map<String, Map<String, ContenidoResponseHomeBean>>> mostrarHome(@RequestParam("id_cliente") int id_cliente) {
         return new ResponseEntity<>(home_repository.getHome(id_cliente), HttpStatus.OK);

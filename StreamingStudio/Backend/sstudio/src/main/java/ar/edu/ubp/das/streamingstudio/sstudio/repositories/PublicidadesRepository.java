@@ -9,7 +9,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class PublicidadesRepository implements IPublicidadesRepository{
@@ -37,6 +40,12 @@ public class PublicidadesRepository implements IPublicidadesRepository{
         Map<String, Object> out = jdbcCall.execute(in);
         List<PublicidadHomeBean> publicidadesActivas = (List<PublicidadHomeBean>)out.get("publicidades_activas");
         return publicidadesActivas;
+    }
+
+
+    public List<PublicidadHomeBean> obtenerPublicidades() {
+        List<PublicidadHomeBean> bean = (List<PublicidadHomeBean>) new PublicidadHomeBean();
+        return bean;
     }
 
     @Override

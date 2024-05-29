@@ -1,7 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-public class ContenidoCatalogoBean {
-    private String id_contenido;
+public class CatalogoBean {
+    private int id_contenido;
     private String titulo;
     private String descripcion;
     private String url_imagen;
@@ -10,10 +10,9 @@ public class ContenidoCatalogoBean {
     private boolean destacado;
     private boolean valido;
 
-    public ContenidoCatalogoBean() {
-    }
+    public CatalogoBean(){}
 
-    public ContenidoCatalogoBean(String id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido) {
+    public CatalogoBean(int id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido) {
         this.id_contenido = id_contenido;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -24,11 +23,11 @@ public class ContenidoCatalogoBean {
         this.valido = valido;
     }
 
-    public String getId_contenido() {
+    public int getId_contenido() {
         return id_contenido;
     }
 
-    public void setId_contenido(String id_contenido) {
+    public void setId_contenido(int id_contenido) {
         this.id_contenido = id_contenido;
     }
 

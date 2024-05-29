@@ -1,8 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaEstadisticaBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicistaBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.TransaccionBean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,7 +17,7 @@ public class BatchUtils {
         dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         dataSource.setUrl("jdbc:sqlserver://localhost;databaseName=StreamingStudio;encrypt=false;trustServerCertificate=false");
         dataSource.setUsername("SA");
-        dataSource.setPassword("Gaboty30.!");
+        dataSource.setPassword("samano$uke_123");
         return new JdbcTemplate(dataSource);
     }
 
