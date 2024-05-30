@@ -209,11 +209,11 @@ go
 
 -- Crear 3 Publicista
 INSERT INTO Publicista (nombre_de_fantasia, razon_social, email, contrasena, token_de_servicio, url_api, protocolo_api)
-VALUES ('Publicista1', N'Razón Social 1', 'publicista1@email.com', N'contrasena1', '123456789',
-        'https://www.urlapi1.com', 'REST'),
-       ('Publicista2', N'Razón Social 2', 'publicista2@email.com', N'contrasena2', '123456789',
-        'https://www.urlapi2.com', 'REST'),
-       ('Publicista3', N'Razón Social 3', 'publicista3@email.com', N'contrasena3', '123456789',
+VALUES ('Publicista_Musimundo', N'Musimundo', 'musimundo@example.com', N'contrasena1', 'Musimundo123',
+        'http://localhost:8086/publicistaMusimundo', 'SOAP'),
+       ('Publicista_Bicicletas', N'Bicicletas', 'bicicletas@example.com', N'contrasena2', 'Bicicletas123',
+        'https://www.urlapi2.com', 'SOAP'),
+       ('Publicista_UBP', N'UBP', 'ubp@example.com', N'contrasena3', 'UBP123',
         'https://www.urlapi3.com', 'REST');
 go
 
