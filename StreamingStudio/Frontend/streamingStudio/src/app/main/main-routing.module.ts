@@ -17,6 +17,7 @@ import {PeliculasComponent} from './pages/peliculas/peliculas.component';
 import {PeliculasResolver} from './api/resolvers/peliculas.resolver';
 import {SeriesResolver} from './api/resolvers/series.resolver';
 import {SplashComponent} from './pages/splash/splash.component';
+import {UsuarioFederacionComponent} from './pages/usuario-federacion/usuario-federacion.component';
 
 const routes: Routes = [
   { path: '', component: SplashComponent},
@@ -27,7 +28,7 @@ const routes: Routes = [
   {path: 'series', component: SeriesComponent, canActivate: [AuthGuard], resolve: {series: SeriesResolver} },
   {path: 'peliculas', component: PeliculasComponent, canActivate: [AuthGuard], resolve: {peliculas: PeliculasResolver}},
   {path: 'mi-usuario/:id_cliente', component: UsuarioComponent, canActivate: [AuthGuard]},
-  {path: 'usuario/:id_cliente/finalizar_federacion/:id_plataforma', component: UsuarioComponent, resolve: {}},
+  {path: 'usuario/:id_cliente/finalizar_federacion/:id_plataforma', component: UsuarioFederacionComponent},
   {
     path: 'descripcion/:id_cliente/:id_contenido',
     component: DescripcionComponent,

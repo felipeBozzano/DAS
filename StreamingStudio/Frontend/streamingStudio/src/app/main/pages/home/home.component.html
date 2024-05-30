@@ -13,28 +13,61 @@
 
     <div class="col-8">
       <div class="contenidos">
-
-        <h2 class="title">Contenido Destacado</h2>
-        <div class="fila-contenido">
-          <div *ngFor="let contenido of destacados" class="contenido-item">
-            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont"
-                 alt="Destacado">
+        <div *ngIf="destacados.length">
+          <h2 class="title">Contenido Destacado</h2>
+          <div class="fila-contenido">
+            <div *ngFor="let contenido of destacados" class="contenido-item">
+              <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont"
+                   alt="Destacado">
+            </div>
           </div>
         </div>
 
-        <h2 class="title">Más Visto</h2>
-        <div class="fila-contenido">
-          <div *ngFor="let contenido of masVistos" class="contenido-item">
-            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont"
-                 alt="Más Visto">
+        <div *ngIf="!destacados.length">
+          <h2 class="title">Contenido Destacado</h2>
+          <div class="fila-contenido" >
+            <div class="contenido-item">
+              <h3>No hay contenido destacado, debes federarte en alguna plataforma</h3>
+            </div>
           </div>
         </div>
 
-        <h2 class="title">Reciente</h2>
-        <div class="fila-contenido">
-          <div *ngFor="let contenido of recientes" class="contenido-item">
-            <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont"
-                 alt="Reciente">
+        <div *ngIf="masVistos.length">
+          <h2 class="title">Más Visto</h2>
+          <div class="fila-contenido">
+            <div *ngFor="let contenido of masVistos" class="contenido-item">
+              <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont"
+                   alt="Más Visto">
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!masVistos.length">
+          <h2 class="title">Mas Visto</h2>
+          <div class="fila-contenido" >
+            <div class="contenido-item">
+              <h3>No hay contenido mas visto, debes federarte en alguna plataforma</h3>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="recientes.length">
+          <h2 class="title">Reciente</h2>
+          <div class="fila-contenido">
+            <div *ngFor="let contenido of recientes" class="contenido-item">
+              <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont"
+                   alt="Reciente">
+            </div>
+          </div>
+        </div>
+
+
+        <div *ngIf="!recientes.length">
+          <h2 class="title">Reciente</h2>
+          <div class="fila-contenido" >
+            <div class="contenido-item">
+              <h3>No hay contenido reciente, debes federarte en alguna plataforma</h3>
+            </div>
           </div>
         </div>
       </div>

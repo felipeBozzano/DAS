@@ -5,7 +5,10 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080',
-  apiUrlNetflix: 'http://localhost:8081'
+  apiUrlNetflix: 'http://localhost:8081',
+  apiUrlStarPlus: 'http://localhost:8084',
+  apiUrlDisneyPlus: 'http://localhost:8083',
+  apiUrlPrimeVideo: 'http://localhost:8082'
 };
 
 

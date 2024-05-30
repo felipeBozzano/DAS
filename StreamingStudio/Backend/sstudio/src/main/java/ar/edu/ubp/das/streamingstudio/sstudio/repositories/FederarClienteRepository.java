@@ -104,7 +104,7 @@ public class FederarClienteRepository implements IFederarClienteRepository {
 //        body.put("id_cliente", String.valueOf(id_cliente));
         body.put("tipo_de_transaccion", tipo_transaccion);
         String conexion = conexion_plataforma.get("url_api");
-        FederacionBean bean = (FederacionBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/obtener_codigo_de_transaccion", body, "FederacionBean");
+        FederacionBean bean = (FederacionBean) conector.execute_post_request(conexion + "/obtener_codigo_de_transaccion", body, "FederacionBean");
 
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
@@ -146,7 +146,6 @@ public class FederarClienteRepository implements IFederarClienteRepository {
                 .addValue("id_plataforma", id_plataforma)
                 .addValue("id_cliente", id_cliente)
                 .addValue("token", bean.getToken());
-//                .addValue("token", bean.getToken());
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Finalizar_Federacion")
                 .withSchemaName("dbo");

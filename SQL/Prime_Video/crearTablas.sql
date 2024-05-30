@@ -26,18 +26,18 @@ CREATE TABLE [Director]
 
 CREATE TABLE [Clasificacion]
 (
-    [id_clasificacion] INT IDENTITY (1,1),
+    [id_clasificacion] VARCHAR(255),
     [descripcion]      VARCHAR(255) NOT NULL,
     PRIMARY KEY ([id_clasificacion])
 );
 
 CREATE TABLE [Contenido]
 (
-    [id_contenido]  VARCHAR(255),
+    [id_contenido]  INT IDENTITY (1,1),
     [titulo]        VARCHAR(255) NOT NULL,
     [descripcion]   VARCHAR(255) NOT NULL,
     [url_imagen]    VARCHAR(255) NOT NULL,
-    [clasificacion] INT          NOT NULL,
+    [clasificacion] VARCHAR(255) NOT NULL,
     [reciente]      BIT          NOT NULL,
     [destacado]     BIT          NOT NULL,
     [fecha_alta]    DATETIME     NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE [Contenido]
 
 CREATE TABLE [Director_Contenido]
 (
-    [id_contenido] VARCHAR(255) NOT NULL,
+    [id_contenido] INT NOT NULL,
     [id_director]  INT          NOT NULL,
     PRIMARY KEY ([id_contenido], [id_director]),
     CONSTRAINT [FK_Director_Contenido.id_contenido]
@@ -142,7 +142,7 @@ CREATE TABLE [Actor]
 
 CREATE TABLE [Actor_Contenido]
 (
-    [id_contenido] VARCHAR(255) NOT NULL,
+    [id_contenido] INT NOT NULL,
     [id_actor]     INT          NOT NULL,
     PRIMARY KEY ([id_contenido], [id_actor]),
     CONSTRAINT [FK_Actor_Contenido.id_actor]
@@ -155,7 +155,7 @@ CREATE TABLE [Actor_Contenido]
 
 CREATE TABLE [Genero_Contenido]
 (
-    [id_contenido] VARCHAR(255) NOT NULL,
+    [id_contenido] INT NOT NULL,
     [id_genero]    INT          NOT NULL,
     PRIMARY KEY ([id_contenido], [id_genero]),
     CONSTRAINT [FK_Genero_Contenido.id_contenido]

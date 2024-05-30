@@ -107,7 +107,7 @@ public class ActualizarCatalogo {
         List<ContenidoCatalogoBean> catalogo = new ArrayList<>();
 
         if (id_plataforma == 1) {
-            List<ContenidoCatalogoBean> catalogos = (List<ContenidoCatalogoBean>) conector.execute_post_request(conexion_plataforma.get("url_api") + "/catalogo", null, "ListaCatalogoBean");
+            List<ContenidoCatalogoBean> catalogos = (List<ContenidoCatalogoBean>) conector.execute_post_request(conexion_plataforma.get("url_api") + "/catalogo", null, "ContenidoCatalogoBean");
 
             System.out.println("catalogos: " + catalogos);
 

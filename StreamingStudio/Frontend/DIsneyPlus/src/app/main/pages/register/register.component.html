@@ -1,0 +1,65 @@
+<app-header [pageTitle]="'Registro'"></app-header>
+<div class="register-container">
+  <div class="register-form">
+    <h2 class="title-container">REGISTRO</h2>
+    <form (ngSubmit)="onSubmit()" [formGroup]="formRegister">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" formControlName="email" required>
+        <div *ngIf="formRegister.get('email')?.errors && formRegister.get('email')?.dirty" class="error-message">
+          <div *ngIf="formRegister.get('email')?.hasError('required')">El email es requerido</div>
+          <div *ngIf="formRegister.get('email')?.hasError('email')">El email debe tener un formato válido</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="re_email">Confirmar Email:</label>
+        <input type="email" id="re_email" name="re_email" formControlName="re_email" required>
+        <div *ngIf="formRegister.get('re_email')?.errors && formRegister.get('re_email')?.dirty" class="error-message">
+          <div *ngIf="formRegister.get('re_email')?.hasError('required')">El email es requerido</div>
+          <div *ngIf="formRegister.get('re_email')?.hasError('re-email')">El email debe tener un formato válido</div>
+          <div *ngIf="formRegister.hasError('mustMatch', ['email', 're_email'])">
+            Los emails no coinciden.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="contraseña">Contraseña:</label>
+        <input type="password" id="contraseña" name="contraseña" formControlName="contrasena" required>
+        <div *ngIf="formRegister.get('contrasena')?.errors && formRegister.get('contrasena')?.dirty" class="error-message">
+          <div *ngIf="formRegister.get('contrasena')?.hasError('required')">La contraseña es requerida</div>
+          <div *ngIf="formRegister.get('contrasena')?.hasError('strongPassword')">La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial</div>
+          <div *ngIf="formRegister.hasError('mustMatch', ['contrasena', 're_contrasena'])">
+            Las contraseñas no coinciden.
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="contraseña">Confirmar Contraseña:</label>
+        <input type="password" id="re_contraseña" name="re_contraseña" formControlName="re_contrasena" required>
+        <div *ngIf="formRegister.get('re_contrasena')?.errors && formRegister.get('re_contrasena')?.dirty" class="error-message">
+          <div *ngIf="formRegister.get('re_contrasena')?.hasError('required')">La contraseña es requerida</div>
+          <div *ngIf="formRegister.get('re_contrasena')?.hasError('strongPassword')">La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" formControlName="nombre" required>
+        <div *ngIf="formRegister.get('nombre')?.errors && formRegister.get('nombre')?.dirty" class="error-message">
+          <div *ngIf="formRegister.get('nombre')?.hasError('required')">El nombre es requerido</div>
+          <div *ngIf="formRegister.get('nombre')?.hasError('maxlength')">El nombre no puede tener más de 16 caracteres</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" name="apellido" formControlName="apellido" required>
+        <div *ngIf="formRegister.get('apellido')?.errors && formRegister.get('apellido')?.dirty" class="error-message">
+          <div *ngIf="formRegister.get('apellido')?.hasError('required')">El apellido es requerido</div>
+          <div *ngIf="formRegister.get('apellido')?.hasError('maxlength')">El apellido no puede tener más de 16 caracteres</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="submit">Registrarse</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -5,7 +5,7 @@ import {IVerificacionAutorizacionResponseModel} from '../models/VereficacionAuto
 
 @Injectable()
 @ResourceParams({
-  pathPrefix: `${environment.apiUrlNetflix}/Netflix`
+  pathPrefix: `${environment.apiUrlNetflix}/netflix`
 })
 export class NetflixResources extends Resource{
 

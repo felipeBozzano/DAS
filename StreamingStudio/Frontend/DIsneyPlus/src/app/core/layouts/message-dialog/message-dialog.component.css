@@ -1,0 +1,67 @@
+/* Estilos para la tarjeta emergente */
+.modal-header {
+  background-color: aquamarine;
+  padding: 10px 20px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.modal-footer {
+  background-color: aquamarine;
+  padding: 10px 20px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.modal-content {
+  border: solid 2px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  animation: slideDown 0.5s ease-out;
+  position: fixed;
+  top: 10px; /* Ajusta esta posición según lo necesites */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1050; /* Asegura que esté encima de otros elementos */
+}
+
+.skip {
+  background-color: skyblue;
+  color: black;
+}
+
+/* Animación para deslizar desde la parte superior */
+@keyframes slideDown {
+  from {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 10px);
+    opacity: 1;
+  }
+}
+
+/* Asegura que el modal esté centrado en la pantalla horizontalmente */
+.modal-dialog {
+  display: flex;
+  justify-content: center;
+}
+
+.modal-body {
+  border: solid aquamarine 4px;
+  padding: 20px;
+}
+
+/* Estilos adicionales para el botón de cerrar */
+.close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #000;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #555;
+}
