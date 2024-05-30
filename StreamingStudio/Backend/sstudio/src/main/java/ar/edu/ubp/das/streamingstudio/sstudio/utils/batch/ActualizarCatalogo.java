@@ -1,5 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoCatalogoBean;
@@ -15,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import static ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.BatchUtils.crearJdbcTemplate;
+import static ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.BatchUtils.obtenerInformacionDeConexionAPlataforma;
 
 @Repository
 public class ActualizarCatalogo {
@@ -97,16 +99,19 @@ public class ActualizarCatalogo {
     }
 
     public static List<ContenidoCatalogoBean> obtenerCatalogoDePlataforma(int id_plataforma) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-//        Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma, jdbcTpl);
-//        AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
-//        Map<String, String> body = new HashMap<>();
-//        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
-//        List<ContenidoCatalogoBean> catalogo = (List<ContenidoCatalogoBean>) conector.execute_post_request(conexion_plataforma.get("url_api") + "/catalogo", body, "ContenidoCatalogoBean");
-//        catalogo
+        Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma, jdbcTpl);
+        AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
+        Map<String, String> body = new HashMap<>();
+        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
 
         List<ContenidoCatalogoBean> catalogo = new ArrayList<>();
+
         if (id_plataforma == 1) {
-            ContenidoCatalogoBean bean_1 = new ContenidoCatalogoBean("101", "Pelicula1",
+            List<ContenidoCatalogoBean> catalogos = (List<ContenidoCatalogoBean>) conector.execute_post_request(conexion_plataforma.get("url_api") + "/catalogo", null, "ListaCatalogoBean");
+
+            System.out.println("catalogos: " + catalogos);
+
+            ContenidoCatalogoBean bean_1 = new ContenidoCatalogoBean("150", "Pelicula1",
                     "Descripción de Pelicula1", "url_imagen1.jpg", "S", true,
                     true, true);
             catalogo.add(bean_1);

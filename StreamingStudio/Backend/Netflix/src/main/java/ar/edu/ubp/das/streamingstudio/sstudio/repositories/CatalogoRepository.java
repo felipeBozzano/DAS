@@ -25,51 +25,23 @@ public class CatalogoRepository {
 
     private Map<String, String> respuesta;
 
-    public List<Map<String, Object>> obtenerCatalogo() {
-        List<Map<String, Object>> respuesta = new ArrayList();
+    public List<CatalogoBean> obtenerCatalogo() {
         List<CatalogoBean> contenidos = obtenerContenido();
 
         for (CatalogoBean contenido : contenidos) {
-            // Crear un mapa para almacenar la información del contenido
-            Map<String, Object> contenidoMap = new HashMap();
-            contenidoMap.put("id_contenido", contenido.getId_contenido());
-            contenidoMap.put("titulo", contenido.getTitulo());
-            contenidoMap.put("descripcion", contenido.getDescripcion());
-            contenidoMap.put("url_imagen", contenido.getUrl_imagen());
-            contenidoMap.put("clasificacion", contenido.getClasificacion());
-            contenidoMap.put("reciente", contenido.isReciente());
-            contenidoMap.put("destacado", contenido.isDestacado());
-            contenidoMap.put("valido", contenido.isValido());
-
-            // Obtener los directores asociados al contenido y añadirlos al mapa
+            // Obtener los directores asociados al contenido y añadirlos al bean
             List<DirectorBean> directores = obtenerDirectores(contenido.getId_contenido());
-            List<Map<String, Object>> directoresList = new ArrayList<>();
             for (DirectorBean director : directores) {
-                Map<String, Object> directorMap = new HashMap<>();
-                directorMap.put("id_director", director.getId_director());
-                directorMap.put("nombre", director.getNombre());
-                directorMap.put("apellido", director.getApellido());
-                directoresList.add(directorMap);
+                contenido.setDirectores(director);
             }
-            contenidoMap.put("directores", directoresList);
-
-            // Obtener los actores asociados al contenido y añadirlos al mapa
+            // Obtener los actores asociados al contenido y añadirlos al bean
             List<ActorBean> actores = obtenerActores(contenido.getId_contenido());
-            List<Map<String, Object>> actoresList = new ArrayList<>();
             for (ActorBean actor : actores) {
-                Map<String, Object> actorMap = new HashMap<>();
-                actorMap.put("nombre", actor.getNombre());
-                actorMap.put("apellido", actor.getApellido());
-                actorMap.put("id_actor", actor.getId_actor());
-                actoresList.add(actorMap);
+                contenido.setActores(actor);
             }
-            contenidoMap.put("actores", actoresList);
-
-            // Añadir el mapa del contenido a la lista de respuesta
-            respuesta.add(contenidoMap);
         }
 
-        return respuesta;
+        return contenidos;
     }
 
 

@@ -99,8 +99,8 @@ public class controllers {
     }
 
     @PostMapping("/catalogo")
-    public ResponseEntity<List<Map<String, Object>>> catalogo() {
-        List<Map<String, Object>> respuesta = catalogoRepository.obtenerCatalogo();
+    public ResponseEntity<List<CatalogoBean>> catalogo() {
+        List<CatalogoBean> respuesta = catalogoRepository.obtenerCatalogo();
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 

@@ -10,9 +10,29 @@ public class CatalogoBean {
     private boolean destacado;
     private boolean valido;
 
+    private DirectorBean directores;
+
+    private ActorBean actores;
+
+    public DirectorBean getDirectores() {
+        return directores;
+    }
+
+    public void setDirectores(DirectorBean directores) {
+        this.directores = directores;
+    }
+
+    public ActorBean getActores() {
+        return actores;
+    }
+
+    public void setActores(ActorBean actores) {
+        this.actores = actores;
+    }
+
     public CatalogoBean(){}
 
-    public CatalogoBean(int id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido) {
+    public CatalogoBean(int id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido, DirectorBean directores, ActorBean actores) {
         this.id_contenido = id_contenido;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -21,6 +41,8 @@ public class CatalogoBean {
         this.reciente = reciente;
         this.destacado = destacado;
         this.valido = valido;
+        this.directores = directores;
+        this.actores = actores;
     }
 
     public int getId_contenido() {
