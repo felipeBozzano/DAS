@@ -4,8 +4,10 @@ import ar.edu.ubp.das.streamingstudio.beans.PublicidadBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jakarta.jws.WebMethod;
+import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
+import jakarta.xml.bind.annotation.XmlSeeAlso;
 
 import java.io.InputStream;
 import java.sql.*;
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Properties;
 
 @WebService
+@XmlSeeAlso(PublicidadBean.class)
 public class PublicistaMusimundoWS {
     private String driver_sql;
     private String sql_conection_string;
@@ -38,9 +41,9 @@ public class PublicistaMusimundoWS {
         gson = gsonBuilder.create();
     }
 
-    @WebMethod
+    @WebMethod()
     @WebResult(name = "obtener_publicidades")
-    public List<PublicidadBean> obtenerPublicidades(String token_de_partner) throws ClassNotFoundException, SQLException {
+    public List<PublicidadBean> obtenerPublicidades(@WebParam (name = "token_de_partner") String token_de_partner) throws ClassNotFoundException, SQLException {
         List<PublicidadBean> publicidades = new LinkedList<>();
 
         Connection conn;
