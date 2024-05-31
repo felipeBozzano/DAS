@@ -1,8 +1,8 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans;
 
 import com.google.gson.Gson;
-
 import java.lang.reflect.Type;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoCatalogoBean;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +18,7 @@ public class AbstractBeanFactory {
         beanMap.put("SesionBean", SesionBean.class);
         beanMap.put("ContenidoUrlBean", ContenidoUrlBean.class);
         beanMap.put("PublicidadResponseBean", PublicidadResponseBean.class);
+        beanMap.put("CatalogoBean", CatalogoBean.class);
     }
 
     public AbstractBean obtenerBean(String beanName) throws InstantiationException, IllegalAccessException {

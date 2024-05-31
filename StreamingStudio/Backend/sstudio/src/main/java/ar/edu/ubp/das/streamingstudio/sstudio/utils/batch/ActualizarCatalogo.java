@@ -1,8 +1,9 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoCatalogoBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.CatalogoBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +16,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 import static ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.BatchUtils.crearJdbcTemplate;
+import static ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.BatchUtils.obtenerInformacionDeConexionAPlataforma;
 
 @Repository
 public class ActualizarCatalogo {
@@ -23,7 +25,7 @@ public class ActualizarCatalogo {
     private static final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
 
     public static void actualizarCatalogo() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        List<CatalogoBean> catalogoStreamingStudio = obtenerCatalogo();
+        List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> catalogoStreamingStudio = obtenerCatalogo();
         List<PlataformaDeStreamingBean> plataformasActivas = obtenerPlataformasActivas();
         for (PlataformaDeStreamingBean plataforma : plataformasActivas) {
 
@@ -32,17 +34,17 @@ public class ActualizarCatalogo {
             List<ContenidoCatalogoBean> catalogoDePlataforma = obtenerCatalogoDePlataforma(id_plataforma);
 
             // Filtramos nuestro catalogo para obtener solo el contenido referente a esta plataforma de streaming
-            List<CatalogoBean> catalogoStreamingStudioFiltrado = catalogoStreamingStudio.stream()
+            List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> catalogoStreamingStudioFiltrado = catalogoStreamingStudio.stream()
                     .filter(contenido -> contenido.getId_plataforma() == id_plataforma)
                     .toList();
 
             // Filtramos el contenido de nuestra plataforma que está activo
-            List<CatalogoBean> contenidoStreamingStudioActivo = catalogoStreamingStudioFiltrado.stream()
+            List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioActivo = catalogoStreamingStudioFiltrado.stream()
                     .filter(contenido -> contenido.getFecha_de_baja() == null || contenido.getFecha_de_alta().after(contenido.getFecha_de_baja()))
                     .toList();
 
             // Filtramos el contenido de nuestra plataforma que está inactivo
-            List<CatalogoBean> contenidoStreamingStudioInactivo = catalogoStreamingStudioFiltrado.stream()
+            List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioInactivo = catalogoStreamingStudioFiltrado.stream()
                     .filter(contenido -> contenido.getFecha_de_baja() != null && contenido.getFecha_de_baja().after(contenido.getFecha_de_alta()))
                     .toList();
 
@@ -74,15 +76,15 @@ public class ActualizarCatalogo {
         }
     }
 
-    public static List<CatalogoBean> obtenerCatalogo() {
+    public static List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> obtenerCatalogo() {
         SqlParameterSource in = new MapSqlParameterSource();
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Catalogo_Actual")
                 .withSchemaName("dbo")
-                .returningResultSet("catalogo", BeanPropertyRowMapper.newInstance(CatalogoBean.class));
+                .returningResultSet("catalogo", BeanPropertyRowMapper.newInstance(ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean.class));
 
         Map<String, Object> out = jdbcCall.execute(in);
-        return (List<CatalogoBean>) out.get("catalogo");
+        return (List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean>) out.get("catalogo");
     }
 
     public static List<PlataformaDeStreamingBean> obtenerPlataformasActivas() {
@@ -97,39 +99,22 @@ public class ActualizarCatalogo {
     }
 
     public static List<ContenidoCatalogoBean> obtenerCatalogoDePlataforma(int id_plataforma) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-//        Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma, jdbcTpl);
-//        AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
-//        Map<String, String> body = new HashMap<>();
-//        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
-//        List<ContenidoCatalogoBean> catalogo = (List<ContenidoCatalogoBean>) conector.execute_post_request(conexion_plataforma.get("url_api") + "/catalogo", body, "ContenidoCatalogoBean");
-//        catalogo
+        Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma, jdbcTpl);
+        AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
+        Map<String, String> body = new HashMap<>();
+        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
 
-        List<ContenidoCatalogoBean> catalogo = new ArrayList<>();
-        if (id_plataforma == 1) {
-            ContenidoCatalogoBean bean_1 = new ContenidoCatalogoBean("101", "Pelicula1",
-                    "Descripción de Pelicula1", "url_imagen1.jpg", "S", true,
-                    true, true);
-            catalogo.add(bean_1);
-        } else if (id_plataforma == 2) {
-            ContenidoCatalogoBean bean_2 = new ContenidoCatalogoBean("109", "Pelicula6",
-                    "Descripción de Pelicula6", "url_imagen9.jpg", "S", true,
-                    false, true);
-            catalogo.add(bean_2);
-        } else {
-            ContenidoCatalogoBean bean_3 = new ContenidoCatalogoBean("101", "Serie5",
-                    "Descripción de Serie5", "url_imagen1.jpg", "S", false,
-                    true, true);
-            catalogo.add(bean_3);
-        }
-        return catalogo;
+        CatalogoBean catalogo = (CatalogoBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/catalogo", body, "CatalogoBean");
+
+        return catalogo.getListaContenido();
     }
 
-    public static void darDeBajaContenido(List<CatalogoBean> contenidoStreamingStudioActivo, List<ContenidoCatalogoBean> contenidoPlataformaInactivo) {
+    public static void darDeBajaContenido(List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioActivo, List<ContenidoCatalogoBean> contenidoPlataformaInactivo) {
 
-        List<CatalogoBean> contenidoADarDeBaja = cruzarContenido(contenidoStreamingStudioActivo, contenidoPlataformaInactivo);
+        List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoADarDeBaja = cruzarContenido(contenidoStreamingStudioActivo, contenidoPlataformaInactivo);
 
         // Doy de baja dichos contenidos
-        for (CatalogoBean contenido : contenidoADarDeBaja) {
+        for (ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean contenido : contenidoADarDeBaja) {
             String id_contenido = contenido.getId_contenido();
             int id_plataforma = contenido.getId_plataforma();
             SqlParameterSource in = new MapSqlParameterSource()
@@ -142,12 +127,12 @@ public class ActualizarCatalogo {
         }
     }
 
-    public static void habilitarContenido(List<CatalogoBean> contenidoStreamingStudioInactivo, List<ContenidoCatalogoBean> contenidoPlataformaActivo) {
+    public static void habilitarContenido(List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioInactivo, List<ContenidoCatalogoBean> contenidoPlataformaActivo) {
 
-        List<CatalogoBean> contenidoAActivar = cruzarContenido(contenidoStreamingStudioInactivo, contenidoPlataformaActivo);
+        List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoAActivar = cruzarContenido(contenidoStreamingStudioInactivo, contenidoPlataformaActivo);
 
         // Habilito dichos contenidos
-        for (CatalogoBean contenido : contenidoAActivar) {
+        for (ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean contenido : contenidoAActivar) {
             String id_contenido = contenido.getId_contenido();
             int id_plataforma = contenido.getId_plataforma();
             SqlParameterSource in = new MapSqlParameterSource()
@@ -160,7 +145,7 @@ public class ActualizarCatalogo {
         }
     }
 
-    private static List<CatalogoBean> cruzarContenido(List<CatalogoBean> contenidoStreamingStudio, List<ContenidoCatalogoBean> contenidoPlataforma) {
+    private static List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> cruzarContenido(List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudio, List<ContenidoCatalogoBean> contenidoPlataforma) {
         // Crear un HashSet con los id_en_plataforma
         Set<String> idContenidoPlataforma = new HashSet<>();
         for (ContenidoCatalogoBean bean : contenidoPlataforma) {
@@ -168,8 +153,8 @@ public class ActualizarCatalogo {
         }
 
         // Cruzo los contenidos de ambos catálogos
-        List<CatalogoBean> contenidoAActivar = new ArrayList<>();
-        for (CatalogoBean bean : contenidoStreamingStudio) {
+        List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoAActivar = new ArrayList<>();
+        for (ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean bean : contenidoStreamingStudio) {
             if (idContenidoPlataforma.contains(bean.getId_contenido())) {
                 contenidoAActivar.add(bean);
             }
@@ -177,7 +162,7 @@ public class ActualizarCatalogo {
         return contenidoAActivar;
     }
 
-    public static void agregarContenidoNuevo(int id_plataforma, List<CatalogoBean> catalogoStreamingStudioFiltrado, List<ContenidoCatalogoBean> contenidoPlataformaActivo) {
+    public static void agregarContenidoNuevo(int id_plataforma, List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> catalogoStreamingStudioFiltrado, List<ContenidoCatalogoBean> contenidoPlataformaActivo) {
 
         // Crear un HashSet con los id_en_plataforma de la plataforma de streaming
         Set<String> idEnPlataformaContenidoActivo = new HashSet<>();
@@ -187,7 +172,7 @@ public class ActualizarCatalogo {
 
         // Crear un HashSet con los id_en_plataforma de nuestro catalogo actual
         Set<String> idEnPlataformaCatalogoActual = new HashSet<>();
-        for (CatalogoBean bean : catalogoStreamingStudioFiltrado) {
+        for (ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean bean : catalogoStreamingStudioFiltrado) {
             idEnPlataformaCatalogoActual.add(bean.getId_contenido());
         }
 
@@ -246,7 +231,7 @@ public class ActualizarCatalogo {
         }
     }
 
-    public static void actualizarContenido(int id_plataforma, List<CatalogoBean> catalogoStreamingStudioFiltrado, List<ContenidoCatalogoBean> catalogoDePlataforma) {
+    public static void actualizarContenido(int id_plataforma, List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> catalogoStreamingStudioFiltrado, List<ContenidoCatalogoBean> catalogoDePlataforma) {
 
         // Crear un HashSet con los id_en_plataforma de la plataforma de streaming
         Set<String> idEnPlataformaPlataformaStreaming = new HashSet<>();
@@ -256,7 +241,7 @@ public class ActualizarCatalogo {
 
         // Crear un HashSet con los id_en_plataforma de nuestro catalogo actual
         Set<String> idEnPlataformaStreamingStudio = new HashSet<>();
-        for (CatalogoBean bean : catalogoStreamingStudioFiltrado) {
+        for (ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean bean : catalogoStreamingStudioFiltrado) {
             idEnPlataformaStreamingStudio.add(bean.getId_contenido());
         }
 

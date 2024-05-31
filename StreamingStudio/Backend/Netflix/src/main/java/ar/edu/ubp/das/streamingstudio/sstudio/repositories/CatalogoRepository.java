@@ -2,7 +2,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ActorBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.DirectorBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -12,8 +12,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,66 +23,38 @@ public class CatalogoRepository {
 
     private Map<String, String> respuesta;
 
-    public List<Map<String, Object>> obtenerCatalogo() {
-        List<Map<String, Object>> respuesta = new ArrayList();
-        List<CatalogoBean> contenidos = obtenerContenido();
+    public CatalogoBean obtenerCatalogo() {
+        List<ContenidoBean> contenidos = obtenerContenido();
 
-        for (CatalogoBean contenido : contenidos) {
-            // Crear un mapa para almacenar la información del contenido
-            Map<String, Object> contenidoMap = new HashMap();
-            contenidoMap.put("id_contenido", contenido.getId_contenido());
-            contenidoMap.put("titulo", contenido.getTitulo());
-            contenidoMap.put("descripcion", contenido.getDescripcion());
-            contenidoMap.put("url_imagen", contenido.getUrl_imagen());
-            contenidoMap.put("clasificacion", contenido.getClasificacion());
-            contenidoMap.put("reciente", contenido.isReciente());
-            contenidoMap.put("destacado", contenido.isDestacado());
-            contenidoMap.put("valido", contenido.isValido());
-
-            // Obtener los directores asociados al contenido y añadirlos al mapa
+        for (ContenidoBean contenido : contenidos) {
+            // Obtener los directores asociados al contenido y añadirlos al bean
             List<DirectorBean> directores = obtenerDirectores(contenido.getId_contenido());
-            List<Map<String, Object>> directoresList = new ArrayList<>();
             for (DirectorBean director : directores) {
-                Map<String, Object> directorMap = new HashMap<>();
-                directorMap.put("id_director", director.getId_director());
-                directorMap.put("nombre", director.getNombre());
-                directorMap.put("apellido", director.getApellido());
-                directoresList.add(directorMap);
+                contenido.setDirectores(director);
             }
-            contenidoMap.put("directores", directoresList);
-
-            // Obtener los actores asociados al contenido y añadirlos al mapa
+            // Obtener los actores asociados al contenido y añadirlos al bean
             List<ActorBean> actores = obtenerActores(contenido.getId_contenido());
-            List<Map<String, Object>> actoresList = new ArrayList<>();
             for (ActorBean actor : actores) {
-                Map<String, Object> actorMap = new HashMap<>();
-                actorMap.put("nombre", actor.getNombre());
-                actorMap.put("apellido", actor.getApellido());
-                actorMap.put("id_actor", actor.getId_actor());
-                actoresList.add(actorMap);
+                contenido.setActores(actor);
             }
-            contenidoMap.put("actores", actoresList);
-
-            // Añadir el mapa del contenido a la lista de respuesta
-            respuesta.add(contenidoMap);
         }
-
-        return respuesta;
+        CatalogoBean catalogo = new CatalogoBean(contenidos);
+        return catalogo;
     }
 
 
-    public List<CatalogoBean> obtenerContenido(){
+    public List<ContenidoBean> obtenerContenido(){
         SqlParameterSource in = new MapSqlParameterSource();
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Contenido_Actual")
                 .withSchemaName("dbo")
-                .returningResultSet("contenido", BeanPropertyRowMapper.newInstance(CatalogoBean.class));;
+                .returningResultSet("contenido", BeanPropertyRowMapper.newInstance(ContenidoBean.class));;
         Map<String, Object> out = jdbcCall.execute(in);
-        List<CatalogoBean> contenido = (List<CatalogoBean>)out.get("contenido");
+        List<ContenidoBean> contenido = (List<ContenidoBean>)out.get("contenido");
         return contenido;
     }
 
-    public List<DirectorBean> obtenerDirectores(int id_contenido){
+    public List<DirectorBean> obtenerDirectores(String id_contenido){
         SqlParameterSource in = new MapSqlParameterSource()
             .addValue("id_contenido", id_contenido);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
@@ -96,7 +66,7 @@ public class CatalogoRepository {
         return contenido;
     }
 
-    public List<ActorBean> obtenerActores(int id_contenido){
+    public List<ActorBean> obtenerActores(String id_contenido){
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_contenido", id_contenido);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)

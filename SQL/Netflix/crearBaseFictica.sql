@@ -23,8 +23,8 @@ INSERT INTO Clasificacion(id_clasificacion, descripcion)
 VALUES ('P', 'Pelicula'), ('S', 'Serie');
 go
 
-INSERT INTO Contenido (titulo, descripcion, url_imagen, clasificacion, reciente, destacado, fecha_alta, fecha_baja)
-VALUES ('The Avengers', 'descripcion de The Avengers',
+INSERT INTO Contenido (id_contenido,titulo, descripcion, url_imagen, clasificacion, reciente, destacado, fecha_alta, fecha_baja)
+VALUES ('CP12','The Avengers', 'descripcion de The Avengers',
         'https://cdn.marvel.com/content/1x/avengersendgame_lob_crd_05.jpg', 'P', 1, 1, '2024-05-15', NULL);
 go
 
@@ -37,10 +37,10 @@ VALUES ('Nombre Actor 1', 'Apellido Actor 1');
 go
 
 INSERT INTO Director_Contenido(id_contenido, id_director)
-VALUES (1,1);
+VALUES ('CP12',1);
 go
 
 INSERT INTO Actor_Contenido(id_contenido, id_actor)
-VALUES (1,1);
+VALUES ('CP12',1);
 go
 

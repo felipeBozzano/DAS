@@ -18,6 +18,7 @@ h2 {
 }
 
 .platform-item {
+  cursor: pointer;
   flex: 0 0 150px; /* Set a base width for each platform item */
   margin: 10px;
   text-align: center;

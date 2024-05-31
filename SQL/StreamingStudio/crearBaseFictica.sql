@@ -12,7 +12,8 @@ VALUES (N'contrasena1', 'usuario1@example.com', 'Juan', N'Pérez', 1),
        (N'contrasena8', 'usuario8@example.com', 'Elena', N'Fernández', 1),
        (N'contrasena9', 'usuario9@example.com', 'Miguel', N'Díaz', 1),
        (N'contrasena10', 'usuario10@example.com', 'Carmen', N'Rodríguez', 1),
-       (N'Contrasena1@', 'francisco1@gmail.com', 'Carmen', N'Rodríguez', 1);
+       (N'Contrasena1@', 'felipe@gmail.com', 'Felipe', 'Bozzano', 1),
+       (N'Contrasena1@', 'francisco@gmail.com', 'Francisco', 'Olmos', 1);
 go
 
 -- Crear 3 géneros
@@ -137,8 +138,10 @@ VALUES ('Netflix', N'Netflix Argentina S.R.L.',
         'https://images.ctfassets.net/4cd45et68cgf/4nBnsuPq03diC5eHXnQYx/d48a4664cdc48b6065b0be2d0c7bc388/Netflix-Logo.jpg', 'Netflix123', 'http://localhost:8081/netflix', 'REST', 1),
        ('Prime Video', N'Prime Video Argentina S.R.L.',
         'https://yt3.googleusercontent.com/pn_3JEt2nFaRA6dY08NzFM2w8A7NtUbaniamEnObxtLX3ZhT9w41KW0W0pjl-RiczGS0rgzZ=s900-c-k-c0x00ffffff-no-rj', 'PrimeVideo123', 'http://localhost:8082/prime_video', 'REST', 1),
+       ('Disney Plus', N'Disney Plus S.R.L.',
+        'https://yt3.googleusercontent.com/j2CPWGfJvBR7k_hNcV6Dx7oOqHR2nJu16ZaD8r8o9jjS9G-Spn8B_5vqJ8CqvBScLJ3rKLrk=s900-c-k-c0x00ffffff-no-rj', 'StarPlus123', 'http://localhost:8083/disney_plus', 'REST', 1),
        ('Star Plus', N'Star Plus S.R.L.',
-        'https://media.ambito.com/p/050f05a32403fba3d95c8b783ccccee6/adjuntos/239/imagenes/039/297/0039297233/1200x675/smart/star-plusjpg.jpg', 'StarPlus123', 'http://localhost:8083/star_plus', 'SOAP', 1);
+        'https://media.ambito.com/p/050f05a32403fba3d95c8b783ccccee6/adjuntos/239/imagenes/039/297/0039297233/1200x675/smart/star-plusjpg.jpg', 'StarPlus123', 'http://localhost:8084/star_plus', 'SOAP', 1);
 go
 
 -- Llenar Catálogo

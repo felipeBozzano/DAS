@@ -17,8 +17,8 @@ public class BatchUtils {
         dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         dataSource.setUrl("jdbc:sqlserver://localhost;databaseName=StreamingStudio;encrypt=false;trustServerCertificate=false");
         dataSource.setUsername("SA");
-        dataSource.setPassword("Gaboty30.!");
-//        dataSource.setPassword("samano$uke_123");
+        //dataSource.setPassword("Gaboty30.!");
+        dataSource.setPassword("samano$uke_123");
         return new JdbcTemplate(dataSource);
     }
 
