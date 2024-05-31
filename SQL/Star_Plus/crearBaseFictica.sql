@@ -16,5 +16,31 @@ go
 
 -- Crear partner
 INSERT INTO Partner (nombre, token_de_servicio)
-VALUES ('StreamingStudio', 'Netflix123');
+VALUES ('StreamingStudio', 'StarPlus123');
 go
+
+INSERT INTO Clasificacion(id_clasificacion, descripcion)
+VALUES ('P', 'Pelicula'), ('S', 'Serie');
+go
+
+INSERT INTO Contenido (id_contenido,titulo, descripcion, url_imagen, clasificacion, reciente, destacado, fecha_alta, fecha_baja)
+VALUES ('CP12','The Avengers', 'descripcion de The Avengers',
+        'https://cdn.marvel.com/content/1x/avengersendgame_lob_crd_05.jpg', 'P', 1, 1, '2024-05-15', NULL);
+go
+
+INSERT INTO Director(nombre, apellido)
+VALUES ('Nombre director 1', 'Apellido director 1');
+go
+
+INSERT INTO Actor(nombre, apellido)
+VALUES ('Nombre Actor 1', 'Apellido Actor 1');
+go
+
+INSERT INTO Director_Contenido(id_contenido, id_director)
+VALUES ('CP12',1);
+go
+
+INSERT INTO Actor_Contenido(id_contenido, id_actor)
+VALUES ('CP12',1);
+go
+
