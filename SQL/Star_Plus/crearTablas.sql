@@ -26,18 +26,18 @@ CREATE TABLE [Director]
 
 CREATE TABLE [Clasificacion]
 (
-    [id_clasificacion] INT IDENTITY (1,1),
+    [id_clasificacion] VARCHAR(255),
     [descripcion]      VARCHAR(255) NOT NULL,
     PRIMARY KEY ([id_clasificacion])
 );
 
 CREATE TABLE [Contenido]
 (
-    [id_contenido]  VARCHAR(255),
+    [id_contenido]  VARCHAR (255),
     [titulo]        VARCHAR(255) NOT NULL,
     [descripcion]   VARCHAR(255) NOT NULL,
     [url_imagen]    VARCHAR(255) NOT NULL,
-    [clasificacion] INT          NOT NULL,
+    [clasificacion] VARCHAR(255) NOT NULL,
     [reciente]      BIT          NOT NULL,
     [destacado]     BIT          NOT NULL,
     [fecha_alta]    DATETIME     NOT NULL,

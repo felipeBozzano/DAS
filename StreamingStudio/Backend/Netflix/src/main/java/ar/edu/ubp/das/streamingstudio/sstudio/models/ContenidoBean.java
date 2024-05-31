@@ -1,8 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.AbstractBean;
-
-public class ContenidoCatalogoBean extends AbstractBean {
+public class ContenidoBean {
     private String id_contenido;
     private String titulo;
     private String descripcion;
@@ -11,17 +9,10 @@ public class ContenidoCatalogoBean extends AbstractBean {
     private boolean reciente;
     private boolean destacado;
     private boolean valido;
-    private  ActorBean actores;
 
     private DirectorBean directores;
 
-    public ActorBean getActores() {
-        return actores;
-    }
-
-    public void setActores(ActorBean actores) {
-        this.actores = actores;
-    }
+    private ActorBean actores;
 
     public DirectorBean getDirectores() {
         return directores;
@@ -31,23 +22,17 @@ public class ContenidoCatalogoBean extends AbstractBean {
         this.directores = directores;
     }
 
-    public ContenidoCatalogoBean() {
+    public ActorBean getActores() {
+        return actores;
     }
 
-    public ContenidoCatalogoBean(String id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido, ActorBean actores, DirectorBean directores) {
-        this.id_contenido = id_contenido;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.url_imagen = url_imagen;
-        this.clasificacion = clasificacion;
-        this.reciente = reciente;
-        this.destacado = destacado;
-        this.valido = valido;
+    public void setActores(ActorBean actores) {
         this.actores = actores;
-        this.directores = directores;
     }
 
-    public ContenidoCatalogoBean(String id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido) {
+    public ContenidoBean(){}
+
+    public ContenidoBean(String id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido, DirectorBean directores, ActorBean actores) {
         this.id_contenido = id_contenido;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -56,6 +41,8 @@ public class ContenidoCatalogoBean extends AbstractBean {
         this.reciente = reciente;
         this.destacado = destacado;
         this.valido = valido;
+        this.directores = directores;
+        this.actores = actores;
     }
 
     public String getId_contenido() {

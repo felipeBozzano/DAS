@@ -1,5 +1,4 @@
 
-
 /* Cliente_Usuario */
 
 CREATE OR ALTER PROCEDURE Crear_Usuario @contrasena VARCHAR(255),
@@ -393,10 +392,10 @@ CREATE OR ALTER PROCEDURE Crear_Contenido @id_contenido VARCHAR(255),
                                           @destacado BIT
 AS
 BEGIN
-    INSERT INTO dbo.Contenido(titulo, descripcion, url_imagen, clasificacion, reciente, destacado,
+    INSERT INTO dbo.Contenido(id_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado,
                               fecha_alta, fecha_baja)
-    VALUES (@titulo, @descripcion, @url_imagen, @clasificacion, @reciente, @destacado, GETDATE(),
-            NULL)
+    VALUES ( @id_contenido, @titulo, @descripcion, @url_imagen, @clasificacion, @reciente, @destacado, GETDATE(),
+             NULL)
 END
 go
 
@@ -491,7 +490,7 @@ AS
 BEGIN
     SELECT A.id_cliente, T.url_de_redireccion
     FROM dbo.Autorizacion A
-        JOIN dbo.Autorizacion T ON A.codigo_de_transaccion = T.codigo_de_transaccion
+             JOIN dbo.Autorizacion T ON A.codigo_de_transaccion = T.codigo_de_transaccion
     WHERE A.codigo_de_transaccion = @codigo_de_transaccion
 END
 go
@@ -505,17 +504,17 @@ BEGIN
 END;
 GO
 
-CREATE OR ALTER PROCEDURE Obtener_Directores @id_contenido INT
+CREATE OR ALTER PROCEDURE Obtener_Directores @id_contenido VARCHAR(255)
 AS
 BEGIN
     SELECT d.id_director, d.apellido, d.nombre
     FROM dbo.Director_Contenido as dc
-        join Director as d on dc.id_director = d.id_director
+             join Director as d on dc.id_director = d.id_director
     WHERE dc.id_contenido = @id_contenido
 END;
 GO
 
-CREATE OR ALTER PROCEDURE Obtener_Actores @id_contenido INT
+CREATE OR ALTER PROCEDURE Obtener_Actores @id_contenido VARCHAR(255)
 AS
 BEGIN
     SELECT a.id_actor, a.apellido, a.nombre

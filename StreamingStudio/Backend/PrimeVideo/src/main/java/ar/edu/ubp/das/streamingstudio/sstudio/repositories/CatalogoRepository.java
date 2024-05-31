@@ -56,7 +56,7 @@ public class CatalogoRepository {
 
     public List<DirectorBean> obtenerDirectores(String id_contenido){
         SqlParameterSource in = new MapSqlParameterSource()
-            .addValue("id_contenido", id_contenido);
+                .addValue("id_contenido", id_contenido);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Directores")
                 .withSchemaName("dbo")

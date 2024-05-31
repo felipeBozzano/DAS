@@ -1,24 +1,24 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-public class DirectorBean {
-    private int id_director;
+public class ActorBean {
+    private int id_actor;
     private String nombre;
     private String apellido;
 
-    public DirectorBean(){}
+    public ActorBean(){}
 
-    public DirectorBean(int id_director, String nombre, String apellido) {
-        this.id_director = id_director;
+    public ActorBean(int id_actor, String nombre, String apellido) {
+        this.id_actor = id_actor;
         this.nombre = nombre;
         this.apellido = apellido;
     }
 
-    public int getId_director() {
-        return id_director;
+    public int getId_actor() {
+        return id_actor;
     }
 
-    public void setId_director(int id_director) {
-        this.id_director = id_director;
+    public void setId_director(int id_actor) {
+        this.id_actor = id_actor;
     }
 
     public String getNombre() {

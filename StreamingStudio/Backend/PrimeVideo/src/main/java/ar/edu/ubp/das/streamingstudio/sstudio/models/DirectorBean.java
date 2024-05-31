@@ -1,6 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 public class DirectorBean {
+
     private int id_director;
     private String nombre;
     private String apellido;

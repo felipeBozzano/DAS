@@ -1,13 +1,15 @@
-package ar.edu.ubp.das.streamingstudio.sstudio.models;
+package ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans;
+
+import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoCatalogoBean;
 
 import java.util.List;
 
-public class ListaCatalogoBean {
+public class CatalogoBean extends AbstractBean {
     private List<ContenidoCatalogoBean> listaContenido;
 
-    public ListaCatalogoBean(){}
+    public CatalogoBean(){}
 
-    public ListaCatalogoBean(List<ContenidoCatalogoBean> listaContenido) {
+    public CatalogoBean(List<ContenidoCatalogoBean> listaContenido) {
         this.listaContenido = listaContenido;
     }
 
