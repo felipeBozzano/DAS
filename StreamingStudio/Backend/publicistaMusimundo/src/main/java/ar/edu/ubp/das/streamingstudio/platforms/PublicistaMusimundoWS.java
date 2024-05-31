@@ -1,6 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.platforms;
 
-import ar.edu.ubp.das.streamingstudio.beans.PublicidadBean;
+import ar.edu.ubp.das.streamingstudio.beans.PublicidadResponseBean;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import jakarta.jws.WebMethod;
@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Properties;
 
 @WebService
-@XmlSeeAlso(PublicidadBean.class)
+@XmlSeeAlso(PublicidadResponseBean.class)
 public class PublicistaMusimundoWS {
     private String driver_sql;
     private String sql_conection_string;
@@ -42,9 +42,9 @@ public class PublicistaMusimundoWS {
     }
 
     @WebMethod()
-    @WebResult(name = "obtener_publicidades")
-    public List<PublicidadBean> obtenerPublicidades(@WebParam (name = "token_de_partner") String token_de_partner) throws ClassNotFoundException, SQLException {
-        List<PublicidadBean> publicidades = new LinkedList<>();
+    @WebResult(name = "obtenerPublicidades")
+    public String obtenerPublicidades(@WebParam (name = "token_de_partner") String token_de_partner) throws ClassNotFoundException, SQLException {
+        List<PublicidadResponseBean> publicidades = new LinkedList<>();
 
         Connection conn;
         CallableStatement stmt;
@@ -80,19 +80,20 @@ public class PublicistaMusimundoWS {
 
             rs_publicidades = stmt_publicidades.executeQuery();
             while (rs_publicidades.next()) {
-                PublicidadBean pub = new PublicidadBean();
+                PublicidadResponseBean pub = new PublicidadResponseBean();
                 pub.setTipo_banner(rs_publicidades.getString("tipo_banner"));
                 pub.setUrl_de_imagen(rs_publicidades.getString("url_de_imagen"));
                 pub.setUrl_de_publicidad(rs_publicidades.getString("url_de_publicidad"));
-                pub.setId_publicidad(rs_publicidades.getString("id_publicidad"));
+                pub.setCodigo_publicidad(rs_publicidades.getString("codigo_publicidad"));
                 pub.setFecha_de_alta(rs_publicidades.getString("fecha_de_alta"));
                 pub.setFecha_de_baja(rs_publicidades.getString("fecha_de_baja"));
                 publicidades.add(pub);
             }
         }
         else {
-            publicidades.add(new PublicidadBean());
+            publicidades.add(new PublicidadResponseBean());
         }
-        return publicidades;
+        PublicidadResponseBean publicidad = publicidades.getFirst();
+        return publicidad.to_json();
     }
 }

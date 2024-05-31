@@ -90,14 +90,17 @@ public class DatosPublicidades {
     public static List<PublicidadBean> obtenerPublicidadesDePublicista(PublicistaBean publicista) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         AbstractConnector conector = conectorFactory.crearConector(publicista.getProtocolo_api());
         Map<String, String> body = new HashMap<>();
-        String message = """
-                   <ws:obtener_publicidades xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
-                   <token_de_partner>%s</token_de_partner>
-                   </ws:obtener_publicidades>""".formatted(publicista.getToken_de_servicio());
-        System.out.println(message);
-        body.put("message", message);
 
-        PublicidadResponseBean bean = (PublicidadResponseBean) conector.execute_post_request(publicista.getUrl_api(), body, "PublicidadBean");
+        if (publicista.getProtocolo_api().equals("SOAP")) {
+            String message = """
+                   <ws:obtenerPublicidades xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
+                   <token_de_partner>%s</token_de_partner>
+                   </ws:obtenerPublicidades>""".formatted(publicista.getToken_de_servicio());
+            body.put("message", message);
+            body.put("web_service", "obtenerPublicidades");
+        }
+
+        PublicidadResponseBean bean = (PublicidadResponseBean) conector.execute_post_request(publicista.getUrl_api(), body, "PublicidadResponseBean");
 
 
         List<PublicidadBean> publicidades = new ArrayList<>();

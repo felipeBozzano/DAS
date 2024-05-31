@@ -1,22 +1,22 @@
 package ar.edu.ubp.das.streamingstudio.beans;
 
-public class PublicidadBean {
-    private String id_publicidad;
+public class PublicidadResponseBean {
+    private String codigo_publicidad;
     private String url_de_imagen;
     private String url_de_publicidad;
     private String fecha_de_alta;
     private String fecha_de_baja;
     private String tipo_banner;
 
-    public PublicidadBean() {
+    public PublicidadResponseBean() {
     }
 
-    public String getId_publicidad() {
-        return id_publicidad;
+    public String getCodigo_publicidad() {
+        return codigo_publicidad;
     }
 
-    public void setId_publicidad(String id_publicidad) {
-        this.id_publicidad = id_publicidad;
+    public void setCodigo_publicidad(String codigo_publicidad) {
+        this.codigo_publicidad = codigo_publicidad;
     }
 
     public String getUrl_de_imagen() {
@@ -57,5 +57,18 @@ public class PublicidadBean {
 
     public void setTipo_banner(String tipo_banner) {
         this.tipo_banner = tipo_banner;
+    }
+
+    public String to_json() {
+        return """
+                {
+                \t"codigo_publicidad": "%s",
+                \t"url_de_imagen": "%s",
+                \t"url_de_publicidad": "%s",
+                \t"fecha_de_alta": "%s",
+                \t"fecha_de_baja": "%s",
+                \t"tipo_banner": "%s"
+                }
+                """.formatted(codigo_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta, fecha_de_baja, tipo_banner);
     }
 }

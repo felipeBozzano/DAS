@@ -6,12 +6,16 @@ public class PublicidadResponseBean extends AbstractBean{
     private int tipo_banner;
     private String url_de_imagen;
     private String url_de_publicidad;
-    private int id_publicidad;
+    private String codigo_publicidad;
     private Date fecha_de_alta;
     private Date fecha_de_baja;
 
     public PublicidadResponseBean() {
     }
+
+//    public PublicidadResponseBean(String json_value) {
+//
+//    }
 
     public int getTipo_banner() {
         return tipo_banner;
@@ -37,12 +41,12 @@ public class PublicidadResponseBean extends AbstractBean{
         this.url_de_publicidad = url_de_publicidad;
     }
 
-    public int getId_publicidad() {
-        return id_publicidad;
+    public String getCodigo_publicidad() {
+        return codigo_publicidad;
     }
 
-    public void setId_publicidad(int id_publicidad) {
-        this.id_publicidad = id_publicidad;
+    public void setCodigo_publicidad(String codigo_publicidad) {
+        this.codigo_publicidad = codigo_publicidad;
     }
 
     public Date getFecha_de_alta() {

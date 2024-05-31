@@ -1,5 +1,8 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans;
 
+import com.google.gson.Gson;
+
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,4 +36,14 @@ public class AbstractBeanFactory {
         return beanMap.get(nombreBean);
     }
 
+    public AbstractBean obtenerBeanDesdeJson(String beanName, String json, Gson gson) throws InstantiationException, IllegalAccessException {
+        Class<? extends AbstractBean> beanClass = beanMap.get(beanName);
+        if (beanClass != null) {
+            // Crea una instancia del objeto correspondiente utilizando reflexión
+            return gson.fromJson(json, beanClass);
+        } else {
+            // Manejo de error si el nombre del bean no está en el mapa
+            throw new IllegalArgumentException("Bean no encontrado: " + beanName);
+        }
+    }
 }

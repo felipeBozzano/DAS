@@ -30,7 +30,7 @@ CREATE TABLE [Partner]
 
 CREATE TABLE [Publicidad]
 (
-    [id_publicidad]     VARCHAR(255) PRIMARY KEY,
+    [codigo_publicidad] VARCHAR(255) PRIMARY KEY,
     [url_de_imagen]     VARCHAR(255) NOT NULL,
     [url_de_publicidad] VARCHAR(255) NOT NULL,
     [fecha_de_alta]     DATE         NOT NULL,
