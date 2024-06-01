@@ -47,10 +47,9 @@ public class StarPlusWS {
 
     @WebMethod()
     @WebResult(name = "catalogo")
-    public List<ContenidoBean> obtenerCatalogo(@WebParam (name = "token_de_partner") String token_de_partner) throws ClassNotFoundException, SQLException {
+    public String obtenerCatalogo(@WebParam (name = "token_de_partner") String token_de_partner) throws ClassNotFoundException, SQLException {
 
         Connection conn;
-        CallableStatement stmt;
         ResultSet rs;
         Class.forName(driver_sql);
         conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
@@ -58,51 +57,54 @@ public class StarPlusWS {
 
         System.out.println("Token de partner: " + token_de_partner);
 
-        stmt = conn.prepareCall("{CALL dbo.Verificar_Token_de_Partner(?)}");
-        stmt.setString("token", token_de_partner);
-
-
         String temp = "";
-        rs = stmt.executeQuery();
+        //rs = stmt.executeQuery();
 
-
-            CallableStatement stmt_catalogo;
+            CallableStatement stmt;
             ResultSet rs_catalogo;
-            stmt_catalogo = conn.prepareCall("{CALL dbo.Obtener_Contenido_Actual}");
-            rs_catalogo = stmt_catalogo.executeQuery();
+            stmt = conn.prepareCall("{CALL dbo.Obtener_Contenido_Actual}");
+            rs_catalogo = stmt.executeQuery();
             List<ContenidoBean> listaContenido = new LinkedList<>();
             while (rs_catalogo.next()) {
                 ContenidoBean contenido = new ContenidoBean();
+                System.out.println(rs_catalogo.getString("id_contenido"));
 
                 // DIRECTORES
                 CallableStatement stmt_directores;
                 ResultSet rs_directores;
-                stmt_directores = conn.prepareCall("{CALL dbo.Obtener_Actores}");
-                stmt.setString("id_contenido", rs_catalogo.getString("id_contenido"));
+                stmt_directores = conn.prepareCall("{CALL dbo.Obtener_Directores(?)}");
+                stmt_directores.setString("id_contenido", rs_catalogo.getString("id_contenido"));
                 rs_directores = stmt_directores.executeQuery();
                 List<DirectorBean> listaDirectores = new LinkedList<>();
                 while (rs_directores.next()) {
                     DirectorBean director = new DirectorBean();
                     director.setApellido(rs_directores.getString("apellido"));
                     director.setNombre(rs_directores.getString("nombre"));
-                    director.setId_director(rs_directores.getInt("id_cator"));
+                    director.setId_director(rs_directores.getInt("id_director"));
                     listaDirectores.add(director);
                 }
+                rs_directores.close();
+                stmt_directores.close();
+
+
 
                 // ACTORES
                 CallableStatement stmt_actores;
                 ResultSet rs_actores;
-                stmt_actores = conn.prepareCall("{CALL dbo.Obtener_Actores}");
-                stmt.setString("id_contenido", rs_catalogo.getString("id_contenido"));
+                stmt_actores = conn.prepareCall("{CALL dbo.Obtener_Actores(?)}");
+                stmt_actores.setString("id_contenido", rs_catalogo.getString("id_contenido"));
                 rs_actores = stmt_actores.executeQuery();
                 List<ActorBean> listaActores = new LinkedList<>();
                 while (rs_actores.next()) {
                     ActorBean actor = new ActorBean();
                     actor.setApellido(rs_actores.getString("apellido"));
                     actor.setNombre(rs_actores.getString("nombre"));
-                    actor.setId_director(rs_actores.getInt("id_cator"));
+                    actor.setId_director(rs_actores.getInt("id_actor"));
                     listaActores.add(actor);
                 }
+                rs_actores.close();
+                stmt_actores.close();
+
 
                 // CONTENIDO
                 contenido.setTitulo(rs_catalogo.getString("titulo"));
@@ -111,9 +113,16 @@ public class StarPlusWS {
                 contenido.setDirectores(listaDirectores);
                 contenido.setDescripcion(rs_catalogo.getString("descripcion"));
 
+                //System.out.println(contenido);
+
                 listaContenido.add(contenido);
+                CatalogoBean catalogo = new CatalogoBean(listaContenido);
+                System.out.println(catalogo);
             }
 
-        return listaContenido;
+            String resulado = "";
+
+
+        return resulado;
     }
 }

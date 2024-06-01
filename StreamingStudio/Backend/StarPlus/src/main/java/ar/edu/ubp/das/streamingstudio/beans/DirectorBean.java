@@ -37,5 +37,16 @@ public class DirectorBean {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+
+    @Override
+    public String toString() {
+        return """
+                \t\t\t\t{
+                \t\t\t\t\t"id_director": "%s",
+                \t\t\t\t\t"apellido": "%s",
+                \t\t\t\t\t"nombre": "%s"
+                \t\t\t\t}
+                """.formatted(id_director, apellido, nombre);
+    }
 }
 
