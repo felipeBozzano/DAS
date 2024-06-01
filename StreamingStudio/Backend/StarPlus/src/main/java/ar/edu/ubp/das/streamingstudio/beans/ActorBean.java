@@ -35,5 +35,16 @@ public class ActorBean {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+
+    @Override
+    public String toString() {
+        return """
+                \t\t\t\t{
+                \t\t\t\t\t"id_actor": "%s",
+                \t\t\t\t\t"apellido": "%s",
+                \t\t\t\t\t"nombre": "%s"
+                \t\t\t\t}
+                """.formatted(id_actor, apellido, nombre);
+    }
 }
 
