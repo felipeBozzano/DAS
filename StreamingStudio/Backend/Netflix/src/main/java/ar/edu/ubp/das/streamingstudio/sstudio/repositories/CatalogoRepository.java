@@ -21,8 +21,6 @@ public class CatalogoRepository {
     @Autowired
     private JdbcTemplate jdbcTpl;
 
-    private Map<String, String> respuesta;
-
     public CatalogoBean obtenerCatalogo() {
         List<ContenidoBean> contenidos = obtenerContenido();
 
@@ -77,5 +75,4 @@ public class CatalogoRepository {
         List<ActorBean> contenido = (List<ActorBean>)out.get("directores");
         return contenido;
     }
-
 }

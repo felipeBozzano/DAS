@@ -1,10 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.AutorizacionRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.CatalogoRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.ClienteRepository;
-import ar.edu.ubp.das.streamingstudio.sstudio.repositories.PartnerRepository;
+import ar.edu.ubp.das.streamingstudio.sstudio.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +29,9 @@ public class controllers {
 
     @Autowired
     CatalogoRepository catalogoRepository;
+
+    @Autowired
+    EstadisticasRepository estadisticasRepository;
 
     @PostMapping(
             path = "/login_user",
@@ -119,5 +119,12 @@ public class controllers {
     public ResponseEntity<List<ActorBean>> actores(@RequestParam String id_contenido) {
         List<ActorBean> respuesta = catalogoRepository.obtenerActores(id_contenido);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/obtenerEstadisticas",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> registrarReporteEstadisticas(@RequestBody Map<String, String> body) {
+        return new ResponseEntity<>(estadisticasRepository.registrarReporteEstadisticas(body), HttpStatus.OK);
     }
 }
