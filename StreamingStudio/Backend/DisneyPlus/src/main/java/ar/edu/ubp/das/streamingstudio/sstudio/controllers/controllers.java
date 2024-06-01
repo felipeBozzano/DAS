@@ -98,25 +98,25 @@ public class controllers {
     }
 
     @PostMapping("/catalogo")
-    public ResponseEntity<List<CatalogoBean>> catalogo() {
-        List<CatalogoBean> respuesta = catalogoRepository.obtenerCatalogo();
+    public ResponseEntity<CatalogoBean> catalogo() {
+        CatalogoBean respuesta = catalogoRepository.obtenerCatalogo();
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 
     @PostMapping("/contenido")
-    public ResponseEntity<List<CatalogoBean>> contenido() {
-        List<CatalogoBean> respuesta = catalogoRepository.obtenerContenido();
+    public ResponseEntity<List<ContenidoBean>> contenido() {
+        List<ContenidoBean> respuesta = catalogoRepository.obtenerContenido();
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 
     @PostMapping("/directores")
-    public ResponseEntity<List<DirectorBean>> directores(@RequestParam int id_contenido) {
+    public ResponseEntity<List<DirectorBean>> directores(@RequestParam String id_contenido) {
         List<DirectorBean> respuesta = catalogoRepository.obtenerDirectores(id_contenido);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }
 
     @PostMapping("/actores")
-    public ResponseEntity<List<ActorBean>> actores(@RequestParam int id_contenido) {
+    public ResponseEntity<List<ActorBean>> actores(@RequestParam String id_contenido) {
         List<ActorBean> respuesta = catalogoRepository.obtenerActores(id_contenido);
         return new ResponseEntity<>(respuesta,HttpStatus.OK);
     }

@@ -27,15 +27,13 @@ public class CatalogoRepository {
         for (ContenidoBean contenido : contenidos) {
             // Obtener los directores asociados al contenido y añadirlos al bean
             List<DirectorBean> directores = obtenerDirectores(contenido.getId_contenido());
-            for (DirectorBean director : directores) {
-                contenido.setDirectores(director);
-            }
+            contenido.setDirectores(directores);
+
             // Obtener los actores asociados al contenido y añadirlos al bean
             List<ActorBean> actores = obtenerActores(contenido.getId_contenido());
-            for (ActorBean actor : actores) {
-                contenido.setActores(actor);
-            }
+            contenido.setActores(actores);
         }
+
         CatalogoBean catalogo = new CatalogoBean(contenidos);
         return catalogo;
     }

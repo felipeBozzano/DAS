@@ -389,13 +389,13 @@ CREATE OR ALTER PROCEDURE Crear_Contenido @id_contenido VARCHAR(255),
                                           @url_imagen VARCHAR(255),
                                           @clasificacion SMALLINT,
                                           @reciente BIT,
-                                          @destacado BIT
+                                          @destacado BIT,
+                                          @valid BIT
 AS
 BEGIN
     INSERT INTO dbo.Contenido(id_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado,
-                              fecha_alta, fecha_baja)
-    VALUES ( @id_contenido, @titulo, @descripcion, @url_imagen, @clasificacion, @reciente, @destacado, GETDATE(),
-             NULL)
+                              valido)
+    VALUES ( @id_contenido, @titulo, @descripcion, @url_imagen, @clasificacion, @reciente, @destacado, @valid)
 END
 go
 
@@ -433,7 +433,7 @@ AS
 BEGIN
     SELECT *
     FROM dbo.Contenido
-    WHERE fecha_baja IS NULL
+    WHERE valido = 1
 END
 go
 
@@ -500,7 +500,7 @@ AS
 BEGIN
     SELECT *
     FROM dbo.Contenido
-    WHERE fecha_alta <= GETDATE() AND fecha_baja IS NULL
+    WHERE valido = 1
 END;
 GO
 

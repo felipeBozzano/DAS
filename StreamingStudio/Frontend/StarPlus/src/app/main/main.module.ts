@@ -6,7 +6,7 @@ import {CommonModule} from '@angular/common';
 import {MainRoutingModule} from './main-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HeaderComponent} from './components/header/header.component';
-import {NetflixResourceService} from './api/resources/netflix-resource.service';
+import {Star_plusResourceService} from './api/resources/star_plus-resource.service';
 
 
 // @ts-ignore
@@ -22,6 +22,6 @@ import {NetflixResourceService} from './api/resources/netflix-resource.service';
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [NetflixResourceService]
+  providers: [Star_plusResourceService]
 })
 export class MainModule { }

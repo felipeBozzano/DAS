@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {IUser} from '../../api/models/IUser.model';
-import {NetflixResourceService} from '../../api/resources/netflix-resource.service';
+import {Star_plusResourceService} from '../../api/resources/star_plus-resource.service';
 
 @Component({
   selector: 'app-register',
@@ -15,7 +15,7 @@ export class RegisterComponent {
   public formRegister!: FormGroup;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private http: HttpClient, private router: Router, private _fb: FormBuilder,  private netflixResourceService: NetflixResourceService ) {
+  constructor(private http: HttpClient, private router: Router, private _fb: FormBuilder,  private netflixResourceService: Star_plusResourceService ) {
 
      function strongPasswordValidator(minLength: number): ValidatorFn {
       return (control: AbstractControl): { [key: string]: any } | null => {
