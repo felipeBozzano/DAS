@@ -1,7 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.beans;
 
 import java.util.List;
-import java.util.Objects;
 
 public class ContenidoBean {
     private String id_contenido;
@@ -116,16 +115,16 @@ public class ContenidoBean {
     public String toString() {
         return """
                 {
-                    \t\tid_contenido": "%s",
-                    \t\ttitulo": "%s",
-                    \t\tdescripcion": "%s",
-                    \t\turl_imagen": "%s",
-                    \t\tclasificacion": "%s",
-                    \t\treciente": %s,
-                    \t\tdestacado": %s,
-                    \t\tvalido": %s,
-                    \t\tdirectores": %s,
-                    \t\tactores": %s
+                    \t\t"id_contenido": "%s",
+                    \t\t"titulo": "%s",
+                    \t\t"descripcion": "%s",
+                    \t\t"url_imagen": "%s",
+                    \t\t"clasificacion": "%s",
+                    \t\t"reciente": %s,
+                    \t\t"destacado": %s,
+                    \t\t"valido": %s,
+                    \t\t"directores": %s,
+                    \t\t"actores": %s
                 """.formatted(id_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado, valido, listToJson(directores), listToJson(actores));
     }
 
@@ -137,10 +136,8 @@ public class ContenidoBean {
         StringBuilder json = new StringBuilder("[\n");
         for (int i = 0; i < lista.size(); i++) {
             json.append(lista.get(i).toString());
-            if (i < lista.size() - 1) {
-                json.append("\t\t\t\t,\n");
-            }
         }
+        json.deleteCharAt(json.length() - 2);
         json.append("\t\t\t]");
         return json.toString();
     }

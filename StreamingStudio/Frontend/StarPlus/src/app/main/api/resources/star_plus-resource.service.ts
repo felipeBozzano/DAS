@@ -8,17 +8,18 @@ import {ILoginResponse} from '../models/ILoginResponse.model';
 
 @Injectable()
 @ResourceParams({
-  pathPrefix: `${environment.apiUrl}/ss`
+  pathPrefix: `${environment.apiUrl}/star_plus`
 })
-export class NetflixResourceService extends Resource{
+export class Star_plusResourceService extends Resource{
 
   @ResourceAction({
     method: ResourceRequestMethod.Post,
-    path: '/login_user',
+    path: '/login',
+    headers: {'Access-Control-Allow-Origin': '*'},
     requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  login!: IResourceMethodObservable<ILogin, ILoginResponse>;
+  login!: IResourceMethodObservable<any, any>;
 
   @ResourceAction({
     method: ResourceRequestMethod.Post,

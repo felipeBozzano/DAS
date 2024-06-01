@@ -1,9 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 
-import ar.edu.ubp.das.streamingstudio.sstudio.models.ActorBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.DirectorBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,38 +22,36 @@ public class CatalogoRepository {
 
     private Map<String, String> respuesta;
 
-    public List<CatalogoBean> obtenerCatalogo() {
-        List<CatalogoBean> contenidos = obtenerContenido();
+    public CatalogoBean obtenerCatalogo() {
+        List<ContenidoBean> contenidos = obtenerContenido();
 
-        for (CatalogoBean contenido : contenidos) {
+        for (ContenidoBean contenido : contenidos) {
             // Obtener los directores asociados al contenido y añadirlos al bean
             List<DirectorBean> directores = obtenerDirectores(contenido.getId_contenido());
-            for (DirectorBean director : directores) {
-                contenido.setDirectores(director);
-            }
+            contenido.setDirectores(directores);
+
             // Obtener los actores asociados al contenido y añadirlos al bean
             List<ActorBean> actores = obtenerActores(contenido.getId_contenido());
-            for (ActorBean actor : actores) {
-                contenido.setActores(actor);
-            }
+            contenido.setActores(actores);
         }
 
-        return contenidos;
+        CatalogoBean catalogo = new CatalogoBean(contenidos);
+        return catalogo;
     }
 
 
-    public List<CatalogoBean> obtenerContenido(){
+    public List<ContenidoBean> obtenerContenido(){
         SqlParameterSource in = new MapSqlParameterSource();
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Contenido_Actual")
                 .withSchemaName("dbo")
-                .returningResultSet("contenido", BeanPropertyRowMapper.newInstance(CatalogoBean.class));;
+                .returningResultSet("contenido", BeanPropertyRowMapper.newInstance(ContenidoBean.class));;
         Map<String, Object> out = jdbcCall.execute(in);
-        List<CatalogoBean> contenido = (List<CatalogoBean>)out.get("contenido");
+        List<ContenidoBean> contenido = (List<ContenidoBean>)out.get("contenido");
         return contenido;
     }
 
-    public List<DirectorBean> obtenerDirectores(int id_contenido){
+    public List<DirectorBean> obtenerDirectores(String id_contenido){
         SqlParameterSource in = new MapSqlParameterSource()
             .addValue("id_contenido", id_contenido);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
@@ -68,7 +63,7 @@ public class CatalogoRepository {
         return contenido;
     }
 
-    public List<ActorBean> obtenerActores(int id_contenido){
+    public List<ActorBean> obtenerActores(String id_contenido){
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_contenido", id_contenido);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)

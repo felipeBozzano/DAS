@@ -23,11 +23,10 @@ INSERT INTO Clasificacion(id_clasificacion, descripcion)
 VALUES ('P', 'Pelicula'), ('S', 'Serie');
 go
 
-INSERT INTO Contenido (titulo, descripcion, url_imagen, clasificacion, reciente, destacado, fecha_alta, fecha_baja)
-VALUES ('The Avengers', 'descripcion de The Avengers',
-        'https://cdn.marvel.com/content/1x/avengersendgame_lob_crd_05.jpg', 'P', 1, 1, '2024-05-15', NULL),
-        ('Better Call Saul', 'descripcion de Better Call Saul',
-        'https://m.media-amazon.com/images/S/pv-target-images/fe1c0138b7b0e05ea22a711f44e57cd80cfbaea30745c425b7043d786ba66cd1.jpg', 'S', 1, 1, '2024-05-15', NULL);;
+INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado, valido)
+VALUES ('CP12','The Avengers', 'descripcion de The Avengers','https://cdn.marvel.com/content/1x/avengersendgame_lob_crd_05.jpg', 'P', 1, 1, 1),
+       ('CP15','Better Call Saul', 'descripcion de Better Call Saul',
+        'https://m.media-amazon.com/images/S/pv-target-images/fe1c0138b7b0e05ea22a711f44e57cd80cfbaea30745c425b7043d786ba66cd1.jpg', 'S', 1, 1, 1);;
 go
 
 INSERT INTO Director(nombre, apellido)
@@ -39,10 +38,12 @@ VALUES ('Nombre Actor 1', 'Apellido Actor 1');
 go
 
 INSERT INTO Director_Contenido(id_contenido, id_director)
-VALUES (1,1);
+VALUES ('CP12',1),
+       ('CP15',1);
 go
 
 INSERT INTO Actor_Contenido(id_contenido, id_actor)
-VALUES (1,1);
+VALUES ('CP12',1),
+       ('CP15',1);
 go
 

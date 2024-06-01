@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import {AuthService} from '../../services/authService/AuthService';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ILogin } from '../../api/models/login.model';
-import {NetflixResourceService} from '../../api/resources/netflix-resource.service';
+import {Star_plusResourceService} from '../../api/resources/star_plus-resource.service';
 
 
 @Component({
@@ -19,10 +19,10 @@ export class LoginComponent {
   constructor(private router: Router,
               private authService: AuthService,
               private _fb: FormBuilder,
-              private netflixResourceService: NetflixResourceService)
+              private netflixResourceService: Star_plusResourceService)
               { this.formLogin = this._fb.group({
-                usuario: new FormControl('',[Validators.required, Validators.maxLength(16)]),
-                contrasena: new FormControl('',[Validators.required, Validators.maxLength(16)])
+                usuario: new FormControl('',[Validators.required, Validators.maxLength(255)]),
+                contrasena: new FormControl('',[Validators.required, Validators.maxLength(255)])
               }) }
 
   // tslint:disable-next-line:typedef
@@ -33,13 +33,23 @@ export class LoginComponent {
         usuario: usuario,
         contrasena: contrasena,
       }
+      const soapRequest = `
+        <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://platforms.streamingstudio.das.ubp.edu.ar/">
+          <soapenv:Header/>
+          <soapenv:Body>
+            <ns:login>
+              <email>${usuario}</email>
+              <contrasena>${contrasena}</contrasena>
+            </ns:login>
+          </soapenv:Body>
+        </soapenv:Envelope>`;
 
-      console.log(login);
-      this.netflixResourceService.login(login)
+      this.netflixResourceService.login(soapRequest)
         .subscribe(
           (response) => {
             // Si la respuesta es exitosa, redirige al home
             if (response.mensaje === 'Usuario existente') {
+              console.log("kakakakaka");
               this.authService.login(response);
               this.showError = false;
               // obtengo las publicidades

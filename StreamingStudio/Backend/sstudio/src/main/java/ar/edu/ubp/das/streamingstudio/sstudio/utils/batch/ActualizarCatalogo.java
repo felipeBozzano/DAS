@@ -31,49 +31,50 @@ public class ActualizarCatalogo {
 
             // Obtenemos el catálogo de la plataforma de streaming
             int id_plataforma = plataforma.getId_plataforma();
-            List<ContenidoCatalogoBean> catalogoDePlataforma = obtenerCatalogoDePlataforma(id_plataforma);
+            CatalogoBean catalogoDePlataforma = obtenerCatalogoDePlataforma(id_plataforma);
 
-            // Filtramos nuestro catalogo para obtener solo el contenido referente a esta plataforma de streaming
-            List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> catalogoStreamingStudioFiltrado = catalogoStreamingStudio.stream()
-                    .filter(contenido -> contenido.getId_plataforma() == id_plataforma)
-                    .toList();
+                // Filtramos nuestro catalogo para obtener solo el contenido referente a esta plataforma de streaming
+                List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> catalogoStreamingStudioFiltrado = catalogoStreamingStudio.stream()
+                        .filter(contenido -> contenido.getId_plataforma() == id_plataforma)
+                        .toList();
 
-            // Filtramos el contenido de nuestra plataforma que está activo
-            List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioActivo = catalogoStreamingStudioFiltrado.stream()
-                    .filter(contenido -> contenido.getFecha_de_baja() == null || contenido.getFecha_de_alta().after(contenido.getFecha_de_baja()))
-                    .toList();
+                // Filtramos el contenido de nuestra plataforma que está activo
+                List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioActivo = catalogoStreamingStudioFiltrado.stream()
+                        .filter(contenido -> contenido.getFecha_de_baja() == null || contenido.getFecha_de_alta().after(contenido.getFecha_de_baja()))
+                        .toList();
 
-            // Filtramos el contenido de nuestra plataforma que está inactivo
-            List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioInactivo = catalogoStreamingStudioFiltrado.stream()
-                    .filter(contenido -> contenido.getFecha_de_baja() != null && contenido.getFecha_de_baja().after(contenido.getFecha_de_alta()))
-                    .toList();
+                // Filtramos el contenido de nuestra plataforma que está inactivo
+                List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioInactivo = catalogoStreamingStudioFiltrado.stream()
+                        .filter(contenido -> contenido.getFecha_de_baja() != null && contenido.getFecha_de_baja().after(contenido.getFecha_de_alta()))
+                        .toList();
 
-            // Filtramos el contenido de la plataforma de streaming que esta inactivo
-            List<ContenidoCatalogoBean> contenidoPlataformaInactivo = catalogoDePlataforma.stream()
-                    .filter(contenido -> !contenido.isValido())
-                    .toList();
+                // Filtramos el contenido de la plataforma de streaming que esta inactivo
+                List<ContenidoCatalogoBean> contenidoPlataformaInactivo = catalogoDePlataforma.getListaContenido().stream()
+                        .filter(contenido -> !contenido.isValido())
+                        .toList();
 
-            // Filtro el contenido de la plataforma de streaming que esta activo
-            List<ContenidoCatalogoBean> contenidoPlataformaActivo = catalogoDePlataforma.stream()
-                    .filter(contenido -> contenido.isValido())
-                    .toList();
+                // Filtro el contenido de la plataforma de streaming que esta activo
+                List<ContenidoCatalogoBean> contenidoPlataformaActivo = catalogoDePlataforma.getListaContenido().stream()
+                        .filter(contenido -> contenido.isValido())
+                        .toList();
 
-            if (!contenidoPlataformaInactivo.isEmpty()) {
-                // Buscamos el contenido que la plataforma de streaming dio de baja, para darlo de baja en nuestra plataforma
-                darDeBajaContenido(contenidoStreamingStudioActivo, contenidoPlataformaInactivo);
+
+                if (!contenidoPlataformaInactivo.isEmpty()) {
+                    // Buscamos el contenido que la plataforma de streaming dio de baja, para darlo de baja en nuestra plataforma
+                    darDeBajaContenido(contenidoStreamingStudioActivo, contenidoPlataformaInactivo);
+                }
+
+                if (!contenidoPlataformaActivo.isEmpty()) {
+                    // Buscamos el contenido dado de baja en Streaming Studio para revisar si tenemos que habilitarlo
+                    habilitarContenido(contenidoStreamingStudioInactivo, contenidoPlataformaActivo);
+
+                    // Buscamos el contenido de la plataforma de streaming que no está en Streaming Studio y lo cargamos
+                    agregarContenidoNuevo(id_plataforma, catalogoStreamingStudioFiltrado, contenidoPlataformaActivo);
+                }
+
+                // Buscamos el contenido que esté en ambas plataformas y lo actualizamos si cambió
+                actualizarContenido(id_plataforma, catalogoStreamingStudioFiltrado, catalogoDePlataforma);
             }
-
-            if (!contenidoPlataformaActivo.isEmpty()) {
-                // Buscamos el contenido dado de baja en Streaming Studio para revisar si tenemos que habilitarlo
-                habilitarContenido(contenidoStreamingStudioInactivo, contenidoPlataformaActivo);
-
-                // Buscamos el contenido de la plataforma de streaming que no está en Streaming Studio y lo cargamos
-                agregarContenidoNuevo(id_plataforma, catalogoStreamingStudioFiltrado, contenidoPlataformaActivo);
-            }
-
-            // Buscamos el contenido que esté en ambas plataformas y lo actualizamos si cambió
-            actualizarContenido(id_plataforma, catalogoStreamingStudioFiltrado, catalogoDePlataforma);
-        }
     }
 
     public static List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> obtenerCatalogo() {
@@ -98,15 +99,25 @@ public class ActualizarCatalogo {
         return (List<PlataformaDeStreamingBean>) out.get("plataforma");
     }
 
-    public static List<ContenidoCatalogoBean> obtenerCatalogoDePlataforma(int id_plataforma) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static CatalogoBean obtenerCatalogoDePlataforma(int id_plataforma) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma, jdbcTpl);
         AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
         Map<String, String> body = new HashMap<>();
-        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
+
+        if (conexion_plataforma.get("protocolo_api").equals("SOAP")) {
+            String message = """
+                    <ws:catalogo xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
+                    <token_de_partner>%s</token_de_partner>
+                    </ws:catalogo>""".formatted(conexion_plataforma.get("token_de_servicio"));
+            body.put("message", message);
+            body.put("web_service", "catalogo");
+        }else{
+            body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
+        }
 
         CatalogoBean catalogo = (CatalogoBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/catalogo", body, "CatalogoBean");
 
-        return catalogo.getListaContenido();
+        return catalogo;
     }
 
     public static void darDeBajaContenido(List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioActivo, List<ContenidoCatalogoBean> contenidoPlataformaInactivo) {
@@ -231,11 +242,12 @@ public class ActualizarCatalogo {
         }
     }
 
-    public static void actualizarContenido(int id_plataforma, List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> catalogoStreamingStudioFiltrado, List<ContenidoCatalogoBean> catalogoDePlataforma) {
+    public static void actualizarContenido(int id_plataforma, List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> catalogoStreamingStudioFiltrado, CatalogoBean catalogoDePlataforma) {
 
         // Crear un HashSet con los id_en_plataforma de la plataforma de streaming
         Set<String> idEnPlataformaPlataformaStreaming = new HashSet<>();
-        for (ContenidoCatalogoBean bean : catalogoDePlataforma) {
+        List<ContenidoCatalogoBean> contenidos = new ArrayList<>(catalogoDePlataforma.getListaContenido());
+        for (ContenidoCatalogoBean bean : contenidos) {
             idEnPlataformaPlataformaStreaming.add(bean.getId_contenido());
         }
 
@@ -249,7 +261,7 @@ public class ActualizarCatalogo {
         idEnPlataformaPlataformaStreaming.retainAll(idEnPlataformaStreamingStudio);
 
         // Filtro los beans de aquellos ids que están en la plataforma de streaming y en nuestro catalogo
-        List<ContenidoCatalogoBean> contenidoAActualizar = catalogoDePlataforma.stream()
+        List<ContenidoCatalogoBean> contenidoAActualizar = catalogoDePlataforma.getListaContenido().stream()
                 .filter(contenido -> idEnPlataformaPlataformaStreaming.contains(contenido.getId_contenido()))
                 .toList();
 

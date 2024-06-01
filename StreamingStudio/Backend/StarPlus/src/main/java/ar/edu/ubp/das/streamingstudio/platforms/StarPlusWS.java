@@ -1,9 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.platforms;
 
-import ar.edu.ubp.das.streamingstudio.beans.ActorBean;
-import ar.edu.ubp.das.streamingstudio.beans.CatalogoBean;
-import ar.edu.ubp.das.streamingstudio.beans.ContenidoBean;
-import ar.edu.ubp.das.streamingstudio.beans.DirectorBean;
+import ar.edu.ubp.das.streamingstudio.beans.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonToken;
@@ -47,7 +44,7 @@ public class StarPlusWS {
 
     @WebMethod()
     @WebResult(name = "catalogo")
-    public String obtenerCatalogo(@WebParam (name = "token_de_partner") String token_de_partner) throws ClassNotFoundException, SQLException {
+    public String catalogo(@WebParam (name = "token_de_partner") String token_de_partner) throws ClassNotFoundException, SQLException {
 
         Connection conn;
         ResultSet rs;
@@ -56,7 +53,7 @@ public class StarPlusWS {
         conn.setAutoCommit(true);
 
         System.out.println("Token de partner: " + token_de_partner);
-
+        CatalogoBean catalogo = new CatalogoBean();
         String temp = "";
         //rs = stmt.executeQuery();
 
@@ -108,21 +105,64 @@ public class StarPlusWS {
 
                 // CONTENIDO
                 contenido.setTitulo(rs_catalogo.getString("titulo"));
+                contenido.setId_contenido(rs_catalogo.getString("id_contenido"));
                 contenido.setDescripcion(rs_catalogo.getString("descripcion"));
                 contenido.setActores(listaActores);
                 contenido.setDirectores(listaDirectores);
                 contenido.setDescripcion(rs_catalogo.getString("descripcion"));
+                contenido.setValido(rs_catalogo.getBoolean("valido"));
 
                 //System.out.println(contenido);
 
                 listaContenido.add(contenido);
-                CatalogoBean catalogo = new CatalogoBean(listaContenido);
+                catalogo = new CatalogoBean(listaContenido);
                 System.out.println(catalogo);
             }
-
-            String resulado = "";
-
-
-        return resulado;
+        return catalogo.toString();
     }
+
+    @WebMethod()
+    @WebResult(name = "login")
+    public String login(@WebParam (name = "email") String email, @WebParam (name = "contrasena") String contrasena ) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+        CallableStatement stmt;
+        ResultSet rs_login;
+        System.out.println(email);
+        System.out.println(contrasena);
+        stmt = conn.prepareCall("{CALL dbo.Login_Usuario(?,?)}");
+        stmt.setString("email", email);
+        stmt.setString("contrasena", contrasena);
+        rs_login = stmt.executeQuery();
+        System.out.println(rs_login);
+        UsuarioBean usuario = new UsuarioBean();
+        int existe = 0;
+        while (rs_login.next()) {
+            existe = rs_login.getInt("ExisteUsuario");
+        }
+        CallableStatement stmt_user;
+        ResultSet rs_user;
+        if(existe == 1){
+            stmt_user = conn.prepareCall("{CALL dbo.Informacion_Usuario(?,?)}");
+            stmt_user.setString("email", email);
+            stmt_user.setString("contrasena", contrasena);
+            rs_user = stmt_user.executeQuery();
+            while(rs_user.next()){
+                usuario.setEmail(rs_user.getString("email"));
+                usuario.setId_cliente(rs_user.getInt("id_cliente"));
+                usuario.setNombre(rs_user.getString("nombre"));
+                usuario.setApellido(rs_user.getString("apellido"));
+                usuario.setMensaje("Usuario existente");
+            }
+        }
+
+        System.out.println(usuario.toString());
+        return usuario.toString();
+    }
+
+
 }

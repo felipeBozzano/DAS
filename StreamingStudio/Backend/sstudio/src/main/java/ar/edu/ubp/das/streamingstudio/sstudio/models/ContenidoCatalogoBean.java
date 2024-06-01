@@ -2,6 +2,8 @@ package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.AbstractBean;
 
+import java.util.List;
+
 public class ContenidoCatalogoBean extends AbstractBean {
     private String id_contenido;
     private String titulo;
@@ -11,30 +13,30 @@ public class ContenidoCatalogoBean extends AbstractBean {
     private boolean reciente;
     private boolean destacado;
     private boolean valido;
-    private  ActorBean actores;
+    private List<ActorBean> actores;
 
-    private DirectorBean directores;
+    private List<DirectorBean> directores;
 
-    public ActorBean getActores() {
+    public List<ActorBean> getActores() {
         return actores;
     }
 
-    public void setActores(ActorBean actores) {
+    public void setActores(List<ActorBean> actores) {
         this.actores = actores;
     }
 
-    public DirectorBean getDirectores() {
+    public List<DirectorBean> getDirectores() {
         return directores;
     }
 
-    public void setDirectores(DirectorBean directores) {
+    public void setDirectores(List<DirectorBean> directores) {
         this.directores = directores;
     }
 
     public ContenidoCatalogoBean() {
     }
 
-    public ContenidoCatalogoBean(String id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido, ActorBean actores, DirectorBean directores) {
+    public ContenidoCatalogoBean(String id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido, List<ActorBean> actores, List<DirectorBean> directores) {
         this.id_contenido = id_contenido;
         this.titulo = titulo;
         this.descripcion = descripcion;

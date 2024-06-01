@@ -23,11 +23,12 @@ INSERT INTO Clasificacion(id_clasificacion, descripcion)
 VALUES ('P', 'Pelicula'), ('S', 'Serie');
 go
 
-INSERT INTO Contenido (id_contenido,titulo, descripcion, url_imagen, clasificacion, reciente, destacado, fecha_alta, fecha_baja)
+INSERT INTO Contenido (id_contenido,titulo, descripcion, url_imagen, clasificacion, reciente, destacado, valido)
 VALUES ('CP12','The Avengers', 'descripcion de The Avengers',
-        'https://cdn.marvel.com/content/1x/avengersendgame_lob_crd_05.jpg', 'P', 1, 1, '2024-05-15', NULL),
+        'https://cdn.marvel.com/content/1x/avengersendgame_lob_crd_05.jpg', 'P', 1, 1, 1),
        ('CP13','One Piece', 'La mejor serie',
-        'https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2018/08/one-piece_0.jpg?tf=1200x675', 'S', 1, 1, '2024-05-15', NULL);
+        'https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2018/08/one-piece_0.jpg?tf=1200x675', 'S', 1, 1, 1),
+       ('CP14','lalaland', 'La mejor serie','https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2018/08/one-piece_0.jpg?tf=1200x675', 'S', 1, 1, 0);
 go
 
 INSERT INTO Director(nombre, apellido)
@@ -43,12 +44,14 @@ go
 INSERT INTO Director_Contenido(id_contenido, id_director)
 VALUES ('CP12',1),
        ('CP12',2),
-       ('CP13',2);
+       ('CP13',2),
+       ('CP14',1);
 go
 
 INSERT INTO Actor_Contenido(id_contenido, id_actor)
 VALUES ('CP12',1),
        ('CP13',2),
-       ('CP13',1);
+       ('CP13',1),
+       ('CP14',1);
 go
 

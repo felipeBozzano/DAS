@@ -40,8 +40,7 @@ CREATE TABLE [Contenido]
     [clasificacion] VARCHAR(255) NOT NULL,
     [reciente]      BIT          NOT NULL,
     [destacado]     BIT          NOT NULL,
-    [fecha_alta]    DATETIME     NOT NULL,
-    [fecha_baja]    DATETIME,
+    [valido]         BIT          NOT NULL,
     PRIMARY KEY ([id_contenido]),
     CONSTRAINT [FK_Contenido.clasificacion]
         FOREIGN KEY ([clasificacion])
