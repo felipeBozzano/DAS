@@ -1,8 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.platforms;
 
 import ar.edu.ubp.das.streamingstudio.beans.PublicidadResponseBean;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
@@ -11,7 +9,6 @@ import jakarta.xml.bind.annotation.XmlSeeAlso;
 
 import java.io.InputStream;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -21,13 +18,13 @@ import java.util.Properties;
 
 @WebService
 @XmlSeeAlso(PublicidadResponseBean.class)
-public class PublicistaMusimundoWS {
+public class PublicistaBicicletasWS {
     private String driver_sql;
     private String sql_conection_string;
     private String sql_user;
     private String sql_pass;
 
-    public PublicistaMusimundoWS() {
+    public PublicistaBicicletasWS() {
         Properties properties = new Properties();
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
             properties.load(input);
@@ -123,8 +120,6 @@ public class PublicistaMusimundoWS {
 
         if (verificarTokenDePartner(token_de_partner)) {
             Date fecha_formateada = new Date(2020, 01, 01);
-
-            // Definir el formato de la fecha
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             try {
                 LocalDate localDate = LocalDate.parse(fecha, formatter);

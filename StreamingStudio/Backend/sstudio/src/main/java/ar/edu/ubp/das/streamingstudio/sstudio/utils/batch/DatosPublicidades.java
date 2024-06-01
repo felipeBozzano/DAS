@@ -2,6 +2,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.ListaPublicidadResponseBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.PublicidadResponseBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicidadBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicistaBean;
@@ -26,7 +27,7 @@ public class DatosPublicidades {
         List<Integer> id_publicistas = obtenerPublicistas();
         List<PublicidadBean> publicidades_propias = obtenerPublicidadesPropias();
 
-        for(int id_publicista: id_publicistas) {
+        for (int id_publicista : id_publicistas) {
             // Filtro las publicidades activas propias y que corresponden a este publicista
             List<PublicidadBean> publicidades_propias_por_publicista = publicidades_propias.stream()
                     .filter(p -> p.getId_publicista() == id_publicista)
@@ -34,7 +35,10 @@ public class DatosPublicidades {
 
             // Obtengo los datos de las publicidades del publicista
             PublicistaBean publicista = obtenerInformacionDeConexionAPublicista(id_publicista, jdbcTpl);
-            List<PublicidadBean> publicidades_publicista = obtenerPublicidadesDePublicista(publicista);
+            List<PublicidadBean> publicidades_publicista = obtenerPublicidadesDePublicista(publicista, id_publicista);
+
+            if (publicidades_publicista.isEmpty())
+                continue;
 
             // Crear un Map a partir de publicidades_publicista con codigo_publicidad como clave
             Map<String, PublicidadBean> publicidades_publicista_map = publicidades_publicista.stream()
@@ -55,7 +59,6 @@ public class DatosPublicidades {
             });
 
             actualizarPublicidades(publicidades_propias_a_actualizar);
-            System.out.println(publicidades_propias_a_actualizar);
         }
     }
 
@@ -66,10 +69,10 @@ public class DatosPublicidades {
                 .withSchemaName("dbo");
 
         Map<String, Object> out = jdbcCall.execute(in);
-        List<Map<String,Integer>> lista_publicistas = (List<Map<String,Integer>>) out.get("#result-set-1");
+        List<Map<String, Integer>> lista_publicistas = (List<Map<String, Integer>>) out.get("#result-set-1");
 
         List<Integer> publicistas = new ArrayList<>();
-        for(Map<String,Integer> publicista: lista_publicistas) {
+        for (Map<String, Integer> publicista : lista_publicistas) {
             publicistas.add(publicista.get("id_publicista"));
         }
         return publicistas;
@@ -87,43 +90,37 @@ public class DatosPublicidades {
         return lista_publicistas;
     }
 
-    public static List<PublicidadBean> obtenerPublicidadesDePublicista(PublicistaBean publicista) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static List<PublicidadBean> obtenerPublicidadesDePublicista(PublicistaBean publicista, int id_publicista) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        List<PublicidadBean> publicidades = new ArrayList<>();
+
         AbstractConnector conector = conectorFactory.crearConector(publicista.getProtocolo_api());
         Map<String, String> body = new HashMap<>();
 
         if (publicista.getProtocolo_api().equals("SOAP")) {
             String message = """
-                   <ws:obtenerPublicidades xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
-                   <token_de_partner>%s</token_de_partner>
-                   </ws:obtenerPublicidades>""".formatted(publicista.getToken_de_servicio());
+                    <ws:obtenerPublicidades xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
+                    <token_de_partner>%s</token_de_partner>
+                    </ws:obtenerPublicidades>""".formatted(publicista.getToken_de_servicio());
             body.put("message", message);
             body.put("web_service", "obtenerPublicidades");
         }
 
-        PublicidadResponseBean bean = (PublicidadResponseBean) conector.execute_post_request(publicista.getUrl_api(), body, "PublicidadResponseBean");
-
-
-        List<PublicidadBean> publicidades = new ArrayList<>();
-        if(Objects.equals(publicista.getNombre_de_fantasia(), "Publicista1")) {
-            PublicidadBean publicidad = new PublicidadBean("CP1", "https://www.urlactualizada.com/1.jpg", "https://www.urlactualizada.com/publi1");
-            publicidades.add(publicidad);
+        ListaPublicidadResponseBean listaPublicidades = (ListaPublicidadResponseBean) conector.execute_post_request(publicista.getUrl_api(), body, "ListaPublicidadResponseBean");
+        if (listaPublicidades.getCodigoRespuesta() == 1 || listaPublicidades.getCodigoRespuesta() == -1) {
+            System.out.println("Publicista " + id_publicista + ": " + listaPublicidades.getMensajeRespuesta());
+            return publicidades;
         }
-        if(Objects.equals(publicista.getNombre_de_fantasia(), "Publicista2")) {
-            PublicidadBean publicidad = new PublicidadBean("CP5", "https://www.urlactualizada.com/5.jpg", "https://www.urlactualizada.com/publi5");
-            publicidades.add(publicidad);
-        }
-        if(Objects.equals(publicista.getNombre_de_fantasia(), "Publicista3")) {
-            PublicidadBean publicidad1 = new PublicidadBean("CP6", "https://www.urlactualizada.com/6.jpg", "https://www.urlactualizada.com/publi6");
-            PublicidadBean publicidad2 = new PublicidadBean("CP9", "https://www.urlactualizada.com/9.jpg", "https://www.urlactualizada.com/publi9");
-            publicidades.add(publicidad1);
-            publicidades.add(publicidad2);
+
+        for (PublicidadResponseBean publicidad : listaPublicidades.getListaPublicidades()) {
+            PublicidadBean publicidad_bean = new PublicidadBean(id_publicista, publicidad.getCodigo_publicidad(), publicidad.getUrl_de_imagen(), publicidad.getUrl_de_publicidad());
+            publicidades.add(publicidad_bean);
         }
 
         return publicidades;
     }
 
     public static void actualizarPublicidades(List<PublicidadBean> publicidades) {
-        for(PublicidadBean publicidad: publicidades) {
+        for (PublicidadBean publicidad : publicidades) {
             SqlParameterSource in = new MapSqlParameterSource()
                     .addValue("id_publicidad", publicidad.getId_publicidad())
                     .addValue("url_de_imagen", publicidad.getUrl_de_imagen())

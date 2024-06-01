@@ -1,7 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.publicistaubp.controllers;
 
-import ar.edu.ubp.das.streamingstudio.publicistaubp.models.EstadisticasBean;
-import ar.edu.ubp.das.streamingstudio.publicistaubp.models.PublicidadBean;
+import ar.edu.ubp.das.streamingstudio.publicistaubp.models.PublicidadResponseBean;
 import ar.edu.ubp.das.streamingstudio.publicistaubp.repositories.EstadisticasRepository;
 import ar.edu.ubp.das.streamingstudio.publicistaubp.repositories.PublicidadesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping(
-        path = "/ubp")
+        path = "/publicistaUBP")
 
 public class controllers {
     @Autowired
@@ -26,17 +25,17 @@ public class controllers {
     @Autowired
     EstadisticasRepository estadisticasRepository;
 
-    @PostMapping("/obtener_publicidades")
-    public ResponseEntity<List<PublicidadBean>> obtenerPublicidades() {
-        return new ResponseEntity<>(publicidadesRepository.exponerPublicidades(), HttpStatus.OK);
-    }
-
-    @PostMapping(path = "/registrar_estadisticas",
+    @PostMapping(path = "/obtenerPublicidades",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Map<String, String>> registrarReporteEstadisticas(EstadisticasBean estadisticas) {
-        return new ResponseEntity<>(estadisticasRepository.registrarReporteEstadisticas(estadisticas), HttpStatus.OK);
+    public ResponseEntity<PublicidadResponseBean> obtenerPublicidades(@RequestBody Map<String, String> body) {
+        return new ResponseEntity<>(publicidadesRepository.obtenerPublicidades(body), HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/obtenerEstadisticas",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> registrarReporteEstadisticas(@RequestBody Map<String, String> body) {
+        return new ResponseEntity<>(estadisticasRepository.registrarReporteEstadisticas(body), HttpStatus.OK);
     }
 }
-
-//jaxb-api

@@ -1,5 +1,7 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
+import java.util.Date;
+
 public class PublicidadBean {
     private int id_publicista;
     private int id_publicidad;
@@ -7,12 +9,11 @@ public class PublicidadBean {
     private String url_de_imagen;
     private String url_de_publicidad;
 
-    public PublicidadBean(String codigo_publicidad, String url_de_imagen, String url_de_publicidad) {
+    public PublicidadBean(int id_publicista, String codigo_publicidad, String url_de_imagen, String url_de_publicidad) {
+        this.id_publicista = id_publicista;
         this.codigo_publicidad = codigo_publicidad;
         this.url_de_imagen = url_de_imagen;
         this.url_de_publicidad = url_de_publicidad;
-        this.id_publicista = 0;
-        this.id_publicidad = 0;
     }
 
     public PublicidadBean() {
