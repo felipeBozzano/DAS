@@ -19,7 +19,7 @@ go
 CREATE OR ALTER PROCEDURE Obtener_Datos_de_Publicidades
 AS
 BEGIN
-    SELECT codigo_publicidad, url_de_publicidad, url_de_imagen, tipo_banner, fecha_de_alta, fecha_de_baja
+    SELECT codigo_publicidad, url_de_publicidad, url_de_imagen
     FROM dbo.Publicidad
     WHERE fecha_de_baja >= GETDATE()
       AND fecha_de_alta <= GETDATE()
@@ -64,7 +64,7 @@ BEGIN
     SELECT CASE
                WHEN EXISTS (SELECT 1
                             FROM dbo.Partner
-                            WHERE @token = @token) THEN 'true'
+                            WHERE token_de_servicio = @token) THEN 'true'
                ELSE 'false'
                END AS ExistePartner;
 END
@@ -84,7 +84,7 @@ go
 
 /* Reporte */
 
-CREATE OR ALTER PROCEDURE Registrar_Reporte @totaL FLOAT,
+CREATE OR ALTER PROCEDURE Registrar_Reporte @total FLOAT,
                                             @fecha DATE,
                                             @descripcion VARCHAR(255)
 AS
