@@ -161,7 +161,12 @@ VALUES
     ('P-1', 3, 1, 1, '2024-03-10 00:14:47.770', '2024-03-11 20:34:38'),
     ('S-1', 3, 1, 0, '2024-03-10 00:14:47.770', NULL),
     ('P-3', 3, 0, 1, '2024-03-10 00:14:47.770', NULL),
-    ('S-3', 3, 0, 0, '2024-03-10 00:14:47.770', NULL);
+    ('S-3', 3, 0, 0, '2024-03-10 00:14:47.770', NULL),
+    -- Plataforma 4
+    ('P-2', 4, 0, 0, '2024-03-10 00:14:47.770', '2024-03-11 20:34:38'),
+    ('S-2', 4, 0, 1, '2024-03-10 00:14:47.770', NULL),
+    ('P-4', 4, 1, 0, '2024-03-10 00:14:47.770', NULL),
+    ('S-4', 4, 1, 1, '2024-03-10 00:14:47.770', NULL);
 go
 
 -- Insertar los tipos de usuario "Registrado" y "Nuevo"
@@ -215,37 +220,37 @@ INSERT INTO Publicista (nombre_de_fantasia, razon_social, email, contrasena, tok
 VALUES ('Publicista_Musimundo', N'Musimundo', 'musimundo@example.com', N'contrasena1', 'Musimundo123',
         'http://localhost:8086/publicistaMusimundo', 'SOAP'),
        ('Publicista_Bicicletas', N'Bicicletas', 'bicicletas@example.com', N'contrasena2', 'Bicicletas123',
-        'https://www.urlapi2.com', 'SOAP'),
+        'http://localhost:8087/publicistaBicicletas', 'SOAP'),
        ('Publicista_UBP', N'UBP', 'ubp@example.com', N'contrasena3', 'UBP123',
-        'https://www.urlapi3.com', 'REST');
+        'http://localhost:8088/publicistaUBP', 'REST');
 go
 
 -- Crear 9 Publicidades
 INSERT INTO Publicidad (id_publicista, codigo_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta,
                         fecha_de_baja)
-VALUES (1, 'CP1', 'https://play-lh.googleusercontent.com/a6rUmDehKQQmNxss8tRWIQQsymc6M6K0Dbyj-QidfcOEX7sXiiIyRM1gXMj8gcbrUA',
+VALUES (1, 'PM1', 'https://play-lh.googleusercontent.com/a6rUmDehKQQmNxss8tRWIQQsymc6M6K0Dbyj-QidfcOEX7sXiiIyRM1gXMj8gcbrUA',
         'https://www.urlpublicidad1.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
-       (2, 'CP2', 'https://inforges.es/wp-content/uploads/2022/07/migracion-aws.png',
+       (2, 'PB1', 'https://inforges.es/wp-content/uploads/2022/07/migracion-aws.png',
         'https://www.urlpublicidad2.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
-       (3, 'CP3', 'https://pbs.twimg.com/profile_images/1599827064282140672/MSxVR5u6_400x400.jpg',
+       (3, 'PU1', 'https://pbs.twimg.com/profile_images/1599827064282140672/MSxVR5u6_400x400.jpg',
         'https://www.urlpublicidad3.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
-       (1, 'CP4', 'https://images.ctfassets.net/4cd45et68cgf/4nBnsuPq03diC5eHXnQYx/d48a4664cdc48b6065b0be2d0c7bc388/Netflix-Logo.jpg',
+       (1, 'PM2', 'https://images.ctfassets.net/4cd45et68cgf/4nBnsuPq03diC5eHXnQYx/d48a4664cdc48b6065b0be2d0c7bc388/Netflix-Logo.jpg',
         'https://www.urlpublicidad4.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
-       (2, 'CP5', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_qjqmDxaGwHDTmC0E_d4kDenBxzZ0ZwVEooOLafWgwA&s',
+       (2, 'PB2', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_qjqmDxaGwHDTmC0E_d4kDenBxzZ0ZwVEooOLafWgwA&s',
         'https://www.urlpublicidad5.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
-       (3, 'CP6', 'https://media.urgente24.com/p/8b8c7e91210db75522b55a2e09b67ac4/adjuntos/319/imagenes/002/664/0002664389/star-plus.png',
+       (3, 'PU2', 'https://media.urgente24.com/p/8b8c7e91210db75522b55a2e09b67ac4/adjuntos/319/imagenes/002/664/0002664389/star-plus.png',
         'https://www.urlpublicidad6.com/publicidad.jpg', '2024-05-15', '2024-06-15'),
-       (1, 'CP7', 'https://www.globamaticmedia.com/wp-content/uploads/2023/02/logo-sony.jpg',
+       (1, 'PM3', 'https://www.globamaticmedia.com/wp-content/uploads/2023/02/logo-sony.jpg',
         'https://media.elpatagonico.com/p/2f9bc7b90864bb9a69ec3d41a3ac6509/adjuntos/193/imagenes/041/169/0041169897/770x0/smart/imagenpng.png', '2024-05-15', '2024-06-15'),
-       (2, 'CP8', 'https://media.elpatagonico.com/p/2f9bc7b90864bb9a69ec3d41a3ac6509/adjuntos/193/imagenes/041/169/0041169897/770x0/smart/imagenpng.png',
+       (2, 'PB3', 'https://media.elpatagonico.com/p/2f9bc7b90864bb9a69ec3d41a3ac6509/adjuntos/193/imagenes/041/169/0041169897/770x0/smart/imagenpng.png',
         'https://www.clubelterritorio.com.ar/img/comercios/hipermercado_libertad_sa/logo.jpg', '2024-05-15', '2024-06-15'),
-       (3, 'CP9', 'https://media.elpatagonico.com/p/2f9bc7b90864bb9a69ec3d41a3ac6509/adjuntos/193/imagenes/041/169/0041169897/770x0/smart/imagenpng.png',
+       (3, 'PU3', 'https://media.elpatagonico.com/p/2f9bc7b90864bb9a69ec3d41a3ac6509/adjuntos/193/imagenes/041/169/0041169897/770x0/smart/imagenpng.png',
         'https://sm.ign.com/ign_latam/tech/default/0a8gvr_37mb.jpg', '2024-05-15', '2024-06-15'),
-       (1, 'CP10', 'https://cdn.pixabay.com/photo/2017/09/01/00/15/png-2702691_640.png',
+       (1, 'PM4', 'https://cdn.pixabay.com/photo/2017/09/01/00/15/png-2702691_640.png',
         'https://sm.ign.com/ign_latam/tech/default/0a8gvr_37mb.jpg', '2024-05-15', '2024-06-15'),
-       (2, 'CP11', 'https://cdn.urbantecno.com/urbantecno/2024/05/sin-tixxxxtulo.png',
+       (2, 'PB4', 'https://cdn.urbantecno.com/urbantecno/2024/05/sin-tixxxxtulo.png',
         'https://sm.ign.com/ign_latam/tech/default/0a8gvr_37mb.jpg', '2024-05-15', '2024-06-15'),
-       (3, 'CP12', 'https://cdn.pixabay.com/photo/2017/09/17/02/02/png-2757379_640.png',
+       (3, 'PU4', 'https://cdn.pixabay.com/photo/2017/09/17/02/02/png-2757379_640.png',
         'https://sm.ign.com/ign_latam/tech/default/0a8gvr_37mb.jpg', '2024-05-15', '2024-06-15');
 go
 
@@ -302,5 +307,6 @@ VALUES (1, 1, NULL, NULL, '2024-05-20 00:14:47.940'),
        (9, NULL, 3, 'P-3', '2024-05-10 00:14:47.940'),
        (10, NULL, 3, 'S-3', '2024-05-10 00:14:47.940'),
        (10, NULL, 2, 'S-3', '2024-06-10 00:14:47.940'),
-       (10, NULL, 2, 'S-3', '2024-05-10 00:14:47.940');
+       (10, NULL, 2, 'S-3', '2024-05-10 00:14:47.940'),
+       (10, NULL, 4, 'S-2', '2024-05-10 00:14:47.940');
 go

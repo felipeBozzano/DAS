@@ -103,13 +103,14 @@ public class DatosPublicidades {
                     </ws:obtenerPublicidades>""".formatted(publicista.getToken_de_servicio());
             body.put("message", message);
             body.put("web_service", "obtenerPublicidades");
+        } else {
+            body.put("token_de_servicio", publicista.getToken_de_servicio());
         }
 
-        ListaPublicidadResponseBean listaPublicidades = (ListaPublicidadResponseBean) conector.execute_post_request(publicista.getUrl_api(), body, "ListaPublicidadResponseBean");
-        if (listaPublicidades.getCodigoRespuesta() == 1 || listaPublicidades.getCodigoRespuesta() == -1) {
-            System.out.println("Publicista " + id_publicista + ": " + listaPublicidades.getMensajeRespuesta());
+        ListaPublicidadResponseBean listaPublicidades = (ListaPublicidadResponseBean) conector.execute_post_request(publicista.getUrl_api() + "/obtenerPublicidades", body, "ListaPublicidadResponseBean");
+        System.out.println("Publicista " + id_publicista + ": " + listaPublicidades.getMensajeRespuesta());
+        if (listaPublicidades.getCodigoRespuesta() == 1 || listaPublicidades.getCodigoRespuesta() == -1)
             return publicidades;
-        }
 
         for (PublicidadResponseBean publicidad : listaPublicidades.getListaPublicidades()) {
             PublicidadBean publicidad_bean = new PublicidadBean(id_publicista, publicidad.getCodigo_publicidad(), publicidad.getUrl_de_imagen(), publicidad.getUrl_de_publicidad());

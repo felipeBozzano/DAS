@@ -55,10 +55,19 @@ public class FederacionesPendientes {
 
         Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma, jdbcTpl);
         AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
-
         Map<String, String> body = new HashMap<>();
-        body.put("codigo_de_transaccion", codigo_de_transaccion);
-        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
+
+        if (conexion_plataforma.get("protocolo_api").equals("REST")) {
+            body.put("codigo_de_transaccion", codigo_de_transaccion);
+            body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
+        } else {
+            String message = """
+                    <ws:obtenerPublicidades xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
+                    <token_de_partner>%s</token_de_partner>
+                    </ws:obtenerPublicidades>""".formatted(publicista.getToken_de_servicio());
+            body.put("message", message);
+            body.put("web_service", "obtenerPublicidades");
+        }
         FederacionBean bean = (FederacionBean) conector.execute_post_request(url_token, body, "FederacionBean");
 
         SqlParameterSource in = new MapSqlParameterSource()

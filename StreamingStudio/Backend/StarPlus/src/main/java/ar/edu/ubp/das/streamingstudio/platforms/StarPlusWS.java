@@ -12,6 +12,9 @@ import jakarta.xml.bind.annotation.XmlSeeAlso;
 
 import java.io.InputStream;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -23,7 +26,6 @@ public class StarPlusWS {
     private String sql_conection_string;
     private String sql_user;
     private String sql_pass;
-    private Gson gson;
 
     public StarPlusWS(){
         Properties properties = new Properties();
@@ -36,10 +38,23 @@ public class StarPlusWS {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setDateFormat("yyyy-MM-dd");
-        gson = gsonBuilder.create();
+    private Boolean verificarTokenDePartner(String token_de_partner) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        CallableStatement stmt;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+        stmt = conn.prepareCall("{CALL dbo.Verificar_Token_de_Partner(?)}");
+        stmt.setString("token", token_de_partner);
+        String temp = "";
+        rs = stmt.executeQuery();
+        while (rs.next()) {
+            temp = rs.getString("ExistePartner");
+        }
+        return temp.equals("true");
     }
 
     @WebMethod()
@@ -122,6 +137,56 @@ public class StarPlusWS {
     }
 
     @WebMethod()
+    @WebResult(name = "obtenerEstadisticas")
+    public String obtenerEstadisticas(@WebParam(name = "token_de_partner") String token_de_partner,
+                                      @WebParam(name = "total") String total,
+                                      @WebParam(name = "fecha") String fecha,
+                                      @WebParam(name = "descripcion") String descripcion) throws SQLException, ClassNotFoundException {
+
+        if (verificarTokenDePartner(token_de_partner)) {
+            Date fecha_formateada = new Date(2020, 01, 01);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            try {
+                LocalDate localDate = LocalDate.parse(fecha, formatter);
+                fecha_formateada = Date.valueOf(localDate);
+            } catch (DateTimeParseException e) {
+                e.printStackTrace();
+            }
+
+            Connection conn;
+            CallableStatement stmt;
+            ResultSet rs;
+            Class.forName(driver_sql);
+            conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+            conn.setAutoCommit(true);
+            try {
+                stmt = conn.prepareCall("{CALL dbo.Registrar_Reporte(?, ?, ?)}");
+                stmt.setFloat("total", Float.parseFloat(total));
+                stmt.setDate("fecha", fecha_formateada);
+                stmt.setString("descripcion", descripcion);
+                stmt.executeUpdate();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return """
+                    {
+                    "codigoRespuesta": "200",
+                    "mensajeRespuesta": "Reporte recibido"
+                    }
+                    """;
+        } else {
+            return """
+                    {
+                    \t"codigoRespuesta": "-1",
+                    \t"mensajeRespuesta": "Partner no verificado"
+                    }
+                    """;
+        }
+    }
+
+    @WebMethod()
     @WebResult(name = "login")
     public String login(@WebParam (name = "email") String email, @WebParam (name = "contrasena") String contrasena ) throws ClassNotFoundException, SQLException {
         Connection conn;
@@ -163,6 +228,4 @@ public class StarPlusWS {
         System.out.println(usuario.toString());
         return usuario.toString();
     }
-
-
 }
