@@ -2,9 +2,8 @@ package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.ContenidoCatalogoBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.CatalogoBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.PlataformaDeStreamingBean;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -116,6 +115,7 @@ public class ActualizarCatalogo {
         }
 
         CatalogoBean catalogo = (CatalogoBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/catalogo", body, "CatalogoBean");
+        System.out.println("Plataforma: " + id_plataforma + " - Codigo: " + catalogo.getCodigoRespuesta() + " - Mensaje: " + catalogo.getMensajeRespuesta());
 
         return catalogo;
     }
@@ -227,6 +227,39 @@ public class ActualizarCatalogo {
                         .withProcedureName("Crear_Contenido")
                         .withSchemaName("dbo");
                 jdbcCall_crear_contenido.execute(in_crear_contenido);
+
+                List<DirectorBean> directores = contenido.getDirectores();
+                for(DirectorBean directorBean: directores) {
+                    SqlParameterSource in_director = new MapSqlParameterSource()
+                            .addValue("id_contenido", id_contenido)
+                            .addValue("id_director", directorBean.getId_director());
+                    SimpleJdbcCall jdbcCall_director = new SimpleJdbcCall(jdbcTpl)
+                            .withProcedureName("Asignar_Director")
+                            .withSchemaName("dbo");
+                    jdbcCall_director.execute(in_director);
+                }
+
+                List<ActorBean> actores = contenido.getActores();
+                for(ActorBean actor: actores) {
+                    SqlParameterSource in_actor = new MapSqlParameterSource()
+                            .addValue("id_contenido", id_contenido)
+                            .addValue("id_actor", actor.getId_actor());
+                    SimpleJdbcCall jdbcCall_actor = new SimpleJdbcCall(jdbcTpl)
+                            .withProcedureName("Asignar_Actor")
+                            .withSchemaName("dbo");
+                    jdbcCall_actor.execute(in_actor);
+                }
+
+                List<GeneroBean> generos = contenido.getGeneros();
+                for(GeneroBean genero: generos) {
+                    SqlParameterSource in_genero = new MapSqlParameterSource()
+                            .addValue("id_contenido", id_contenido)
+                            .addValue("id_genero", genero.getId_genero());
+                    SimpleJdbcCall jdbcCall_genero = new SimpleJdbcCall(jdbcTpl)
+                            .withProcedureName("Asignar_Genero")
+                            .withSchemaName("dbo");
+                    jdbcCall_genero.execute(in_genero);
+                }
             }
 
             // Agregamos dicho contenido a la tabla catálogo

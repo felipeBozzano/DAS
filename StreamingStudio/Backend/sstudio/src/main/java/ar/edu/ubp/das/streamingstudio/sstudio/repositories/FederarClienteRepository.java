@@ -101,7 +101,6 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         String url_de_redireccion = "http://localhost:4200/usuario/" + id_cliente + "/finalizar_federacion/" + id_plataforma;
         body.put("url_de_redireccion", url_de_redireccion);
         body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
-//        body.put("id_cliente", String.valueOf(id_cliente));
         body.put("tipo_de_transaccion", tipo_transaccion);
         String conexion = conexion_plataforma.get("url_api");
         FederacionBean bean = (FederacionBean) conector.execute_post_request(conexion + "/obtener_codigo_de_transaccion", body, "FederacionBean");
@@ -119,8 +118,8 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         jdbcCall.execute(in);
 
         respuesta.put("mensaje", "Federacion comenzada");
-        respuesta.put("url_redireccion", bean.getUrl());
-        respuesta.put("codigo_transaccion", bean.getCodigo_de_transaccion());
+        respuesta.put("url_login_registro_plataforma", bean.getUrl());
+        respuesta.put("codigo_de_transaccion", bean.getCodigo_de_transaccion());
         return respuesta;
     }
 

@@ -1,5 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.ContenidoUrlBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.*;
 import ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.EnviarFacturasRepository;
@@ -215,12 +216,15 @@ public class controllers {
             path = "/informacion_contenido/mostrar_video",
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<Map<String, String>> buscarContenidoPorFiltros(@RequestBody Map<String, String> body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        Map<String, String> contenido = new HashMap<>();
-        contenido.put("id_contenido", "P-1");
-        contenido.put("url", "<iframe width=\"1519\" height=\"569\" src=\"https://www.youtube.com/embed/YbrZc8YnagQ\" title=\"Toy Story Toons: Fiesta Saurus Rex\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>");
-        return new ResponseEntity<>(contenido, HttpStatus.OK);
+    public ResponseEntity<ContenidoUrlBean> buscarContenidoPorFiltros(@RequestBody Map<String, String> body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+
+
+        String id_contenido = body.get("id_contenido");
+        int id_plataforma = Integer.parseInt(body.get("id_plataforma"));
+        int id_cliente = Integer.parseInt(body.get("id_cliente"));
+        return new ResponseEntity<>(reproducir_contenido_repository.obtener_url_de_contenido(id_contenido, id_plataforma, id_cliente), HttpStatus.OK);
+//        contenido.put("id_contenido", "P-1");
+//        contenido.put("url", "<iframe width=\"1519\" height=\"569\" src=\"https://www.youtube.com/embed/YbrZc8YnagQ\" title=\"Toy Story Toons: Fiesta Saurus Rex\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>");
 //        return new ResponseEntity<>(reproducir_contenido_repository.obtener_url_de_contenido(id_contenido, id_plataforma, id_cliente), HttpStatus.OK);
     }
-
 }

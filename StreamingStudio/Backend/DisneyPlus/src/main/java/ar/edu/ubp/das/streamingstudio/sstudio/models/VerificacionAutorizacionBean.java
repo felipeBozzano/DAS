@@ -1,15 +1,15 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-public class VereficacionAutorizacionBean {
+public class VerificacionAutorizacionBean {
     private boolean verificado;
     private String token;
 
-    public VereficacionAutorizacionBean(boolean verificado) {
+    public VerificacionAutorizacionBean(boolean verificado) {
         this.verificado = verificado;
         this.token = null;
     }
 
-    public VereficacionAutorizacionBean(boolean verificado, String token) {
+    public VerificacionAutorizacionBean(boolean verificado, String token) {
         this.verificado = verificado;
         this.token = token;
     }

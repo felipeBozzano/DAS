@@ -24,6 +24,8 @@ public class CatalogoBean {
     public String toString() {
         String temp = """
                 {
+                    "codigoRespuesta": "200",
+                    "mensajeRespuesta": "Catalogo enviado",
                     "listaContenido": [\n%s
                 """.formatted(ObjectToJson(listaContenido));
         return temp;

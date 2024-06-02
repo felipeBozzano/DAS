@@ -62,15 +62,12 @@ public class StarPlusWS {
     public String catalogo(@WebParam (name = "token_de_partner") String token_de_partner) throws ClassNotFoundException, SQLException {
 
         Connection conn;
-        ResultSet rs;
         Class.forName(driver_sql);
         conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
         conn.setAutoCommit(true);
 
         System.out.println("Token de partner: " + token_de_partner);
         CatalogoBean catalogo = new CatalogoBean();
-        String temp = "";
-        //rs = stmt.executeQuery();
 
             CallableStatement stmt;
             ResultSet rs_catalogo;
@@ -98,8 +95,6 @@ public class StarPlusWS {
                 rs_directores.close();
                 stmt_directores.close();
 
-
-
                 // ACTORES
                 CallableStatement stmt_actores;
                 ResultSet rs_actores;
@@ -117,17 +112,34 @@ public class StarPlusWS {
                 rs_actores.close();
                 stmt_actores.close();
 
+                // GENEROS
+                CallableStatement stmt_generos;
+                ResultSet rs_generos;
+                stmt_generos = conn.prepareCall("{CALL dbo.Obtener_Generos(?)}");
+                stmt_generos.setString("id_contenido", rs_catalogo.getString("id_contenido"));
+                rs_generos = stmt_generos.executeQuery();
+                List<GeneroBean> listaGeneros = new LinkedList<>();
+                while (rs_generos.next()) {
+                    GeneroBean genero = new GeneroBean();
+                    genero.setDescripcion(rs_generos.getString("descripcion"));
+                    genero.setId_genero(rs_generos.getInt("id_genero"));
+                    listaGeneros.add(genero);
+                }
+                rs_generos.close();
+                stmt_generos.close();
 
                 // CONTENIDO
-                contenido.setTitulo(rs_catalogo.getString("titulo"));
                 contenido.setId_contenido(rs_catalogo.getString("id_contenido"));
+                contenido.setTitulo(rs_catalogo.getString("titulo"));
                 contenido.setDescripcion(rs_catalogo.getString("descripcion"));
+                contenido.setUrl_imagen(rs_catalogo.getString("url_imagen"));
+                contenido.setClasificacion(rs_catalogo.getString("clasificacion"));
+                contenido.setReciente(rs_catalogo.getBoolean("reciente"));
+                contenido.setDestacado(rs_catalogo.getBoolean("destacado"));
+                contenido.setValido(rs_catalogo.getBoolean("valido"));
                 contenido.setActores(listaActores);
                 contenido.setDirectores(listaDirectores);
-                contenido.setDescripcion(rs_catalogo.getString("descripcion"));
-                contenido.setValido(rs_catalogo.getBoolean("valido"));
-
-                //System.out.println(contenido);
+                contenido.setGeneros(listaGeneros);
 
                 listaContenido.add(contenido);
                 catalogo = new CatalogoBean(listaContenido);
@@ -184,6 +196,30 @@ public class StarPlusWS {
                     }
                     """;
         }
+    }
+
+    @WebMethod()
+    @WebResult(name = "obtenerCodigoDeTransaccion")
+    public void obtenerCodigoDeTransaccion() {
+
+    }
+
+    @WebMethod()
+    @WebResult(name = "obtenerToken")
+    public void obtenerToken() {
+
+    }
+
+    @WebMethod()
+    @WebResult(name = "crearSesion")
+    public void crearSesion() {
+
+    }
+
+    @WebMethod()
+    @WebResult(name = "contenido")
+    public void contenido() {
+
     }
 
     @WebMethod()
