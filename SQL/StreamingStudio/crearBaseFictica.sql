@@ -83,68 +83,50 @@ VALUES ('Director1', 'Apellido1'),
 go
 
 -- Crear 8 contenidos
--- INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, clasificacion, mas_visto)
--- VALUES ('P-1', 'Toy Story', N'Descripcion de Toy Story',
---         'https://es.web.img3.acsta.net/pictures/14/03/17/10/20/509771.jpg', 'P', 0),
---        ('S-1', 'Spiderman', N'Descripción de Spiderman',
---         'https://image.api.playstation.com/vulcan/ap/rnd/202009/3021/B2aUYFC0qUAkNnjbTHRyhrg3.png', 'S', 1),
---        ('P-2', 'Batman', N'Descripción de Batman',
---         'https://es.web.img2.acsta.net/medias/nmedia/18/66/74/01/20350623.jpg', 'P', 0),
---        ('S-2', 'Superman', N'Descripción de Superman',
---         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkFIzNYyYVW1MQg2PBUJun45u95dCWpWTaj-baRad6w&s', 'S', 1),
---        ('P-3', 'Thor', N'Descripción de Thor', 'https://es.web.img3.acsta.net/medias/nmedia/18/79/89/52/19711203.jpg',
---         'P', 0),
---        ('S-3', 'Kung fu Panda', N'Descripción de Kung fu Panda',
---         'https://m.media-amazon.com/images/S/pv-target-images/d775fb8599018935d1e28ed9cbc2fb67870d726d850f0eee13dc6f50f37b76d3.jpg',
---         'S', 0),
---        ('P-4', 'Drive', N'Descripción de Drive', 'https://i.blogs.es/d365ef/drive-2011/650_1200.jpg', 'P', 1),
---        ('S-4', 'El padrino', N'Descripción de el padrino',
---         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNvJucE9mgq6GvXtcJAPzaJ9huMajoCDRSHWgVfmp9Tg&s', 'S', 0);
--- go
+INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, clasificacion, mas_visto)
+VALUES ('CP1', 'Toy Story', N'Descripcion de Toy Story',
+        'https://es.web.img3.acsta.net/pictures/14/03/17/10/20/509771.jpg',
+        'P', 1),
+       ('CS3', 'Kung fu Panda', N'Descripción de Kung fu Panda',
+        'https://m.media-amazon.com/images/S/pv-target-images/d775fb8599018935d1e28ed9cbc2fb67870d726d850f0eee13dc6f50f37b76d3.jpg',
+        'S', 0),
+       ('CS1', 'Spiderman', N'Descripción de Spiderman',
+        'https://image.api.playstation.com/vulcan/ap/rnd/202009/3021/B2aUYFC0qUAkNnjbTHRyhrg3.png',
+        'S', 1),
+       ('CP4', 'Drive', N'Descripción de Drive',
+        'https://i.blogs.es/d365ef/drive-2011/650_1200.jpg',
+        'P', 0);
+go
 
 -- Asignar directores a contenidos en Director_Contenido
--- INSERT INTO Director_Contenido (id_contenido, id_director)
--- VALUES ('P-1', 1),
---        ('P-1', 2),
---        ('S-1', 3),
---        ('S-1', 4),
---        ('P-2', 5),
---        ('S-2', 1),
---        ('P-3', 2),
---        ('S-3', 3),
---        ('P-4', 4),
---        ('S-4', 5);
--- go
+INSERT INTO Director_Contenido (id_contenido, id_director)
+VALUES ('CP1', 1),
+       ('CP1', 2),
+       ('CS3', 3),
+       ('CS1', 3),
+       ('CS1', 4),
+       ('CP4', 4);
+go
 
 -- Asignar actores a contenidos en Actor_Contenido
--- INSERT INTO Actor_Contenido (id_contenido, id_actor)
--- VALUES ('P-1', 1),
---        ('P-1', 2),
---        ('S-1', 3),
---        ('S-1', 4),
---        ('P-2', 5),
---        ('S-2', 6),
---        ('P-3', 7),
---        ('S-3', 8),
---        ('P-4', 1),
---        ('S-4', 2)
--- go
+INSERT INTO Actor_Contenido (id_contenido, id_actor)
+VALUES ('CP1', 1),
+       ('CP1', 2),
+       ('CS3', 8),
+       ('CS1', 3),
+       ('CS1', 4),
+       ('CP4', 1);
+go
 
 -- Asignar generos a contenidos en Genero_Contenido
--- INSERT INTO Genero_Contenido (id_contenido, id_genero)
--- VALUES ('P-1', 1),
---        ('P-1', 3),
---        ('S-1', 2),
---        ('P-2', 3),
---        ('P-2', 2),
---        ('S-2', 1),
---        ('P-3', 2),
---        ('S-3', 3),
---        ('S-3', 1),
---        ('P-4', 1),
---        ('S-4', 2),
---        ('S-4', 3);
--- go
+INSERT INTO Genero_Contenido (id_contenido, id_genero)
+VALUES ('CP1', 1),
+       ('CP1', 3),
+       ('CS3', 3),
+       ('CS3', 1),
+       ('CS1', 2),
+       ('CP4', 1);
+go
 
 -- Crear 3 Plataformas de Streaming
 INSERT INTO Plataforma_de_Streaming (nombre_de_fantasia, razon_social, url_imagen, token_de_servicio, url_api,
@@ -164,31 +146,12 @@ VALUES ('Netflix', N'Netflix Argentina S.R.L.',
 go
 
 -- Llenar Catálogo
--- INSERT INTO Catalogo (id_contenido, id_plataforma, reciente, destacado, fecha_de_alta, fecha_de_baja)
--- VALUES
---     -- Plataforma 1
---     ('P-1', 1, 1, 1, '2024-03-10 00:14:47.770', NULL),
---     ('S-1', 1, 1, 0, '2024-03-10 00:14:47.770', NULL),
---     ('P-2', 1, 0, 1, '2024-03-10 00:14:47.770', NULL),
---     ('S-2', 1, 0, 0, '2024-03-10 00:14:47.770', '2024-03-11 20:34:12'),
---     -- Plataforma 2
---     ('P-3', 2, 1, 1, '2024-03-10 00:14:47.770', NULL),
---     ('S-3', 2, 1, 0, '2024-03-10 00:14:47.770', NULL),
---     ('P-4', 2, 0, 1, '2024-03-10 00:14:47.770', NULL),
---     ('S-4', 2, 0, 0, '2024-03-10 00:14:47.770', NULL),
---     -- Plataforma 3
---     ('P-1', 3, 1, 1, '2024-03-10 00:14:47.770', '2024-03-11 20:34:38'),
---     ('S-1', 3, 1, 0, '2024-03-10 00:14:47.770', NULL),
---     ('P-3', 3, 0, 1, '2024-03-10 00:14:47.770', NULL),
---     ('S-3', 3, 0, 0, '2024-03-10 00:14:47.770', NULL),
---     -- Plataforma 4
---     ('P-2', 4, 0, 0, '2024-03-10 00:14:47.770', '2024-03-11 20:34:38'),
---     ('S-2', 4, 0, 1, '2024-03-10 00:14:47.770', NULL),
---     ('P-4', 4, 1, 0, '2024-03-10 00:14:47.770', NULL),
---     ('S-4', 4, 1, 1, '2024-03-10 00:14:47.770', NULL);
--- go
-
--- Insertar los tipos de usuario "Registrado" y "Nuevo"
+INSERT INTO Catalogo (id_contenido, id_plataforma, reciente, destacado, fecha_de_alta, fecha_de_baja)
+VALUES ('CP1', 1, 1, 0, '2024-03-10 00:14:47.770', NULL),
+       ('CS3', 2, 0, 1, '2024-03-10 00:14:47.770', NULL),
+       ('CS1', 3, 0, 0, '2024-03-10 00:14:47.770', NULL),
+       ('CP4', 4, 1, 0, '2024-03-10 00:14:47.770', NULL);
+go
 
 -- Crear 2 Tipo_de_Fee
 INSERT INTO Tipo_Fee (tipo_de_fee, descripcion)
@@ -314,26 +277,21 @@ VALUES (0, 'Creado'),
 go
 
 -- Crear Clics para publicidades y catalogo
--- INSERT INTO Clic (id_cliente, id_publicidad, id_plataforma, id_contenido, fecha)
--- VALUES (1, 1, NULL, NULL, '2024-05-20 00:14:47.940'),
---        (1, 2, NULL, NULL, '2024-05-03 00:14:47.940'),
---        (2, 1, NULL, NULL, '2024-05-15 00:14:47.940'),
---        (2, 1, NULL, NULL, '2024-04-01 00:14:47.940'),
---        (2, 3, NULL, NULL, '2024-05-23 00:14:47.940'),
---        (3, 4, NULL, NULL, '2024-05-10 00:14:47.940'),
---        (4, 5, NULL, NULL, '2024-05-10 00:14:47.940'),
---        (5, 6, NULL, NULL, '2024-05-10 00:14:47.940'),
---        (5, 6, NULL, NULL, '2024-05-10 00:14:47.940'),
---        (5, 7, NULL, NULL, '2024-05-10 00:14:47.940'),
---        (6, NULL, 1, 'P-1', '2024-05-20 00:14:47.940'),
---        (7, NULL, 1, 'P-2', '2024-05-03 00:14:47.940'),
---        (7, NULL, 2, 'P-3', '2024-05-15 00:14:47.940'),
---        (8, NULL, 2, 'P-4', '2024-04-01 00:14:47.940'),
---        (8, NULL, 1, 'P-2', '2024-05-23 00:14:47.940'),
---        (8, NULL, 3, 'S-1', '2024-05-10 00:14:47.940'),
---        (9, NULL, 3, 'P-3', '2024-05-10 00:14:47.940'),
---        (10, NULL, 3, 'S-3', '2024-05-10 00:14:47.940'),
---        (10, NULL, 2, 'S-3', '2024-06-10 00:14:47.940'),
---        (10, NULL, 2, 'S-3', '2024-05-10 00:14:47.940'),
---        (10, NULL, 4, 'S-2', '2024-05-10 00:14:47.940');
--- go
+INSERT INTO Clic (id_cliente, id_publicidad, id_plataforma, id_contenido, fecha)
+VALUES (1, 1, NULL, NULL, '2024-05-20 00:14:47.940'),
+       (1, 2, NULL, NULL, '2024-05-03 00:14:47.940'),
+       (2, 1, NULL, NULL, '2024-05-15 00:14:47.940'),
+       (2, 1, NULL, NULL, '2024-04-01 00:14:47.940'),
+       (2, 3, NULL, NULL, '2024-05-23 00:14:47.940'),
+       (3, 4, NULL, NULL, '2024-05-10 00:14:47.940'),
+       (4, 5, NULL, NULL, '2024-05-10 00:14:47.940'),
+       (5, 6, NULL, NULL, '2024-05-10 00:14:47.940'),
+       (5, 6, NULL, NULL, '2024-05-10 00:14:47.940'),
+       (5, 7, NULL, NULL, '2024-05-10 00:14:47.940'),
+       (6, NULL, 1, 'CP1', '2024-05-20 00:14:47.940'),
+       (8, NULL, 4, 'CP4', '2024-04-01 00:14:47.940'),
+       (8, NULL, 3, 'CS1', '2024-05-10 00:14:47.940'),
+       (10, NULL, 2, 'CS3', '2024-05-10 00:14:47.940'),
+       (10, NULL, 2, 'CS3', '2024-06-10 00:14:47.940'),
+       (10, NULL, 2, 'CS3', '2024-05-10 00:14:50.940');
+go

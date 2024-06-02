@@ -28,7 +28,7 @@ INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, url_reprod
                        destacado, valido)
 VALUES ('CP1', 'Toy Story', N'Descripcion de Toy Story',
         'https://es.web.img3.acsta.net/pictures/14/03/17/10/20/509771.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 0, 0, 1),
+        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 0, 1),
        ('CS1', 'Spiderman', N'Descripción de Spiderman',
         'https://image.api.playstation.com/vulcan/ap/rnd/202009/3021/B2aUYFC0qUAkNnjbTHRyhrg3.png',
         'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 1, 0, 1),

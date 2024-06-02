@@ -26,12 +26,14 @@ go
 
 INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, url_reproduccion, clasificacion, reciente,
                        destacado, valido)
-VALUES ('CP3', 'Thor', N'Descripción de Thor', 'https://es.web.img3.acsta.net/medias/nmedia/18/79/89/52/19711203.jpg',
+VALUES ('CP3', 'Thor', N'Descripción de Thor',
+        'https://es.web.img3.acsta.net/medias/nmedia/18/79/89/52/19711203.jpg',
         'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 0, 0, 1),
        ('CS3', 'Kung fu Panda', N'Descripción de Kung fu Panda',
         'https://m.media-amazon.com/images/S/pv-target-images/d775fb8599018935d1e28ed9cbc2fb67870d726d850f0eee13dc6f50f37b76d3.jpg',
         'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 0, 1, 1),
-       ('CP4', 'Drive', N'Descripción de Drive', 'https://i.blogs.es/d365ef/drive-2011/650_1200.jpg',
+       ('CP4', 'Drive', N'Descripción de Drive',
+        'https://i.blogs.es/d365ef/drive-2011/650_1200.jpg',
         'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 0, 1),
        ('CS4', 'El padrino', N'Descripción de el padrino',
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNvJucE9mgq6GvXtcJAPzaJ9huMajoCDRSHWgVfmp9Tg&s',
