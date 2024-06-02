@@ -98,12 +98,26 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma);
         AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
         Map<String, String> body = new HashMap<>();
-        String url_de_redireccion = "http://localhost:4200/usuario/" + id_cliente + "/finalizar_federacion/" + id_plataforma;
-        body.put("url_de_redireccion", url_de_redireccion);
-        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
-//        body.put("id_cliente", String.valueOf(id_cliente));
-        body.put("tipo_de_transaccion", tipo_transaccion);
+
         String conexion = conexion_plataforma.get("url_api");
+        String url_de_redireccion = "http://localhost:4200/usuario/" + id_cliente + "/finalizar_federacion/" + id_plataforma;
+
+        if (conexion_plataforma.get("protocolo_api").equals("SOAP")) {
+            String message = """
+                    <ws:crearTransaccion xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
+                    <tipo_de_transaccion>%s</tipo_de_transaccion>
+                    <url_redireccion_ss>%s</url_redireccion_ss>
+                    <token_de_partner>%s</token_de_partner>
+                    </ws:crearTransaccion>""".formatted(tipo_transaccion, url_de_redireccion, conexion_plataforma.get("token_de_servicio"));
+            body.put("message", message);
+            body.put("web_service", "crearTransaccion");
+        }else{
+            body.put("url_de_redireccion", url_de_redireccion);
+            body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
+//        body.put("id_cliente", String.valueOf(id_cliente));
+            body.put("tipo_de_transaccion", tipo_transaccion);
+        }
+
         FederacionBean bean = (FederacionBean) conector.execute_post_request(conexion + "/obtener_codigo_de_transaccion", body, "FederacionBean");
 
         SqlParameterSource in = new MapSqlParameterSource()

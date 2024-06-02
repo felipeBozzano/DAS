@@ -57,6 +57,7 @@ export class FederacionesComponent implements OnInit {
       id_cliente: this.id_cliente,
       tipo_de_transaccion: tipo_de_transaccion
     }
+    console.log("info_federacion: ", info_federacion);
 
     this.streamingStudioResources.comenzar_federacion(info_federacion).subscribe((response) => {
       console.log(response.url_redireccion + '?codigo_de_transaccion=' + response.codigo_transaccion);

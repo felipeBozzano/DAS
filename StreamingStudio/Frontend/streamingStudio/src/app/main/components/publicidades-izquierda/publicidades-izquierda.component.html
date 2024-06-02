@@ -1,11 +1,11 @@
 <div *ngIf="exclusiva" class="left-top-ad">
-  <a target="_blank">
-    <img class="left-img" [src]="publicidades_arriba_izquierda_random.url_de_imagen" alt="Bottom Right Ad">
+  <a target="_blank" href="https://www.google.com" >
+    <img class="left-img" [src]="publicidades_arriba_izquierda_random.url_de_imagen" alt="Bottom Right Ad" (click)="registrarClic(publicidades_arriba_izquierda_random.id_publicidad)">
   </a>
 </div>
 
 <div *ngIf="no_exclusiva" class="left-bot-ad">
-  <a target="_blank">
-    <img class="left-img" [src]="publicidades_abajo_izquierda_random.url_de_imagen" alt="Bottom Left Ad">
+  <a target="_blank" href="https://www.google.com">
+    <img class="left-img" [src]="publicidades_abajo_izquierda_random.url_de_imagen" alt="Bottom Left Ad" (click)="registrarClic(publicidades_abajo_izquierda_random.id_publicidad)">
   </a>
 </div>

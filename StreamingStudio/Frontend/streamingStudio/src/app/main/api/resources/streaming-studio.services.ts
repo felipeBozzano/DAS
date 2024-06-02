@@ -117,4 +117,18 @@ export class StreamingStudioResources extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   peliculas!: IResourceMethodObservable<void,IPeliculasModelResonse>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Get,
+    path: `/clic_publicidad`,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  clic_publicidad!: IResourceMethodObservable<any, any>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Get,
+    path: `/clic_contenido`,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  clic_contenido!: IResourceMethodObservable<any, any>;
 }

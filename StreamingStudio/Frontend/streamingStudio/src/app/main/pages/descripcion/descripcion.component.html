@@ -33,8 +33,8 @@
             <img [src]="descripcion.infoContenido.url_imagen" class="card-img">
           </div>
           <div class="platform-images">
-            <div *ngFor="let image of descripcion.plataformas" class="image-item"
-                 (click)="obtenerUrlDeContenido(image.id_plataforma)">
+            <div  *ngFor="let image of descripcion.plataformas" class="image-item"
+                 (click)="obtenerUrlDeContenido(image.id_plataforma)" >
               <img [src]="image.url_imagen" alt="Image">
             </div>
           </div>

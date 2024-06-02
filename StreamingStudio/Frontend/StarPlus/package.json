@@ -8,7 +8,8 @@
     "start-en": "ng serve --open --configuration en",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "start:proxy": "ng serve --proxy-config proxy.conf.json --port 4203 --configuration development --open"
   },
   "private": true,
   "dependencies": {
@@ -38,6 +39,7 @@
     "@angular/cli": "~14.2.1",
     "@angular/compiler-cli": "^14.0.0",
     "@types/jasmine": "~4.0.0",
+    "http-proxy-middleware": "^3.0.0",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

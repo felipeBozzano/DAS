@@ -8,16 +8,16 @@ import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
 
 import java.io.InputStream;
 import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @WebService
 @XmlSeeAlso(CatalogoBean.class)
@@ -189,6 +189,7 @@ public class StarPlusWS {
     @WebMethod()
     @WebResult(name = "login")
     public String login(@WebParam (name = "email") String email, @WebParam (name = "contrasena") String contrasena ) throws ClassNotFoundException, SQLException {
+
         Connection conn;
         ResultSet rs;
         Class.forName(driver_sql);
@@ -228,4 +229,164 @@ public class StarPlusWS {
         System.out.println(usuario.toString());
         return usuario.toString();
     }
+
+
+    @WebMethod()
+    @WebResult(name = "crearTransaccion")
+    public String crearTransaccion(@WebParam (name = "tipo_de_transaccion") String tipo_de_transaccion, @WebParam (name = "url_redireccion_ss") String url_redireccion_ss, @WebParam (name = "token_de_partner") String token_de_partner) throws ClassNotFoundException, SQLException {
+        if(this.verificarTokenDePartner(token_de_partner)){
+            Connection conn;
+            ResultSet rs;
+            Class.forName(driver_sql);
+            conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+            conn.setAutoCommit(true);
+
+            UUID codigo_de_transaccion = UUID.randomUUID();
+            String codigo_de_transaccion_string = codigo_de_transaccion.toString();
+
+            String url_de_redireccion;
+            if (tipo_de_transaccion.equals("L"))
+                url_de_redireccion = "http://localhost:4203/login";
+            else
+                url_de_redireccion = "http://localhost:4203/register";
+
+            CallableStatement stmt;
+            ResultSet rs_transaccion;
+
+            // Crear transacción
+            stmt = conn.prepareCall("{CALL dbo.Crear_Transaccion(?,?,?)}");
+            stmt.setString("codigo_de_transaccion", codigo_de_transaccion_string);
+            stmt.setString("url_de_redireccion", url_redireccion_ss);
+            stmt.setString("tipo_de_transaccion", tipo_de_transaccion);
+            stmt.executeUpdate();
+
+            TransaccionBean transaccionBean = new TransaccionBean();
+            int existe = 0;
+
+
+            // Crear y devolver respuesta
+            VerificacionTransaccionBean respuesta = new VerificacionTransaccionBean(true, codigo_de_transaccion_string, url_de_redireccion);
+
+            return respuesta.toString();
+        }else {
+            return """
+                    {
+                    \t"codigoRespuesta": "-1",
+                    \t"mensajeRespuesta": "Partner no verificado"
+                    }
+                    """;
+        }
+    }
+
+    @WebMethod()
+    @WebResult(name = "verificarAutorizacion")
+    public String verificarAutorizacion(@WebParam (name = "codigo_de_transaccion") String codigo_de_transaccion) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+        CallableStatement stmt;
+        ResultSet rs_verificar_autorizacion;
+
+        stmt = conn.prepareCall("{CALL dbo.Verificar_Autorizacion(?)}");
+        stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
+        rs_verificar_autorizacion = stmt.executeQuery();
+
+        TransaccionBean transaccionBean = new TransaccionBean();
+        int existe = 0;
+        while (rs_verificar_autorizacion.next()) {
+            transaccionBean.setToken_de_servicio(rs_verificar_autorizacion.getString("token_de_servicio"));
+            transaccionBean.setId_cliente(rs_verificar_autorizacion.getInt("id_cliente"));
+            transaccionBean.setTipo_de_transaccion(rs_verificar_autorizacion.getString("codigo_de_transaccion"));
+            transaccionBean.setUrl_de_redireccion(rs_verificar_autorizacion.getString("url_de_redireccion"));
+
+        }
+
+        return transaccionBean.toString();
+    }
+
+    @WebMethod()
+    @WebResult(name = "crearAutorizacion")
+    public void crearAutorizacion(@WebParam (name = "codigo_de_transaccion")String codigo_de_transaccion, @WebParam (name = "id_cliente") int id_cliente) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+        UUID token = UUID.randomUUID();
+        String token_string = token.toString();
+
+        CallableStatement stmt;
+        ResultSet rs_crear_autorizacion;
+
+        stmt = conn.prepareCall("{CALL dbo.Crear_Autorizacion(?,?)}");
+        stmt.setInt("id_cliente", id_cliente);
+        stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
+        stmt.setString("token", token_string);
+        rs_crear_autorizacion = stmt.executeQuery();
+        AutorizacionBean autorizacion = new AutorizacionBean();
+        while (rs_crear_autorizacion.next()) {
+            autorizacion.setId_cliente(rs_crear_autorizacion.getInt("id_cliente"));
+            autorizacion.setToken_de_servicio(rs_crear_autorizacion.getString("token_de_servicio"));
+            autorizacion.setCodigo_de_transaccion(rs_crear_autorizacion.getString("codigo_de_transaccion"));
+            autorizacion.setUrl_de_redireccion(rs_crear_autorizacion.getString("url_de_redireccion"));
+        }
+        System.out.println(autorizacion);
+    }
+
+    @WebMethod()
+    @WebResult(name = "obtenerUrlDeRedireccion")
+    public String obtenerUrlDeRedireccion(@WebParam (name = "codigo_de_transaccion") String codigo_de_transaccion) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+        UUID token = UUID.randomUUID();
+        String token_string = token.toString();
+
+        CallableStatement stmt;
+        ResultSet rs_codio_transaccion;
+
+        stmt = conn.prepareCall("{CALL dbo.Obtener_codigo_de_redireccion(?)}");
+        stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
+        rs_codio_transaccion = stmt.executeQuery();
+        String url_de_redireccion = "";
+        while (rs_codio_transaccion.next()) {
+            url_de_redireccion = rs_codio_transaccion.getString("url_de_redireccion");
+        }
+        System.out.println(url_de_redireccion);
+        return url_de_redireccion;
+    }
+
+    @WebMethod()
+    @WebResult(name = "obtenerToken")
+    public String obtenerToken(@WebParam (name = "codigo_de_transaccion") String codigo_de_transaccion) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+        UUID token = UUID.randomUUID();
+        String token_string = token.toString();
+
+        CallableStatement stmt;
+        ResultSet rs_token;
+
+        stmt = conn.prepareCall("{CALL dbo.Obtener_codigo_de_redireccion(?)}");
+        stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
+        rs_token = stmt.executeQuery();
+        String token_plataforma = "";
+        while (rs_token.next()) {
+            token_plataforma = rs_token.getString("url_de_redireccion");
+        }
+        System.out.println(token_plataforma);
+        return token_plataforma;
+    }
+
 }

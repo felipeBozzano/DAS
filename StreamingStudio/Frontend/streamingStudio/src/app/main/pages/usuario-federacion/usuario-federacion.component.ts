@@ -35,7 +35,9 @@ export class UsuarioFederacionComponent implements OnInit {
       }
       console.log(federacion);
       this.streamingStudioResources.finalizar_federacion(federacion).subscribe((repsonse) =>{
-        window.location.href = "http://localhost:4200/federaciones"
+        setInterval(function() {
+          window.location.href = "http//localhost:4200/login";
+        }, 4000);
       })
     })
   }

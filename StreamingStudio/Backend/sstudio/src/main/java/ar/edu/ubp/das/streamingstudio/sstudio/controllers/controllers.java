@@ -184,6 +184,11 @@ public class controllers {
         return new ResponseEntity<>(peliculas, HttpStatus.OK);
     }
 
+    @GetMapping("/clic_contenido")
+    public ResponseEntity<Map<String, String>> clic_contenido(@RequestParam("id_cliente") int id_cliente, @RequestParam("id_contenido") String id_contenido,@RequestParam("id_plataforma") int id_plataforma) {
+        return new ResponseEntity<>(user_repository.registrarClicContenido(id_cliente, id_contenido, id_plataforma), HttpStatus.OK);
+    }
+
 
     /* ----------------------------------------------------------------------------------------------------- */
     /* ------------------------------------------ Publicidades --------------------------------------------- */
@@ -206,6 +211,12 @@ public class controllers {
     public ResponseEntity<Map<String, Map<String, ContenidoResponseHomeBean>>> mostrarHome(@RequestParam("id_cliente") int id_cliente) {
         return new ResponseEntity<>(home_repository.getHome(id_cliente), HttpStatus.OK);
     }
+
+    @GetMapping("/clic_publicidad")
+    public ResponseEntity<Map<String, String>> clic_publicidad(@RequestParam("id_cliente") int id_cliente, @RequestParam("id_publicidad") int id_publicidad) {
+          return new ResponseEntity<>(publicidades_repository.registrarClicPublicidad(id_cliente, id_publicidad), HttpStatus.OK);
+    }
+
 
     /* ----------------------------------------------------------------------------------------------------- */
     /* -------------------------------------- Reproducir contenido ------------------------------------------*/

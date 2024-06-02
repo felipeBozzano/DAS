@@ -16,6 +16,7 @@ export class Star_plusResourceService extends Resource{
   @ResourceAction({
     method: ResourceRequestMethod.Post,
     path: '/login',
+    mode: "no-cors",
     headers: {'Access-Control-Allow-Origin': '*'},
     requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json

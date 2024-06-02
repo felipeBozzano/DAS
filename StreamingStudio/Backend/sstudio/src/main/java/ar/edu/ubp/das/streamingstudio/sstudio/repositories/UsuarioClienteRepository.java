@@ -122,4 +122,19 @@ public class UsuarioClienteRepository implements IUsuarioClienteRepository {
         Set<PlataformaDeStreamingBean> conjuntoPlataformasFederadas = new HashSet<>(plataformasFederadas);
         return conjuntoPlataformasFederadas;
     }
+
+    public Map<String, String> registrarClicContenido(int id_cliente, String id_contenido, int id_plataforma) {
+
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_cliente", id_cliente)
+                .addValue("id_contenido", id_contenido)
+                .addValue("id_plataforma", id_plataforma);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Registrar_Clic_Contenido")
+                .withSchemaName("dbo");
+        jdbcCall.execute(in);
+        Map<String, String> resultado = new HashMap<>();
+        resultado.put("Clic contenido registrado", "ok");
+        return resultado;
+    }
 }

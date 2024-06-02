@@ -64,7 +64,7 @@ public class FederacionesPendientes {
             String message = """
                     <ws:obtenerPublicidades xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
                     <token_de_partner>%s</token_de_partner>
-                    </ws:obtenerPublicidades>""".formatted(publicista.getToken_de_servicio());
+                    </ws:obtenerPublicidades>""".formatted(conexion_plataforma.get("token_de_servicio"), codigo_de_transaccion);
             body.put("message", message);
             body.put("web_service", "obtenerPublicidades");
         }

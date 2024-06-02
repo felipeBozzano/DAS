@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import {PublicationService} from '../../services/publicationService/publicationService';
+import {AuthService} from '../../services/authService/AuthService';
+import {StreamingStudioResources} from '../../api/resources/streaming-studio.services';
 
 interface Publicidad {
   id_tipo_banner: number;
@@ -22,7 +24,8 @@ export class PublicidadIzquierdaComponent {
   public publicidades_abajo_izquierda_random: any;
   public publicidades_arriba_izquierda_random: any;
 
-  constructor(private publicidadesService: PublicationService){}
+  constructor(private publicidadesService: PublicationService, private authService: AuthService, private streamingStudioResources: StreamingStudioResources){}
+  user: any
 
   processPublicidades(){
     this.publicidad_arriba_izquierda = this.publicidades.filter(pub => pub.id_tipo_banner === 1 || pub.id_tipo_banner === 5);
@@ -36,8 +39,19 @@ export class PublicidadIzquierdaComponent {
     return array[indiceAleatorio];
   }
   ngOnInit(): void {
+    this.user = this.authService.getCurrentUser();
     this.publicidades = this.publicidadesService.getCurrenPublications();
     this.processPublicidades()
+  }
+
+  registrarClic(id_publicidad: String){
+    const clic = {
+      id_cliente: this.user.id_cliente,
+      id_publicidad: id_publicidad
+    }
+    this.streamingStudioResources.clic_publicidad(clic).subscribe(response =>{
+      console.log(response);
+    })
   }
 
 

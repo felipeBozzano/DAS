@@ -746,14 +746,25 @@ go
 
 /* Clic */
 
-CREATE OR ALTER PROCEDURE Registrar_Clic @id_cliente INT,
-                                         @id_publicidad INT,
-                                         @id_plataforma INT,
-                                         @id_contenido VARCHAR(255)
+CREATE OR ALTER PROCEDURE Registrar_Clic_Publicidad @id_cliente INT,
+                                                    @id_publicidad INT
+
 AS
 BEGIN
-    INSERT INTO dbo.Clic(id_cliente, id_publicidad, id_plataforma, id_contenido, fecha)
-    VALUES (@id_cliente, @id_publicidad, @id_plataforma, @id_contenido, CURRENT_TIMESTAMP)
+    INSERT INTO dbo.Clic(id_cliente, id_publicidad, fecha)
+    VALUES (@id_cliente, @id_publicidad, CURRENT_TIMESTAMP)
+END;
+go
+
+CREATE OR ALTER PROCEDURE Registrar_Clic_Contenido @id_cliente INT,
+                                                   @id_plataforma INT,
+                                                   @id_contenido VARCHAR(255)
+
+
+AS
+BEGIN
+    INSERT INTO dbo.Clic(id_cliente, id_plataforma, id_contenido, fecha)
+    VALUES (@id_cliente, @id_plataforma, @id_contenido, CURRENT_TIMESTAMP)
 END;
 go
 

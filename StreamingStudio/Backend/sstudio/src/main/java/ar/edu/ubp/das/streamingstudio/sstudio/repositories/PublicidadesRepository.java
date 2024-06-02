@@ -61,4 +61,18 @@ public class PublicidadesRepository implements IPublicidadesRepository{
 
         return publicidades_agrupadas;
     }
+
+    public Map<String, String> registrarClicPublicidad(int id_cliente, int id_publicidad) {
+
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_cliente", id_cliente)
+                .addValue("id_publicidad", id_publicidad);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Registrar_Clic_Publicidad")
+                .withSchemaName("dbo");
+        jdbcCall.execute(in);
+        Map<String, String> resultado = new HashMap<>();
+        resultado.put("clic publicidad registrado", "ok");
+        return resultado;
+    }
 }

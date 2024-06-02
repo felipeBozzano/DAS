@@ -38,11 +38,20 @@ export class DescripcionComponent implements OnInit {
   }
 
   obtenerUrlDeContenido(id_plataforma: number): void {
+    const clic = {
+      id_cliente: this.currentUser.id_cliente,
+      id_plataforma: id_plataforma,
+      id_contenido: this.id_contenido
+    }
+    console.log(clic);
+    this.streamingStudioResources.clic_contenido(clic).subscribe(response =>{
+      console.log(response);
+    })
     console.log("Ejecutando obtenerUrlDeContenido")
     const body: any = {
+      id_cliente: this.id_cliente,
       id_contenido: this.id_contenido,
       id_plataforma: id_plataforma,
-      id_cliente: this.id_cliente
     }
     console.log("Body: ", body)
     this.streamingStudioResources.obtener_url_de_contenido(body).subscribe((response) => {
