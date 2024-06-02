@@ -23,18 +23,18 @@ public class ClienteRepository {
     @Autowired
     private JdbcTemplate jdbcTpl;
 
-    @Transactional
-    public void crearTransaccion(String codigo_de_transaccion, String url_de_redireccion, String tipo_de_transaccion) {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("codigo_de_transaccion", codigo_de_transaccion)
-                .addValue("url_de_redireccion", url_de_redireccion)
-                .addValue("tipo_de_transaccion", tipo_de_transaccion);
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Crear_Transaccion")
-                .withSchemaName("dbo");
-        jdbcCall.execute(in);
-    }
-
+//    @Transactional
+//    public void crearTransaccion(String codigo_de_transaccion, String url_de_redireccion, String tipo_de_transaccion) {
+//        SqlParameterSource in = new MapSqlParameterSource()
+//                .addValue("codigo_de_transaccion", codigo_de_transaccion)
+//                .addValue("url_de_redireccion", url_de_redireccion)
+//                .addValue("tipo_de_transaccion", tipo_de_transaccion);
+//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+//                .withProcedureName("Crear_Transaccion")
+//                .withSchemaName("dbo");
+//        jdbcCall.execute(in);
+//    }
+//
 //    @Transactional
 //    public void crearAutorizacion(int id_cliente, String codigo_de_transaccion, String token) {
 //        SqlParameterSource in = new MapSqlParameterSource()

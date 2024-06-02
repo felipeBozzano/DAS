@@ -60,8 +60,8 @@ export class FederacionesComponent implements OnInit {
     console.log("info_federacion: ", info_federacion);
 
     this.streamingStudioResources.comenzar_federacion(info_federacion).subscribe((response) => {
-      console.log(response.url_redireccion + '?codigo_de_transaccion=' + response.codigo_transaccion);
-      const ruta: any = response.url_redireccion + '?codigo_de_transaccion=' + response.codigo_transaccion
+      console.log(response.url_login_registro_plataforma + '?codigo_de_transaccion=' + response.codigo_de_transaccion);
+      const ruta: any = response.url_login_registro_plataforma + '?codigo_de_transaccion=' + response.codigo_de_transaccion
       window.location.href = ruta;
     })
   }
@@ -76,7 +76,7 @@ export class FederacionesComponent implements OnInit {
     }
 
     this.streamingStudioResources.comenzar_federacion(info_federacion).subscribe((response) => {
-      const ruta: any = response.url_redireccion + '?codigo_de_transaccion=' + response.codigo_transaccion
+      const ruta: any = response.url_login_registro_plataforma + '?codigo_de_transaccion=' + response.codigo_de_transaccion
       window.location.href = ruta;
     })
   }

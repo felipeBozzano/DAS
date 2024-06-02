@@ -11,26 +11,9 @@ public class ContenidoBean {
     private boolean reciente;
     private boolean destacado;
     private boolean valido;
-
     private List<DirectorBean> directores;
-
     private List<ActorBean> actores;
-
-    public List<DirectorBean> getDirectores() {
-        return directores;
-    }
-
-    public void setDirectores(List<DirectorBean> directores) {
-        this.directores = directores;
-    }
-
-    public List<ActorBean> getActores() {
-        return actores;
-    }
-
-    public void setActores(List<ActorBean> actores) {
-        this.actores = actores;
-    }
+    private List<GeneroBean> generos;
 
     public ContenidoBean(){}
 
@@ -109,5 +92,29 @@ public class ContenidoBean {
 
     public void setValido(boolean valido) {
         this.valido = valido;
+    }
+
+    public List<DirectorBean> getDirectores() {
+        return directores;
+    }
+
+    public void setDirectores(List<DirectorBean> directores) {
+        this.directores = directores;
+    }
+
+    public List<ActorBean> getActores() {
+        return actores;
+    }
+
+    public void setActores(List<ActorBean> actores) {
+        this.actores = actores;
+    }
+
+    public List<GeneroBean> getGeneros() {
+        return generos;
+    }
+
+    public void setGeneros(List<GeneroBean> generos) {
+        this.generos = generos;
     }
 }

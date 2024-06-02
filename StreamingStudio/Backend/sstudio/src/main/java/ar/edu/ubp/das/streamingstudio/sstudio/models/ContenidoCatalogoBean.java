@@ -14,24 +14,8 @@ public class ContenidoCatalogoBean extends AbstractBean {
     private boolean destacado;
     private boolean valido;
     private List<ActorBean> actores;
-
     private List<DirectorBean> directores;
-
-    public List<ActorBean> getActores() {
-        return actores;
-    }
-
-    public void setActores(List<ActorBean> actores) {
-        this.actores = actores;
-    }
-
-    public List<DirectorBean> getDirectores() {
-        return directores;
-    }
-
-    public void setDirectores(List<DirectorBean> directores) {
-        this.directores = directores;
-    }
+    private List<GeneroBean> generos;
 
     public ContenidoCatalogoBean() {
     }
@@ -122,5 +106,29 @@ public class ContenidoCatalogoBean extends AbstractBean {
 
     public void setValido(boolean valido) {
         this.valido = valido;
+    }
+
+    public List<ActorBean> getActores() {
+        return actores;
+    }
+
+    public void setActores(List<ActorBean> actores) {
+        this.actores = actores;
+    }
+
+    public List<DirectorBean> getDirectores() {
+        return directores;
+    }
+
+    public void setDirectores(List<DirectorBean> directores) {
+        this.directores = directores;
+    }
+
+    public List<GeneroBean> getGeneros() {
+        return generos;
+    }
+
+    public void setGeneros(List<GeneroBean> generos) {
+        this.generos = generos;
     }
 }

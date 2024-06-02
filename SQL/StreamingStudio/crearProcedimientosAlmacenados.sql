@@ -47,7 +47,7 @@ END;
 go
 
 CREATE OR ALTER PROCEDURE Informacion_Usuario @email VARCHAR(255),
-                                         @contrasena VARCHAR(255)
+                                              @contrasena VARCHAR(255)
 AS
 BEGIN
     SELECT *
@@ -1388,6 +1388,34 @@ END;
 go
 
 /* Crear_Contenido */
+
+CREATE OR ALTER PROCEDURE Asignar_Director @id_contenido VARCHAR(255),
+                                           @id_director INT
+AS
+BEGIN
+    INSERT INTO dbo.Director_Contenido(id_contenido, id_director)
+    VALUES (@id_contenido, @id_director)
+END;
+GO
+
+CREATE OR ALTER PROCEDURE Asignar_Actor @id_contenido VARCHAR(255),
+                                        @id_actor INT
+AS
+BEGIN
+    INSERT INTO dbo.Actor_Contenido(id_contenido, id_actor)
+    VALUES (@id_contenido, @id_actor)
+END;
+GO
+
+CREATE OR ALTER PROCEDURE Asignar_Genero @id_contenido VARCHAR(255),
+                                         @id_genero INT
+AS
+BEGIN
+    INSERT INTO dbo.Genero_Contenido(id_contenido, id_genero)
+    VALUES (@id_contenido, @id_genero)
+END;
+GO
+
 /* Agregar_Item_al_Catalogo */
 
 /* VER CUALES SON LAS PELÍCULAS QUE ESTAN EN LA PLATAFORMA DE STREAMING Y EN STREAMING STUDIO*/

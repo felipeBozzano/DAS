@@ -11,30 +11,14 @@ public class ContenidoBean {
     private boolean reciente;
     private boolean destacado;
     private boolean valido;
-
     private List<DirectorBean> directores;
-
     private List<ActorBean> actores;
+    private List<GeneroBean> generos;
 
-    public List<DirectorBean> getDirectores() {
-        return directores;
+    public ContenidoBean() {
     }
 
-    public void setDirectores(List<DirectorBean> directores) {
-        this.directores = directores;
-    }
-
-    public List<ActorBean> getActores() {
-        return actores;
-    }
-
-    public void setActores(List<ActorBean> actores) {
-        this.actores = actores;
-    }
-
-    public ContenidoBean(){}
-
-    public ContenidoBean(String id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido, List<DirectorBean> directores, List<ActorBean> actores) {
+    public ContenidoBean(String id_contenido, String titulo, String descripcion, String url_imagen, String clasificacion, boolean reciente, boolean destacado, boolean valido, List<DirectorBean> directores, List<ActorBean> actores, List<GeneroBean> generos) {
         this.id_contenido = id_contenido;
         this.titulo = titulo;
         this.descripcion = descripcion;
@@ -45,6 +29,7 @@ public class ContenidoBean {
         this.valido = valido;
         this.directores = directores;
         this.actores = actores;
+        this.generos = generos;
     }
 
     public String getId_contenido() {
@@ -111,6 +96,30 @@ public class ContenidoBean {
         this.valido = valido;
     }
 
+    public List<DirectorBean> getDirectores() {
+        return directores;
+    }
+
+    public void setDirectores(List<DirectorBean> directores) {
+        this.directores = directores;
+    }
+
+    public List<ActorBean> getActores() {
+        return actores;
+    }
+
+    public void setActores(List<ActorBean> actores) {
+        this.actores = actores;
+    }
+
+    public List<GeneroBean> getGeneros() {
+        return generos;
+    }
+
+    public void setGeneros(List<GeneroBean> generos) {
+        this.generos = generos;
+    }
+
     @Override
     public String toString() {
         return """
@@ -124,11 +133,12 @@ public class ContenidoBean {
                     \t\t"destacado": %s,
                     \t\t"valido": %s,
                     \t\t"directores": %s,
-                    \t\t"actores": %s
-                """.formatted(id_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado, valido, listToJson(directores), listToJson(actores));
+                    \t\t"actores": %s,
+                    \t\t"generos": %s
+                """.formatted(id_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado, valido, listToJson(directores), listToJson(actores), listToJson(generos));
     }
 
-    public String listToJson(List<?> lista){
+    public String listToJson(List<?> lista) {
         if (lista == null || lista.isEmpty()) {
             return "[]";
         }

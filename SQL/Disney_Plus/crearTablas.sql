@@ -33,14 +33,15 @@ CREATE TABLE [Clasificacion]
 
 CREATE TABLE [Contenido]
 (
-    [id_contenido]  VARCHAR (255),
-    [titulo]        VARCHAR(255) NOT NULL,
-    [descripcion]   VARCHAR(255) NOT NULL,
-    [url_imagen]    VARCHAR(255) NOT NULL,
-    [clasificacion] VARCHAR(255) NOT NULL,
-    [reciente]      BIT          NOT NULL,
-    [destacado]     BIT          NOT NULL,
-    [valido]         BIT          NOT NULL,
+    [id_contenido]     VARCHAR(255),
+    [titulo]           VARCHAR(255) NOT NULL,
+    [descripcion]      VARCHAR(255) NOT NULL,
+    [url_imagen]       VARCHAR(255) NOT NULL,
+    [url_reproduccion] VARCHAR(255) NOT NULL,
+    [clasificacion]    VARCHAR(255) NOT NULL,
+    [reciente]         BIT          NOT NULL,
+    [destacado]        BIT          NOT NULL,
+    [valido]           BIT          NOT NULL,
     PRIMARY KEY ([id_contenido]),
     CONSTRAINT [FK_Contenido.clasificacion]
         FOREIGN KEY ([clasificacion])
@@ -70,12 +71,12 @@ CREATE TABLE [Partner]
 
 CREATE TABLE [Cliente_Usuario]
 (
-    [id_cliente] INT IDENTITY (1,1) NOT NULL,
-    [contrasena] VARCHAR(255)       NOT NULL,
-    [email]      VARCHAR(255)  UNIQUE     NOT NULL,
-    [nombre]     VARCHAR(255)       NOT NULL,
-    [apellido]   VARCHAR(255)       NOT NULL,
-    [valido]     BIT                NOT NULL,
+    [id_cliente] INT IDENTITY (1,1)  NOT NULL,
+    [contrasena] VARCHAR(255)        NOT NULL,
+    [email]      VARCHAR(255) UNIQUE NOT NULL,
+    [nombre]     VARCHAR(255)        NOT NULL,
+    [apellido]   VARCHAR(255)        NOT NULL,
+    [valido]     BIT                 NOT NULL,
     PRIMARY KEY ([id_cliente])
 );
 
@@ -111,15 +112,6 @@ CREATE TABLE [Genero]
     [id_genero]   INT IDENTITY (1,1) NOT NULL,
     [descripcion] VARCHAR(255)       NOT NULL,
     PRIMARY KEY ([id_genero])
-);
-
-CREATE TABLE [Transaccion]
-(
-    [codigo_de_transaccion] VARCHAR(255),
-    [fecha_de_alta]         DATETIME     NOT NULL,
-    [url_de_redireccion]    VARCHAR(255) NOT NULL,
-    [tipo_de_transaccion]   VARCHAR(1)   NOT NULL,
-    PRIMARY KEY ([codigo_de_transaccion])
 );
 
 CREATE TABLE [Factura]
@@ -169,7 +161,7 @@ CREATE TABLE [Autorizacion]
 (
     [codigo_de_transaccion] VARCHAR(255),
     [id_cliente]            INT,
-    [token]                 VARCHAR(255) ,
+    [token]                 VARCHAR(255),
     [fecha_de_alta]         DATETIME     NOT NULL,
     [url_de_redireccion]    VARCHAR(255) NOT NULL,
     [tipo_de_transaccion]   VARCHAR(1)   NOT NULL,
@@ -181,4 +173,3 @@ CREATE TABLE [Autorizacion]
     CONSTRAINT [UK_codigo_de_transaccion] UNIQUE (codigo_de_transaccion),
     CONSTRAINT [UK_token] UNIQUE (token),
 );
-

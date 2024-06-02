@@ -1,4 +1,3 @@
-
 /* Cliente_Usuario */
 
 CREATE OR ALTER PROCEDURE Crear_Usuario @contrasena VARCHAR(255),
@@ -89,7 +88,8 @@ CREATE OR ALTER PROCEDURE Crear_Transaccion @codigo_de_transaccion VARCHAR(255),
                                             @tipo_de_transaccion VARCHAR(1)
 AS
 BEGIN
-    INSERT INTO dbo.Autorizacion(codigo_de_transaccion, id_cliente, token, fecha_de_alta, url_de_redireccion, tipo_de_transaccion, fecha_de_baja)
+    INSERT INTO dbo.Autorizacion(codigo_de_transaccion, id_cliente, token, fecha_de_alta, url_de_redireccion,
+                                 tipo_de_transaccion, fecha_de_baja)
     VALUES (@codigo_de_transaccion, NULL, NULL, GETDATE(), @url_de_redireccion, @tipo_de_transaccion, NULL)
 END
 go
@@ -116,7 +116,7 @@ AS
 BEGIN
     UPDATE dbo.Autorizacion
     SET id_cliente = @id_cliente,
-        token = @token
+        token      = @token
     WHERE codigo_de_transaccion = @codigo_de_transaccion
 END
 go
@@ -155,23 +155,21 @@ go
 /* Sesion */
 
 CREATE OR ALTER PROCEDURE Crear_Sesion @id_cliente INT,
-                                       @id_partner INT
+                                       @id_partner INT,
+                                       @sesion VARCHAR(255)
 AS
 BEGIN
     INSERT INTO dbo.Sesion (id_cliente, sesion, fecha_de_creacion, fecha_de_uso, id_partner)
-    VALUES (@id_cliente, (SELECT LEFT(CONVERT(VARCHAR(36), NEWID()), 6)), GETDATE(), null,
-            @id_partner)
+    VALUES (@id_cliente, @sesion, GETDATE(), null, @id_partner)
 END
 go
 
-CREATE OR ALTER PROCEDURE Usar_Sesion @id_cliente INT,
-                                      @sesion VARCHAR(255)
+CREATE OR ALTER PROCEDURE Usar_Sesion @sesion VARCHAR(255)
 AS
 BEGIN
     UPDATE dbo.Sesion
     SET fecha_de_uso = GETDATE()
-    WHERE id_cliente = @id_cliente
-      AND sesion = @sesion
+    WHERE sesion = @sesion
       AND fecha_de_uso IS NULL
 END
 go
@@ -217,6 +215,15 @@ BEGIN
                             WHERE @token = @token) THEN 'true'
                ELSE 'false'
                END AS ExistePartner;
+END
+go
+
+CREATE OR ALTER PROCEDURE Obtener_ID_de_Partner @token VARCHAR(255)
+AS
+BEGIN
+    SELECT id_partner
+    FROM dbo.Partner
+    WHERE token_de_servicio = @token;
 END
 go
 
@@ -386,16 +393,18 @@ go
 CREATE OR ALTER PROCEDURE Crear_Contenido @id_contenido VARCHAR(255),
                                           @titulo VARCHAR(255),
                                           @descripcion VARCHAR(255),
+                                          @url_reproduccion VARCHAR(255),
                                           @url_imagen VARCHAR(255),
                                           @clasificacion SMALLINT,
                                           @reciente BIT,
                                           @destacado BIT,
-                                          @valid BIT
+                                          @valido BIT
 AS
 BEGIN
-    INSERT INTO dbo.Contenido(id_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado,
-                              valido)
-    VALUES ( @id_contenido, @titulo, @descripcion, @url_imagen, @clasificacion, @reciente, @destacado, @valid)
+    INSERT INTO dbo.Contenido(id_contenido, titulo, descripcion, url_imagen, url_reproduccion, clasificacion, reciente,
+                              destacado, valido)
+    VALUES (@id_contenido, @titulo, @descripcion, @url_imagen, @url_reproduccion, @clasificacion, @reciente, @destacado,
+            @valido)
 END
 go
 
@@ -437,13 +446,23 @@ BEGIN
 END
 go
 
-/* Clasificacion */
-
-CREATE OR ALTER PROCEDURE Crear_Clasificacion @descripcion VARCHAR(255)
+CREATE OR ALTER PROCEDURE Obtener_Url_de_Contenido @id_contenido VARCHAR(255)
 AS
 BEGIN
-    INSERT INTO dbo.Clasificacion(descripcion)
-    VALUES (@descripcion)
+    SELECT url_reproduccion
+    FROM dbo.Contenido
+    WHERE id_contenido = @id_contenido
+END
+GO
+
+/* Clasificacion */
+
+CREATE OR ALTER PROCEDURE Crear_Clasificacion @id_clasificacion VARCHAR(255),
+                                              @descripcion VARCHAR(255)
+AS
+BEGIN
+    INSERT INTO dbo.Clasificacion(id_clasificacion, descripcion)
+    VALUES (@id_clasificacion, @descripcion)
 END
 go
 
@@ -517,9 +536,19 @@ GO
 CREATE OR ALTER PROCEDURE Obtener_Actores @id_contenido VARCHAR(255)
 AS
 BEGIN
-    SELECT a.id_actor, a.apellido, a.nombre
+    SELECT ac.id_actor, a.apellido, a.nombre
     FROM dbo.Actor_Contenido as ac
              join Actor as a on ac.id_actor = a.id_actor
     WHERE ac.id_contenido = @id_contenido
+END;
+GO
+
+CREATE OR ALTER PROCEDURE Obtener_Generos @id_contenido VARCHAR(255)
+AS
+BEGIN
+    SELECT gc.id_genero, g.descripcion
+    FROM dbo.Genero_Contenido as gc
+             join Genero as g on gc.id_genero = g.id_genero
+    WHERE gc.id_contenido = @id_contenido
 END;
 GO

@@ -22,12 +22,9 @@ public class ReproducirContenidoRepository implements IReproducirContenidoReposi
     @Autowired
     private JdbcTemplate jdbcTpl;
     private final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
-    private Map<String, String> respuesta;
 
     @Override
-    public Map<String, String> obtener_url_de_contenido(String id_contenido, int id_plataforma, int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        respuesta = new HashMap<>();
-
+    public ContenidoUrlBean obtener_url_de_contenido(String id_contenido, int id_plataforma, int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         String token_de_usuario = obtenerTokenDeFederacion(id_cliente, id_plataforma);
         Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma);
         AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
@@ -35,9 +32,7 @@ public class ReproducirContenidoRepository implements IReproducirContenidoReposi
         SesionBean sesion = obtenerSesion(conexion_plataforma, token_de_usuario, conector);
         ContenidoUrlBean contenido = obtenerUrlDeContenido(conexion_plataforma, sesion.getSesion(), id_contenido, conector);
 
-        respuesta.put("id_contenido", contenido.getId_contenido());
-        respuesta.put("url", contenido.getUrl());
-        return respuesta;
+        return contenido;
     }
 
     @Override
@@ -89,7 +84,7 @@ public class ReproducirContenidoRepository implements IReproducirContenidoReposi
         body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
         body.put("token_de_sesion", token_de_sesion);
         body.put("id_contenido", id_contenido);
-        ContenidoUrlBean contenidoUrl = (ContenidoUrlBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/contenido/" + id_contenido, body, "ContenidoUrlBean");
+        ContenidoUrlBean contenidoUrl = (ContenidoUrlBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/obtener_url_de_contenido", body, "ContenidoUrlBean");
 
         return contenidoUrl;
     }

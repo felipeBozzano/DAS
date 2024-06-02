@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +29,13 @@ public class PartnerRepository {
         String existe_partner = mapa_token.getFirst().get("ExistePartner");
 
         return existe_partner.equals("true");
+    }
+
+    public Map<String, String> respuestaPartnerIncorrecto() {
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("codigoRespuesta", "-1");
+        respuesta.put("mensajeRespuesta", "Partner no verificado");
+
+        return respuesta;
     }
 }

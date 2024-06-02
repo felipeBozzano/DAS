@@ -62,18 +62,20 @@ public class FederacionesPendientes {
             body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
         } else {
             String message = """
-                    <ws:obtenerPublicidades xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
-                    <token_de_partner>%s</token_de_partner>
-                    </ws:obtenerPublicidades>""".formatted(conexion_plataforma.get("token_de_servicio"), codigo_de_transaccion);
+                    <ws:obtenerToken xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
+                    <token_de_servicio>%s</token_de_servicio>
+                    <codigo_de_transaccion>%s</codigo_de_transaccion>
+                    </ws:obtenerToken>""".formatted(conexion_plataforma.get("token_de_servicio"), codigo_de_transaccion);
             body.put("message", message);
-            body.put("web_service", "obtenerPublicidades");
+            body.put("web_service", "obtenerToken");
         }
+
         FederacionBean bean = (FederacionBean) conector.execute_post_request(url_token, body, "FederacionBean");
 
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("id_plataforma", id_plataforma)
-                .addValue("id_cliente", id_cliente);
-//                .addValue("token", bean.getToken());
+                .addValue("id_cliente", id_cliente)
+                .addValue("token", bean.getToken());
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Finalizar_Federacion")
                 .withSchemaName("dbo");

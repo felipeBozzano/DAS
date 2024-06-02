@@ -13,9 +13,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Repository
 public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
@@ -100,7 +98,11 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, String>> resulset = (List<Map<String, String>>) out.get("#result-set-1");
-        Map<String, String> genero = resulset.get(0);
+        Map<String, String> genero = new HashMap<>();
+        if (resulset.isEmpty())
+            genero.put("descripcion", "Accion");
+        else
+            genero = resulset.getFirst();
         return genero;
     }
 
@@ -113,7 +115,15 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, String>> resulset = (List<Map<String, String>>) out.get("#result-set-1");
-        List<Map<String, String>> directores = resulset;
+        List<Map<String, String>> directores = new LinkedList<>();
+        if (resulset.isEmpty()) {
+            Map<String, String> director = new HashMap<>();
+            director.put("nombre", "Director1");
+            director.put("apellido", "Apellido1");
+            directores.add(director);
+        }
+        else
+            directores = resulset;
         return directores;
     }
 
@@ -126,7 +136,15 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, String>> resulset = (List<Map<String, String>>) out.get("#result-set-1");
-        List<Map<String, String>> actores = resulset;
+        List<Map<String, String>> actores = new LinkedList<>();
+        if (resulset.isEmpty()) {
+            Map<String, String> actor = new HashMap<>();
+            actor.put("nombre", "Actor1");
+            actor.put("apellido", "Apellido1");
+            actores.add(actor);
+        }
+        else
+            actores = resulset;
         return actores;
     }
 
