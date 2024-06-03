@@ -199,18 +199,6 @@ public class StarPlusWS {
     }
 
     @WebMethod()
-    @WebResult(name = "obtenerCodigoDeTransaccion")
-    public void obtenerCodigoDeTransaccion() {
-
-    }
-
-    @WebMethod()
-    @WebResult(name = "obtenerToken")
-    public void obtenerToken() {
-
-    }
-
-    @WebMethod()
     @WebResult(name = "crearSesion")
     public void crearSesion() {
 
@@ -425,4 +413,113 @@ public class StarPlusWS {
         return token_plataforma;
     }
 
+    @WebMethod()
+    @WebResult(name = "obtenerSesion")
+    public String obtenerSesion(@WebParam (name = "token_de_servicio") String token_de_servicio, @WebParam (name = "token_de_usuario") String token_de_usuario) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+        Map<String, String> respuesta = new HashMap<>();
+
+        try {
+
+            Map<String, Integer> ids = obtenerIds(token_de_servicio, token_de_usuario);
+            int id_partner = ids.get("id_partner");
+            int id_cliente = ids.get("id_cliente");
+
+            UUID sesion = UUID.randomUUID();
+            String sesion_string = sesion.toString();
+            crearSesion(id_partner, id_cliente, sesion_string);
+
+            return """
+                    {
+                    \tsesion: %s,
+                    \tcodigoRespuesta: %s,
+                    \tmensajeRespuesta: %s
+                    }
+                    """.formatted(sesion_string, "200", "La sesion fue creada");
+
+        } catch (Exception e) {return """
+                    {
+                    \tsesion: %s,
+                    \tcodigoRespuesta: %s,
+                    \tmensajeRespuesta: %s
+                    }
+                    """.formatted(null, "1", "La sesion no pudo ser creada");
+        }
+    }
+
+    @WebMethod()
+    @WebResult(name = "obtenerIds")
+    public Map<String, Integer> obtenerIds(@WebParam (name = "token_de_partner") String token_de_partner, @WebParam (name = "token_de_usuario") String token_de_usuario) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+        CallableStatement stmt;
+        ResultSet rs_partner;
+
+        stmt = conn.prepareCall("{CALL dbo.Obtener_ID_de_Partner(?)}");
+        stmt.setString("token", token_de_partner);
+        rs_partner = stmt.executeQuery();
+        int id_partner = 0;
+        while(rs_partner.next()){
+            id_partner = rs_partner.getInt("id_partner");
+        }
+
+        ResultSet rs_usuario;
+        stmt = conn.prepareCall("{CALL dbo.Obtener_Cliente(?)}");
+        stmt.setString("token", token_de_usuario);
+        rs_usuario = stmt.executeQuery();
+        int id_cliente = 0;
+        while(rs_usuario.next()){
+            id_cliente = rs_usuario.getInt("id_cliente");
+        }
+
+        Map<String, Integer> respuesta = new HashMap<>();
+        respuesta.put("id_partner", id_partner);
+        respuesta.put("id_cliente", id_cliente);
+        return respuesta;
+    }
+
+    @WebMethod()
+    @WebResult(name = "crearSesion")
+    public void crearSesion(@WebParam (name = "id_partner") int id_partner, @WebParam (name = "id_cliente") int id_cliente, @WebParam (name = "sesion") String sesion) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+        CallableStatement stmt;
+        ResultSet rs_sesion;
+
+        stmt = conn.prepareCall("{CALL dbo.Crear_Sesion(?)}");
+        stmt.setInt("id_cliente", id_cliente);
+        stmt.setInt("id_partner", id_partner);
+        stmt.setString("sesion", sesion);
+        rs_sesion = stmt.executeQuery();
+    }
+
+    @WebMethod()
+    @WebResult(name = "usarSesion")
+    public void usarSesion(@WebParam (name = "token_de_sesion") String token_de_sesion) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+        CallableStatement stmt;
+        ResultSet rs_sesion;
+
+        stmt = conn.prepareCall("{CALL dbo.Usar_Sesion(?)}");
+        stmt.setString("token_de_sesion", token_de_sesion);
+        rs_sesion = stmt.executeQuery();
+    }
 }
