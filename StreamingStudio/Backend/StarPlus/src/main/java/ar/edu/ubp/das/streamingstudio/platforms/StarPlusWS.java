@@ -1,14 +1,10 @@
 package ar.edu.ubp.das.streamingstudio.platforms;
 
 import ar.edu.ubp.das.streamingstudio.beans.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonToken;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebParam;
 import jakarta.jws.WebResult;
 import jakarta.jws.WebService;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.xml.bind.annotation.XmlSeeAlso;
 
 import java.io.InputStream;
@@ -19,9 +15,12 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+import ar.edu.ubp.das.streamingstudio.utils.*;
+
 @WebService
 @XmlSeeAlso(CatalogoBean.class)
 public class StarPlusWS {
+    private Utils utils;
     private String driver_sql;
     private String sql_conection_string;
     private String sql_user;
@@ -38,33 +37,13 @@ public class StarPlusWS {
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
             properties.load(input);
             driver_sql = properties.getProperty("driver_sql");
-            ;
             sql_conection_string = properties.getProperty("sql_conection_string");
-            ;
             sql_user = properties.getProperty("sql_user");
-            ;
             sql_pass = properties.getProperty("sql_pass");
-            ;
+            utils = new Utils();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private Boolean verificarTokenDePartner(String token_de_partner) throws ClassNotFoundException, SQLException {
-        Connection conn;
-        CallableStatement stmt;
-        ResultSet rs;
-        Class.forName(driver_sql);
-        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-        conn.setAutoCommit(true);
-        stmt = conn.prepareCall("{CALL dbo.Verificar_Token_de_Partner(?)}");
-        stmt.setString("token", token_de_partner);
-        String temp = "";
-        rs = stmt.executeQuery();
-        while (rs.next()) {
-            temp = rs.getString("ExistePartner");
-        }
-        return temp.equals("true");
     }
 
     @WebMethod()
@@ -165,7 +144,7 @@ public class StarPlusWS {
                                       @WebParam(name = "fecha") String fecha,
                                       @WebParam(name = "descripcion") String descripcion) throws SQLException, ClassNotFoundException {
 
-        if (verificarTokenDePartner(token_de_partner)) {
+        if (utils.verificarTokenDePartner(token_de_partner, driver_sql, sql_conection_string, sql_user, sql_pass)) {
             Date fecha_formateada = new Date(2020, 01, 01);
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             try {
@@ -196,57 +175,6 @@ public class StarPlusWS {
                     "mensajeRespuesta": "Reporte recibido"
                     }
                     """;
-        } else {
-            return partner_no_verificado;
-        }
-    }
-
-    @WebMethod()
-    @WebResult(name = "crearSesion")
-    public void crearSesion() {
-
-    }
-
-    @WebMethod()
-    @WebResult(name = "obtenerUrlDeContenido")
-    public String obtenerUrlDeContenido(@WebParam(name = "token_de_partner") String token_de_partner,
-                                        @WebParam(name = "token_de_sesion") String token_de_sesion,
-                                        @WebParam(name = "id_contenido") String id_contenido) throws SQLException, ClassNotFoundException {
-        if (verificarTokenDePartner(token_de_partner)) {
-//            if (!usarSesion(token_de_sesion)) {
-//                return """
-//                        {
-//                            "codigoRespuesta": "1",
-//                            "mensajeRespuesta": "Sesion erronea o ya utilizada"
-//                        }
-//                        """;
-//            }
-
-            Connection conn;
-            CallableStatement stmt;
-            ResultSet rs;
-            Class.forName(driver_sql);
-            conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-            conn.setAutoCommit(true);
-            String url_de_contenido = null;
-            try {
-                stmt = conn.prepareCall("{CALL dbo.Obtener_Url_de_Contenido(?)}");
-                stmt.setString("id_contenido", id_contenido);
-                rs = stmt.executeQuery();
-                while (rs.next()) {
-                    url_de_contenido = rs.getString("url_reproduccion");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return """
-                    {
-                        "codigoRespuesta": "200",
-                        "mensajeRespuesta": "Sesion correcta",
-                        "url_de_contenido": "%s"
-                    }""".formatted(url_de_contenido);
-
         } else {
             return partner_no_verificado;
         }
@@ -303,7 +231,7 @@ public class StarPlusWS {
                                            tipo_de_transaccion, @WebParam(name = "url_redireccion_ss") String
                                            url_redireccion_ss, @WebParam(name = "token_de_partner") String token_de_partner) throws
             ClassNotFoundException, SQLException {
-        if (this.verificarTokenDePartner(token_de_partner)) {
+        if (utils.verificarTokenDePartner(token_de_partner, driver_sql, sql_conection_string, sql_user, sql_pass)) {
             Connection conn;
             ResultSet rs;
             Class.forName(driver_sql);
@@ -454,7 +382,8 @@ public class StarPlusWS {
 
     @WebMethod()
     @WebResult(name = "obtenerSesion")
-    public String obtenerSesion(@WebParam (name = "token_de_servicio") String token_de_servicio, @WebParam (name = "token_de_usuario") String token_de_usuario) throws ClassNotFoundException, SQLException {
+    public String obtenerSesion(@WebParam (name = "token_de_servicio") String token_de_servicio,
+                                @WebParam (name = "token_de_usuario") String token_de_usuario) throws ClassNotFoundException, SQLException {
         Connection conn;
         ResultSet rs;
         Class.forName(driver_sql);
@@ -464,14 +393,13 @@ public class StarPlusWS {
         Map<String, String> respuesta = new HashMap<>();
 
         try {
-
-            Map<String, Integer> ids = obtenerIds(token_de_servicio, token_de_usuario);
+            Map<String, Integer> ids = utils.obtenerIds(token_de_servicio, token_de_usuario, driver_sql, sql_conection_string, sql_user, sql_pass);
             int id_partner = ids.get("id_partner");
             int id_cliente = ids.get("id_cliente");
 
             UUID sesion = UUID.randomUUID();
             String sesion_string = sesion.toString();
-            crearSesion(id_partner, id_cliente, sesion_string);
+            utils.crearSesion(id_partner, id_cliente, sesion_string, driver_sql, sql_conection_string, sql_user, sql_pass);
 
             return """
                     {
@@ -492,73 +420,47 @@ public class StarPlusWS {
     }
 
     @WebMethod()
-    @WebResult(name = "obtenerIds")
-    public Map<String, Integer> obtenerIds(@WebParam (name = "token_de_partner") String token_de_partner, @WebParam (name = "token_de_usuario") String token_de_usuario) throws ClassNotFoundException, SQLException {
-        Connection conn;
-        ResultSet rs;
-        Class.forName(driver_sql);
-        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-        conn.setAutoCommit(true);
+    @WebResult(name = "obtenerUrlDeContenido")
+    public String obtenerUrlDeContenido(@WebParam(name = "token_de_partner") String token_de_partner,
+                                        @WebParam(name = "token_de_sesion") String token_de_sesion,
+                                        @WebParam(name = "id_contenido") String id_contenido) throws SQLException, ClassNotFoundException {
+        if (utils.verificarTokenDePartner(token_de_partner, driver_sql, sql_conection_string, sql_user, sql_pass)) {
+            if (!utils.usarSesion(token_de_sesion, driver_sql, sql_conection_string, sql_user, sql_pass)) {
+                return """
+                        {
+                            "codigoRespuesta": "1",
+                            "mensajeRespuesta": "Sesion erronea o ya utilizada"
+                        }
+                        """;
+            }
 
-        CallableStatement stmt;
-        ResultSet rs_partner;
+            Connection conn;
+            CallableStatement stmt;
+            ResultSet rs;
+            Class.forName(driver_sql);
+            conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+            conn.setAutoCommit(true);
+            String url_de_contenido = null;
+            try {
+                stmt = conn.prepareCall("{CALL dbo.Obtener_Url_de_Contenido(?)}");
+                stmt.setString("id_contenido", id_contenido);
+                rs = stmt.executeQuery();
+                while (rs.next()) {
+                    url_de_contenido = rs.getString("url_reproduccion");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        stmt = conn.prepareCall("{CALL dbo.Obtener_ID_de_Partner(?)}");
-        stmt.setString("token", token_de_partner);
-        rs_partner = stmt.executeQuery();
-        int id_partner = 0;
-        while(rs_partner.next()){
-            id_partner = rs_partner.getInt("id_partner");
+            return """
+                    {
+                        "codigoRespuesta": "200",
+                        "mensajeRespuesta": "Sesion correcta",
+                        "url_de_contenido": "%s"
+                    }""".formatted(url_de_contenido);
+
+        } else {
+            return partner_no_verificado;
         }
-
-        ResultSet rs_usuario;
-        stmt = conn.prepareCall("{CALL dbo.Obtener_Cliente(?)}");
-        stmt.setString("token", token_de_usuario);
-        rs_usuario = stmt.executeQuery();
-        int id_cliente = 0;
-        while(rs_usuario.next()){
-            id_cliente = rs_usuario.getInt("id_cliente");
-        }
-
-        Map<String, Integer> respuesta = new HashMap<>();
-        respuesta.put("id_partner", id_partner);
-        respuesta.put("id_cliente", id_cliente);
-        return respuesta;
-    }
-
-    @WebMethod()
-    @WebResult(name = "crearSesion")
-    public void crearSesion(@WebParam (name = "id_partner") int id_partner, @WebParam (name = "id_cliente") int id_cliente, @WebParam (name = "sesion") String sesion) throws ClassNotFoundException, SQLException {
-        Connection conn;
-        ResultSet rs;
-        Class.forName(driver_sql);
-        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-        conn.setAutoCommit(true);
-
-        CallableStatement stmt;
-        ResultSet rs_sesion;
-
-        stmt = conn.prepareCall("{CALL dbo.Crear_Sesion(?)}");
-        stmt.setInt("id_cliente", id_cliente);
-        stmt.setInt("id_partner", id_partner);
-        stmt.setString("sesion", sesion);
-        rs_sesion = stmt.executeQuery();
-    }
-
-    @WebMethod()
-    @WebResult(name = "usarSesion")
-    public void usarSesion(@WebParam (name = "token_de_sesion") String token_de_sesion) throws ClassNotFoundException, SQLException {
-        Connection conn;
-        ResultSet rs;
-        Class.forName(driver_sql);
-        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-        conn.setAutoCommit(true);
-
-        CallableStatement stmt;
-        ResultSet rs_sesion;
-
-        stmt = conn.prepareCall("{CALL dbo.Usar_Sesion(?)}");
-        stmt.setString("token_de_sesion", token_de_sesion);
-        rs_sesion = stmt.executeQuery();
     }
 }
