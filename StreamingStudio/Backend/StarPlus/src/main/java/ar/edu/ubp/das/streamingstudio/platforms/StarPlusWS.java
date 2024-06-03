@@ -226,6 +226,42 @@ public class StarPlusWS {
     }
 
     @WebMethod()
+    @WebResult(name = "crearUsuario")
+    public String crearUsuario(@WebParam(name = "email") String email, @WebParam(name = "contrasena") String contrasena, @WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido) throws
+            ClassNotFoundException, SQLException {
+
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+
+        CallableStatement stmt_user;
+        ResultSet rs_user;
+
+        stmt_user = conn.prepareCall("{CALL dbo.Crear_Usuario(?,?,?,?,?,?)}");
+        stmt_user.setString("email", email);
+        stmt_user.setString("contrasena", contrasena);
+        stmt_user.setString("nombre", nombre);
+        stmt_user.setString("apellido", apellido);
+        stmt_user.setBoolean("valido", true);
+        UsuarioBean usuario = new UsuarioBean();
+        rs_user = stmt_user.executeQuery();
+            while (rs_user.next()) {
+                usuario.setEmail(rs_user.getString("email"));
+                usuario.setId_cliente(rs_user.getInt("id_cliente"));
+                usuario.setNombre(rs_user.getString("nombre"));
+                usuario.setApellido(rs_user.getString("apellido"));
+                usuario.setMensaje("usuario creado");
+            }
+        System.out.println(usuario.toString());
+        return usuario.toString();
+    }
+
+
+
+    @WebMethod()
     @WebResult(name = "crearTransaccion")
     public String crearTransaccion(@WebParam(name = "tipo_de_transaccion") String
                                            tipo_de_transaccion, @WebParam(name = "url_redireccion_ss") String
@@ -243,9 +279,9 @@ public class StarPlusWS {
 
             String url_de_redireccion;
             if (tipo_de_transaccion.equals("L"))
-                url_de_redireccion = "http://localhost:4203/login";
+                url_de_redireccion = "http://localhost:4204/login";
             else
-                url_de_redireccion = "http://localhost:4203/register";
+                url_de_redireccion = "http://localhost:4204/register";
 
             CallableStatement stmt;
 
@@ -355,29 +391,33 @@ public class StarPlusWS {
 
     @WebMethod()
     @WebResult(name = "obtenerToken")
-    public String obtenerToken(@WebParam(name = "codigo_de_transaccion") String codigo_de_transaccion) throws
+    public String obtenerToken(@WebParam(name = "codigo_de_transaccion") String codigo_de_transaccion, @WebParam(name = "token_de_servicio") String token_de_servicio) throws
             ClassNotFoundException, SQLException {
-        Connection conn;
-        ResultSet rs;
-        Class.forName(driver_sql);
-        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-        conn.setAutoCommit(true);
+        if (utils.verificarTokenDePartner(token_de_servicio, driver_sql, sql_conection_string, sql_user, sql_pass)) {
+            Connection conn;
+            ResultSet rs;
+            Class.forName(driver_sql);
+            conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+            conn.setAutoCommit(true);
 
-        UUID token = UUID.randomUUID();
-        String token_string = token.toString();
+            UUID token = UUID.randomUUID();
+            String token_string = token.toString();
 
-        CallableStatement stmt;
-        ResultSet rs_token;
+            CallableStatement stmt;
+            ResultSet rs_token;
 
-        stmt = conn.prepareCall("{CALL dbo.Obtener_codigo_de_redireccion(?)}");
-        stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
-        rs_token = stmt.executeQuery();
-        String token_plataforma = "";
-        while (rs_token.next()) {
-            token_plataforma = rs_token.getString("url_de_redireccion");
+            stmt = conn.prepareCall("{CALL dbo.Obtener_Token(?)}");
+            stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
+            rs_token = stmt.executeQuery();
+            FederacionBean federacionBean = new FederacionBean();
+            while (rs_token.next()) {
+                federacionBean.setToken(rs_token.getString("token"));
+                federacionBean.setCodigo_de_transaccion(codigo_de_transaccion);
+            }
+            return federacionBean.toString();
+        }else {
+            return partner_no_verificado;
         }
-        System.out.println(token_plataforma);
-        return token_plataforma;
     }
 
     @WebMethod()

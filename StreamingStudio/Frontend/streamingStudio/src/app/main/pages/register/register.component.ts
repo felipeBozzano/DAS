@@ -68,7 +68,6 @@ export class RegisterComponent {
     })
   }
   onSubmit() {
-    console.log(this.formRegister);
     if (this.formRegister.valid) {
       this.streamingStudioResources.registro(this.formRegister.value)
         .subscribe({
