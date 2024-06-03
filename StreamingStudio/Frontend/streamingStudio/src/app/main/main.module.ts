@@ -24,7 +24,6 @@ import {SeriesComponent} from './pages/series/series.component';
 import {PeliculasResolver} from './api/resolvers/peliculas.resolver';
 import {SeriesResolver} from './api/resolvers/series.resolver';
 import {SplashComponent} from './pages/splash/splash.component';
-import {SpinnerComponent} from './components/spinner/spinner.component';
 import {UsuarioFederacionComponent} from './pages/usuario-federacion/usuario-federacion.component';
 
 

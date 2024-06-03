@@ -7,12 +7,17 @@
   <div class="row">
 
     <app-publicidad-izquierda class="col-2 publicidades" exclusiva="true"></app-publicidad-izquierda>
-      <div class="col-8">
+      <div *ngIf="series.length" class="col-8">
         <div class="series-container">
           <div class="serie" *ngFor="let serie of series">
             <h2>{{ serie.titulo }}</h2>
-            <img [src]="serie.url_imagen" alt="{{ serie.titulo }}">
+            <img [src]="serie.url_imagen" alt="{{ serie.titulo }}" class="imagen" (click)="verDescripcion(serie.id_contenido)" class="imagen">
           </div>
+        </div>
+      </div>
+      <div *ngIf="!series.length" class="col-8">
+        <div class="series-container">
+          <h1>No estas federado a ninguna plataforma, si quieres ver series federate en alguna de ellas.</h1>
         </div>
       </div>
     <app-publicidad-derecha  class="col-2 publicidades" exclusiva="true"></app-publicidad-derecha>

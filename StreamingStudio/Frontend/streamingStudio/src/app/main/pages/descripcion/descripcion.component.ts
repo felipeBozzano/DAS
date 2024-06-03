@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import * as localForage from 'localforage';
 import {StreamingStudioResources} from "../../api/resources/streaming-studio.services";
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {resourceChangeTicket} from '@angular/compiler-cli/src/ngtsc/core';
 
 @Component({
   selector: 'app-descripcion',

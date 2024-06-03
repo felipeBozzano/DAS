@@ -8,7 +8,6 @@ import {ListadoFederacionesResolver} from './api/resolvers/listado-federaciones.
 import {FederacionesComponent} from './pages/federaciones/federaciones.component';
 import {ContenidoComponent} from './pages/contenido/contenido.component';
 import {HomeResolver} from './api/resolvers/home.resolver';
-import {DescripcionContenidoResolverResolver} from './api/resolvers/descripcion-contenido.resolver';
 import {DescripcionComponent} from './pages/descripcion/descripcion.component';
 import {DescripcionContenidoHomeResolverResolver} from './api/resolvers/descripcion-contenido-home.resolver';
 import {UsuarioComponent} from './pages/usuario/usuario.component';
