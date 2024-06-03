@@ -40,7 +40,7 @@ public class Utils {
             CallableStatement stmt;
 
             stmt = conn.prepareCall("{CALL dbo.Usar_Sesion(?)}");
-            stmt.setString("token_de_sesion", token_de_sesion);
+            stmt.setString("sesion", token_de_sesion);
             stmt.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -100,7 +100,7 @@ public class Utils {
 
         CallableStatement stmt;
 
-        stmt = conn.prepareCall("{CALL dbo.Crear_Sesion(?)}");
+        stmt = conn.prepareCall("{CALL dbo.Crear_Sesion(?, ?, ?)}");
         stmt.setInt("id_cliente", id_cliente);
         stmt.setInt("id_partner", id_partner);
         stmt.setString("sesion", sesion);

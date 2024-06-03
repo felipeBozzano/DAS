@@ -173,8 +173,8 @@ public class StarPlusWS {
 
             return """
                     {
-                    "codigoRespuesta": "200",
-                    "mensajeRespuesta": "Reporte recibido"
+                        "codigoRespuesta": "200",
+                        "mensajeRespuesta": "Reporte recibido"
                     }
                     """;
         } else {
@@ -349,38 +349,40 @@ public class StarPlusWS {
     public String obtenerSesion(@WebParam (name = "token_de_servicio") String token_de_servicio,
                                 @WebParam (name = "token_de_usuario") String token_de_usuario) throws
             ClassNotFoundException, SQLException {
-        Connection conn;
-        ResultSet rs;
-        Class.forName(driver_sql);
-        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-        conn.setAutoCommit(true);
+        if (utils.verificarTokenDePartner(token_de_servicio, driver_sql, sql_conection_string, sql_user, sql_pass)) {
+            Connection conn;
+            Class.forName(driver_sql);
+            conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+            conn.setAutoCommit(true);
 
-        Map<String, String> respuesta = new HashMap<>();
+            try {
+                Map<String, Integer> ids = utils.obtenerIds(token_de_servicio, token_de_usuario, driver_sql, sql_conection_string, sql_user, sql_pass);
+                int id_partner = ids.get("id_partner");
+                int id_cliente = ids.get("id_cliente");
 
-        try {
-            Map<String, Integer> ids = utils.obtenerIds(token_de_servicio, token_de_usuario, driver_sql, sql_conection_string, sql_user, sql_pass);
-            int id_partner = ids.get("id_partner");
-            int id_cliente = ids.get("id_cliente");
+                UUID sesion = UUID.randomUUID();
+                String sesion_string = sesion.toString();
+                utils.crearSesion(id_partner, id_cliente, sesion_string, driver_sql, sql_conection_string, sql_user, sql_pass);
 
-            UUID sesion = UUID.randomUUID();
-            String sesion_string = sesion.toString();
-            utils.crearSesion(id_partner, id_cliente, sesion_string, driver_sql, sql_conection_string, sql_user, sql_pass);
+                return """
+                        {
+                        \tsesion: %s,
+                        \tcodigoRespuesta: %s,
+                        \tmensajeRespuesta: %s
+                        }
+                        """.formatted(sesion_string, "200", "La sesion fue creada");
 
-            return """
-                    {
-                    \tsesion: %s,
-                    \tcodigoRespuesta: %s,
-                    \tmensajeRespuesta: %s
-                    }
-                    """.formatted(sesion_string, "200", "La sesion fue creada");
-
-        } catch (Exception e) {return """
-                    {
-                    \tsesion: %s,
-                    \tcodigoRespuesta: %s,
-                    \tmensajeRespuesta: %s
-                    }
-                    """.formatted(null, "1", "La sesion no pudo ser creada");
+            } catch (Exception e) {
+                return """
+                        {
+                        \tsesion: %s,
+                        \tcodigoRespuesta: %s,
+                        \tmensajeRespuesta: %s
+                        }
+                        """.formatted(null, "1", "La sesion no pudo ser creada");
+            }
+        } else {
+            return partner_no_verificado;
         }
     }
 

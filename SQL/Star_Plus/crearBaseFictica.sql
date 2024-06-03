@@ -116,3 +116,6 @@ VALUES ('CP2', 3),
        ('CS5', 3),
        ('CP6', 2);
 go
+
+INSERT INTO Autorizacion(codigo_de_transaccion, id_cliente, token, fecha_de_alta, url_de_redireccion, tipo_de_transaccion, fecha_de_baja)
+VALUES ('test', 1, 'test', GETDATE(), 'test', 'L', null);
