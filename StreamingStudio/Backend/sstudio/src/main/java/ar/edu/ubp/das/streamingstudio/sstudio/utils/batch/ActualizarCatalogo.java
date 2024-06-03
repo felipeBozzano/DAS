@@ -20,7 +20,7 @@ import static ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.BatchUtils.obte
 @Repository
 public class ActualizarCatalogo {
     private static JdbcTemplate jdbcTpl;
-    static Map<String,String> respuesta;
+    static Map<String, String> respuesta;
     private static final AbstractConnectorFactory conectorFactory = new AbstractConnectorFactory();
 
     public static void actualizarCatalogo() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
@@ -31,49 +31,51 @@ public class ActualizarCatalogo {
             // Obtenemos el catálogo de la plataforma de streaming
             int id_plataforma = plataforma.getId_plataforma();
             CatalogoBean catalogoDePlataforma = obtenerCatalogoDePlataforma(id_plataforma);
+            if (catalogoDePlataforma.getCodigoRespuesta() == -1 || catalogoDePlataforma.getCodigoRespuesta() == 1)
+                continue;
 
-                // Filtramos nuestro catalogo para obtener solo el contenido referente a esta plataforma de streaming
-                List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> catalogoStreamingStudioFiltrado = catalogoStreamingStudio.stream()
-                        .filter(contenido -> contenido.getId_plataforma() == id_plataforma)
-                        .toList();
+            // Filtramos nuestro catalogo para obtener solo el contenido referente a esta plataforma de streaming
+            List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> catalogoStreamingStudioFiltrado = catalogoStreamingStudio.stream()
+                    .filter(contenido -> contenido.getId_plataforma() == id_plataforma)
+                    .toList();
 
-                // Filtramos el contenido de nuestra plataforma que está activo
-                List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioActivo = catalogoStreamingStudioFiltrado.stream()
-                        .filter(contenido -> contenido.getFecha_de_baja() == null || contenido.getFecha_de_alta().after(contenido.getFecha_de_baja()))
-                        .toList();
+            // Filtramos el contenido de nuestra plataforma que está activo
+            List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioActivo = catalogoStreamingStudioFiltrado.stream()
+                    .filter(contenido -> contenido.getFecha_de_baja() == null || contenido.getFecha_de_alta().after(contenido.getFecha_de_baja()))
+                    .toList();
 
-                // Filtramos el contenido de nuestra plataforma que está inactivo
-                List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioInactivo = catalogoStreamingStudioFiltrado.stream()
-                        .filter(contenido -> contenido.getFecha_de_baja() != null && contenido.getFecha_de_baja().after(contenido.getFecha_de_alta()))
-                        .toList();
+            // Filtramos el contenido de nuestra plataforma que está inactivo
+            List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> contenidoStreamingStudioInactivo = catalogoStreamingStudioFiltrado.stream()
+                    .filter(contenido -> contenido.getFecha_de_baja() != null && contenido.getFecha_de_baja().after(contenido.getFecha_de_alta()))
+                    .toList();
 
-                // Filtramos el contenido de la plataforma de streaming que esta inactivo
-                List<ContenidoCatalogoBean> contenidoPlataformaInactivo = catalogoDePlataforma.getListaContenido().stream()
-                        .filter(contenido -> !contenido.isValido())
-                        .toList();
+            // Filtramos el contenido de la plataforma de streaming que esta inactivo
+            List<ContenidoCatalogoBean> contenidoPlataformaInactivo = catalogoDePlataforma.getListaContenido().stream()
+                    .filter(contenido -> !contenido.isValido())
+                    .toList();
 
-                // Filtro el contenido de la plataforma de streaming que esta activo
-                List<ContenidoCatalogoBean> contenidoPlataformaActivo = catalogoDePlataforma.getListaContenido().stream()
-                        .filter(contenido -> contenido.isValido())
-                        .toList();
+            // Filtro el contenido de la plataforma de streaming que esta activo
+            List<ContenidoCatalogoBean> contenidoPlataformaActivo = catalogoDePlataforma.getListaContenido().stream()
+                    .filter(contenido -> contenido.isValido())
+                    .toList();
 
 
-                if (!contenidoPlataformaInactivo.isEmpty()) {
-                    // Buscamos el contenido que la plataforma de streaming dio de baja, para darlo de baja en nuestra plataforma
-                    darDeBajaContenido(contenidoStreamingStudioActivo, contenidoPlataformaInactivo);
-                }
-
-                if (!contenidoPlataformaActivo.isEmpty()) {
-                    // Buscamos el contenido dado de baja en Streaming Studio para revisar si tenemos que habilitarlo
-                    habilitarContenido(contenidoStreamingStudioInactivo, contenidoPlataformaActivo);
-
-                    // Buscamos el contenido de la plataforma de streaming que no está en Streaming Studio y lo cargamos
-                    agregarContenidoNuevo(id_plataforma, catalogoStreamingStudioFiltrado, contenidoPlataformaActivo);
-                }
-
-                // Buscamos el contenido que esté en ambas plataformas y lo actualizamos si cambió
-                actualizarContenido(id_plataforma, catalogoStreamingStudioFiltrado, catalogoDePlataforma);
+            if (!contenidoPlataformaInactivo.isEmpty()) {
+                // Buscamos el contenido que la plataforma de streaming dio de baja, para darlo de baja en nuestra plataforma
+                darDeBajaContenido(contenidoStreamingStudioActivo, contenidoPlataformaInactivo);
             }
+
+            if (!contenidoPlataformaActivo.isEmpty()) {
+                // Buscamos el contenido dado de baja en Streaming Studio para revisar si tenemos que habilitarlo
+                habilitarContenido(contenidoStreamingStudioInactivo, contenidoPlataformaActivo);
+
+                // Buscamos el contenido de la plataforma de streaming que no está en Streaming Studio y lo cargamos
+                agregarContenidoNuevo(id_plataforma, catalogoStreamingStudioFiltrado, contenidoPlataformaActivo);
+            }
+
+            // Buscamos el contenido que esté en ambas plataformas y lo actualizamos si cambió
+            actualizarContenido(id_plataforma, catalogoStreamingStudioFiltrado, catalogoDePlataforma);
+        }
     }
 
     public static List<ar.edu.ubp.das.streamingstudio.sstudio.models.CatalogoBean> obtenerCatalogo() {
@@ -110,7 +112,7 @@ public class ActualizarCatalogo {
                     </ws:catalogo>""".formatted(conexion_plataforma.get("token_de_servicio"));
             body.put("message", message);
             body.put("web_service", "catalogo");
-        }else{
+        } else {
             body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
         }
 
@@ -229,7 +231,7 @@ public class ActualizarCatalogo {
                 jdbcCall_crear_contenido.execute(in_crear_contenido);
 
                 List<DirectorBean> directores = contenido.getDirectores();
-                for(DirectorBean directorBean: directores) {
+                for (DirectorBean directorBean : directores) {
                     SqlParameterSource in_director = new MapSqlParameterSource()
                             .addValue("id_contenido", id_contenido)
                             .addValue("id_director", directorBean.getId_director());
@@ -240,7 +242,7 @@ public class ActualizarCatalogo {
                 }
 
                 List<ActorBean> actores = contenido.getActores();
-                for(ActorBean actor: actores) {
+                for (ActorBean actor : actores) {
                     SqlParameterSource in_actor = new MapSqlParameterSource()
                             .addValue("id_contenido", id_contenido)
                             .addValue("id_actor", actor.getId_actor());
@@ -251,7 +253,7 @@ public class ActualizarCatalogo {
                 }
 
                 List<GeneroBean> generos = contenido.getGeneros();
-                for(GeneroBean genero: generos) {
+                for (GeneroBean genero : generos) {
                     SqlParameterSource in_genero = new MapSqlParameterSource()
                             .addValue("id_contenido", id_contenido)
                             .addValue("id_genero", genero.getId_genero());
