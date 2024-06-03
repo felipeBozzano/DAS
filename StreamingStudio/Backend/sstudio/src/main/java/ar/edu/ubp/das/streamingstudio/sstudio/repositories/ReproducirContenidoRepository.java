@@ -70,7 +70,7 @@ public class ReproducirContenidoRepository implements IReproducirContenidoReposi
     public SesionBean obtenerSesion(Map<String, String> conexion_plataforma, String token_de_usuario, AbstractConnector conector) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Map<String, String> body = new HashMap<>();
 
-        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
+        body.put("token_de_partner", conexion_plataforma.get("token_de_servicio"));
         body.put("token_de_usuario", token_de_usuario);
         SesionBean sesion = (SesionBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/crear_sesion", body, "SesionBean");
 

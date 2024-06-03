@@ -135,7 +135,8 @@ public class ContenidoBean {
                     \t\t"directores": %s,
                     \t\t"actores": %s,
                     \t\t"generos": %s
-                """.formatted(id_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado, valido, listToJson(directores), listToJson(actores), listToJson(generos));
+                """.formatted(id_contenido, titulo, descripcion, url_imagen, clasificacion, reciente, destacado,
+                valido, listToJson(directores), listToJson(actores), listToJson(generos));
     }
 
     public String listToJson(List<?> lista) {

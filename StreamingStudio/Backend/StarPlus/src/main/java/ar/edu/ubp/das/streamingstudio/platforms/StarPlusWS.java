@@ -50,92 +50,47 @@ public class StarPlusWS {
     @WebResult(name = "catalogo")
     public String catalogo(@WebParam(name = "token_de_partner") String token_de_partner) throws ClassNotFoundException,
             SQLException {
+        if (utils.verificarTokenDePartner(token_de_partner, driver_sql, sql_conection_string, sql_user, sql_pass)) {
+            Connection conn;
+            Class.forName(driver_sql);
+            conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+            conn.setAutoCommit(true);
 
-        Connection conn;
-        Class.forName(driver_sql);
-        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-        conn.setAutoCommit(true);
+            CallableStatement stmt;
+            ResultSet rs;
+            stmt = conn.prepareCall("{CALL dbo.Obtener_Contenido_Actual}");
+            rs = stmt.executeQuery();
+            List<ContenidoBean> listaContenido = new LinkedList<>();
 
-        System.out.println("Token de partner: " + token_de_partner);
-        CatalogoBean catalogo = new CatalogoBean();
+            while (rs.next()) {
+                ContenidoBean contenido = new ContenidoBean();
+                String id_contenido = rs.getString("id_contenido");
 
-        CallableStatement stmt;
-        ResultSet rs_catalogo;
-        stmt = conn.prepareCall("{CALL dbo.Obtener_Contenido_Actual}");
-        rs_catalogo = stmt.executeQuery();
-        List<ContenidoBean> listaContenido = new LinkedList<>();
-        while (rs_catalogo.next()) {
-            ContenidoBean contenido = new ContenidoBean();
-            System.out.println(rs_catalogo.getString("id_contenido"));
+                List<DirectorBean> listaDirectores = utils.obtenerDirectores(id_contenido, driver_sql, sql_conection_string, sql_user, sql_pass);
+                List<ActorBean> listaActores = utils.obtenerActores(id_contenido, driver_sql, sql_conection_string, sql_user, sql_pass);
+                List<GeneroBean> listaGeneros = utils.obtenerGeneros(id_contenido, driver_sql, sql_conection_string, sql_user, sql_pass);
 
-            // DIRECTORES
-            CallableStatement stmt_directores;
-            ResultSet rs_directores;
-            stmt_directores = conn.prepareCall("{CALL dbo.Obtener_Directores(?)}");
-            stmt_directores.setString("id_contenido", rs_catalogo.getString("id_contenido"));
-            rs_directores = stmt_directores.executeQuery();
-            List<DirectorBean> listaDirectores = new LinkedList<>();
-            while (rs_directores.next()) {
-                DirectorBean director = new DirectorBean();
-                director.setApellido(rs_directores.getString("apellido"));
-                director.setNombre(rs_directores.getString("nombre"));
-                director.setId_director(rs_directores.getInt("id_director"));
-                listaDirectores.add(director);
+                contenido.setId_contenido(rs.getString("id_contenido"));
+                contenido.setTitulo(rs.getString("titulo"));
+                contenido.setDescripcion(rs.getString("descripcion"));
+                contenido.setUrl_imagen(rs.getString("url_imagen"));
+                contenido.setClasificacion(rs.getString("clasificacion"));
+                contenido.setReciente(rs.getBoolean("reciente"));
+                contenido.setDestacado(rs.getBoolean("destacado"));
+                contenido.setValido(rs.getBoolean("valido"));
+                contenido.setActores(listaActores);
+                contenido.setDirectores(listaDirectores);
+                contenido.setGeneros(listaGeneros);
+
+                listaContenido.add(contenido);
             }
-            rs_directores.close();
-            stmt_directores.close();
 
-            // ACTORES
-            CallableStatement stmt_actores;
-            ResultSet rs_actores;
-            stmt_actores = conn.prepareCall("{CALL dbo.Obtener_Actores(?)}");
-            stmt_actores.setString("id_contenido", rs_catalogo.getString("id_contenido"));
-            rs_actores = stmt_actores.executeQuery();
-            List<ActorBean> listaActores = new LinkedList<>();
-            while (rs_actores.next()) {
-                ActorBean actor = new ActorBean();
-                actor.setApellido(rs_actores.getString("apellido"));
-                actor.setNombre(rs_actores.getString("nombre"));
-                actor.setId_director(rs_actores.getInt("id_actor"));
-                listaActores.add(actor);
-            }
-            rs_actores.close();
-            stmt_actores.close();
-
-            // GENEROS
-            CallableStatement stmt_generos;
-            ResultSet rs_generos;
-            stmt_generos = conn.prepareCall("{CALL dbo.Obtener_Generos(?)}");
-            stmt_generos.setString("id_contenido", rs_catalogo.getString("id_contenido"));
-            rs_generos = stmt_generos.executeQuery();
-            List<GeneroBean> listaGeneros = new LinkedList<>();
-            while (rs_generos.next()) {
-                GeneroBean genero = new GeneroBean();
-                genero.setDescripcion(rs_generos.getString("descripcion"));
-                genero.setId_genero(rs_generos.getInt("id_genero"));
-                listaGeneros.add(genero);
-            }
-            rs_generos.close();
-            stmt_generos.close();
-
-            // CONTENIDO
-            contenido.setId_contenido(rs_catalogo.getString("id_contenido"));
-            contenido.setTitulo(rs_catalogo.getString("titulo"));
-            contenido.setDescripcion(rs_catalogo.getString("descripcion"));
-            contenido.setUrl_imagen(rs_catalogo.getString("url_imagen"));
-            contenido.setClasificacion(rs_catalogo.getString("clasificacion"));
-            contenido.setReciente(rs_catalogo.getBoolean("reciente"));
-            contenido.setDestacado(rs_catalogo.getBoolean("destacado"));
-            contenido.setValido(rs_catalogo.getBoolean("valido"));
-            contenido.setActores(listaActores);
-            contenido.setDirectores(listaDirectores);
-            contenido.setGeneros(listaGeneros);
-
-            listaContenido.add(contenido);
-            catalogo = new CatalogoBean(listaContenido);
+            CatalogoBean catalogo = new CatalogoBean(listaContenido);
             System.out.println(catalogo);
+            return catalogo.toString();
+        } else {
+            return partner_no_verificado;
         }
-        return catalogo.toString();
     }
 
     @WebMethod()
@@ -145,31 +100,23 @@ public class StarPlusWS {
                                       @WebParam(name = "fecha") String fecha,
                                       @WebParam(name = "descripcion") String descripcion) throws SQLException,
             ClassNotFoundException {
-
         if (utils.verificarTokenDePartner(token_de_partner, driver_sql, sql_conection_string, sql_user, sql_pass)) {
-            Date fecha_formateada = new Date(2020, 01, 01);
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            try {
-                LocalDate localDate = LocalDate.parse(fecha, formatter);
-                fecha_formateada = Date.valueOf(localDate);
-            } catch (DateTimeParseException e) {
-                e.printStackTrace();
-            }
-
             Connection conn;
             CallableStatement stmt;
             Class.forName(driver_sql);
             conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
             conn.setAutoCommit(true);
-            try {
-                stmt = conn.prepareCall("{CALL dbo.Registrar_Reporte(?, ?, ?)}");
-                stmt.setFloat("total", Float.parseFloat(total));
-                stmt.setDate("fecha", fecha_formateada);
-                stmt.setString("descripcion", descripcion);
-                stmt.executeUpdate();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
+            Date fecha_formateada;
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(fecha, formatter);
+            fecha_formateada = Date.valueOf(localDate);
+
+            stmt = conn.prepareCall("{CALL dbo.Registrar_Reporte(?, ?, ?)}");
+            stmt.setFloat("total", Float.parseFloat(total));
+            stmt.setDate("fecha", fecha_formateada);
+            stmt.setString("descripcion", descripcion);
+            stmt.executeUpdate();
 
             return """
                     {
@@ -181,82 +128,6 @@ public class StarPlusWS {
             return partner_no_verificado;
         }
     }
-
-    @WebMethod()
-    @WebResult(name = "login")
-    public String login(@WebParam(name = "email") String email,
-                        @WebParam(name = "contrasena") String contrasena) throws ClassNotFoundException, SQLException {
-        Connection conn;
-        ResultSet rs;
-        Class.forName(driver_sql);
-        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-        conn.setAutoCommit(true);
-        CallableStatement stmt;
-        
-        stmt = conn.prepareCall("{CALL dbo.Login_Usuario(?,?)}");
-        stmt.setString("email", email);
-        stmt.setString("contrasena", contrasena);
-        rs = stmt.executeQuery();
-        System.out.println(rs);
-        UsuarioBean usuario = new UsuarioBean();
-        int existe = 0;
-        while (rs.next()) {
-            existe = rs.getInt("ExisteUsuario");
-        }
-        CallableStatement stmt_user;
-        ResultSet rs_user;
-        if (existe == 1) {
-            stmt_user = conn.prepareCall("{CALL dbo.Informacion_Usuario(?,?)}");
-            stmt_user.setString("email", email);
-            stmt_user.setString("contrasena", contrasena);
-            rs_user = stmt_user.executeQuery();
-            while (rs_user.next()) {
-                usuario.setEmail(rs_user.getString("email"));
-                usuario.setId_cliente(rs_user.getInt("id_cliente"));
-                usuario.setNombre(rs_user.getString("nombre"));
-                usuario.setApellido(rs_user.getString("apellido"));
-                usuario.setMensaje("Usuario existente");
-            }
-        }
-
-        return usuario.toString();
-    }
-
-    @WebMethod()
-    @WebResult(name = "crearUsuario")
-    public String crearUsuario(@WebParam(name = "email") String email, @WebParam(name = "contrasena") String contrasena, @WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido) throws
-            ClassNotFoundException, SQLException {
-
-        Connection conn;
-        ResultSet rs;
-        Class.forName(driver_sql);
-        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-        conn.setAutoCommit(true);
-
-
-        CallableStatement stmt_user;
-        ResultSet rs_user;
-
-        stmt_user = conn.prepareCall("{CALL dbo.Crear_Usuario(?,?,?,?,?,?)}");
-        stmt_user.setString("email", email);
-        stmt_user.setString("contrasena", contrasena);
-        stmt_user.setString("nombre", nombre);
-        stmt_user.setString("apellido", apellido);
-        stmt_user.setBoolean("valido", true);
-        UsuarioBean usuario = new UsuarioBean();
-        rs_user = stmt_user.executeQuery();
-            while (rs_user.next()) {
-                usuario.setEmail(rs_user.getString("email"));
-                usuario.setId_cliente(rs_user.getInt("id_cliente"));
-                usuario.setNombre(rs_user.getString("nombre"));
-                usuario.setApellido(rs_user.getString("apellido"));
-                usuario.setMensaje("usuario creado");
-            }
-        System.out.println(usuario.toString());
-        return usuario.toString();
-    }
-
-
 
     @WebMethod()
     @WebResult(name = "crearTransaccion")
@@ -280,14 +151,12 @@ public class StarPlusWS {
             else
                 url_de_redireccion = "http://localhost:4204/register";
 
-            // Crear transacción
             stmt = conn.prepareCall("{CALL dbo.Crear_Transaccion(?,?,?)}");
             stmt.setString("codigo_de_transaccion", codigo_de_transaccion_string);
             stmt.setString("url_de_redireccion", url_redireccion_ss);
             stmt.setString("tipo_de_transaccion", tipo_de_transaccion);
             stmt.executeUpdate();
 
-            // Crear y devolver respuesta
             VerificacionTransaccionBean respuesta = new VerificacionTransaccionBean(true, codigo_de_transaccion_string, url_de_redireccion);
 
             return respuesta.toString();
@@ -355,48 +224,47 @@ public class StarPlusWS {
 
     @WebMethod()
     @WebResult(name = "obtenerToken")
-    public String obtenerToken(@WebParam(name = "codigo_de_transaccion") String codigo_de_transaccion, @WebParam(name = "token_de_servicio") String token_de_servicio) throws
+    public String obtenerToken(@WebParam(name = "codigo_de_transaccion") String codigo_de_transaccion,
+                               @WebParam(name = "token_de_partner") String token_de_partner) throws
             ClassNotFoundException, SQLException {
-        if (utils.verificarTokenDePartner(token_de_servicio, driver_sql, sql_conection_string, sql_user, sql_pass)) {
+        if (utils.verificarTokenDePartner(token_de_partner, driver_sql, sql_conection_string, sql_user, sql_pass)) {
             Connection conn;
             ResultSet rs;
             Class.forName(driver_sql);
             conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
             conn.setAutoCommit(true);
-
-            UUID token = UUID.randomUUID();
-            String token_string = token.toString();
-
             CallableStatement stmt;
-            ResultSet rs_token;
+
+            FederacionBean federacionBean = new FederacionBean();
 
             stmt = conn.prepareCall("{CALL dbo.Obtener_Token(?)}");
             stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
-            rs_token = stmt.executeQuery();
-            FederacionBean federacionBean = new FederacionBean();
-            while (rs_token.next()) {
-                federacionBean.setToken(rs_token.getString("token"));
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                federacionBean.setToken(rs.getString("token"));
                 federacionBean.setCodigo_de_transaccion(codigo_de_transaccion);
             }
+
             return federacionBean.toString();
-        }else {
+        } else {
             return partner_no_verificado;
         }
     }
 
     @WebMethod()
     @WebResult(name = "obtenerSesion")
-    public String obtenerSesion(@WebParam (name = "token_de_servicio") String token_de_servicio,
+    public String obtenerSesion(@WebParam (name = "token_de_partner") String token_de_partner,
                                 @WebParam (name = "token_de_usuario") String token_de_usuario) throws
             ClassNotFoundException, SQLException {
-        if (utils.verificarTokenDePartner(token_de_servicio, driver_sql, sql_conection_string, sql_user, sql_pass)) {
+        if (utils.verificarTokenDePartner(token_de_partner, driver_sql, sql_conection_string, sql_user, sql_pass)) {
             Connection conn;
             Class.forName(driver_sql);
             conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
             conn.setAutoCommit(true);
 
             try {
-                Map<String, Integer> ids = utils.obtenerIds(token_de_servicio, token_de_usuario, driver_sql, sql_conection_string, sql_user, sql_pass);
+                Map<String, Integer> ids = utils.obtenerIds(token_de_partner, token_de_usuario, driver_sql, sql_conection_string, sql_user, sql_pass);
                 int id_partner = ids.get("id_partner");
                 int id_cliente = ids.get("id_cliente");
 
@@ -448,7 +316,9 @@ public class StarPlusWS {
             Class.forName(driver_sql);
             conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
             conn.setAutoCommit(true);
+
             String url_de_contenido = null;
+
             try {
                 stmt = conn.prepareCall("{CALL dbo.Obtener_Url_de_Contenido(?)}");
                 stmt.setString("id_contenido", id_contenido);
