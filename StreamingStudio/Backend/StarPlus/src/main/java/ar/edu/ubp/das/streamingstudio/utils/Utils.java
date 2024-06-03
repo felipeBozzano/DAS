@@ -1,7 +1,5 @@
 package ar.edu.ubp.das.streamingstudio.utils;
 
-import jakarta.jws.WebParam;
-
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -107,6 +105,28 @@ public class Utils {
         stmt.setInt("id_partner", id_partner);
         stmt.setString("sesion", sesion);
         stmt.executeUpdate();
+    }
+
+    public String obtenerUrlDeRedireccion(String codigo_de_transaccion,
+                                          String driver_sql,
+                                          String sql_conection_string,
+                                          String sql_user,
+                                          String sql_pass) throws ClassNotFoundException, SQLException {
+        Connection conn;
+        ResultSet rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+        CallableStatement stmt;
+
+        stmt = conn.prepareCall("{CALL dbo.Obtener_codigo_de_redireccion(?)}");
+        stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
+        rs = stmt.executeQuery();
+        String url_de_redireccion = "";
+        while (rs.next()) {
+            url_de_redireccion = rs.getString("url_de_redireccion");
+        }
+        return url_de_redireccion;
     }
 
 }
