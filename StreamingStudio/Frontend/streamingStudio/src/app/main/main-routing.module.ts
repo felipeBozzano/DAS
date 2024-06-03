@@ -33,7 +33,6 @@ const routes: Routes = [
     path: 'descripcion/:id_cliente/:id_contenido',
     component: DescripcionComponent,
     resolve: {descripcion: DescripcionContenidoHomeResolverResolver},
-    canActivate: [AuthGuard]
   },
   {
     path: 'usuario/federaciones',

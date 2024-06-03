@@ -11,7 +11,7 @@
       <div class="peliculas-container">
         <div class="pelicula" *ngFor="let pelicula of peliculas">
           <h2>{{ pelicula.titulo }}</h2>
-          <img [src]="pelicula.url_imagen" alt="{{ pelicula.titulo }}">
+          <img [src]="pelicula.url_imagen" alt="{{ pelicula.titulo }}" (click)="verDescripcion(pelicula.id_contenido)" class="imagen">
         </div>
       </div>
     </div>
