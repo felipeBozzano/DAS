@@ -48,7 +48,8 @@ public class StarPlusWS {
 
     @WebMethod()
     @WebResult(name = "catalogo")
-    public String catalogo(@WebParam(name = "token_de_partner") String token_de_partner) throws ClassNotFoundException, SQLException {
+    public String catalogo(@WebParam(name = "token_de_partner") String token_de_partner) throws ClassNotFoundException,
+            SQLException {
 
         Connection conn;
         Class.forName(driver_sql);
@@ -142,7 +143,8 @@ public class StarPlusWS {
     public String obtenerEstadisticas(@WebParam(name = "token_de_partner") String token_de_partner,
                                       @WebParam(name = "total") String total,
                                       @WebParam(name = "fecha") String fecha,
-                                      @WebParam(name = "descripcion") String descripcion) throws SQLException, ClassNotFoundException {
+                                      @WebParam(name = "descripcion") String descripcion) throws SQLException,
+            ClassNotFoundException {
 
         if (utils.verificarTokenDePartner(token_de_partner, driver_sql, sql_conection_string, sql_user, sql_pass)) {
             Date fecha_formateada = new Date(2020, 01, 01);
@@ -182,28 +184,24 @@ public class StarPlusWS {
 
     @WebMethod()
     @WebResult(name = "login")
-    public String login(@WebParam(name = "email") String email, @WebParam(name = "contrasena") String contrasena) throws
-            ClassNotFoundException, SQLException {
-
+    public String login(@WebParam(name = "email") String email,
+                        @WebParam(name = "contrasena") String contrasena) throws ClassNotFoundException, SQLException {
         Connection conn;
         ResultSet rs;
         Class.forName(driver_sql);
         conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
         conn.setAutoCommit(true);
-
         CallableStatement stmt;
-        ResultSet rs_login;
-        System.out.println(email);
-        System.out.println(contrasena);
+        
         stmt = conn.prepareCall("{CALL dbo.Login_Usuario(?,?)}");
         stmt.setString("email", email);
         stmt.setString("contrasena", contrasena);
-        rs_login = stmt.executeQuery();
-        System.out.println(rs_login);
+        rs = stmt.executeQuery();
+        System.out.println(rs);
         UsuarioBean usuario = new UsuarioBean();
         int existe = 0;
-        while (rs_login.next()) {
-            existe = rs_login.getInt("ExisteUsuario");
+        while (rs.next()) {
+            existe = rs.getInt("ExisteUsuario");
         }
         CallableStatement stmt_user;
         ResultSet rs_user;
@@ -221,33 +219,30 @@ public class StarPlusWS {
             }
         }
 
-        System.out.println(usuario.toString());
         return usuario.toString();
     }
 
     @WebMethod()
     @WebResult(name = "crearTransaccion")
-    public String crearTransaccion(@WebParam(name = "tipo_de_transaccion") String
-                                           tipo_de_transaccion, @WebParam(name = "url_redireccion_ss") String
-                                           url_redireccion_ss, @WebParam(name = "token_de_partner") String token_de_partner) throws
+    public String crearTransaccion(@WebParam(name = "tipo_de_transaccion") String tipo_de_transaccion,
+                                   @WebParam(name = "url_redireccion_ss") String url_redireccion_ss,
+                                   @WebParam(name = "token_de_partner") String token_de_partner) throws
             ClassNotFoundException, SQLException {
         if (utils.verificarTokenDePartner(token_de_partner, driver_sql, sql_conection_string, sql_user, sql_pass)) {
             Connection conn;
-            ResultSet rs;
             Class.forName(driver_sql);
             conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
             conn.setAutoCommit(true);
+            CallableStatement stmt;
 
             UUID codigo_de_transaccion = UUID.randomUUID();
             String codigo_de_transaccion_string = codigo_de_transaccion.toString();
 
             String url_de_redireccion;
             if (tipo_de_transaccion.equals("L"))
-                url_de_redireccion = "http://localhost:4203/login";
+                url_de_redireccion = "http://localhost:4204/login";
             else
-                url_de_redireccion = "http://localhost:4203/register";
-
-            CallableStatement stmt;
+                url_de_redireccion = "http://localhost:4204/register";
 
             // Crear transacción
             stmt = conn.prepareCall("{CALL dbo.Crear_Transaccion(?,?,?)}");
@@ -274,21 +269,18 @@ public class StarPlusWS {
         Class.forName(driver_sql);
         conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
         conn.setAutoCommit(true);
-
         CallableStatement stmt;
-        ResultSet rs_verificar_autorizacion;
 
         stmt = conn.prepareCall("{CALL dbo.Verificar_Autorizacion(?)}");
         stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
-        rs_verificar_autorizacion = stmt.executeQuery();
+        rs = stmt.executeQuery();
 
         TransaccionBean transaccionBean = new TransaccionBean();
-        int existe = 0;
-        while (rs_verificar_autorizacion.next()) {
-            transaccionBean.setToken_de_servicio(rs_verificar_autorizacion.getString("token_de_servicio"));
-            transaccionBean.setId_cliente(rs_verificar_autorizacion.getInt("id_cliente"));
-            transaccionBean.setTipo_de_transaccion(rs_verificar_autorizacion.getString("codigo_de_transaccion"));
-            transaccionBean.setUrl_de_redireccion(rs_verificar_autorizacion.getString("url_de_redireccion"));
+        while (rs.next()) {
+            transaccionBean.setToken_de_servicio(rs.getString("token_de_servicio"));
+            transaccionBean.setId_cliente(rs.getInt("id_cliente"));
+            transaccionBean.setTipo_de_transaccion(rs.getString("codigo_de_transaccion"));
+            transaccionBean.setUrl_de_redireccion(rs.getString("url_de_redireccion"));
 
         }
 
@@ -297,60 +289,32 @@ public class StarPlusWS {
 
     @WebMethod()
     @WebResult(name = "crearAutorizacion")
-    public void crearAutorizacion(@WebParam(name = "codigo_de_transaccion") String codigo_de_transaccion,
-                                  @WebParam(name = "id_cliente") int id_cliente) throws ClassNotFoundException, SQLException {
+    public String crearAutorizacion(@WebParam(name = "codigo_de_transaccion") String codigo_de_transaccion,
+                                    @WebParam(name = "id_cliente") String id_cliente) throws ClassNotFoundException,
+            SQLException {
         Connection conn;
-        ResultSet rs;
         Class.forName(driver_sql);
         conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
         conn.setAutoCommit(true);
+        CallableStatement stmt;
 
         UUID token = UUID.randomUUID();
         String token_string = token.toString();
-
-        CallableStatement stmt;
-        ResultSet rs_crear_autorizacion;
 
         stmt = conn.prepareCall("{CALL dbo.Crear_Autorizacion(?,?)}");
-        stmt.setInt("id_cliente", id_cliente);
+        stmt.setInt("id_cliente", Integer.parseInt(id_cliente));
         stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
         stmt.setString("token", token_string);
-        rs_crear_autorizacion = stmt.executeQuery();
-        AutorizacionBean autorizacion = new AutorizacionBean();
-        while (rs_crear_autorizacion.next()) {
-            autorizacion.setId_cliente(rs_crear_autorizacion.getInt("id_cliente"));
-            autorizacion.setToken_de_servicio(rs_crear_autorizacion.getString("token_de_servicio"));
-            autorizacion.setCodigo_de_transaccion(rs_crear_autorizacion.getString("codigo_de_transaccion"));
-            autorizacion.setUrl_de_redireccion(rs_crear_autorizacion.getString("url_de_redireccion"));
-        }
-        System.out.println(autorizacion);
-    }
+        stmt.executeUpdate();
 
-    @WebMethod()
-    @WebResult(name = "obtenerUrlDeRedireccion")
-    public String obtenerUrlDeRedireccion(@WebParam(name = "codigo_de_transaccion") String codigo_de_transaccion) throws
-            ClassNotFoundException, SQLException {
-        Connection conn;
-        ResultSet rs;
-        Class.forName(driver_sql);
-        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
-        conn.setAutoCommit(true);
-
-        UUID token = UUID.randomUUID();
-        String token_string = token.toString();
-
-        CallableStatement stmt;
-        ResultSet rs_codio_transaccion;
-
-        stmt = conn.prepareCall("{CALL dbo.Obtener_codigo_de_redireccion(?)}");
-        stmt.setString("codigo_de_transaccion", codigo_de_transaccion);
-        rs_codio_transaccion = stmt.executeQuery();
-        String url_de_redireccion = "";
-        while (rs_codio_transaccion.next()) {
-            url_de_redireccion = rs_codio_transaccion.getString("url_de_redireccion");
-        }
-        System.out.println(url_de_redireccion);
-        return url_de_redireccion;
+        String url_de_redireccion = utils.obtenerUrlDeRedireccion(codigo_de_transaccion, driver_sql, sql_conection_string, sql_user, sql_pass);
+        return """
+                {
+                    "codigo_de_transaccion": "%s",
+                    "id_cliente": "%s",
+                    "url_de_redireccion": "%s"
+                }
+                """.formatted(codigo_de_transaccion, id_cliente, url_de_redireccion);
     }
 
     @WebMethod()
@@ -383,7 +347,8 @@ public class StarPlusWS {
     @WebMethod()
     @WebResult(name = "obtenerSesion")
     public String obtenerSesion(@WebParam (name = "token_de_servicio") String token_de_servicio,
-                                @WebParam (name = "token_de_usuario") String token_de_usuario) throws ClassNotFoundException, SQLException {
+                                @WebParam (name = "token_de_usuario") String token_de_usuario) throws
+            ClassNotFoundException, SQLException {
         Connection conn;
         ResultSet rs;
         Class.forName(driver_sql);
@@ -423,7 +388,8 @@ public class StarPlusWS {
     @WebResult(name = "obtenerUrlDeContenido")
     public String obtenerUrlDeContenido(@WebParam(name = "token_de_partner") String token_de_partner,
                                         @WebParam(name = "token_de_sesion") String token_de_sesion,
-                                        @WebParam(name = "id_contenido") String id_contenido) throws SQLException, ClassNotFoundException {
+                                        @WebParam(name = "id_contenido") String id_contenido) throws SQLException,
+            ClassNotFoundException {
         if (utils.verificarTokenDePartner(token_de_partner, driver_sql, sql_conection_string, sql_user, sql_pass)) {
             if (!utils.usarSesion(token_de_sesion, driver_sql, sql_conection_string, sql_user, sql_pass)) {
                 return """

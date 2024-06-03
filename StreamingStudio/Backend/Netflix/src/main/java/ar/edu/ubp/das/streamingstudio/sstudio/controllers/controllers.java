@@ -75,7 +75,10 @@ public class controllers {
         return new ResponseEntity<>(autorizacionRepository.verificarAutorizacion(codigoTransaccion), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/crear_autorizacion", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(
+            path = "/crear_autorizacion",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
     public ResponseEntity<AutorizacionBean> crear_autorizacion(@RequestBody AutorizacionBean autorizacion) {
         autorizacionRepository.crearAutorizacion(autorizacion.getId_cliente(), autorizacion.getCodigo_de_transaccion());
         String url_de_redireccion = autorizacionRepository.obtenerUrlDeRedireccion(autorizacion.getCodigo_de_transaccion());
