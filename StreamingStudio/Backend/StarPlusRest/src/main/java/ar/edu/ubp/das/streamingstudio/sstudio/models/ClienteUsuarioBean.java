@@ -1,6 +1,7 @@
-package ar.edu.ubp.das.streamingstudio.beans;
+package ar.edu.ubp.das.streamingstudio.sstudio.models;
 
-public class UsuarioBean {
+public class ClienteUsuarioBean {
+
     private int id_cliente;
     private String contrasena;
     private String email;
@@ -8,35 +9,16 @@ public class UsuarioBean {
     private String apellido;
     private Boolean valido;
 
-    private String mensaje;
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
-    public String getMensaje() {
-        return mensaje;
-    }
-
-    public void setMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
-
-    UsuarioBean(int id_cliente, String contrasena, String email, String nombre, String apellido, Boolean valido, String mensaje) {
+    ClienteUsuarioBean(int id_cliente, String contrasena, String email, String nombre, String apellido, Boolean valido) {
         this.id_cliente = id_cliente;
         this.contrasena = contrasena;
         this.email = email;
         this.nombre = nombre;
         this.apellido = apellido;
         this.valido = valido;
-        this.mensaje = mensaje;
     }
 
-    UsuarioBean(String contrasena, String email, String nombre, String apellido, Boolean valido) {
+    ClienteUsuarioBean(String usuario, String contrasena, String email, String nombre, String apellido, Boolean valido) {
         this.contrasena = contrasena;
         this.email = email;
         this.nombre = nombre;
@@ -44,13 +26,14 @@ public class UsuarioBean {
         this.valido = valido;
     }
 
-    public UsuarioBean(){
+    public ClienteUsuarioBean(){
 
     }
 
     public int getId_cliente() {
         return id_cliente;
     }
+
 
     public String getcontrasena() {
         return contrasena;
@@ -76,6 +59,7 @@ public class UsuarioBean {
         this.id_cliente = id_cliente;
     }
 
+
     public void setcontrasena(String contrasena) {
         this.contrasena = contrasena;
     }
@@ -96,16 +80,4 @@ public class UsuarioBean {
         this.valido = valido;
     }
 
-    @Override
-    public String toString(){
-        return """
-                {
-                \t"id_cliente": "%s",
-                \t"apellido": "%s",
-                \t"nombre": "%s"
-                \t"email": "%s"
-                \t"mensaje": "%s"
-                }
-                """.formatted(id_cliente, apellido, nombre, email, mensaje);
-    }
 }

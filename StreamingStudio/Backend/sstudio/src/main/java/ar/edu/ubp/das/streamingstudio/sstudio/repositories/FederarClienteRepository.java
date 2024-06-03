@@ -151,8 +151,19 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         respuesta = new HashMap<>();
         AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
         Map<String, String> body = new HashMap<>();
-        body.put("codigo_de_transaccion", codigo_de_transaccion);
-        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
+
+        if (conexion_plataforma.get("protocolo_api").equals("SOAP")) {
+            String message = """
+                    <ws:obtenerToken xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
+                        <codigo_de_transaccion>%s</codigo_de_transaccion>
+                        <token_de_servicio>%s</token_de_servicio>
+                    </ws:obtenerToken>""".formatted(codigo_de_transaccion, conexion_plataforma.get("token_de_servicio"));
+            body.put("message", message);
+            body.put("web_service", "obtenerToken");
+        }else{
+            body.put("codigo_de_transaccion", codigo_de_transaccion);
+            body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
+        }
         FederacionBean bean = (FederacionBean) conector.execute_post_request(url_token, body, "FederacionBean");
         System.out.println(bean.getToken());
         SqlParameterSource in = new MapSqlParameterSource()

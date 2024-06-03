@@ -12,18 +12,19 @@ END
 go
 
 CREATE OR ALTER PROCEDURE Editar_Usuario @id_cliente INT,
-                                         @usuario VARCHAR(255),
                                          @contrasena VARCHAR(255),
                                          @email VARCHAR(255),
                                          @nombre VARCHAR(255),
-                                         @apellido VARCHAR(255)
+                                         @apellido VARCHAR(255),
+                                         @valido BIT
 AS
 BEGIN
     UPDATE Cliente_Usuario
     SET contrasena = @contrasena,
         email      = @email,
         nombre     = @nombre,
-        apellido   = @apellido
+        apellido   = @apellido,
+        valido     = @valido
     WHERE id_cliente = @id_cliente
 END
 go

@@ -9,15 +9,13 @@ import {ILoginResponse} from '../models/ILoginResponse.model';
 
 @Injectable()
 @ResourceParams({
-  pathPrefix: `${environment.apiUrl}/star_plus`
+  pathPrefix: `${environment.apiUrl}/start_plus`
 })
 export class Star_plusResourceService extends Resource{
 
   @ResourceAction({
     method: ResourceRequestMethod.Post,
-    path: '/login',
-    mode: "no-cors",
-    headers: {'Access-Control-Allow-Origin': '*'},
+    path: '/login_user',
     requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
@@ -30,5 +28,13 @@ export class Star_plusResourceService extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   registro!: IResourceMethodObservable<IUser,void>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Post,
+    path: '/crear_autorizacion',
+    requestBodyType: ResourceRequestBodyType.JSON,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  crear_autorizacion!: IResourceMethodObservable<any, any>;
 
 }
