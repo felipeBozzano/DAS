@@ -219,7 +219,7 @@ public class FederarClienteRepository implements IFederarClienteRepository {
             body.put("message", message);
             body.put("web_service", "desvincular");
         }else{
-            body.put("token", "");
+            body.put("token", token);
         }
         FederacionDesvinculada bean = (FederacionDesvinculada) conector.execute_post_request(url, body, "FederacionDesvinculada");
 
