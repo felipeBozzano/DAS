@@ -166,7 +166,7 @@ public class controllers {
     @PostMapping(
             path = "/contenido_por_filtros"
     )
-    public ResponseEntity<List<ContenidoHomeBean>> buscarContenidoPorFiltros(@RequestBody ContenidoFiltroBean body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public ResponseEntity<List<ContenidoHomeBean>> buscarContenidoPorFiltros(@RequestBody ContenidoFiltroBean body) {
         System.out.println(body);
         List<ContenidoHomeBean> contenido = buscar_contenido_repository.buscarContenidoPorFiltros(body.getId_cliente(), body.getTitulo(), body.isReciente(), body.isDestacado(), body.getClasificacion(), body.getMas_visto(), body.getGenero());
         return new ResponseEntity<>(contenido, HttpStatus.OK);
@@ -175,7 +175,8 @@ public class controllers {
     @GetMapping(
             path = "/informacion_contenido/{id_contenido}/{id_cliente}"
     )
-    public ResponseEntity<InformacionContenidoBean> obtenerInformacionContenido(@PathVariable("id_contenido") String id_contenido, @PathVariable("id_cliente") int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public ResponseEntity<InformacionContenidoBean> obtenerInformacionContenido(@PathVariable("id_contenido") String id_contenido,
+                                                                                @PathVariable("id_cliente") int id_cliente) {
         InformacionContenidoBean infoContenido = buscar_contenido_repository.informacionContenido(id_contenido, id_cliente);
         return new ResponseEntity<>(infoContenido, HttpStatus.OK);
     }
@@ -197,7 +198,9 @@ public class controllers {
     }
 
     @GetMapping("/clic_contenido")
-    public ResponseEntity<Map<String, String>> clic_contenido(@RequestParam("id_cliente") int id_cliente, @RequestParam("id_contenido") String id_contenido,@RequestParam("id_plataforma") int id_plataforma) {
+    public ResponseEntity<Map<String, String>> clic_contenido(@RequestParam("id_cliente") int id_cliente,
+                                                              @RequestParam("id_contenido") String id_contenido,
+                                                              @RequestParam("id_plataforma") int id_plataforma) {
         return new ResponseEntity<>(user_repository.registrarClicContenido(id_cliente, id_contenido, id_plataforma), HttpStatus.OK);
     }
 
@@ -225,7 +228,8 @@ public class controllers {
     }
 
     @GetMapping("/clic_publicidad")
-    public ResponseEntity<Map<String, String>> clic_publicidad(@RequestParam("id_cliente") int id_cliente, @RequestParam("id_publicidad") int id_publicidad) {
+    public ResponseEntity<Map<String, String>> clic_publicidad(@RequestParam("id_cliente") int id_cliente,
+                                                               @RequestParam("id_publicidad") int id_publicidad) {
           return new ResponseEntity<>(publicidades_repository.registrarClicPublicidad(id_cliente, id_publicidad), HttpStatus.OK);
     }
 
@@ -239,8 +243,6 @@ public class controllers {
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<ContenidoUrlBean> buscarContenidoPorFiltros(@RequestBody Map<String, String> body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-
-
         String id_contenido = body.get("id_contenido");
         int id_plataforma = Integer.parseInt(body.get("id_plataforma"));
         int id_cliente = Integer.parseInt(body.get("id_cliente"));

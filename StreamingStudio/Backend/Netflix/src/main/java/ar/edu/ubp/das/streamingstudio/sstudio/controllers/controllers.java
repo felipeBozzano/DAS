@@ -141,7 +141,7 @@ public class controllers {
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Map<String, String>> obtenerSesion(@RequestBody Map<String, String> body) {
-        if (!partnerRepository.verificarTokenDePartner(body.get("token_de_servicio")))
+        if (!partnerRepository.verificarTokenDePartner(body.get("token_de_partner")))
             return new ResponseEntity<>(partnerRepository.respuestaPartnerIncorrecto(), HttpStatus.NOT_ACCEPTABLE);
 
         return new ResponseEntity<>(sesionRepository.obtenerSesion(body), HttpStatus.OK);
@@ -151,7 +151,7 @@ public class controllers {
             consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Map<String, String>> obtenerUrlDeContenido(@RequestBody Map<String, String> body) {
-        if (!partnerRepository.verificarTokenDePartner(body.get("token_de_servicio")))
+        if (!partnerRepository.verificarTokenDePartner(body.get("token_de_partner")))
             return new ResponseEntity<>(partnerRepository.respuestaPartnerIncorrecto(), HttpStatus.NOT_ACCEPTABLE);
 
         return new ResponseEntity<>(contenidoRepository.obtenerUrlDeContenido(body), HttpStatus.OK);

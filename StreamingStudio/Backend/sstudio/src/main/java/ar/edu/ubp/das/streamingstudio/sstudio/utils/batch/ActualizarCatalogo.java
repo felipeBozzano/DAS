@@ -59,7 +59,6 @@ public class ActualizarCatalogo {
                     .filter(contenido -> contenido.isValido())
                     .toList();
 
-
             if (!contenidoPlataformaInactivo.isEmpty()) {
                 // Buscamos el contenido que la plataforma de streaming dio de baja, para darlo de baja en nuestra plataforma
                 darDeBajaContenido(contenidoStreamingStudioActivo, contenidoPlataformaInactivo);

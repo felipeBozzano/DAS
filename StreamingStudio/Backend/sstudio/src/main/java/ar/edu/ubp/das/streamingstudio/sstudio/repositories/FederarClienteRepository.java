@@ -115,7 +115,6 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         }else{
             body.put("url_de_redireccion", url_de_redireccion);
             body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
-//          body.put("id_cliente", String.valueOf(id_cliente));
             body.put("tipo_de_transaccion", tipo_transaccion);
         }
         FederacionBean bean = (FederacionBean) conector.execute_post_request(conexion + "/obtener_codigo_de_transaccion", body, "FederacionBean");
@@ -157,7 +156,7 @@ public class FederarClienteRepository implements IFederarClienteRepository {
             String message = """
                     <ws:obtenerToken xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
                         <codigo_de_transaccion>%s</codigo_de_transaccion>
-                        <token_de_servicio>%s</token_de_servicio>
+                        <token_de_partner>%s</token_de_partner>
                     </ws:obtenerToken>""".formatted(codigo_de_transaccion, conexion_plataforma.get("token_de_servicio"));
             body.put("message", message);
             body.put("web_service", "obtenerToken");
