@@ -170,6 +170,5 @@ CREATE TABLE [Autorizacion]
     CONSTRAINT [FK_Autorizacion.id_cliente]
         FOREIGN KEY ([id_cliente])
             REFERENCES [Cliente_Usuario] ([id_cliente]),
-    CONSTRAINT [UK_codigo_de_transaccion] UNIQUE (codigo_de_transaccion),
-    CONSTRAINT [UK_token] UNIQUE (token),
+    CONSTRAINT [UK_codigo_de_transaccion] UNIQUE (codigo_de_transaccion)
 );

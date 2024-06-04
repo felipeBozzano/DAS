@@ -3,14 +3,16 @@ package ar.edu.ubp.das.streamingstudio.sstudio.models;
 public class ClienteUsuarioBean {
 
     private int id_cliente;
+    private String usuario;
     private String contrasena;
     private String email;
     private String nombre;
     private String apellido;
     private Boolean valido;
 
-    ClienteUsuarioBean(int id_cliente, String contrasena, String email, String nombre, String apellido, Boolean valido) {
+    ClienteUsuarioBean(int id_cliente, String usuario, String contrasena, String email, String nombre, String apellido, Boolean valido) {
         this.id_cliente = id_cliente;
+        this.usuario = usuario;
         this.contrasena = contrasena;
         this.email = email;
         this.nombre = nombre;
@@ -19,6 +21,7 @@ public class ClienteUsuarioBean {
     }
 
     ClienteUsuarioBean(String usuario, String contrasena, String email, String nombre, String apellido, Boolean valido) {
+        this.usuario = usuario;
         this.contrasena = contrasena;
         this.email = email;
         this.nombre = nombre;
@@ -34,6 +37,9 @@ public class ClienteUsuarioBean {
         return id_cliente;
     }
 
+    public String getUsuario() {
+        return usuario;
+    }
 
     public String getcontrasena() {
         return contrasena;
@@ -59,6 +65,9 @@ public class ClienteUsuarioBean {
         this.id_cliente = id_cliente;
     }
 
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
 
     public void setcontrasena(String contrasena) {
         this.contrasena = contrasena;

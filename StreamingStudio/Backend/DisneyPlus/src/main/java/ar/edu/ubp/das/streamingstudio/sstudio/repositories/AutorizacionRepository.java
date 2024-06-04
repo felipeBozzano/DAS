@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -106,5 +107,18 @@ public class AutorizacionRepository {
         List<Map<String,String>> mapa_token = (List<Map<String,String>>) out.get("#result-set-1");
         String token = mapa_token.getFirst().get("token");
         return token;
+    }
+
+    public Map<String, String> desvincular(String token) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("token", token);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("desvincular")
+                .withSchemaName("dbo");
+        Map<String, Object> out = jdbcCall.execute(in);
+        Map<String, String> respuesta = new HashMap<>();
+        respuesta.put("mensaje", "Plataforma desvinculada con exito");
+        respuesta.put("codigo", "200");
+        return respuesta;
     }
 }

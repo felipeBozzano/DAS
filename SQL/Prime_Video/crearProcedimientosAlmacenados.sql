@@ -552,3 +552,12 @@ BEGIN
     WHERE gc.id_contenido = @id_contenido
 END;
 GO
+
+CREATE OR ALTER PROCEDURE desvincular @token VARCHAR(255)
+AS
+BEGIN
+    UPDATE Autorizacion
+    set fecha_de_baja = GETDATE()
+    WHERE Autorizacion.token = @token
+END;
+go
