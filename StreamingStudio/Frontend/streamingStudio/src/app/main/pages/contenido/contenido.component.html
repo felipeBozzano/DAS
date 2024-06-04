@@ -80,9 +80,9 @@
         </div>
       </div>
 
-      <div class="card" *ngIf="contenido && contenido.length === 0 && isVisible">
-        <div class="card-title">No se encontró contenido asociado
-          <button class="close-btn row" (click)="closeCard()">Cerrar</button>
+      <div class="card-sin-contenido" *ngIf="contenido && contenido.length === 0 && isVisible">
+        <div class="contenido-no-encontrado">
+          <b>No se encuentra contenido con los filtros seleccionados</b>
         </div>
       </div>
     </div>

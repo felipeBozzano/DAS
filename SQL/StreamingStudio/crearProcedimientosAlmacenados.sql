@@ -1774,5 +1774,3 @@ BEGIN
     WHERE id_cliente = @id_cliente
 END;
 go
-
-
