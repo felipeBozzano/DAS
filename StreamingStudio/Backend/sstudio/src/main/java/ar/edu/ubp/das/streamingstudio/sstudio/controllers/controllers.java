@@ -76,6 +76,20 @@ public class controllers {
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
+    @PutMapping(
+            path = "/actualizar_usuario",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> actualizarUsuario(@RequestBody ClienteUsuarioBean body) {
+        String nombre = body.getNombre();
+        String apellido = body.getApellido();
+        int id_usuario = body.getId_cliente();
+        Map<String, String> respuesta = user_repository.actualizarUsuario(nombre, apellido, id_usuario);
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
+
+
+
     @GetMapping(
             path = "/usuario/{id_cliente}/mi_perfil"
     )

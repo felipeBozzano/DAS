@@ -139,4 +139,12 @@ export class StreamingStudioResources extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   desvincular!: IResourceMethodObservable<any, any>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Put,
+    path: `/actualizar_usuario`,
+    requestBodyType: ResourceRequestBodyType.JSON,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  actualizar_usuario!: IResourceMethodObservable<any, any>;
 }
