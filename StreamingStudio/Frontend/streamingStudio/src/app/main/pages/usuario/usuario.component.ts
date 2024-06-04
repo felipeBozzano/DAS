@@ -3,7 +3,7 @@ import {StreamingStudioResources} from '../../api/resources/streaming-studio.ser
 import {ActivatedRoute} from '@angular/router';
 import {IFinalizarFederacion} from '../../api/models/IFinalizarFederacion.model';
 import {AuthService} from '../../services/authService/AuthService';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-usuario',
@@ -22,8 +22,8 @@ export class UsuarioComponent implements OnInit {
     this.currentUser = this.authService.getCurrentUser();
     console.log("this.currentUser: ", this.currentUser);
     this.usuarioForm = new FormGroup({
-      nombre: new FormControl(this.currentUser.nombre),
-      apellido: new FormControl(this.currentUser.apellido),
+      nombre: new FormControl(this.currentUser.nombre, [ Validators.maxLength(255)]),
+      apellido: new FormControl(this.currentUser.apellido, [ Validators.maxLength(255)]),
       email: new FormControl({ value: this.currentUser.email, disabled: true })
     });
   }
