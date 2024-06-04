@@ -156,4 +156,12 @@ public class controllers {
 
         return new ResponseEntity<>(contenidoRepository.obtenerUrlDeContenido(body), HttpStatus.OK);
     }
+
+    @PostMapping(path = "/desvincular",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> desvincular(@RequestBody Map<String, String> body) {
+        String token = body.get("token");
+        return new ResponseEntity<>(autorizacionRepository.desvincular(token), HttpStatus.NOT_ACCEPTABLE);
+    }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from "../../services/authService/AuthService";
 
 @Component({
@@ -10,21 +10,22 @@ import {AuthService} from "../../services/authService/AuthService";
 export class SeriesComponent implements OnInit {
 
   public series: any
+  public federaciones: any
   user: any;
 
-  constructor(private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
     this.route.data.subscribe(data => {
       this.series = data['series'];
-      console.log(this.series);
+      this.federaciones = data['federaciones'];
     })
   }
 
   verDescripcion(id_contenido: String){
     let ruta: string = `/descripcion/${this.user.id_cliente}/${id_contenido}`;
-    window.location.href = ruta;
+    this.router.navigate([ruta]);
   }
 
 }

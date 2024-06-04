@@ -1764,4 +1764,15 @@ BEGIN
 END;
 go
 
+CREATE OR ALTER PROCEDURE Actualizar_Usuario @nombre VARCHAR(255),
+                                             @apellido VARCHAR(255),
+                                             @id_cliente INT
+AS
+BEGIN
+    UPDATE dbo.Cliente_Usuario
+    SET nombre =@nombre, apellido = @apellido
+    WHERE id_cliente = @id_cliente
+END;
+go
+
 

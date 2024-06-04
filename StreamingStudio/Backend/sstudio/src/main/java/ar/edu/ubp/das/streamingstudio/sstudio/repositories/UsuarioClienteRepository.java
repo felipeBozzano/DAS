@@ -137,4 +137,19 @@ public class UsuarioClienteRepository implements IUsuarioClienteRepository {
         resultado.put("Clic contenido registrado", "ok");
         return resultado;
     }
+
+    public Map<String, String> actualizarUsuario(String nombre, String apellido, int id_cliente) {
+
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("nombre", nombre)
+                .addValue("apellido", apellido)
+                .addValue("id_cliente", id_cliente);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Actualizar_Usuario")
+                .withSchemaName("dbo");
+        jdbcCall.execute(in);
+        Map<String, String> resultado = new HashMap<>();
+        resultado.put("Cliente actualizado", "ok");
+        return resultado;
+    }
 }

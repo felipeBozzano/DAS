@@ -1,26 +1,36 @@
-
 <html>
-  <body>
-    <div class="container-fluid">
-      <div class="row justify-content-center">
-        <app-header [pageTitle]="'Usuario'"></app-header>
-      </div>
-      <div class="row justify-content-center">
-        <app-publicidad-izquierda class="col-2 publicidades" exclusiva="true"></app-publicidad-izquierda>
-        <div class="col-8 card-container">
-            <div class="card" style="width: 18rem;">
-              <div class="card-body">
-                <h5 class="card-title">Mi usuario</h5>
-                <ul>
-                  <li>Nombre: {{currentUser.nombre}}</li>
-                  <li>Apellido: {{currentUser.apellido}}</li>
-                  <li>Email: {{currentUser.email}}</li>
-                </ul>
-              </div>
+<body>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <app-header [pageTitle]="'Usuario'"></app-header>
+  </div>
+  <div class="row justify-content-center">
+    <app-publicidad-izquierda class="col-2 publicidades" exclusiva="true"></app-publicidad-izquierda>
+    <div class="col-8 card-container">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h4 class="card-title">Mi Usuario</h4>
+          <p class="card-title">Pueudes editar nombre y apellido.</p>
+          <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+              <label for="nombre">Nombre:</label>
+              <input type="text" id="nombre" class="form-control" formControlName="nombre">
             </div>
+            <div class="form-group">
+              <label for="apellido">Apellido:</label>
+              <input type="text" id="apellido" class="form-control" formControlName="apellido">
+            </div>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" id="email" class="form-control" formControlName="email" readonly>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </form>
         </div>
-        <app-publicidad-derecha  class="col-2 publicidades" exclusiva="true"></app-publicidad-derecha>
       </div>
     </div>
-  </body>
+    <app-publicidad-derecha class="col-2 publicidades" exclusiva="true"></app-publicidad-derecha>
+  </div>
+</div>
+</body>
 </html>

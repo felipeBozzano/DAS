@@ -1,7 +1,10 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.models.AutorizacionBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.ClienteUsuarioBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -86,6 +89,7 @@ public class ClienteRepository {
     @Transactional
     public List<ClienteUsuarioBean> createUser(ClienteUsuarioBean cliente) {
         SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("usuario", cliente.getUsuario())
                 .addValue("contrasena", cliente.getcontrasena())
                 .addValue("email", cliente.getEmail())
                 .addValue("nombre", cliente.getNombre())
