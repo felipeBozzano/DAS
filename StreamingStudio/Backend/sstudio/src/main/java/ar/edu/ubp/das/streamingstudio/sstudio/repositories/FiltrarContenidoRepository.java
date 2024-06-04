@@ -22,12 +22,37 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
     private JdbcTemplate jdbcTpl;
 
     @Override
-    public List<ContenidoHomeBean> buscarContenidoPorFiltros(int id_cliente, @Nullable String titulo, boolean reciente, boolean destacado, @Nullable String clasificacion, boolean masVisto, @Nullable String genero) {
+    public List<ContenidoHomeBean> buscarContenidoPorFiltros(int id_cliente, @Nullable String titulo,
+                                                             @Nullable String reciente, @Nullable String destacado,
+                                                             @Nullable String clasificacion, @Nullable String masVisto,
+                                                             @Nullable String genero) {
         SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("id_cliente", id_cliente)
-                .addValue("reciente", reciente)
-                .addValue("destacado", destacado)
-                .addValue("mas_visto", masVisto);
+                .addValue("id_cliente", id_cliente);
+
+        if (reciente != null && !reciente.isEmpty())
+            if (reciente.equals("V"))
+                ((MapSqlParameterSource) in).addValue("reciente", true);
+            else
+                ((MapSqlParameterSource) in).addValue("reciente", false);
+        else
+            ((MapSqlParameterSource) in).addValue("reciente", null);
+
+
+        if (destacado != null && !destacado.isEmpty())
+            if (destacado.equals("V"))
+                ((MapSqlParameterSource) in).addValue("destacado", true);
+            else
+                ((MapSqlParameterSource) in).addValue("destacado", false);
+        else
+            ((MapSqlParameterSource) in).addValue("destacado", null);
+
+        if (masVisto != null && !masVisto.isEmpty())
+            if (masVisto.equals("V"))
+                ((MapSqlParameterSource) in).addValue("mas_visto", true);
+            else
+                ((MapSqlParameterSource) in).addValue("mas_visto", false);
+        else
+            ((MapSqlParameterSource) in).addValue("mas_visto", null);
 
         if (titulo != null && !titulo.isEmpty())
             ((MapSqlParameterSource) in).addValue("titulo", titulo);
@@ -121,8 +146,7 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
             director.put("nombre", "Director1");
             director.put("apellido", "Apellido1");
             directores.add(director);
-        }
-        else
+        } else
             directores = resulset;
         return directores;
     }
@@ -142,8 +166,7 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
             actor.put("nombre", "Actor1");
             actor.put("apellido", "Apellido1");
             actores.add(actor);
-        }
-        else
+        } else
             actores = resulset;
         return actores;
     }
@@ -170,7 +193,8 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Series")
                 .withSchemaName("dbo")
-                .returningResultSet("series", BeanPropertyRowMapper.newInstance(SerieBean.class));;
+                .returningResultSet("series", BeanPropertyRowMapper.newInstance(SerieBean.class));
+        ;
         Map<String, Object> out = jdbcCall.execute(in);
         List<SerieBean> series = (List<SerieBean>) out.get("series");
         return series;
