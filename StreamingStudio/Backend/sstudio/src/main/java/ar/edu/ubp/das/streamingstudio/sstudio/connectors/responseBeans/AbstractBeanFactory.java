@@ -21,6 +21,7 @@ public class AbstractBeanFactory {
         beanMap.put("CatalogoBean", CatalogoBean.class);
         beanMap.put("MensajeBean", MensajeBean.class);
         beanMap.put("FederacionDesvinculada", FederacionDesvinculada.class);
+        beanMap.put("ContenidoFiltroResponseBean", ContenidoFiltroResponseBean.class);
     }
 
     public AbstractBean obtenerBean(String beanName) throws InstantiationException, IllegalAccessException {

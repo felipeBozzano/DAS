@@ -1,5 +1,6 @@
 package ar.edu.ubp.das.streamingstudio.sstudio.controllers;
 
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.ContenidoFiltroResponseBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.ContenidoUrlBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
 import ar.edu.ubp.das.streamingstudio.sstudio.repositories.*;
@@ -164,11 +165,20 @@ public class controllers {
     /* ---------------------------------- Buscar contenido por filtros --------------------------------------*/
     /* ----------------------------------------------------------------------------------------------------- */
     @PostMapping(
-            path = "/contenido_por_filtros"
+            path = "/contenido_por_filtros",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
     )
-    public ResponseEntity<List<ContenidoHomeBean>> buscarContenidoPorFiltros(@RequestBody ContenidoFiltroBean body) {
-        System.out.println(body);
-        List<ContenidoHomeBean> contenido = buscar_contenido_repository.buscarContenidoPorFiltros(body.getId_cliente(), body.getTitulo(), body.isReciente(), body.isDestacado(), body.getClasificacion(), body.getMas_visto(), body.getGenero());
+    public ResponseEntity<List<ContenidoHomeBean>> buscarContenidoPorFiltros(@RequestBody ContenidoFiltroResponseBean body) {
+        String genero = "";
+        if (body.getGeneros().getAccion())
+            genero += "accion,";
+        if (body.getGeneros().getComedia())
+            genero += "comedia,";
+        if (body.getGeneros().getDrama())
+            genero += "drama,";
+
+        List<ContenidoHomeBean> contenido = buscar_contenido_repository.buscarContenidoPorFiltros(body.getId_cliente(),
+                body.getTitulo(), body.getReciente(), body.getDestacado(), body.getClasificacion(), body.getMas_visto(), genero);
         return new ResponseEntity<>(contenido, HttpStatus.OK);
     }
 

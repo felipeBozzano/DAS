@@ -1,9 +1,12 @@
+import {IClasificacion} from "./IClasificacion.model";
+import {IGenero} from "./IGenero.model";
+
 export interface IContenido {
   id_cliente: number,
   titulo: string,
-  reciente: boolean,
-  destacado: boolean,
-  mas_visto: boolean,
+  reciente: string,
+  destacado: string,
+  mas_visto: string,
   clasificacion: string,
-  genero: string
+  generos: IGenero
 }

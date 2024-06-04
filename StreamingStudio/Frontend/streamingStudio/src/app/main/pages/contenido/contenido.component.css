@@ -100,13 +100,12 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: lightskyblue; /* Fondo gris claro */
+  background-color: lightskyblue;
 }
 
 .register-form {
-  margin-top: 21px;
-  margin-bottom: 83px;
-  width: 300px; /* Ancho de la tarjeta */
+  width: 100%;
+  max-width: 800px;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -118,39 +117,64 @@ body, html {
   margin-bottom: 20px;
 }
 
-.register-form .form-group {
+.form-group {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   margin-bottom: 15px;
 }
 
-.register-form .form-group label {
-  display: block;
+.form-group.horizontal-group .form-item {
+  flex: 1 1 25%;
+  display: flex;
+  flex-direction: column;
+  margin-right: 15px;
+}
+
+.form-group.vertical-group {
+  flex-direction: column;
+}
+
+.form-group.vertical-group .form-item {
+  margin-bottom: 10px;
+}
+
+.form-item label {
   margin-bottom: 5px;
 }
 
-.register-form .form-group input {
-  width: 100%; /* Ancho completo */
+.form-item input[type="text"],
+.form-item input[type="checkbox"] {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
 }
 
-.register-form button {
-  width: 100px; /* Ancho completo */
+.form-item input[type="checkbox"] {
+  width: auto;
+}
+
+button {
   padding: 10px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff; /* Color de fondo del botón */
-  color: #fff; /* Color del texto del botón */
+  background-color: #007bff;
+  color: #fff;
   cursor: pointer;
+  align-self: flex-end;
 }
 
-.register-form button:hover {
-  background-color: #0056b3; /* Color de fondo del botón al pasar el ratón */
+button:hover {
+  background-color: #0056b3;
+}
+
+.hidden-label {
+  visibility: hidden;
 }
 
 .title-container {
-  text-align: center; /* Para centrar el título */
+  text-align: center;
   margin-bottom: 30px;
   color: #0056b3;
   font-family: "Arial", sans-serif;
