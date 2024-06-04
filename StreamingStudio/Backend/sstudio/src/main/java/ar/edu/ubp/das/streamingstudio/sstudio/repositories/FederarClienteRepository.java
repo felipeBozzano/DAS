@@ -114,7 +114,6 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         }else{
             body.put("url_de_redireccion", url_de_redireccion);
             body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
-//          body.put("id_cliente", String.valueOf(id_cliente));
             body.put("tipo_de_transaccion", tipo_transaccion);
         }
         FederacionBean bean = (FederacionBean) conector.execute_post_request(conexion + "/obtener_codigo_de_transaccion", body, "FederacionBean");

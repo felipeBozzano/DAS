@@ -70,8 +70,19 @@ public class ReproducirContenidoRepository implements IReproducirContenidoReposi
     public SesionBean obtenerSesion(Map<String, String> conexion_plataforma, String token_de_usuario, AbstractConnector conector) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Map<String, String> body = new HashMap<>();
 
-        body.put("token_de_partner", conexion_plataforma.get("token_de_servicio"));
-        body.put("token_de_usuario", token_de_usuario);
+        if (conexion_plataforma.get("protocolo_api").equals("SOAP")) {
+            String message = """
+                    <ws:obtenerSesion xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
+                        <token_de_partner>%s</token_de_partner>
+                        <token_de_usuario>%s</token_de_usuario>
+                    </ws:obtenerSesion>""".formatted(conexion_plataforma.get("token_de_servicio"), token_de_usuario);
+            body.put("message", message);
+            body.put("web_service", "obtenerSesion");
+        } else {
+            body.put("token_de_partner", conexion_plataforma.get("token_de_servicio"));
+            body.put("token_de_usuario", token_de_usuario);
+        }
+
         SesionBean sesion = (SesionBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/crear_sesion", body, "SesionBean");
 
         return sesion;
@@ -81,9 +92,21 @@ public class ReproducirContenidoRepository implements IReproducirContenidoReposi
     public ContenidoUrlBean obtenerUrlDeContenido(Map<String, String> conexion_plataforma, String token_de_sesion, String id_contenido, AbstractConnector conector) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         Map<String, String> body = new HashMap<>();
 
-        body.put("token_de_servicio", conexion_plataforma.get("token_de_servicio"));
-        body.put("token_de_sesion", token_de_sesion);
-        body.put("id_contenido", id_contenido);
+        if (conexion_plataforma.get("protocolo_api").equals("SOAP")) {
+            String message = """
+                    <ws:obtenerUrlDeContenido xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
+                        <token_de_partner>%s</token_de_partner>
+                        <token_de_sesion>%s</token_de_sesion>
+                        <id_contenido>%s</id_contenido>
+                    </ws:obtenerUrlDeContenido>""".formatted(conexion_plataforma.get("token_de_servicio"), token_de_sesion, id_contenido);
+            body.put("message", message);
+            body.put("web_service", "obtenerUrlDeContenido");
+        } else {
+            body.put("token_de_partner", conexion_plataforma.get("token_de_servicio"));
+            body.put("token_de_sesion", token_de_sesion);
+            body.put("id_contenido", id_contenido);
+        }
+
         ContenidoUrlBean contenidoUrl = (ContenidoUrlBean) conector.execute_post_request(conexion_plataforma.get("url_api") + "/obtener_url_de_contenido", body, "ContenidoUrlBean");
 
         return contenidoUrl;

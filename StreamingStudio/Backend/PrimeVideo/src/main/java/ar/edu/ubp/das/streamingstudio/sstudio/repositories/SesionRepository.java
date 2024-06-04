@@ -22,7 +22,7 @@ public class SesionRepository {
         Map<String, String> respuesta = new HashMap<>();
 
         try {
-            String token_de_partner = body.get("token_de_servicio");
+            String token_de_partner = body.get("token_de_partner");
             String token_de_usuario = body.get("token_de_usuario");
 
             Map<String, Integer> ids = obtenerIds(token_de_partner, token_de_usuario);

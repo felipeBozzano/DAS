@@ -274,11 +274,10 @@ public class StarPlusWS {
 
                 return """
                         {
-                        \tsesion: %s,
-                        \tcodigoRespuesta: %s,
-                        \tmensajeRespuesta: %s
-                        }
-                        """.formatted(sesion_string, "200", "La sesion fue creada");
+                        \t"sesion": "%s",
+                        \t"codigoRespuesta": "200",
+                        \t"mensajeRespuesta": "La sesion fue creada"
+                        }""".formatted(sesion_string);
 
             } catch (Exception e) {
                 return """
@@ -334,7 +333,7 @@ public class StarPlusWS {
                     {
                         "codigoRespuesta": "200",
                         "mensajeRespuesta": "Sesion correcta",
-                        "url_de_contenido": "%s"
+                        "url": "%s"
                     }""".formatted(url_de_contenido);
 
         } else {
