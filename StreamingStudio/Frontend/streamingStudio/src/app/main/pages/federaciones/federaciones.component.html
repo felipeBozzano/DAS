@@ -24,7 +24,7 @@
         <h2>Plataformas Federadas</h2>
         <div class="platform-list">
           <div class="platform-item" *ngFor="let plataforma of plataformas_federadas"
-               (click)="finalizarFederacion(plataforma)">
+               (click)="desvincular(plataforma)">
             <img [src]="plataforma.url_imagen" alt="Plataforma {{ plataforma.id_plataforma }}" class="img-cont">
           </div>
         </div>

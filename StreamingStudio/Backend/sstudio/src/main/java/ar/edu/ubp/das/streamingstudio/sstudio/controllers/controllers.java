@@ -120,6 +120,17 @@ public class controllers {
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
+    @PostMapping(
+            path = "/desvincular",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> desvincular(@RequestBody Map<String, String> body) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        int id_plataforma = Integer.parseInt(body.get("id_plataforma"));
+        int id_cliente = Integer.parseInt(body.get("id_cliente"));
+
+        return new ResponseEntity<>(federar_clienteRepository.desvincular(id_plataforma, id_cliente), HttpStatus.OK);
+    }
+
 //    /* ----------------------------------------------------------------------------------------------------- */
 //    /* --------------------------------------------  Facturacion  ------------------------------------------ */
 //    /* ----------------------------------------------------------------------------------------------------- */

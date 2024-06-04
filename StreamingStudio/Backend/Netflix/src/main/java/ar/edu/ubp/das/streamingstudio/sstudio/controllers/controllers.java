@@ -156,4 +156,13 @@ public class controllers {
 
         return new ResponseEntity<>(contenidoRepository.obtenerUrlDeContenido(body), HttpStatus.OK);
     }
+
+    @PostMapping(path = "/desvincular",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> obtenerSesion(@RequestBody Map<String, String> body) {
+            return new ResponseEntity<>(partnerRepository.respuestaPartnerIncorrecto(), HttpStatus.NOT_ACCEPTABLE);
+
+        return new ResponseEntity<>(sesionRepository.obtenerSesion(body), HttpStatus.OK);
+    }
 }

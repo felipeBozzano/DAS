@@ -131,4 +131,12 @@ export class StreamingStudioResources extends Resource{
     responseBodyType: ResourceResponseBodyType.Json
   })
   clic_contenido!: IResourceMethodObservable<any, any>;
+
+  @ResourceAction({
+    method: ResourceRequestMethod.Post,
+    path: `/desvincular`,
+    requestBodyType: ResourceRequestBodyType.JSON,
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  desvincular!: IResourceMethodObservable<any, any>;
 }

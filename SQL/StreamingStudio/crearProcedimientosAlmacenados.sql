@@ -1755,3 +1755,13 @@ BEGIN
     WHERE c.clasificacion = 'P'
 END;
 go
+
+CREATE OR ALTER PROCEDURE desvincular @token VARCHAR(255)
+AS
+BEGIN
+    DELETE Federacion
+    WHERE Federacion.token = @token
+END;
+go
+
+

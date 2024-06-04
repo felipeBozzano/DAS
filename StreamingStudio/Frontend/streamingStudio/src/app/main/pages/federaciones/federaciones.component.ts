@@ -81,13 +81,13 @@ export class FederacionesComponent implements OnInit {
     })
   }
 
-  finalizarFederacion(plataforma: any){
+  desvincular(plataforma: any){
     console.log(plataforma);
     const federacionAFinalizar: any = {
-        codigo_de_transaccion: "codigo_de_transaccion_1",
-        id_cliente_plataforma: "id_cliente_plataforma_1"
+      id_cliente: this.id_cliente,
+      id_plataforma: plataforma.id_plataforma,
     }
-    this.streamingStudioResources.finalizar_federacion(federacionAFinalizar, plataforma.id_plataforma, this.id_cliente).subscribe((response) => {
+    this.streamingStudioResources.desvincular(federacionAFinalizar).subscribe((response) => {
       console.log(response);
       this.router.navigate(['/federaciones'])
     })

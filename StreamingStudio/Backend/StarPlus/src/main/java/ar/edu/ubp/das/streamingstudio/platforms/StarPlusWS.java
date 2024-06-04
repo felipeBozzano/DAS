@@ -469,4 +469,38 @@ public class StarPlusWS {
             return partner_no_verificado;
         }
     }
+
+    @WebMethod()
+    @WebResult(name = "desvincular")
+    public String desvincular(@WebParam (name = "token_de_servicio") String token_de_servicio) throws ClassNotFoundException, SQLException {
+
+        Connection conn;
+        CallableStatement stmt;
+        int rs;
+        Class.forName(driver_sql);
+        conn = DriverManager.getConnection(sql_conection_string, sql_user, sql_pass);
+        conn.setAutoCommit(true);
+
+        Map<String, String> respuesta = new HashMap<>();
+
+            stmt = conn.prepareCall("{CALL dbo.desvincular(?)}");
+            stmt.setString("token", token_de_servicio);
+            rs = stmt.executeUpdate();
+
+            if(rs == 1) {
+                return """
+                        {
+                        \t"mensaje": "%s",
+                        \t"codigo": "%s"
+                        }
+                        """.formatted("Federacion desvinculada con exito", "200");
+            }else{
+                return """
+                        {
+                        \t"mensaje": "%s",
+                        \t"codigo": "%s"
+                        }
+                        """.formatted("Fallo la desvinculacion", "500");
+        }
+    }
 }

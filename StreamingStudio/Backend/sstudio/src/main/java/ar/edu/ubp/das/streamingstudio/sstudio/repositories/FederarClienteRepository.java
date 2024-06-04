@@ -3,6 +3,7 @@ package ar.edu.ubp.das.streamingstudio.sstudio.repositories;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.FederacionBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.FederacionDesvinculada;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -190,5 +191,45 @@ public class FederarClienteRepository implements IFederarClienteRepository {
                 .withProcedureName("actualizarUrlToken")
                 .withSchemaName("dbo");
         jdbcCall.execute(in);
+    }
+
+
+    public Map<String, String> desvincular(int id_plataforma ,int id_cliente) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+
+        Map<String, String> conexion_plataforma = obtenerInformacionDeConexionAPlataforma(id_plataforma);
+        AbstractConnector conector = conectorFactory.crearConector(conexion_plataforma.get("protocolo_api"));
+        Map<String, String> body = new HashMap<>();
+        String url = conexion_plataforma.get("url_api") + "/desvincular";
+
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_cliente", id_cliente)
+                .addValue("id_plataforma", id_plataforma);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Obtener_token")
+                .withSchemaName("dbo");
+        Map<String, Object> out = jdbcCall.execute(in);
+        List<Map<String,String>> token_de_servicio = (List<Map<String,String>>) out.get("#result-set-1");
+        Map<String, String> token_map = token_de_servicio.getFirst();
+        String token = token_map.get("token");
+
+        if (conexion_plataforma.get("protocolo_api").equals("SOAP")) {
+            String message = """
+                    <ws:desvincular xmlns:ws="http://platforms.streamingstudio.das.ubp.edu.ar/" >
+                        <token_de_servicio>%s</token_de_servicio>
+                    </ws:desvincular>""".formatted(token);
+            body.put("message", message);
+            body.put("web_service", "desvincular");
+        }else{
+            body.put("token", "");
+        }
+        FederacionDesvinculada bean = (FederacionDesvinculada) conector.execute_post_request(url, body, "FederacionDesvinculada");
+
+        in = new MapSqlParameterSource()
+            .addValue("token", token);
+            jdbcCall = new SimpleJdbcCall(jdbcTpl)
+            .withProcedureName("desvincular")
+            .withSchemaName("dbo");
+        jdbcCall.execute(in);
+        return body;
     }
 }
