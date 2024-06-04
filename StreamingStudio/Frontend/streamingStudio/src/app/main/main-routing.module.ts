@@ -25,8 +25,8 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent, canActivate: [AuthGuard], resolve: {home: HomeResolver}},
   {path: 'register', component: RegisterComponent},
   {path: 'contenido', component: ContenidoComponent, canActivate: [AuthGuard]},
-  {path: 'series', component: SeriesComponent, canActivate: [AuthGuard], resolve: {series: SeriesResolver} },
-  {path: 'peliculas', component: PeliculasComponent, canActivate: [AuthGuard], resolve: {peliculas: PeliculasResolver}},
+  {path: 'series', component: SeriesComponent, canActivate: [AuthGuard], resolve: {series: SeriesResolver, federaciones: ListadoFederacionesResolver} },
+  {path: 'peliculas', component: PeliculasComponent, canActivate: [AuthGuard], resolve: {peliculas: PeliculasResolver, federaciones: ListadoFederacionesResolver}},
   {path: 'mi-usuario/:id_cliente', component: UsuarioComponent, canActivate: [AuthGuard]},
   {path: 'usuario/:id_cliente/finalizar_federacion/:id_plataforma', component: UsuarioFederacionComponent},
   {
