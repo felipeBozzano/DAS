@@ -305,6 +305,66 @@
           <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="514585342108001366" datatype="html">
+        <source>Yes</source>
+        <source>Si</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+        <note priority="1" from="description">Si</note>
+      </trans-unit>
+      <trans-unit id="8713073708350341933" datatype="html">
+        <target>Search</target>
+        <source>Buscar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="157911498151675956" datatype="html">
+        <target>Outstanding</target>
+        <source>Destacado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7545104110348041963" datatype="html">
+        <target>Drama</target>
+        <source>Drama</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">Drama</note>
+      </trans-unit>
+      <trans-unit id="1279538815662451526" datatype="html">
+        <target>Action</target>
+        <source>Acción</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <note priority="1" from="description">Acción</note>
+      </trans-unit>
+      <trans-unit id="7444389376942611924" datatype="html">
+        <target>Comedy</target>
+        <source>Comedia</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <note priority="1" from="description">Comedia</note>
+      </trans-unit>
       <trans-unit id="6980671082860187221" datatype="html">
         <target>Advanced search</target>
         <source>Búsqueda Avanzada</source>

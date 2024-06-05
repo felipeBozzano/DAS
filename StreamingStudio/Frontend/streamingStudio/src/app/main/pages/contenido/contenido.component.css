@@ -37,6 +37,21 @@ body, html {
   transition: transform 0.3s;
 }
 
+.card-sin-contenido {
+  padding: 10px;
+  margin-top: 25px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: palevioletred;
+  max-width: 800px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.contenido-no-encontrado {
+  text-align: center;
+}
+
 .card:hover {
   transform: scale(1.05);
 }

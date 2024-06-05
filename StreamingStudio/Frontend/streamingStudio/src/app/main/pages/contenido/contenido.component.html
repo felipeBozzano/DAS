@@ -14,53 +14,53 @@
       <div *ngIf="advancedSearchVisible" id="advanced-search-form">
         <div class="register-container">
           <div class="register-form">
-            <h2 class="title-container" i18n="Búsqueda Avanzada">Búsqueda Avanzada</h2>
+            <h2 class="title-container" i18n>Búsqueda Avanzada</h2>
             <form (ngSubmit)="onSubmit()" [formGroup]="formContenido">
               <div class="form-group horizontal-group">
                 <div class="form-item">
-                  <label for="titulo" i18n="Título">Título:</label>
+                  <label for="titulo" i18n>Título:</label>
                   <input type="text" id="titulo" name="titulo" formControlName="titulo">
                 </div>
 
                 <div class="form-group horizontal-group">
                   <div class="form-item">
-                    <label i18n="Género">Género</label>
-                      <label><input type="checkbox" formControlName="drama" i18n="Drama"> Drama</label>
-                      <label><input type="checkbox" formControlName="accion" i18n="Acción"> Acción</label>
-                      <label><input type="checkbox" formControlName="comedia" i18n="Comedia"> Comedia</label>
+                    <label i18n>Género</label>
+                    <label><input type="checkbox" formControlName="drama" placeholder="Drama" i18n-placeholder="Drama"> Drama</label>
+                    <label><input type="checkbox" formControlName="accion" placeholder="Acción" i18n-placeholder="Acción"> Acción</label>
+                    <label><input type="checkbox" formControlName="comedia" placeholder="Comedia" i18n-placeholder="Comedia"> Comedia</label>
                   </div>
                 </div>
 
                 <div class="form-group horizontal-group">
                   <div class="form-item">
-                    <label i18n="Clasificacion">Clasificacion</label>
-                    <label><input type="radio" [checked]="formContenido.get('clasificacion')?.value === 'P'" (click)="clasificacionButton('P')" i18n="Peliculas"> Peliculas</label>
-                    <label><input type="radio" [checked]="formContenido.get('clasificacion')?.value === 'S'" (click)="clasificacionButton('S')" i18n="Series"> Series</label>
+                    <label i18n>Clasificacion</label>
+                    <label><input type="radio" [checked]="formContenido.get('clasificacion')?.value === 'P'" (click)="clasificacionButton('P')" placeholder="Peliculas" i18n-placeholder="Peliculas"> Peliculas</label>
+                    <label><input type="radio" [checked]="formContenido.get('clasificacion')?.value === 'S'" (click)="clasificacionButton('S')" placeholder="Series" i18n-placeholder="Series"> Series</label>
                   </div>
                 </div>
               </div>
 
               <div class="form-group horizontal-group">
                 <div class="form-item">
-                  <label>Reciente</label>
-                  <label><input type="radio" [checked]="formContenido.get('reciente')?.value === 'V'" (click)="recienteButton('V')" i18n="Si"> Si</label>
-                  <label><input type="radio" [checked]="formContenido.get('reciente')?.value === 'F'" (click)="recienteButton('F')" i18n="No"> No</label>
+                  <label i18n>Reciente</label>
+                  <label><input type="radio" [checked]="formContenido.get('reciente')?.value === 'V'" (click)="recienteButton('V')" placeholder="Si" i18n-placeholder="Si"> Si</label>
+                  <label><input type="radio" [checked]="formContenido.get('reciente')?.value === 'F'" (click)="recienteButton('F')" placeholder="No" i18n-placeholder="No"> No</label>
                 </div>
 
                 <div class="form-item">
-                  <label>Destacado</label>
-                  <label><input type="radio" [checked]="formContenido.get('destacado')?.value === 'V'" (click)="destacadoButton('V')" i18n="Si"> Si</label>
-                  <label><input type="radio" [checked]="formContenido.get('destacado')?.value === 'F'" (click)="destacadoButton('F')" i18n="No"> No</label>
+                  <label i18n>Destacado</label>
+                  <label><input type="radio" [checked]="formContenido.get('destacado')?.value === 'V'" (click)="destacadoButton('V')" placeholder="Si" i18n-placeholder="Si"> Si</label>
+                  <label><input type="radio" [checked]="formContenido.get('destacado')?.value === 'F'" (click)="destacadoButton('F')" placeholder="No" i18n-placeholder="No"> No</label>
                 </div>
 
                 <div class="form-item">
-                  <label>Mas Visto</label>
-                  <label><input type="radio" [checked]="formContenido.get('mas_visto')?.value === 'V'" (click)="masVistoButton('V')" i18n="Si"> Si</label>
-                  <label><input type="radio" [checked]="formContenido.get('mas_visto')?.value === 'F'" (click)="masVistoButton('F')" i18n="No"> No</label>
+                  <label i18n>Mas Visto</label>
+                  <label><input type="radio" [checked]="formContenido.get('mas_visto')?.value === 'V'" (click)="masVistoButton('V')" placeholder="Si" i18n-placeholder="Si"> Si</label>
+                  <label><input type="radio" [checked]="formContenido.get('mas_visto')?.value === 'F'" (click)="masVistoButton('F')" placeholder="No" i18n-placeholder="No"> No</label>
                 </div>
 
                 <div class="form-item">
-                  <button type="submit" id="buscar" i18n="Buscar">Buscar</button>
+                  <button type="submit" id="buscar" i18n>Buscar</button>
                 </div>
               </div>
 
@@ -71,7 +71,7 @@
 
 
       <div class="contenidos" *ngIf="contenido && contenido.length > 0">
-        <h2 class="title" i18n="Contenido">Contenido</h2>
+        <h2 class="title" i18n>Contenido</h2>
         <div class="fila-contenido">
           <div *ngFor="let contenido of contenido; let i = index" class="contenido-item">
             <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont"
@@ -80,9 +80,9 @@
         </div>
       </div>
 
-      <div class="card" *ngIf="contenido && contenido.length === 0 && isVisible">
-        <div class="card-title" i18n="No se encontró contenido asociado">No se encontró contenido asociado
-          <button class="close-btn row" (click)="closeCard()">Cerrar</button>
+      <div class="card-sin-contenido" *ngIf="contenido && contenido.length === 0 && isVisible">
+        <div class="contenido-no-encontrado">
+          <b i18n>No se encuentra contenido con los filtros seleccionados</b>
         </div>
       </div>
     </div>
