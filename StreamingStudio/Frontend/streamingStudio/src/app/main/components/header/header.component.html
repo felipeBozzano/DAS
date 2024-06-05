@@ -1,4 +1,5 @@
 <header class="header-container" *ngIf="isAuthenticated(); else unauthenticated">
+  <app-back-arrow></app-back-arrow>
   <div class="logo">
     <img (click)="navigateToHome()" src="assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
   </div>
