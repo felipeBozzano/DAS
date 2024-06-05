@@ -3,7 +3,7 @@ import {AuthService} from '../../services/authService/AuthService';
 import {ActivatedRoute} from '@angular/router';
 import * as localForage from 'localforage';
 import {StreamingStudioResources} from "../../api/resources/streaming-studio.services";
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {DomSanitizer, SafeHtml, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-descripcion',
@@ -33,7 +33,6 @@ export class DescripcionComponent implements OnInit {
     })
     this.route.data.subscribe(data => {
       this.descripcion = data['descripcion'];
-      console.log("this.descripcion: ", this.descripcion);
     })
   }
 
@@ -43,23 +42,18 @@ export class DescripcionComponent implements OnInit {
       id_plataforma: id_plataforma,
       id_contenido: this.id_contenido
     }
-    console.log(clic);
     this.streamingStudioResources.clic_contenido(clic).subscribe(response =>{
-      console.log(response);
     })
-    console.log("Ejecutando obtenerUrlDeContenido")
     const body: any = {
       id_cliente: this.id_cliente,
       id_contenido: this.id_contenido,
       id_plataforma: id_plataforma,
     }
     console.log("Body: ", body)
+
     this.streamingStudioResources.obtener_url_de_contenido(body).subscribe((response) => {
-      this.video_tag_HTML = this.sanitizer.bypassSecurityTrustHtml(response.url);
       this.video_flag = true;
-      console.log("video_flag: ", this.video_flag)
-      console.log("video_tag_html: ", this.video_tag_HTML)
+      this.video_tag_HTML = this.sanitizer.bypassSecurityTrustResourceUrl(response.url);
     })
   }
-
 }
