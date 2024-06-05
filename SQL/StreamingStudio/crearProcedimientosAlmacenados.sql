@@ -1774,3 +1774,12 @@ BEGIN
     WHERE id_cliente = @id_cliente
 END;
 go
+
+CREATE OR ALTER PROCEDURE Eliminar_Usuario @id_cliente INT
+AS
+BEGIN
+    UPDATE dbo.Cliente_Usuario
+    SET valido = 0
+    WHERE id_cliente = @id_cliente
+END;
+go

@@ -70,6 +70,7 @@ public class controllers {
             respuesta.put("nombre", String.valueOf(info_usuario.get("nombre")));
             respuesta.put("apellido", String.valueOf(info_usuario.get("apellido")));
             respuesta.put("email", String.valueOf(info_usuario.get("email")));
+            respuesta.put("valido", String.valueOf(info_usuario.get("valido")));
             respuesta.put("mensaje", "Usuario existente");
         }else {
             respuesta.put("mensaje", "Usuario no existente");
@@ -89,6 +90,15 @@ public class controllers {
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
+    @PutMapping(
+            path = "/eliminar_usuario",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> borrarCliente(@RequestBody ClienteUsuarioBean body) {
+        int id_usuario = body.getId_cliente();
+        Map<String, String> respuesta = user_repository.eliminarUsuario(id_usuario);
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
 
 
     @GetMapping(

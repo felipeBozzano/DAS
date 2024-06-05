@@ -52,6 +52,7 @@ public class controllers {
             respuesta.put("nombre", String.valueOf(info_usuario.get("nombre")));
             respuesta.put("apellido", String.valueOf(info_usuario.get("apellido")));
             respuesta.put("email", String.valueOf(info_usuario.get("email")));
+            respuesta.put("valido", String.valueOf(info_usuario.get("valido")));
             respuesta.put("mensaje", "Usuario existente");
         } else {
             respuesta.put("mensaje", "Usuario no existente");

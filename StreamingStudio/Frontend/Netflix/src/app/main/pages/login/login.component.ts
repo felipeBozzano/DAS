@@ -51,7 +51,7 @@ export class LoginComponent {
           (response) => {
             console.log("response: ", response);
             // Si la respuesta es exitosa, redirige al home
-            if (response.mensaje === 'Usuario existente') {
+            if (response.valido == "true") {
               this.authService.login(response);
               this.showError = false;
               this.route.queryParams.subscribe(params => {

@@ -152,4 +152,17 @@ public class UsuarioClienteRepository implements IUsuarioClienteRepository {
         resultado.put("Cliente actualizado", "ok");
         return resultado;
     }
+
+    public Map<String, String> eliminarUsuario(int id_cliente) {
+
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_cliente", id_cliente);
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                .withProcedureName("Eliminar_Usuario")
+                .withSchemaName("dbo");
+        jdbcCall.execute(in);
+        Map<String, String> resultado = new HashMap<>();
+        resultado.put("Cliente borrado con exito", "ok");
+        return resultado;
+    }
 }

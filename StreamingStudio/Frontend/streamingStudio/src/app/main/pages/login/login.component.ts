@@ -37,7 +37,9 @@ export class LoginComponent {
             const clienteId = response.id_cliente;
             this.routeHome = `/home/${clienteId}`;
             // Si la respuesta es exitosa, redirige al home
-            if (response.mensaje === 'Usuario existente') {
+            console.log("response.valido: ", response.valido)
+            console.log("typeof response.valido: ", typeof response.valido);
+            if (response.valido == "true") {
               this.authService.login(response);
               this.showError = false;
               // obtengo las publicidades
