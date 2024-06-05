@@ -70,17 +70,17 @@
       </div>
 
 
-      <div class="contenidos" *ngIf="contenido && contenido.length > 0">
+      <div class="row" *ngIf="contenido && uniqueContenido.length > 0">
         <h2 class="title" i18n>Contenido</h2>
         <div class="fila-contenido">
-          <div *ngFor="let contenido of contenido; let i = index" class="contenido-item">
+          <div *ngFor="let contenido of uniqueContenido; let i = index" class="contenido-item">
             <img [src]="contenido.url_imagen" (click)="navigateTo(contenido.id_contenido)" class="img-cont"
                  alt="Busqueda Avanzada">
           </div>
         </div>
       </div>
 
-      <div class="card-sin-contenido" *ngIf="contenido && contenido.length === 0 && isVisible">
+      <div class="card-sin-contenido row" *ngIf="contenido && uniqueContenido.length === 0 && isVisible">
         <div class="contenido-no-encontrado">
           <b i18n>No se encuentra contenido con los filtros seleccionados</b>
         </div>
