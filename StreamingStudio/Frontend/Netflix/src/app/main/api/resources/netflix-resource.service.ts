@@ -8,7 +8,6 @@ import {IVerificacionAutorizacionResponseModel} from '../models/IVerificacionAut
 import {IAutorizacionModel} from '../models/IAutorizacion.model';
 import {INuevaAutorizacionModel} from '../models/INuevaAutorizacion.model';
 
-
 @Injectable()
 @ResourceParams({
   pathPrefix: `${environment.apiUrl}/netflix`
@@ -32,9 +31,8 @@ export class NetflixResourceService extends Resource{
   registro!: IResourceMethodObservable<IUser,ILoginResponse>;
 
   @ResourceAction({
-    method: ResourceRequestMethod.Post,
+    method: ResourceRequestMethod.Get,
     path: '/verificar_autorizacion',
-    requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
   verificar_autorizacion!: IResourceMethodObservable<{codigo_de_transaccion: string}, IVerificacionAutorizacionResponseModel>;

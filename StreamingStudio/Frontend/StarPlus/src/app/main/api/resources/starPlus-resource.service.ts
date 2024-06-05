@@ -4,14 +4,16 @@ import { environment } from 'src/environments/environment';
 import {IUser} from '../models/IUser.model';
 import {ILogin} from '../models/login.model';
 import {ILoginResponse} from '../models/ILoginResponse.model';
-
+import {IVerificacionAutorizacionResponseModel} from '../models/IVerificacionAutorizacionResponse.model';
+import {IAutorizacionModel} from '../models/IAutorizacion.model';
+import {INuevaAutorizacionModel} from '../models/INuevaAutorizacion.model';
 
 
 @Injectable()
 @ResourceParams({
   pathPrefix: `${environment.apiUrl}/start_plus`
 })
-export class Star_plusResourceService extends Resource{
+export class StarPlusResourceService extends Resource{
 
   @ResourceAction({
     method: ResourceRequestMethod.Post,
@@ -19,7 +21,7 @@ export class Star_plusResourceService extends Resource{
     requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  login!: IResourceMethodObservable<any, any>;
+  login!: IResourceMethodObservable<ILogin, ILoginResponse>;
 
   @ResourceAction({
     method: ResourceRequestMethod.Post,
@@ -30,11 +32,18 @@ export class Star_plusResourceService extends Resource{
   registro!: IResourceMethodObservable<IUser,ILoginResponse>;
 
   @ResourceAction({
+    method: ResourceRequestMethod.Get,
+    path: '/verificar_autorizacion',
+    responseBodyType: ResourceResponseBodyType.Json
+  })
+  verificar_autorizacion!: IResourceMethodObservable<{codigo_de_transaccion: string}, IVerificacionAutorizacionResponseModel>;
+
+  @ResourceAction({
     method: ResourceRequestMethod.Post,
     path: '/crear_autorizacion',
     requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  crear_autorizacion!: IResourceMethodObservable<any, any>;
+  crear_autorizacion!: IResourceMethodObservable<INuevaAutorizacionModel, IAutorizacionModel>;
 
 }

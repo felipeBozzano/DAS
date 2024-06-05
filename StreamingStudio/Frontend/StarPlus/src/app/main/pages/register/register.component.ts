@@ -12,7 +12,7 @@ import {
 import {IUser} from '../../api/models/IUser.model';
 import {AuthService} from "../../services/authService/AuthService";
 import {INuevaAutorizacionModel} from "../../api/models/INuevaAutorizacion.model";
-import {Star_plusResourceService} from '../../api/resources/star_plus-resource.service';
+import {StarPlusResourceService} from '../../api/resources/starPlus-resource.service';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +28,7 @@ export class RegisterComponent {
   constructor(private router: Router,
               private _fb: FormBuilder,
               private authService: AuthService,
-              private netflixResourceService: Star_plusResourceService,
+              private starplusResourceService: StarPlusResourceService,
               private route: ActivatedRoute) {
 
     function strongPasswordValidator(minLength: number): ValidatorFn {
@@ -96,7 +96,7 @@ export class RegisterComponent {
       };
       console.log("IUser: ", user);
 
-      this.netflixResourceService.registro(user).subscribe(
+      this.starplusResourceService.registro(user).subscribe(
         (response) => {
           console.log("ILoginResponse: ", response);
 
@@ -113,7 +113,7 @@ export class RegisterComponent {
             }
             console.log("Body para autorizacion: ", body);
 
-            this.netflixResourceService.crear_autorizacion(body).subscribe(
+            this.starplusResourceService.crear_autorizacion(body).subscribe(
               (response) => {
                 console.log("IAutorizacionModel", response);
                 window.location.href = response.url_de_redireccion + "?codigo_de_transaccion=" + response.codigo_de_transaccion;

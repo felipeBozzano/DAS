@@ -53,6 +53,7 @@ public class controllers {
             respuesta.put("apellido", String.valueOf(info_usuario.get("apellido")));
             respuesta.put("email", String.valueOf(info_usuario.get("email")));
             respuesta.put("mensaje", "Usuario logueado");
+            respuesta.put("valido", String.valueOf(info_usuario.get("valido")));
         } else {
             respuesta.put("mensaje", "Usuario no existente");
         }

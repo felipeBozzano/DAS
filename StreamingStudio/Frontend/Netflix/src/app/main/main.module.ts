@@ -22,6 +22,8 @@ import {NetflixResourceService} from './api/resources/netflix-resource.service';
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [NetflixResourceService]
+  providers: [
+    NetflixResourceService
+  ]
 })
 export class MainModule { }
