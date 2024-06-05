@@ -17,13 +17,13 @@
               <h3>{{ descripcion.infoContenido.titulo }}</h3>
               <p>{{ descripcion.infoContenido.descripcion }}</p>
               <p>Género: {{ descripcion.genero.descripcion }}</p>
-              <h4>Directores</h4>
+              <h4 i18n="Directores">Directores</h4>
               <ul>
-                <li *ngFor="let director of descripcion.directores">
+                <li *ngFor="let director of descripcion.directores" i18n="{{ director.nombre }} {{ director.apellido }}">
                   {{ director.nombre }} {{ director.apellido }}
                 </li>
               </ul>
-              <h4>Actores</h4>
+              <h4 i18n="Actores">Actores</h4>
               <ul>
                 <li *ngFor="let actor of descripcion.actores">
                   {{ actor.nombre }} {{ actor.apellido }}

@@ -43,4 +43,17 @@ export class UsuarioComponent implements OnInit {
       })
     }
   }
+
+  eliminarUsuario(){
+    console.log(this.currentUser.id_cliente)
+    const body = {
+      id_cliente: this.currentUser.id_cliente
+    }
+    this.streamingStudioResources.eliminar_usuario(body).subscribe(response =>{
+      if(response.mensaje = "Cliente borrado con exito"){
+        window.location.href = "http:/localhos:4200";
+      }
+      console.log(response)
+    })
+  }
 }

@@ -1,21 +1,22 @@
 <header class="header-container" *ngIf="isAuthenticated(); else unauthenticated">
+  <app-back-arrow></app-back-arrow>
   <div class="logo">
     <img (click)="navigateToHome()" src="assets/StreamingStudioBlancoLogo.svg" alt="Logo de Streaming Studio">
   </div>
-  <div class="header-title">
+  <div class="header-title" i18n>
     {{ pageTitle }}
   </div>
   <div class="menu-toggle" (click)="toggleMenu()">☰</div>
   <div class="nav-buttons" [ngClass]="{ 'show': menuActive }">
-    <button (click)="navigateTo('series')">Series</button>
-    <button (click)="navigateTo('peliculas')">Películas</button>
-    <button (click)="navigateTo('contenido')">Búsqueda Avanzada</button>
+    <button (click)="navigateTo('series')" i18n>Series</button>
+    <button (click)="navigateTo('peliculas')" i18n>Películas</button>
+    <button (click)="navigateTo('contenido')" i18n>Búsqueda Avanzada</button>
     <div class="user-menu">
-      <button (click)="toggleUserMenu()" class="user-button">Usuario</button>
+      <button (click)="toggleUserMenu()" class="user-button" i18n>Usuario</button>
       <div class="dropdown" [ngClass]="{ 'show': userMenuVisible }">
-        <button (click)="navigateToUser()">Mi Usuario</button>
-        <button (click)="navigateToFederaciones()">Federaciones</button>
-        <button (click)="logout()">Cerrar Sesión</button>
+        <button (click)="navigateToUser()" i18n>Mi Usuario</button>
+        <button (click)="navigateToFederaciones()" i18n>Federaciones</button>
+        <button (click)="logout()" i18n>Cerrar Sesión</button>
       </div>
     </div>
   </div>

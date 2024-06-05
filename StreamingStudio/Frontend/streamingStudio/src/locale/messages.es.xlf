@@ -1,0 +1,782 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="ngb.alert.close" datatype="html">
+        <source>Close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/alert/alert.ts</context>
+          <context context-type="linenumber">47,48</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.carousel.slide-number" datatype="html">
+        <source> Slide <x id="INTERPOLATION" equiv-text="ince 2.2.0
+	 */"/> of <x id="INTERPOLATION_1" equiv-text="nHover(value: b"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/carousel/carousel.ts</context>
+          <context context-type="linenumber">179,186</context>
+        </context-group>
+        <note priority="1" from="description">Currently selected slide number read by screen reader</note>
+      </trans-unit>
+      <trans-unit id="ngb.carousel.previous" datatype="html">
+        <source>Previous</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/carousel/carousel.ts</context>
+          <context context-type="linenumber">213,215</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.carousel.next" datatype="html">
+        <source>Next</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/carousel/carousel.ts</context>
+          <context context-type="linenumber">236</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.datepicker.select-month" datatype="html">
+        <source>Select month</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/datepicker/datepicker-navigation-select.ts</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/datepicker/datepicker-navigation-select.ts</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.datepicker.select-year" datatype="html">
+        <source>Select year</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/datepicker/datepicker-navigation-select.ts</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/datepicker/datepicker-navigation-select.ts</context>
+          <context context-type="linenumber">50,51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.datepicker.previous-month" datatype="html">
+        <source>Previous month</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/datepicker/datepicker-navigation.ts</context>
+          <context context-type="linenumber">60,63</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/datepicker/datepicker-navigation.ts</context>
+          <context context-type="linenumber">60,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.datepicker.next-month" datatype="html">
+        <source>Next month</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/datepicker/datepicker-navigation.ts</context>
+          <context context-type="linenumber">60,63</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/datepicker/datepicker-navigation.ts</context>
+          <context context-type="linenumber">60,63</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.first" datatype="html">
+        <source>««</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">269,270</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.previous" datatype="html">
+        <source>«</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">269,270</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.next" datatype="html">
+        <source>»</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">269,270</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.last" datatype="html">
+        <source>»»</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">269,270</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.first-aria" datatype="html">
+        <source>First</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">269,271</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.previous-aria" datatype="html">
+        <source>Previous</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">269,271</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.next-aria" datatype="html">
+        <source>Next</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">269,271</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.pagination.last-aria" datatype="html">
+        <source>Last</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/pagination/pagination.ts</context>
+          <context context-type="linenumber">269,271</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.progressbar.value" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="* The maximal"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/progressbar/progressbar.ts</context>
+          <context context-type="linenumber">30,33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.HH" datatype="html">
+        <source>HH</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">230,231</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.hours" datatype="html">
+        <source>Hours</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">255,258</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.MM" datatype="html">
+        <source>MM</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">281,282</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.minutes" datatype="html">
+        <source>Minutes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">298,299</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.increment-hours" datatype="html">
+        <source>Increment hours</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">328,330</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.decrement-hours" datatype="html">
+        <source>Decrement hours</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">352,356</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.increment-minutes" datatype="html">
+        <source>Increment minutes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">384,385</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.decrement-minutes" datatype="html">
+        <source>Decrement minutes</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">414,417</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.SS" datatype="html">
+        <source>SS</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">429</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.seconds" datatype="html">
+        <source>Seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">429</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.increment-seconds" datatype="html">
+        <source>Increment seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">429</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.decrement-seconds" datatype="html">
+        <source>Decrement seconds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">429</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.PM" datatype="html">
+        <source><x id="INTERPOLATION"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">429</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.timepicker.AM" datatype="html">
+        <source><x id="INTERPOLATION"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/timepicker/timepicker.ts</context>
+          <context context-type="linenumber">429</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ngb.toast.close-aria" datatype="html">
+        <source>Close</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">node_modules/src/toast/toast.ts</context>
+          <context context-type="linenumber">74,75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="740484157946723524" datatype="html">
+        <source>Mensaje de error</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/layouts/message-dialog/message-dialog.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4798961227159743968" datatype="html">
+        <source>Cerrar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/layouts/message-dialog/message-dialog.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6980671082860187221" datatype="html">
+        <source>Búsqueda Avanzada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">17,18</context>
+        </context-group>
+        <note priority="1" from="description">Búsqueda Avanzada</note>
+      </trans-unit>
+      <trans-unit id="8295849360287296851" datatype="html">
+        <source>Título:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">21,22</context>
+        </context-group>
+        <note priority="1" from="description">Título</note>
+      </trans-unit>
+      <trans-unit id="3718302304914654810" datatype="html">
+        <source>Género</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+        <note priority="1" from="description">Género</note>
+      </trans-unit>
+      <trans-unit id="1412038981284476993" datatype="html">
+        <source>Clasificacion</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">36,37</context>
+        </context-group>
+        <note priority="1" from="description">Clasificacion</note>
+      </trans-unit>
+      <trans-unit id="8713073708350341933" datatype="html">
+        <source>Buscar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+        <note priority="1" from="description">Buscar</note>
+      </trans-unit>
+      <trans-unit id="5990722728973226850" datatype="html">
+        <source>Contenido</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">74,75</context>
+        </context-group>
+        <note priority="1" from="description">Contenido</note>
+      </trans-unit>
+      <trans-unit id="1396881311441549661" datatype="html">
+        <source>No se encontró contenido asociado <x id="START_TAG_BUTTON" ctype="x-button" equiv-text="&lt;button class=&quot;close-btn row&quot; (click)=&quot;closeCard()&quot;&gt;"/>Cerrar<x id="CLOSE_TAG_BUTTON" ctype="x-button" equiv-text="&lt;/button&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">84,87</context>
+        </context-group>
+        <note priority="1" from="description">No se encontró contenido asociado</note>
+      </trans-unit>
+      <trans-unit id="409446866153295300" datatype="html">
+        <source>Directores</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/descripcion/descripcion.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <note priority="1" from="description">Directores</note>
+      </trans-unit>
+      <trans-unit id="521952543941236208" datatype="html">
+        <source> <x id="INTERPOLATION" equiv-text="{{ director.nombre }}"/> <x id="INTERPOLATION_1" equiv-text="{{ director.apellido }}"/> </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/descripcion/descripcion.component.html</context>
+          <context context-type="linenumber">22,24</context>
+        </context-group>
+        <note priority="1" from="description">{{ director.nombre }} {{ director.apellido }}</note>
+      </trans-unit>
+      <trans-unit id="2737502712785481915" datatype="html">
+        <source>Actores</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/descripcion/descripcion.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <note priority="1" from="description">Actores</note>
+      </trans-unit>
+      <trans-unit id="142265276061272831" datatype="html">
+        <source>Plataformas a Federar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/federaciones/federaciones.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <note priority="1" from="description">Plataformas a Federar</note>
+      </trans-unit>
+      <trans-unit id="7724097106099778598" datatype="html">
+        <source>Plataformas Federadas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/federaciones/federaciones.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <note priority="1" from="description">lataformas Federadas</note>
+      </trans-unit>
+      <trans-unit id="6655121586929827347" datatype="html">
+        <source>Selecciona una opción:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/federaciones/federaciones.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <note priority="1" from="description">Selecciona una opción:</note>
+      </trans-unit>
+      <trans-unit id="8101285550820690214" datatype="html">
+        <source>Contenido Destacado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/home/home.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/home/home.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <note priority="1" from="description">Contenido Destacado</note>
+      </trans-unit>
+      <trans-unit id="6617109684245744008" datatype="html">
+        <source>No hay contenido destacado, debes federarte en alguna plataforma</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/home/home.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <note priority="1" from="description">No hay contenido destacado, debes federarte en alguna plataforma</note>
+      </trans-unit>
+      <trans-unit id="7634857183403458683" datatype="html">
+        <source>Más Visto</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/home/home.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <note priority="1" from="description">Más Visto</note>
+      </trans-unit>
+      <trans-unit id="2915287464366459290" datatype="html">
+        <source>Mas Visto</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/home/home.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <note priority="1" from="description">Mas Visto</note>
+      </trans-unit>
+      <trans-unit id="6573077846441514631" datatype="html">
+        <source>No hay contenido mas visto, debes federarte en alguna plataforma</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/home/home.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <note priority="1" from="description">No hay contenido mas visto, debes federarte en alguna plataforma</note>
+      </trans-unit>
+      <trans-unit id="419792229964576694" datatype="html">
+        <source>Reciente</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/home/home.component.html</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/home/home.component.html</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+        <note priority="1" from="description">Reciente</note>
+      </trans-unit>
+      <trans-unit id="6101706026079755478" datatype="html">
+        <source>No hay contenido reciente, debes federarte en alguna plataforma</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/home/home.component.html</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+        <note priority="1" from="description">No hay contenido reciente, debes federarte en alguna plataforma</note>
+      </trans-unit>
+      <trans-unit id="6631334172623029500" datatype="html">
+        <source>Email:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/login/login.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <note priority="1" from="description">Email</note>
+      </trans-unit>
+      <trans-unit id="7724271655992335183" datatype="html">
+        <source>Contraseña:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/login/login.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <note priority="1" from="description">Contraseña</note>
+      </trans-unit>
+      <trans-unit id="8024932591315166082" datatype="html">
+        <source>Iniciar Sesión</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/login/login.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <note priority="1" from="description">Iniciar Sesión</note>
+      </trans-unit>
+      <trans-unit id="8164954346734442598" datatype="html">
+        <source> Usuario o contraseña incorrectos </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/login/login.component.html</context>
+          <context context-type="linenumber">26,28</context>
+        </context-group>
+        <note priority="1" from="description">Usuario o contraseña incorrectos</note>
+      </trans-unit>
+      <trans-unit id="4632322108545985670" datatype="html">
+        <source>¿No tienes cuenta? </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/login/login.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <note priority="1" from="description">¿No tienes cuenta?</note>
+      </trans-unit>
+      <trans-unit id="7233309061867212715" datatype="html">
+        <source>Regístrate</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/login/login.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <note priority="1" from="description">Regístrate</note>
+      </trans-unit>
+      <trans-unit id="4989917007030266346" datatype="html">
+        <source>No estas federado en ninguna de nuestras plataformas, para ver las peliculas disponibles deberas federarte en alguna de ellas.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/peliculas/peliculas.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <note priority="1" from="description">No estas federado en ninguna de nuestras plataformas, para ver las peliculas disponibles deberas federarte en alguna de ellas.</note>
+      </trans-unit>
+      <trans-unit id="8877173228890309076" datatype="html">
+        <source>REGISTRO</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <note priority="1" from="description">REGISTRO</note>
+      </trans-unit>
+      <trans-unit id="2064790252582515788" datatype="html">
+        <source>El email es requerido</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <note priority="1" from="description">El email es requerido</note>
+      </trans-unit>
+      <trans-unit id="5388804802712200060" datatype="html">
+        <source>El email debe tener un formato válido</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <note priority="1" from="description">El email debe tener un formato válido</note>
+      </trans-unit>
+      <trans-unit id="3040327330346040704" datatype="html">
+        <source>Confirmar Email:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <note priority="1" from="description">Confirmar Email:</note>
+      </trans-unit>
+      <trans-unit id="4849801683555290049" datatype="html">
+        <source>La contraseña es requerida</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+        <note priority="1" from="description">La contraseña es requerida</note>
+      </trans-unit>
+      <trans-unit id="7874803611972230194" datatype="html">
+        <source>La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <note priority="1" from="description">La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial</note>
+      </trans-unit>
+      <trans-unit id="4141102758211946540" datatype="html">
+        <source>Confirmar Contraseña:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <note priority="1" from="description">Confirmar Contraseña:</note>
+      </trans-unit>
+      <trans-unit id="5988527754735881488" datatype="html">
+        <source>Nombre:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <note priority="1" from="description">Nombre:</note>
+      </trans-unit>
+      <trans-unit id="8165394627161186491" datatype="html">
+        <source>El nombre es requerido</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <note priority="1" from="description">El nombre es requerido</note>
+      </trans-unit>
+      <trans-unit id="7403553377999778049" datatype="html">
+        <source>El nombre no puede tener más de 16 caracteres</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <note priority="1" from="description">El nombre no puede tener más de 16 caracteres</note>
+      </trans-unit>
+      <trans-unit id="1341491175793352665" datatype="html">
+        <source>Apellido:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+        <note priority="1" from="description">Apellido:</note>
+      </trans-unit>
+      <trans-unit id="6761339365026003293" datatype="html">
+        <source>El apellido es requerido</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+        <note priority="1" from="description">El apellido es requerido</note>
+      </trans-unit>
+      <trans-unit id="7708018017875789034" datatype="html">
+        <source>El apellido no puede tener más de 16 caracteres</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+        <note priority="1" from="description">El apellido no puede tener más de 16 caracteres</note>
+      </trans-unit>
+      <trans-unit id="3854215443743812691" datatype="html">
+        <source>Registrarse</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/register/register.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+        <note priority="1" from="description">Registrarse</note>
+      </trans-unit>
+      <trans-unit id="3342042743321206681" datatype="html">
+        <source>No estas federado en ninguna de nuestras plataformas, para ver las series disponibles deberas federarte en alguna de ellas.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/series/series.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <note priority="1" from="description">No estas federado en ninguna de nuestras plataformas, para ver las series disponibles deberas federarte en alguna de ellas.</note>
+      </trans-unit>
+      <trans-unit id="2401853139117461180" datatype="html">
+        <source>Bienvenido a Straming Studio</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/splash/splash.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8403112177208079005" datatype="html">
+        <source>Saltar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/splash/splash.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6876292211031398826" datatype="html">
+        <source>Federacion exitosa!, te regresarmos al login para que vuelas a ingresar y puedas ver el nuevo contenido</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/usuario-federacion/usuario-federacion.component.html</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4836408713120602059" datatype="html">
+        <source>Mi Usuario</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/usuario/usuario.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9016536884183098576" datatype="html">
+        <source>Usuario</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/header/header.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4398019096922056430" datatype="html">
+        <source>Federaciones</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/header/header.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6980671082860187221" datatype="html">
+        <source>Búsqueda Avanzada</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/header/header.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">17,18</context>
+        </context-group>
+      </trans-unit>
+       <trans-unit id="7707176955005055131" datatype="html">
+        <source>Series</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/header/header.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3123860279116343800" datatype="html">
+        <source>Películas</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/header/header.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="312386027911634325" datatype="html">
+        <target>Close sesion</target>
+        <source>Cerrar Sesión</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/components/header/header.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="157911498151675956" datatype="html">
+        <target>Outstanding</target>
+        <source>Destacado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8713073708350341933" datatype="html">
+        <source>Buscar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">63,64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="157911498151675956" datatype="html">
+        <source>Destacado</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">51,52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7545104110348041963" datatype="html">
+        <source>Drama</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">Drama</note>
+      </trans-unit>
+      <trans-unit id="1279538815662451526" datatype="html">
+        <source>Acción</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <note priority="1" from="description">Acción</note>
+      </trans-unit>
+      <trans-unit id="7444389376942611924" datatype="html">
+        <source>Comedia</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <note priority="1" from="description">Comedia</note>
+      </trans-unit>
+      <trans-unit id="514585342108001366" datatype="html">
+        <source>Si</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/contenido/contenido.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+        <note priority="1" from="description">Si</note>
+      </trans-unit>
+      <trans-unit id="7276015738178174582" datatype="html">
+        <source>Pueudes editar nombre y apellido.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/usuario/usuario.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1372173599787735409" datatype="html">
+        <source>Guardar</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/main/pages/usuario/usuario.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

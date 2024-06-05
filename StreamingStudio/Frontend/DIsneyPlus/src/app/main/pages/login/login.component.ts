@@ -49,9 +49,10 @@ export class LoginComponent {
       this.netflixResourceService.login(login)
         .subscribe(
           (response) => {
-            console.log("response: ", response);
+            console.log("typeOf response.valido: ", typeof response.valido);
             // Si la respuesta es exitosa, redirige al home
-            if (response.mensaje === 'Usuario existente') {
+            if (response.valido === "true") {
+              console.log("true");
               this.authService.login(response);
               this.showError = false;
               this.route.queryParams.subscribe(params => {

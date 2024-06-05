@@ -9,6 +9,12 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "es",
+        "locales": {
+          "en": "src/locale/messages.en.xlf"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -34,6 +40,14 @@
             ]
           },
           "configurations": {
+            "en": {
+              "localize": ["en"],
+              "outputPath": "dist/streamingStudio/en"
+            },
+            "es": {
+              "localize": ["es"],
+              "outputPath": "dist/streamingStudio/es"
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -78,6 +92,12 @@
             "browserTarget": "streamingStudio:build"
           },
           "configurations": {
+            "en": {
+              "browserTarget": "streamingStudio:build:en"
+            },
+            "es": {
+              "browserTarget": "streamingStudio:build:es"
+            },
             "production": {
               "browserTarget": "streamingStudio:build:production"
             },
@@ -135,7 +155,8 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "streamingStudio",
   "cli": {
     "analytics": false

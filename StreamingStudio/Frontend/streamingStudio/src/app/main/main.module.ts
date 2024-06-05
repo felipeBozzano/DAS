@@ -26,6 +26,7 @@ import {SeriesResolver} from './api/resolvers/series.resolver';
 import {SplashComponent} from './pages/splash/splash.component';
 import {SpinnerComponent} from './components/spinner/spinner.component';
 import {UsuarioFederacionComponent} from './pages/usuario-federacion/usuario-federacion.component';
+import {BackArrowComponent} from "./components/back-arrow/back-arrow.component";
 
 
 // @ts-ignore
@@ -44,7 +45,8 @@ import {UsuarioFederacionComponent} from './pages/usuario-federacion/usuario-fed
     PeliculasComponent,
     SeriesComponent,
     SplashComponent,
-    UsuarioFederacionComponent
+    UsuarioFederacionComponent,
+    BackArrowComponent
   ],
   imports: [
     CommonModule,

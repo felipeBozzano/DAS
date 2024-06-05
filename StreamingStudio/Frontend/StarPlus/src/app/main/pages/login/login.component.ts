@@ -39,7 +39,7 @@ export class LoginComponent {
       this.starPlusResourceService.login(user).subscribe(
         (response) => {
           // Si la respuesta es exitosa, redirige al home
-          if (response.mensaje === 'Usuario existente') {
+          if (response.valido === "true") {
             console.log("Login exitoso");
             this.showError = false;
             this.route.queryParams.subscribe(params => {

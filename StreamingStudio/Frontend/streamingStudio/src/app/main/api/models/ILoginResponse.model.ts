@@ -3,5 +3,6 @@ export interface ILoginResponse {
   id_cliente: number,
   nombre: string,
   apellido: string,
-  email: string
+  email: string,
+  valido: string
 }
