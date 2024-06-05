@@ -8,6 +8,7 @@ import {Router} from '@angular/router';
 import * as localForage from 'localforage';
 import {IGenero} from "../../api/models/IGenero.model";
 import {IClasificacion} from "../../api/models/IClasificacion.model";
+import { IContenidoResponse } from '../../api/models/IContenidoResponse.model';
 
 @Component({
   selector: 'app-contenido',
@@ -19,8 +20,8 @@ export class ContenidoComponent implements OnInit {
   id_cliente: string = '';
   advancedSearchVisible = true;
   contenido: any;
-  contenidoSeleccionado: IInformacionContenidoResponseModel | null = null;
   isVisible = true;
+  uniqueContenido: any;
 
   constructor(private _fb: FormBuilder, private streamingStudioResources: StreamingStudioResources, private authService: AuthService, private router: Router) {
     this.formContenido = this._fb.group({
@@ -45,6 +46,7 @@ export class ContenidoComponent implements OnInit {
     this.currentUser = this.authService.getCurrentUser();
     this.id_cliente = this.currentUser.id_cliente;
     this.contenido = null;
+    this.uniqueContenido = [];
   }
 
   clasificacionButton(value: 'P' | 'S' | null) {
@@ -70,7 +72,7 @@ export class ContenidoComponent implements OnInit {
   async onSubmit() {
     if (this.formContenido.valid) {
       const {titulo, reciente, destacado, mas_visto, clasificacion, comedia, accion, drama} = this.formContenido.value
-
+      this.uniqueContenido = []
       const generos: IGenero = {
         drama: drama,
         accion: accion,
@@ -90,7 +92,17 @@ export class ContenidoComponent implements OnInit {
       console.log(filtro)
 
       this.streamingStudioResources.contenido(filtro).subscribe((response) => {
+          this.contenido = null;
           this.contenido = response
+          const imageUrls = new Set();
+
+          response.forEach(item => {
+            if (!imageUrls.has(item.url_imagen)) {
+              this.uniqueContenido.push(item);
+              imageUrls.add(item.url_imagen);
+            }
+          });
+
           if (this.contenido.length === 0) {
             this.isVisible = true;
           }

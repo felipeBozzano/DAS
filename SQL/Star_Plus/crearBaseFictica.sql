@@ -45,7 +45,7 @@ VALUES ('CP2', 'Batman', N'Descripción de Batman',
         'https://m.media-amazon.com/images/S/pv-target-images/a0cb3885c44b8305ac89ba7ce98e8cd978bf3ebba6a151a00dbf2d528e98bf3b.jpg',
         'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 0, 1, 1),
        ('CP6', 'Lalaland', 'Descripcion de Lalaland',
-        'https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/media/image/2018/08/one-piece_0.jpg?tf=1200x675',
+        'https://static.wikia.nocookie.net/doblaje/images/e/ec/La_la_land_poster_m%C3%A9xico.jpg/revision/latest?cb=20161212005951&path-prefix=es',
         'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 1, 1);
 go
 
