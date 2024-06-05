@@ -87,23 +87,27 @@ public class ClienteRepository {
 //    }
 
     @Transactional
-    public List<ClienteUsuarioBean> createUser(ClienteUsuarioBean cliente) {
-        SqlParameterSource in = new MapSqlParameterSource()
-                .addValue("usuario", cliente.getUsuario())
-                .addValue("contrasena", cliente.getcontrasena())
-                .addValue("email", cliente.getEmail())
-                .addValue("nombre", cliente.getNombre())
-                .addValue("apellido", cliente.getApellido())
-                .addValue("valido", true);
+    public Boolean createUser(ClienteUsuarioBean cliente) {
+        try {
+            SqlParameterSource in = new MapSqlParameterSource()
+                    .addValue("usuario", cliente.getUsuario())
+                    .addValue("contrasena", cliente.getcontrasena())
+                    .addValue("email", cliente.getEmail())
+                    .addValue("nombre", cliente.getNombre())
+                    .addValue("apellido", cliente.getApellido())
+                    .addValue("valido", true);
 
-        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-                .withProcedureName("Crear_Usuario")
-                .withSchemaName("dbo");
+            SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
+                    .withProcedureName("Crear_Usuario")
+                    .withSchemaName("dbo");
 
-        Map<String, Object> out = jdbcCall.execute(in);
+            jdbcCall.execute(in);
 
-        List<ClienteUsuarioBean> usuario = (List<ClienteUsuarioBean>)out.get("Crear_Usuario");
-        return usuario;
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public int verificarUsuario(String email, String contrasena) {
@@ -130,7 +134,7 @@ public class ClienteRepository {
                 .withSchemaName("dbo");
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String, Integer>> resulset = (List<Map<String, Integer>>) out.get("#result-set-1");
-        Map<String, Integer> resultado = resulset.get(0);
+        Map<String, Integer> resultado = resulset.getFirst();
         return resultado;
     }
 

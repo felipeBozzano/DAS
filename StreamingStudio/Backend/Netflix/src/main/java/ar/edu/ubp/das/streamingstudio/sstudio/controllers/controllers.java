@@ -52,10 +52,30 @@ public class controllers {
             respuesta.put("nombre", String.valueOf(info_usuario.get("nombre")));
             respuesta.put("apellido", String.valueOf(info_usuario.get("apellido")));
             respuesta.put("email", String.valueOf(info_usuario.get("email")));
-            respuesta.put("mensaje", "Usuario existente");
+            respuesta.put("mensaje", "Usuario logueado");
         } else {
             respuesta.put("mensaje", "Usuario no existente");
         }
+        return new ResponseEntity<>(respuesta, HttpStatus.OK);
+    }
+
+    @PostMapping(
+            path = "/create_user",
+            consumes = {MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Map<String, String>> createUser(@RequestBody ClienteUsuarioBean cliente) {
+        Map<String, String> respuesta = new HashMap<>();
+        if (clienteRepository.createUser(cliente)) {
+            Map<String, Integer> info_usuario = clienteRepository.informacion_usuario(cliente.getEmail(), cliente.getcontrasena());
+            respuesta.put("id_cliente", String.valueOf(info_usuario.get("id_cliente")));
+            respuesta.put("nombre", String.valueOf(info_usuario.get("nombre")));
+            respuesta.put("apellido", String.valueOf(info_usuario.get("apellido")));
+            respuesta.put("email", String.valueOf(info_usuario.get("email")));
+            respuesta.put("mensaje", "Usuario registrado");
+        } else {
+            respuesta.put("mensaje", "No se pudo registrar el cliente");
+        }
+
         return new ResponseEntity<>(respuesta, HttpStatus.OK);
     }
 
@@ -84,14 +104,6 @@ public class controllers {
         String url_de_redireccion = autorizacionRepository.obtenerUrlDeRedireccion(autorizacion.getCodigo_de_transaccion());
         AutorizacionBean nueva_autorizacion = new AutorizacionBean(autorizacion.getCodigo_de_transaccion(), autorizacion.getId_cliente(), url_de_redireccion);
         return new ResponseEntity<>(nueva_autorizacion, HttpStatus.OK);
-    }
-
-    @PostMapping(
-            path = "/create_user",
-            consumes = {MediaType.APPLICATION_JSON_VALUE}
-    )
-    public ResponseEntity<List<ClienteUsuarioBean>> createUser(@RequestBody ClienteUsuarioBean cliente) {
-        return new ResponseEntity<>(clienteRepository.createUser(cliente), HttpStatus.CREATED);
     }
 
     @PostMapping("/obtener_token")

@@ -1,10 +1,18 @@
-import { Component } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import {IUser} from '../../api/models/IUser.model';
+import {AuthService} from "../../services/authService/AuthService";
+import {INuevaAutorizacionModel} from "../../api/models/INuevaAutorizacion.model";
 import {Star_plusResourceService} from '../../api/resources/star_plus-resource.service';
-import {nextMonthDisabled} from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-tools';
 
 @Component({
   selector: 'app-register',
@@ -12,11 +20,16 @@ import {nextMonthDisabled} from '@ng-bootstrap/ng-bootstrap/datepicker/datepicke
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-
+  showError = false;
   public formRegister!: FormGroup;
+  private codigoTransaccion: any;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private http: HttpClient, private router: Router, private _fb: FormBuilder,  private netflixResourceService: Star_plusResourceService ) {
+  constructor(private router: Router,
+              private _fb: FormBuilder,
+              private authService: AuthService,
+              private netflixResourceService: Star_plusResourceService,
+              private route: ActivatedRoute) {
 
     function strongPasswordValidator(minLength: number): ValidatorFn {
       return (control: AbstractControl): { [key: string]: any } | null => {
@@ -28,7 +41,7 @@ export class RegisterComponent {
         const isValid = hasUpperCase && hasLowerCase && hasNumeric && hasSpecialChar && value.length >= minLength;
 
         return isValid ? null : {strongPassword: true};
-      };
+      }
     }
 
     function matchValidator(sourceKey: string, targetKey: string): ValidatorFn {
@@ -55,8 +68,8 @@ export class RegisterComponent {
     }
 
     this.formRegister = this._fb.group({
-      contrasena: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-      re_contrasena: new FormControl('', [Validators.required, Validators.maxLength(255)]),
+      contrasena: new FormControl('', [Validators.required, strongPasswordValidator(8)]),
+      re_contrasena: new FormControl('', [Validators.required, strongPasswordValidator(8)]),
       email: new FormControl('', [Validators.required, Validators.maxLength(255), Validators.email]),
       re_email: new FormControl('', [Validators.required, Validators.maxLength(255), Validators.email]),
       nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
@@ -67,35 +80,52 @@ export class RegisterComponent {
         matchValidator('contrasena', 're_contrasena'),
         matchValidator('email', 're_email')
       ]
-    })
+    });
   }
 
-  // tslint:disable-next-line:typedef
-  async onSubmit() {
+  onSubmit() {
     if (this.formRegister.valid) {
-      const {email, contrasena, nombre, apellido} = this.formRegister.value;
-      const user: any = {
-        email: email,
+      const {usuario, contrasena, email, nombre, apellido} = this.formRegister.value;
+      const user: IUser = {
+        usuario: usuario,
         contrasena: contrasena,
+        email: email,
         nombre: nombre,
         apellido: apellido,
         valido: true
       };
+      console.log("IUser: ", user);
 
-      this.netflixResourceService.registro(user)
-        .subscribe( {
-          next: ()=>
-          {
-            // Si la respuesta es exitosa, redirige al home
-            this.router.navigate(['/login']);
+      this.netflixResourceService.registro(user).subscribe(
+        (response) => {
+          console.log("ILoginResponse: ", response);
+
+          if (response.mensaje === 'Usuario registrado') {
+            this.authService.login(response);
+            this.showError = false;
+            this.route.queryParams.subscribe(params => {
+              this.codigoTransaccion = params['codigo_de_transaccion'];
+            });
+
+            const body: INuevaAutorizacionModel = {
+              codigo_de_transaccion: this.codigoTransaccion,
+              id_cliente: response.id_cliente,
+            }
+            console.log("Body para autorizacion: ", body);
+
+            this.netflixResourceService.crear_autorizacion(body).subscribe(
+              (response) => {
+                console.log("IAutorizacionModel", response);
+                window.location.href = response.url_de_redireccion + "?codigo_de_transaccion=" + response.codigo_de_transaccion;
+              }
+            )
+          } else {
+            this.showError = true;
           }
-        ,
-        error: (error) => {
-          // Si hay un error en la respuesta, muestra un mensaje de error
+        }, (error) => {
           console.error('Error en la solicitud:', error);
-          throw error
         }
-      });
+      );
     }
   }
 }

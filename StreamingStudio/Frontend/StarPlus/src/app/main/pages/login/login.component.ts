@@ -15,7 +15,7 @@ import {StarPlusResourceService} from '../../api/resources/starplus/service/star
 export class LoginComponent {
   showError = false;
   public formLogin!: FormGroup;
-  public routeHome: string = '';
+  private autorizacion: any;
   public codigoTransaccion: string = '';
 
   constructor(private router: Router,

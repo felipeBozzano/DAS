@@ -27,7 +27,7 @@ export class Star_plusResourceService extends Resource{
     requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  registro!: IResourceMethodObservable<IUser,void>;
+  registro!: IResourceMethodObservable<IUser,ILoginResponse>;
 
   @ResourceAction({
     method: ResourceRequestMethod.Post,

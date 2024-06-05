@@ -1,5 +1,3 @@
-USE Publicista_Musimundo;
-
 /* Publicidad */
 
 CREATE OR ALTER PROCEDURE Registrar_Publicidad @id_publicista VARCHAR(255),

@@ -1,8 +1,17 @@
-import { Component } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators} from '@angular/forms';
+import {Component} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import {IUser} from '../../api/models/IUser.model';
+import {AuthService} from "../../services/authService/AuthService";
+import {INuevaAutorizacionModel} from "../../api/models/INuevaAutorizacion.model";
 import {NetflixResourceService} from '../../api/resources/netflix-resource.service';
 
 @Component({
@@ -11,13 +20,18 @@ import {NetflixResourceService} from '../../api/resources/netflix-resource.servi
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
-
+  showError = false;
   public formRegister!: FormGroup;
+  private codigoTransaccion: any;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private router: Router, private _fb: FormBuilder,  private netflixResourceService: NetflixResourceService ) {
+  constructor(private router: Router,
+              private _fb: FormBuilder,
+              private authService: AuthService,
+              private netflixResourceService: NetflixResourceService,
+              private route: ActivatedRoute) {
 
-     function strongPasswordValidator(minLength: number): ValidatorFn {
+    function strongPasswordValidator(minLength: number): ValidatorFn {
       return (control: AbstractControl): { [key: string]: any } | null => {
         const value: string = control.value || '';
         const hasUpperCase = /[A-Z]/.test(value);
@@ -28,7 +42,7 @@ export class RegisterComponent {
 
         return isValid ? null : {strongPassword: true};
       }
-     }
+    }
 
     function matchValidator(sourceKey: string, targetKey: string): ValidatorFn {
       return (control: AbstractControl): ValidationErrors | null => {
@@ -44,7 +58,7 @@ export class RegisterComponent {
         }
 
         if (sourceControl.value !== targetControl.value) {
-          targetControl.setErrors({ mustMatch: true });
+          targetControl.setErrors({mustMatch: true});
         } else {
           targetControl.setErrors(null);
         }
@@ -54,14 +68,14 @@ export class RegisterComponent {
     }
 
     this.formRegister = this._fb.group({
-      contrasena: new FormControl('',[Validators.required, strongPasswordValidator(8)]),
-      re_contrasena: new FormControl('',[Validators.required, strongPasswordValidator(8)]),
-      email: new FormControl('',[Validators.required, Validators.maxLength(255),Validators.email]),
-      re_email: new FormControl('',[Validators.required, Validators.maxLength(255),Validators.email]),
-      nombre: new FormControl('',[Validators.required, Validators.maxLength(100)]),
-      apellido: new FormControl('',[Validators.required, Validators.maxLength(40)]),
+      contrasena: new FormControl('', [Validators.required, strongPasswordValidator(8)]),
+      re_contrasena: new FormControl('', [Validators.required, strongPasswordValidator(8)]),
+      email: new FormControl('', [Validators.required, Validators.maxLength(255), Validators.email]),
+      re_email: new FormControl('', [Validators.required, Validators.maxLength(255), Validators.email]),
+      nombre: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      apellido: new FormControl('', [Validators.required, Validators.maxLength(40)]),
       valid: new FormControl(true)
-    },{
+    }, {
       validators: [
         matchValidator('contrasena', 're_contrasena'),
         matchValidator('email', 're_email')
@@ -69,8 +83,7 @@ export class RegisterComponent {
     });
   }
 
-  // tslint:disable-next-line:typedef
-  async onSubmit() {
+  onSubmit() {
     if (this.formRegister.valid) {
       const {usuario, contrasena, email, nombre, apellido} = this.formRegister.value;
       const user: IUser = {
@@ -81,21 +94,38 @@ export class RegisterComponent {
         apellido: apellido,
         valido: true
       };
+      console.log("IUser: ", user);
 
-      console.log(user);
+      this.netflixResourceService.registro(user).subscribe(
+        (response) => {
+          console.log("ILoginResponse: ", response);
 
-      this.netflixResourceService.registro(user)
-        .subscribe(
-          () => {
-            // Si la respuesta es exitosa, redirige al home
-            this.router.navigate(['/login']);
-          },
-          (error: any) => {
-            // Si hay un error en la respuesta, muestra un mensaje de error
-            console.error('Error en la solicitud:', error);
-            // Aquí puedes manejar el error y mostrar un mensaje de error al usuario
+          if (response.mensaje === 'Usuario registrado') {
+            this.authService.login(response);
+            this.showError = false;
+            this.route.queryParams.subscribe(params => {
+              this.codigoTransaccion = params['codigo_de_transaccion'];
+            });
+
+            const body: INuevaAutorizacionModel = {
+              codigo_de_transaccion: this.codigoTransaccion,
+              id_cliente: response.id_cliente,
+            }
+            console.log("Body para autorizacion: ", body);
+
+            this.netflixResourceService.crear_autorizacion(body).subscribe(
+              (response) => {
+                console.log("IAutorizacionModel", response);
+                window.location.href = response.url_de_redireccion + "?codigo_de_transaccion=" + response.codigo_de_transaccion;
+              }
+            )
+          } else {
+            this.showError = true;
           }
-        );
+        }, (error) => {
+          console.error('Error en la solicitud:', error);
+        }
+      );
     }
   }
 }
