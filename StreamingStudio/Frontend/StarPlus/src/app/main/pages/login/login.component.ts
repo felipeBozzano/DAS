@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AuthService} from '../../services/authService/AuthService';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Star_plusResourceService} from '../../api/resources/star_plus-resource.service';
-import {StarPlusResourceService} from '../../api/resources/starplus/service/starplus.service';
-
+import {ILogin} from '../../api/models/login.model';
+import {StarPlusResourceService} from '../../api/resources/starPlus-resource.service';
+import {INuevaAutorizacionModel} from '../../api/models/INuevaAutorizacion.model';
 
 
 @Component({
@@ -16,43 +16,57 @@ export class LoginComponent {
   showError = false;
   public formLogin!: FormGroup;
   private autorizacion: any;
-  public codigoTransaccion: string = '';
+  private codigoTransaccion: any;
 
   constructor(private router: Router,
               private authService: AuthService,
               private _fb: FormBuilder,
-              private route: ActivatedRoute,
-              private  starPlusResourceService: Star_plusResourceService)
-              { this.formLogin = this._fb.group({
-                email: new FormControl('',[Validators.required, Validators.maxLength(255)]),
-                contrasena: new FormControl('',[Validators.required, Validators.maxLength(255)])
-              }) }
+              private starPlusResourceService: StarPlusResourceService,
+              private route: ActivatedRoute) {
+    this.formLogin = this._fb.group({
+      email: new FormControl('', [Validators.required, Validators.maxLength(255), Validators.email]),
+      contrasena: new FormControl('', [Validators.required, Validators.maxLength(255)])
+    })
+  }
+
+  ngOnInit(): void {
+    this.route.data.subscribe(data => {
+      this.autorizacion = data['autorizacion'];
+      console.log(this.autorizacion);
+    })
+  }
 
   // tslint:disable-next-line:typedef
   onSubmit() {
     if (this.formLogin.valid) {
-      const { email, contrasena } = this.formLogin.value;
-      const user = {
+      const {email, contrasena} = this.formLogin.value
+      const login: ILogin = {
         email: email,
-        contrasena: contrasena
+        contrasena: contrasena,
       }
-      this.starPlusResourceService.login(user).subscribe(
+      console.log("ILogin", login);
+
+      this.starPlusResourceService.login(login).subscribe(
         (response) => {
+          console.log("ILoginResponse: ", response);
+
           // Si la respuesta es exitosa, redirige al home
           if (response.valido === "true") {
-            console.log("Login exitoso");
+            this.authService.login(response);
             this.showError = false;
             this.route.queryParams.subscribe(params => {
               this.codigoTransaccion = params['codigo_de_transaccion'];
             });
-            const body: any = {
-              codigo_de_transaccion:  this.codigoTransaccion,
+
+            const body: INuevaAutorizacionModel = {
+              codigo_de_transaccion: this.codigoTransaccion,
               id_cliente: response.id_cliente,
             }
-            console.log("body: ", body);
+            console.log("Body para autorizacion: ", body);
+
             this.starPlusResourceService.crear_autorizacion(body).subscribe(
               (response) => {
-                console.log(response);
+                console.log("IAutorizacionModel", response);
                 window.location.href = response.url_de_redireccion + "?codigo_de_transaccion=" + response.codigo_de_transaccion;
               }
             )
@@ -61,9 +75,7 @@ export class LoginComponent {
           }
         },
         (error) => {
-          // Manejo de errores
           console.error('Error en la solicitud:', error);
-          this.showError = true;
         }
       );
     }

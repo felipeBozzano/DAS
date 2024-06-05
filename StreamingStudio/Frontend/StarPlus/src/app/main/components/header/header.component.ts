@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthService} from '../../services/./authService/AuthService';
-import { Star_plusResourceService} from '../../api/resources/star_plus-resource.service';
+import { StarPlusResourceService} from '../../api/resources/starPlus-resource.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 
@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
 
   public formContenido!: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router, private _fb: FormBuilder, private netflixResourceService: Star_plusResourceService) {
+  constructor(private authService: AuthService, private router: Router, private _fb: FormBuilder, private netflixResourceService: StarPlusResourceService) {
     this.formContenido = this._fb.group({
       titulo: new FormControl('',[ Validators.maxLength(16)]),
       reciente: new FormControl(false,[]),

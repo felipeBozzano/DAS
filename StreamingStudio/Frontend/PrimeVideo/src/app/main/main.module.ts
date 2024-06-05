@@ -22,6 +22,8 @@ import {PrimeVideoResourceService} from './api/resources/primeVideo-resource.ser
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [PrimeVideoResourceService]
+  providers: [
+    PrimeVideoResourceService
+  ]
 })
 export class MainModule { }

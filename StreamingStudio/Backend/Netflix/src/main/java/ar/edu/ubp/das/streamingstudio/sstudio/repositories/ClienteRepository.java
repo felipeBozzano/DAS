@@ -23,69 +23,6 @@ public class ClienteRepository {
     @Autowired
     private JdbcTemplate jdbcTpl;
 
-//    @Transactional
-//    public void crearTransaccion(String codigo_de_transaccion, String url_de_redireccion, String tipo_de_transaccion) {
-//        SqlParameterSource in = new MapSqlParameterSource()
-//                .addValue("codigo_de_transaccion", codigo_de_transaccion)
-//                .addValue("url_de_redireccion", url_de_redireccion)
-//                .addValue("tipo_de_transaccion", tipo_de_transaccion);
-//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-//                .withProcedureName("Crear_Transaccion")
-//                .withSchemaName("dbo");
-//        jdbcCall.execute(in);
-//    }
-//
-//    @Transactional
-//    public void crearAutorizacion(int id_cliente, String codigo_de_transaccion, String token) {
-//        SqlParameterSource in = new MapSqlParameterSource()
-//                .addValue("id_cliente", id_cliente)
-//                .addValue("codigo_de_transaccion", codigo_de_transaccion)
-//                .addValue("token", token);
-//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-//                .withProcedureName("Crear_Autorizacion")
-//                .withSchemaName("dbo");
-//        jdbcCall.execute(in);
-//    }
-//
-//    public String obtenerUrlDeRedireccion(String codigo_de_transaccion) {
-//        SqlParameterSource in = new MapSqlParameterSource()
-//                .addValue("codigo_de_transaccion", codigo_de_transaccion);
-//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-//                .withProcedureName("Obtener_codigo_de_redireccion")
-//                .withSchemaName("dbo");
-//        Map<String, Object> out = jdbcCall.execute(in);
-//        List<Map<String,String>> lista_url_de_redireccion = (List<Map<String,String>>) out.get("#result-set-1");
-//        String url_de_redireccion = lista_url_de_redireccion.getFirst().get("url_de_redireccion");
-//        return url_de_redireccion;
-//    }
-//
-//    public String obtenerToken(int id_cliente, String codigo_de_transaccion) {
-//        SqlParameterSource in = new MapSqlParameterSource()
-//                .addValue("id_cliente", id_cliente)
-//                .addValue("codigo_de_transaccion", codigo_de_transaccion);
-//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-//                .withProcedureName("Obtener_Token")
-//                .withSchemaName("dbo");
-//        Map<String, Object> out = jdbcCall.execute(in);
-//        List<Map<String,String>> mapa_token = (List<Map<String,String>>) out.get("#result-set-1");
-//        String token = mapa_token.getFirst().get("token");
-//        return token;
-//    }
-//
-//    public AutorizacionBean verificarAutorizacion(String codigo_de_transaccion) {
-//        SqlParameterSource in = new MapSqlParameterSource()
-//                .addValue("codigo_de_transaccion", codigo_de_transaccion);
-//        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
-//                .withProcedureName("Verificar_Autorizacion")
-//                .withSchemaName("dbo")
-//                .returningResultSet("autorizacion", BeanPropertyRowMapper.newInstance(AutorizacionBean.class));
-//        Map<String, Object> out = jdbcCall.execute(in);
-//        List<AutorizacionBean> autorizaciones = (List<AutorizacionBean>) out.get("autorizacion");
-//        if (autorizaciones.isEmpty())
-//            autorizaciones.add(new AutorizacionBean());
-//        return autorizaciones.getFirst();
-//    }
-
     @Transactional
     public Boolean createUser(ClienteUsuarioBean cliente) {
         try {
@@ -125,6 +62,7 @@ public class ClienteRepository {
         int resultado = resulset.getFirst().get("ExisteUsuario");
         return resultado;
     }
+
     public Map<String, Integer> informacion_usuario(String email, String contrasena) {
         SqlParameterSource in = new MapSqlParameterSource()
                 .addValue("email", email)

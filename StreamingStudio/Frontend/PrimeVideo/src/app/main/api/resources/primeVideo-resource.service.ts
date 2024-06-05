@@ -4,10 +4,9 @@ import { environment } from 'src/environments/environment';
 import {IUser} from '../models/IUser.model';
 import {ILogin} from '../models/login.model';
 import {ILoginResponse} from '../models/ILoginResponse.model';
-import {INuevaAutorizacionModel} from '../models/INuevaAutorizacion.mode';
-import {IAutorizacionModel} from '../models/IAutorizacion.model';
 import {IVerificacionAutorizacionResponseModel} from '../models/IVerificacionAutorizacionResponse.model';
-
+import {IAutorizacionModel} from '../models/IAutorizacion.model';
+import {INuevaAutorizacionModel} from '../models/INuevaAutorizacion.model';
 
 @Injectable()
 @ResourceParams({
@@ -29,12 +28,11 @@ export class PrimeVideoResourceService extends Resource{
     requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  registro!: IResourceMethodObservable<IUser,void>;
+  registro!: IResourceMethodObservable<IUser,ILoginResponse>;
 
   @ResourceAction({
-    method: ResourceRequestMethod.Post,
+    method: ResourceRequestMethod.Get,
     path: '/verificar_autorizacion',
-    requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
   verificar_autorizacion!: IResourceMethodObservable<{codigo_de_transaccion: string}, IVerificacionAutorizacionResponseModel>;

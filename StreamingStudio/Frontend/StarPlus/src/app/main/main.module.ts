@@ -6,7 +6,7 @@ import {CommonModule} from '@angular/common';
 import {MainRoutingModule} from './main-routing.module';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HeaderComponent} from './components/header/header.component';
-import {Star_plusResourceService} from './api/resources/star_plus-resource.service';
+import {StarPlusResourceService} from './api/resources/starPlus-resource.service';
 
 
 // @ts-ignore
@@ -22,6 +22,8 @@ import {Star_plusResourceService} from './api/resources/star_plus-resource.servi
     ReactiveFormsModule,
     FormsModule,
   ],
-  providers: [Star_plusResourceService]
+  providers: [
+    StarPlusResourceService
+  ]
 })
 export class MainModule { }

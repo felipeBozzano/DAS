@@ -12,4 +12,3 @@ export class LogiResolver implements Resolve<IVerificacionAutorizacionResponseMo
     return this._service.verificar_autorizacion({codigo_de_transaccion: route.queryParams['codigo_de_transaccion']});
   }
 }
-

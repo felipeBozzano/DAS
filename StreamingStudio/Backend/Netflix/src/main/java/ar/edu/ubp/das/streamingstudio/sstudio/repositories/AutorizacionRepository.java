@@ -22,12 +22,8 @@ public class AutorizacionRepository {
     @Autowired
     private JdbcTemplate jdbcTpl;
 
-    private Map<String, String> respuesta;
-
     @Transactional
     public VerificacionTransaccionBean crearTransaccion(String tipo_de_transaccion, String url_redireccion_ss) {
-//        respuesta = new HashMap<>();
-
         // Crear codigo de transacción y url para redireccionar
         UUID codigo_de_transaccion = UUID.randomUUID();
         String codigo_de_transaccion_string = codigo_de_transaccion.toString();
@@ -36,7 +32,6 @@ public class AutorizacionRepository {
             url_de_redireccion = "http://localhost:4201/login";
         else
             url_de_redireccion = "http://localhost:4201/register";
-
 
         // Crear transacción
         SqlParameterSource in = new MapSqlParameterSource()
@@ -50,8 +45,6 @@ public class AutorizacionRepository {
 
         // Crear y devolver respuesta
         VerificacionTransaccionBean respuesta = new VerificacionTransaccionBean(true, codigo_de_transaccion_string, url_de_redireccion);
-//        respuesta.put("codigoTransaccion", codigo_de_transaccion_string);
-//        respuesta.put("url", url_de_redireccion);
         return respuesta;
     }
 
@@ -71,8 +64,6 @@ public class AutorizacionRepository {
 
     @Transactional
     public void crearAutorizacion(int id_cliente, String codigo_de_transaccion) {
-
-
         UUID token = UUID.randomUUID();
         String token_string = token.toString();
 
