@@ -28,19 +28,19 @@ INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, url_reprod
                        destacado, valido)
 VALUES ('CP1', 'Toy Story', N'Descripcion de Toy Story',
         'https://es.web.img3.acsta.net/pictures/14/03/17/10/20/509771.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 0, 1),
+        'https://www.youtube.com/embed/v-PjgYDrg70?si=pE2iHsC58wVSEj3z', 'P', 1, 0, 1),
        ('CS1', 'Spiderman', N'Descripción de Spiderman',
         'https://image.api.playstation.com/vulcan/ap/rnd/202009/3021/B2aUYFC0qUAkNnjbTHRyhrg3.png',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 1, 0, 1),
+        'https://www.youtube.com/embed/t06RUxPbp_c?si=_-eihWjcbnFeqNI_', 'S', 1, 0, 1),
        ('CP2', 'Batman', N'Descripción de Batman',
         'https://es.web.img2.acsta.net/medias/nmedia/18/66/74/01/20350623.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 0, 1, 1),
+        'https://www.youtube.com/embed/fWQrd6cwJ0A?si=vDwHgqGyA7Nriygf', 'P', 0, 1, 1),
        ('CS2', 'Superman', N'Descripción de Superman',
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkFIzNYyYVW1MQg2PBUJun45u95dCWpWTaj-baRad6w&s',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 1, 1, 1),
+        'https://www.youtube.com/embed/cr4_lwuP2Pw?si=zhqLPZZP0Q3MAzZA', 'S', 1, 1, 1),
        ('CP5', 'The Avengers', 'descripcion de The Avengers',
         'https://cdn.marvel.com/content/1x/avengersendgame_lob_crd_05.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 1, 1);
+        'https://www.youtube.com/embed/yNXfOOL8824?si=5MQaytLCqG66MM7K', 'P', 1, 1, 1);
 go
 
 INSERT INTO Director (nombre, apellido)

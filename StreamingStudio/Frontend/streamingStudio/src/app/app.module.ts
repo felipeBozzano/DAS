@@ -10,12 +10,14 @@ import {AppErrorHandler} from './core/handlers/app-error-handler';
 import {CoreModule} from './core/core.module';
 import { ResourceModule } from '@kkoehn/ngx-resource-handler-ngx-http';
 import {MainModule} from './main/main.module';
+import {SafePipe} from "./main/Pipes/SafePipe";
 
 
 @NgModule({
     declarations: [
         AppComponent,
         SpinnerComponent,
+        SafePipe
     ],
     imports: [
         BrowserModule,
@@ -31,7 +33,7 @@ import {MainModule} from './main/main.module';
         {provide: ErrorHandler, useClass: AppErrorHandler},
     ],
     exports: [
-        SpinnerComponent
+        SpinnerComponent,
     ],
     bootstrap: [AppComponent]
 })

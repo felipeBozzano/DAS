@@ -28,22 +28,22 @@ INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, url_reprod
                        destacado, valido)
 VALUES ('CP1', 'Toy Story', 'Descripcion de Toy Story',
         'https://es.web.img3.acsta.net/pictures/14/03/17/10/20/509771.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 0, 1, 1),
+        'https://www.youtube.com/embed/v-PjgYDrg70?si=pE2iHsC58wVSEj3z', 'P', 0, 1, 1),
        ('CS1', 'Spiderman', 'Descripcion de Spiderman',
         'https://image.api.playstation.com/vulcan/ap/rnd/202009/3021/B2aUYFC0qUAkNnjbTHRyhrg3.png',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 0, 0, 1),
+        'https://www.youtube.com/embed/t06RUxPbp_c?si=_-eihWjcbnFeqNI_', 'S', 0, 0, 1),
        ('CP3', 'Thor', 'Descripcion de Thor',
         'https://es.web.img3.acsta.net/medias/nmedia/18/79/89/52/19711203.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 0, 1),
+        'https://www.youtube.com/embed/vKKu-Wt7O2Q?si=k_uZXnZ7bS-ta5aX', 'P', 1, 0, 1),
        ('CS3', 'Kung fu Panda', 'Descripcion de Kung fu Panda',
         'https://m.media-amazon.com/images/S/pv-target-images/d775fb8599018935d1e28ed9cbc2fb67870d726d850f0eee13dc6f50f37b76d3.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 1, 1, 1),
+        'https://www.youtube.com/embed/kg3Q63gzF6I?si=ANPEmQG82mvNUzMg', 'S', 1, 1, 1),
        ('CP5', 'The Avengers', 'Descripcion de The Avengers',
         'https://cdn.marvel.com/content/1x/avengersendgame_lob_crd_05.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 0, 1),
+        'https://www.youtube.com/embed/yNXfOOL8824?si=5MQaytLCqG66MM7K', 'P', 1, 0, 1),
        ('CS7', 'Better Call Saul', 'Descripcion de Better Call Saul',
         'https://m.media-amazon.com/images/S/pv-target-images/fe1c0138b7b0e05ea22a711f44e57cd80cfbaea30745c425b7043d786ba66cd1.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 0, 1, 1);
+        'https://www.youtube.com/embed/Ylv21uNzW4k?si=5W1CCi4OxibdMba5', 'S', 0, 1, 1);
 go
 
 INSERT INTO Director (nombre, apellido)

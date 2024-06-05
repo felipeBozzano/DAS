@@ -28,25 +28,25 @@ INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, url_reprod
                        destacado, valido)
 VALUES ('CP2', 'Batman', N'Descripción de Batman',
         'https://es.web.img2.acsta.net/medias/nmedia/18/66/74/01/20350623.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 0, 1, 1),
+        'https://www.youtube.com/embed/fWQrd6cwJ0A?si=vDwHgqGyA7Nriygf', 'P', 0, 1, 1),
        ('CS2', 'Superman', N'Descripción de Superman',
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtkFIzNYyYVW1MQg2PBUJun45u95dCWpWTaj-baRad6w&s',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 1, 1, 1),
+        'https://www.youtube.com/embed/t06RUxPbp_c?si=_-eihWjcbnFeqNI_', 'S', 1, 1, 1),
        ('CP4', 'Drive', N'Descripción de Drive',
         'https://i.blogs.es/d365ef/drive-2011/650_1200.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 0, 1),
+        'https://www.youtube.com/embed/KBiOF3y1W0Y?si=WQLwf1kk5GiFG5u6', 'P', 1, 0, 1),
        ('CS4', 'El padrino', N'Descripción de el padrino',
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNvJucE9mgq6GvXtcJAPzaJ9huMajoCDRSHWgVfmp9Tg&s',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 0, 1, 1),
+        'https://www.youtube.com/embed/iOyQx7MXaz0?si=HHLqA7-qLEyJVDJU', 'S', 0, 1, 1),
        ('CP5', 'The Avengers', 'Descripcion de The Avengers',
         'https://cdn.marvel.com/content/1x/avengersendgame_lob_crd_05.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 0, 1),
+        'https://www.youtube.com/embed/yNXfOOL8824?si=5MQaytLCqG66MM7K', 'P', 1, 0, 1),
        ('CS5', 'One Piece', 'El mejor anime',
         'https://m.media-amazon.com/images/S/pv-target-images/a0cb3885c44b8305ac89ba7ce98e8cd978bf3ebba6a151a00dbf2d528e98bf3b.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 0, 1, 1),
+        'https://www.youtube.com/embed/AaGmXv_e158?si=mCamCR4k2NnfGE3N', 'S', 0, 1, 1),
        ('CP6', 'Lalaland', 'Descripcion de Lalaland',
         'https://static.wikia.nocookie.net/doblaje/images/e/ec/La_la_land_poster_m%C3%A9xico.jpg/revision/latest?cb=20161212005951&path-prefix=es',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 1, 1);
+        'https://www.youtube.com/embed/45s24h98iOc?si=qkwo7PXpVbY0e-yY', 'P', 1, 1, 1);
 go
 
 INSERT INTO Director (nombre, apellido)

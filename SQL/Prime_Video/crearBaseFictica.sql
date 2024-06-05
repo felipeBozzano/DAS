@@ -28,25 +28,25 @@ INSERT INTO Contenido (id_contenido, titulo, descripcion, url_imagen, url_reprod
                        destacado, valido)
 VALUES ('CP3', 'Thor', N'Descripción de Thor',
         'https://es.web.img3.acsta.net/medias/nmedia/18/79/89/52/19711203.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 0, 0, 1),
+        'https://www.youtube.com/embed/vKKu-Wt7O2Q?si=k_uZXnZ7bS-ta5aX', 'P', 0, 0, 1),
        ('CS3', 'Kung fu Panda', N'Descripción de Kung fu Panda',
         'https://m.media-amazon.com/images/S/pv-target-images/d775fb8599018935d1e28ed9cbc2fb67870d726d850f0eee13dc6f50f37b76d3.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 0, 1, 1),
+        'https://www.youtube.com/embed/kg3Q63gzF6I?si=ANPEmQG82mvNUzMg', 'S', 0, 1, 1),
        ('CP4', 'Drive', N'Descripción de Drive',
         'https://i.blogs.es/d365ef/drive-2011/650_1200.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 0, 1),
+        'https://www.youtube.com/embed/KBiOF3y1W0Y?si=WQLwf1kk5GiFG5u6', 'P', 1, 0, 1),
        ('CS4', 'El padrino', N'Descripción de el padrino',
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNvJucE9mgq6GvXtcJAPzaJ9huMajoCDRSHWgVfmp9Tg&s',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 0, 1, 1),
+        'https://www.youtube.com/embed/iOyQx7MXaz0?si=HHLqA7-qLEyJVDJU', 'S', 0, 1, 1),
        ('CP5', 'The Avengers', 'descripcion de The Avengers',
         'https://cdn.marvel.com/content/1x/avengersendgame_lob_crd_05.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'P', 1, 1, 1),
+        'https://www.youtube.com/embed/yNXfOOL8824?si=5MQaytLCqG66MM7K', 'P', 1, 1, 1),
        ('CS5', 'One Piece', 'El mejor anime',
         'https://m.media-amazon.com/images/S/pv-target-images/a0cb3885c44b8305ac89ba7ce98e8cd978bf3ebba6a151a00dbf2d528e98bf3b.jpg',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 0, 0, 1),
+        'https://www.youtube.com/embed/AaGmXv_e158?si=mCamCR4k2NnfGE3N', 'S', 0, 0, 1),
        ('CS6', 'Hunter x Hunter', 'Buen anime',
         'https://imgsrv.crunchyroll.com/cdn-cgi/image/fit=contain,format=auto,quality=85,width=480,height=720/catalog/crunchyroll/cbb55a6382682bf71e91f685c6473c5a.jpe',
-        'https://www.youtube.com/watch?v=sfXPGuZ68HM', 'S', 1, 1, 1);;
+        'https://www.youtube.com/embed/l5ZjHhsdLSQ?si=V1NkmDCmRMv-QWn8', 'S', 1, 1, 1);;
 go
 
 INSERT INTO Director (nombre, apellido)

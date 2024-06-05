@@ -24,7 +24,6 @@ import {SeriesComponent} from './pages/series/series.component';
 import {PeliculasResolver} from './api/resolvers/peliculas.resolver';
 import {SeriesResolver} from './api/resolvers/series.resolver';
 import {SplashComponent} from './pages/splash/splash.component';
-import {SpinnerComponent} from './components/spinner/spinner.component';
 import {UsuarioFederacionComponent} from './pages/usuario-federacion/usuario-federacion.component';
 import {BackArrowComponent} from "./components/back-arrow/back-arrow.component";
 
@@ -46,7 +45,7 @@ import {BackArrowComponent} from "./components/back-arrow/back-arrow.component";
     SeriesComponent,
     SplashComponent,
     UsuarioFederacionComponent,
-    BackArrowComponent
+    BackArrowComponent,
   ],
   imports: [
     CommonModule,
@@ -62,7 +61,7 @@ import {BackArrowComponent} from "./components/back-arrow/back-arrow.component";
     DescripcionContenidoResolverResolver,
     DescripcionContenidoHomeResolverResolver,
     PeliculasResolver,
-    SeriesResolver
+    SeriesResolver,
   ]
 })
 export class MainModule { }
