@@ -169,6 +169,5 @@ CREATE TABLE [Autorizacion]
     PRIMARY KEY ([codigo_de_transaccion]),
     CONSTRAINT [FK_Autorizacion.id_cliente]
         FOREIGN KEY ([id_cliente])
-            REFERENCES [Cliente_Usuario] ([id_cliente]),
-    CONSTRAINT [UK_codigo_de_transaccion] UNIQUE (codigo_de_transaccion)
+            REFERENCES [Cliente_Usuario] ([id_cliente])
 );

@@ -207,7 +207,7 @@ VALUES ('Publicista_Musimundo', N'Musimundo', 'musimundo@example.com', N'contras
         'http://localhost:8088/publicistaUBP', 'REST');
 go
 
--- Crear 9 Publicidades
+-- Crear 12 Publicidades
 INSERT INTO Publicidad (id_publicista, codigo_publicidad, url_de_imagen, url_de_publicidad, fecha_de_alta,
                         fecha_de_baja)
 VALUES (1, 'PM1',
