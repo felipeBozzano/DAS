@@ -25,6 +25,11 @@ public class FederacionesPendientes {
     public static void terminarFederacionesPendientes() throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         List<TransaccionBean> federacionesPendientes = consultarFederacionesPendientes();
         for (TransaccionBean federacionPendiente: federacionesPendientes) {
+
+            // TERMINAMOS LA FEDERACIONES DE AQUELLAS TRANSACCIONES QUE TENGAN URL_TOKEN
+            // PORQUE ES LA ÚNICA FORMA DE ESTAR SEGUROS QUE EL CLIENTE SE LOGUEO O REGISTRO EN LA PLATAFORMA DE STREAMING
+            // QUE SE LOGUEE O REGISTRE, SIGNIFICA QUE SE HAYA ASIGNADO UN TOKEN AL USUARIO EN DICHA PLATAFORMA
+            // SIN SABER ESO, NO PODEMOS IR A BUSCAR ESE TOKEN
             if (federacionPendiente.getUrl_token() == null)
                 continue;
 
