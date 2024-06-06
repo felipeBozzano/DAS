@@ -137,7 +137,7 @@ public class EstadisticasPlataforma {
         StringBuilder detalle = new StringBuilder("Publicista " + reporte.get("plataforma") + " - Razon Social " + reporte.get("razon_social") + "\n");
         Map<String, String> mapa_detalle = (Map<String, String>) reporte.get("detalle");
         for (Map.Entry<String, String> detalle_reporte: mapa_detalle.entrySet()) {
-            detalle.append("Publicidad ").append(detalle_reporte.getKey()).append(" - ").append(detalle_reporte.getValue()).append(" clics");
+            detalle.append("Publicidad ").append(detalle_reporte.getKey()).append(" - ").append(detalle_reporte.getValue()).append(" clics | ");
         }
 
         if (plataforma.getProtocolo_api().equals("SOAP")) {

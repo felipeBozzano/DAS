@@ -8,10 +8,6 @@ VALUES ('PM1', 'https://www.urlimagen1.com/imagenes/imagen.jpg', 'https://www.ur
        ('PM5', 'https://www.urlimagen5.com/imagenes/imagen.jpg', 'https://www.urlpublicidad5.com/publicidad.jpg', '2024-05-15', '2024-06-15', 4);
 go
 
-INSERT INTO Reporte (total, fecha, descripcion)
-VALUES (50, '2024-03-03', '15 clics en CP1, 35 en CP2');
-go
-
 INSERT INTO Factura (total, fecha, descripcion)
 VALUES (155.45, '2024-03-10', 'PM1 BANNER 20X20 CON PRESENCIA EN LA PAGINA PRINCIPAL POR X CANTIDAD DE DIAS $50, CP2 BANNER 25X25 CON PRESENCIA EN TODA LA PLATAFORMA POR X CANTIDAD DE DIAS $105.45');
 go

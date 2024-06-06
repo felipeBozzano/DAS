@@ -80,6 +80,7 @@ body, html {
   justify-content: space-around;
   margin-bottom: 20px;
   width: 100%; /* Asegura que la fila tome todo el ancho disponible */
+  flex-wrap: wrap;
 }
 
 .contenido-item {
@@ -193,4 +194,14 @@ button:hover {
   margin-bottom: 30px;
   color: #0056b3;
   font-family: "Arial", sans-serif;
+}
+
+@media (max-width: 1000px) {
+
+  .fila-contenido {
+    border: solid 2px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: block;
+  }
 }

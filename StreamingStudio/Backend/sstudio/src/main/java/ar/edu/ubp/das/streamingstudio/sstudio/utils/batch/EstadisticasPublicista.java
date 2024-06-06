@@ -2,24 +2,25 @@ package ar.edu.ubp.das.streamingstudio.sstudio.utils.batch;
 
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnector;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.AbstractConnectorFactory;
-import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.ListaPublicidadResponseBean;
 import ar.edu.ubp.das.streamingstudio.sstudio.connectors.responseBeans.MensajeBean;
-import ar.edu.ubp.das.streamingstudio.sstudio.models.*;
-import org.springframework.jdbc.core.*;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.EstadisticaPublicistaBean;
+import ar.edu.ubp.das.streamingstudio.sstudio.models.PublicistaBean;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.SqlOutParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.stereotype.Repository;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Types;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.sql.Types;
 
 import static ar.edu.ubp.das.streamingstudio.sstudio.utils.batch.BatchUtils.crearJdbcTemplate;
 
@@ -135,7 +136,7 @@ public class EstadisticasPublicista {
         StringBuilder detalle = new StringBuilder("Publicista " + reporte.get("plataforma") + " - Razon Social " + reporte.get("razon_social") + "\n");
         Map<String, String> mapa_detalle = (Map<String, String>) reporte.get("detalle");
         for (Map.Entry<String, String> detalle_reporte: mapa_detalle.entrySet()) {
-            detalle.append("Publicidad ").append(detalle_reporte.getKey()).append(" - ").append(detalle_reporte.getValue()).append(" clics");
+            detalle.append("Publicidad ").append(detalle_reporte.getKey()).append(" - ").append(detalle_reporte.getValue()).append(" clics | ");
         }
 
         if (publicista.getProtocolo_api().equals("SOAP")) {

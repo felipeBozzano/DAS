@@ -45,7 +45,7 @@ VALUES ('CP2', 'Batman', N'Descripción de Batman',
         'https://m.media-amazon.com/images/S/pv-target-images/a0cb3885c44b8305ac89ba7ce98e8cd978bf3ebba6a151a00dbf2d528e98bf3b.jpg',
         'https://www.youtube.com/embed/AaGmXv_e158?si=mCamCR4k2NnfGE3N', 'S', 0, 1, 1),
        ('CP6', 'Lalaland', 'Descripcion de Lalaland',
-        'https://static.wikia.nocookie.net/doblaje/images/e/ec/La_la_land_poster_m%C3%A9xico.jpg/revision/latest?cb=20161212005951&path-prefix=es',
+        'https://m.media-amazon.com/images/M/MV5BMzUzNDM2NzM2MV5BMl5BanBnXkFtZTgwNTM3NTg4OTE@._V1_.jpg',
         'https://www.youtube.com/embed/45s24h98iOc?si=qkwo7PXpVbY0e-yY', 'P', 1, 1, 1);
 go
 
