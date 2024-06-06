@@ -206,6 +206,7 @@ public class FederarClienteRepository implements IFederarClienteRepository {
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_token")
                 .withSchemaName("dbo");
+
         Map<String, Object> out = jdbcCall.execute(in);
         List<Map<String,String>> token_de_servicio = (List<Map<String,String>>) out.get("#result-set-1");
         Map<String, String> token_map = token_de_servicio.getFirst();
@@ -222,6 +223,13 @@ public class FederarClienteRepository implements IFederarClienteRepository {
             body.put("token", token);
         }
         FederacionDesvinculada bean = (FederacionDesvinculada) conector.execute_post_request(url, body, "FederacionDesvinculada");
+
+        respuesta = new HashMap<>();
+        if (bean.getCodigo() == null || !bean.getCodigo().equals("200")) {
+            respuesta.put("mensaje", "Fallo la desvinculacion");
+            respuesta.put("codigo", "1");
+            return respuesta;
+        }
 
         in = new MapSqlParameterSource()
             .addValue("token", token);

@@ -103,20 +103,20 @@ export class StreamingStudioResources extends Resource{
   obtener_url_de_contenido!: IResourceMethodObservable<{iUrlDeContenido: IUrlDeContenido}, IUrlDeContenidoResponse>;
 
   @ResourceAction({
-    method: ResourceRequestMethod.Post,
+    method: ResourceRequestMethod.Get,
     path: '/series',
-    requestBodyType: ResourceRequestBodyType.JSON,
+    // requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  series!: IResourceMethodObservable<void,ISeriesModelResponse>;
+  series!: IResourceMethodObservable<{ id_cliente: number }, ISeriesModelResponse>;
 
   @ResourceAction({
-    method: ResourceRequestMethod.Post,
+    method: ResourceRequestMethod.Get,
     path: '/peliculas',
-    requestBodyType: ResourceRequestBodyType.JSON,
+    // requestBodyType: ResourceRequestBodyType.JSON,
     responseBodyType: ResourceResponseBodyType.Json
   })
-  peliculas!: IResourceMethodObservable<void,IPeliculasModelResonse>;
+  peliculas!: IResourceMethodObservable<{ id_cliente: number }, IPeliculasModelResonse>;
 
   @ResourceAction({
     method: ResourceRequestMethod.Get,

@@ -9,7 +9,7 @@
     <app-publicidad-izquierda class="col-2 publicidades" exclusiva="true"></app-publicidad-izquierda>
       <div class="col-8" *ngIf="federaciones.Plataformas_federadas.length">
         <div class="series-container">
-          <div class="serie" *ngFor="let serie of series">
+          <div class="serie" *ngFor="let serie of uniqueContenido">
             <h2>{{ serie.titulo }}</h2>
             <img [src]="serie.url_imagen" alt="{{ serie.titulo }}" (click)="verDescripcion(serie.id_contenido)" class="imagen">
           </div>

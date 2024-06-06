@@ -215,19 +215,19 @@ public class controllers {
         return new ResponseEntity<>(infoContenido, HttpStatus.OK);
     }
 
-    @PostMapping(
+    @GetMapping(
             path = "/series"
     )
-    public ResponseEntity<List<SerieBean>> obtenerSeries() {
-        List<SerieBean> series = buscar_contenido_repository.obtenerSeries();
+    public ResponseEntity<List<SerieBean>> obtenerSeries(@RequestParam("id_cliente") int id_cliente) {
+        List<SerieBean> series = buscar_contenido_repository.obtenerSeries(id_cliente);
         return new ResponseEntity<>(series, HttpStatus.OK);
     }
 
-    @PostMapping(
+    @GetMapping(
             path = "/peliculas"
     )
-    public ResponseEntity<List<PeliculaBean>> obtenerPeliculas() {
-        List<PeliculaBean> peliculas = buscar_contenido_repository.obtenerPeliculas();
+    public ResponseEntity<List<PeliculaBean>> obtenerPeliculas(@RequestParam("id_cliente") int id_cliente) {
+        List<PeliculaBean> peliculas = buscar_contenido_repository.obtenerPeliculas(id_cliente);
         return new ResponseEntity<>(peliculas, HttpStatus.OK);
     }
 

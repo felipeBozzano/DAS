@@ -9,7 +9,8 @@ export class SeriesResolver implements Resolve<ISeriesModelResponse> {
   constructor(private _service: StreamingStudioResources) { }
 
   resolve(route: ActivatedRouteSnapshot): ISeriesModelResponse | Observable<ISeriesModelResponse> | Promise<ISeriesModelResponse> {
-    return this._service.series();
+    console.log(route.queryParams['id_cliente'])
+    return this._service.series({id_cliente: route.queryParams['id_cliente']});
   }
 }
 

@@ -9,7 +9,7 @@
     <app-publicidad-izquierda class="col-2 publicidades" exclusiva="true"></app-publicidad-izquierda>
     <div class="col-8" *ngIf="federaciones.Plataformas_federadas.length">
       <div class="peliculas-container">
-        <div class="pelicula" *ngFor="let pelicula of peliculas">
+        <div class="pelicula" *ngFor="let pelicula of uniqueContenido">
           <h2>{{ pelicula.titulo }}</h2>
           <img [src]="pelicula.url_imagen" alt="{{ pelicula.titulo }}" (click)="verDescripcion(pelicula.id_contenido)" class="imagen">
         </div>

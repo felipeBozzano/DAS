@@ -8,8 +8,8 @@
   </div>
   <div class="menu-toggle" (click)="toggleMenu()">☰</div>
   <div class="nav-buttons" [ngClass]="{ 'show': menuActive }">
-    <button (click)="navigateTo('series')" i18n>Series</button>
-    <button (click)="navigateTo('peliculas')" i18n>Películas</button>
+    <button (click)="navigateToSeries()" i18n>Series</button>
+    <button (click)="navigateToPeliculas()" i18n>Películas</button>
     <button (click)="navigateTo('contenido')" i18n>Búsqueda Avanzada</button>
     <div class="user-menu">
       <button (click)="toggleUserMenu()" class="user-button" i18n>Usuario</button>

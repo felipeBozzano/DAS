@@ -9,7 +9,7 @@ export class PeliculasResolver implements Resolve<IPeliculasModelResonse> {
   constructor(private _service: StreamingStudioResources) { }
 
   resolve(route: ActivatedRouteSnapshot): IPeliculasModelResonse | Observable<IPeliculasModelResonse> | Promise<IPeliculasModelResonse> {
-    return this._service.peliculas();
+    return this._service.peliculas({id_cliente: route.queryParams['id_cliente']});
   }
 }
 

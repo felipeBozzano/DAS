@@ -10,9 +10,11 @@ import {AuthService} from "../../services/authService/AuthService";
 export class PeliculasComponent implements OnInit {
 
   public peliculas: any;
-  public federaciones: any
-  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
+  public federaciones: any;
   user: any;
+  uniqueContenido: any = [];
+
+  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router) { }
   ngOnInit(): void {
     this.user = this.authService.getCurrentUser();
     this.route.data.subscribe(data => {
@@ -20,6 +22,14 @@ export class PeliculasComponent implements OnInit {
       this.federaciones = data['federaciones'];
       console.log(this.peliculas);
     })
+
+    const imageUrls = new Set();
+    this.peliculas.forEach((item: { url_imagen: any; }) => {
+      if (!imageUrls.has(item.url_imagen)) {
+        this.uniqueContenido.push(item);
+        imageUrls.add(item.url_imagen);
+      }
+    });
   }
 
   verDescripcion(id_contenido: String){

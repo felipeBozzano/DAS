@@ -1738,21 +1738,37 @@ BEGIN
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Series
+CREATE OR ALTER PROCEDURE Obtener_Series @id_cliente INT
 AS
 BEGIN
-    SELECT *
-    FROM Contenido as c
-    WHERE c.clasificacion = 'S'
+    WITH Plataformas_Disponibles AS (SELECT DISTINCT(P.id_plataforma)
+                                     FROM dbo.Plataforma_de_Streaming P
+                                              LEFT JOIN dbo.Federacion F ON P.id_plataforma = F.id_plataforma
+                                     WHERE F.id_cliente = @id_cliente
+                                       AND p.valido = 1)
+    SELECT Ca.id_contenido, Co.url_imagen, Co.titulo
+    FROM dbo.Catalogo Ca
+             JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+    WHERE (fecha_de_baja IS NULL OR fecha_de_alta > fecha_de_baja)
+      AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
+      AND Co.clasificacion = 'S'
 END;
 go
 
-CREATE OR ALTER PROCEDURE Obtener_Peliculas
+CREATE OR ALTER PROCEDURE Obtener_Peliculas @id_cliente INT
 AS
 BEGIN
-    SELECT *
-    FROM Contenido as c
-    WHERE c.clasificacion = 'P'
+    WITH Plataformas_Disponibles AS (SELECT DISTINCT(P.id_plataforma)
+                                     FROM dbo.Plataforma_de_Streaming P
+                                              LEFT JOIN dbo.Federacion F ON P.id_plataforma = F.id_plataforma
+                                     WHERE F.id_cliente = @id_cliente
+                                       AND p.valido = 1)
+    SELECT Ca.id_contenido, Co.url_imagen, Co.titulo
+    FROM dbo.Catalogo Ca
+             JOIN dbo.Contenido Co ON Ca.id_contenido = Co.id_contenido
+    WHERE (fecha_de_baja IS NULL OR fecha_de_alta > fecha_de_baja)
+      AND Ca.id_plataforma IN (SELECT id_plataforma FROM Plataformas_Disponibles)
+      AND Co.clasificacion = 'P'
 END;
 go
 

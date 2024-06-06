@@ -188,20 +188,21 @@ public class FiltrarContenidoRepository implements IFiltrarContenidoRepository {
         return plataformas;
     }
 
-    public List<SerieBean> obtenerSeries() {
-        SqlParameterSource in = new MapSqlParameterSource();
+    public List<SerieBean> obtenerSeries(int id_cliente) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_cliente", id_cliente);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Series")
                 .withSchemaName("dbo")
                 .returningResultSet("series", BeanPropertyRowMapper.newInstance(SerieBean.class));
-        ;
         Map<String, Object> out = jdbcCall.execute(in);
         List<SerieBean> series = (List<SerieBean>) out.get("series");
         return series;
     }
 
-    public List<PeliculaBean> obtenerPeliculas() {
-        SqlParameterSource in = new MapSqlParameterSource();
+    public List<PeliculaBean> obtenerPeliculas(int id_cliente) {
+        SqlParameterSource in = new MapSqlParameterSource()
+                .addValue("id_cliente", id_cliente);
         SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTpl)
                 .withProcedureName("Obtener_Peliculas")
                 .withSchemaName("dbo")

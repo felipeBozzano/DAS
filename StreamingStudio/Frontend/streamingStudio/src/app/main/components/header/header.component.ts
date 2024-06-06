@@ -63,6 +63,18 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  navigateToSeries(){
+    const idCliente: number = Number(this.id_cliente);
+    console.log("ruta: ", `series?id_cliente=${this.id_cliente}`)
+    this.router.navigate(['series'], { queryParams: {id_cliente: idCliente }});
+  }
+
+  navigateToPeliculas(){
+    const idCliente: number = Number(this.id_cliente);
+    console.log("ruta: ", `peliculas?id_cliente=${this.id_cliente}`)
+    this.router.navigate(['peliculas'], { queryParams: {id_cliente: idCliente }});
+  }
+
   navigateToFederaciones() {
     // const ruta = `usuario/federaciones`
     this.router.navigate(["usuario/federaciones"]);
