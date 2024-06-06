@@ -8,7 +8,6 @@
 
   <div class="row">
     <app-publicidad-izquierda class="col-2 publicidades" exclusiva="true"></app-publicidad-izquierda>
-
     <div class="col-8">
       <div class="platform-container">
         <h2 i18n="Plataformas a Federar">Plataformas a Federar</h2>
@@ -24,7 +23,7 @@
         <h2 i18n="lataformas Federadas">Plataformas Federadas</h2>
         <div class="platform-list">
           <div class="platform-item" *ngFor="let plataforma of plataformas_federadas"
-               (click)="desvincular(plataforma)">
+               (click)="openConfirmModal(plataforma)">
             <img [src]="plataforma.url_imagen" alt="Plataforma {{ plataforma.id_plataforma }}" class="img-cont">
           </div>
         </div>
@@ -38,8 +37,17 @@
           <button (click)="navigateToRegister(plataforma_seleccionada, 'R')">Registro</button>
         </div>
       </div>
-    </div>
 
+      <div id="confirmModal" class="modal" [ngClass]="{'show': isConfirmModalOpen}" (click)="closeConfirmModal($event)">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+          <span class="close" (click)="closeConfirmModal($event)">&times;</span>
+          <p i18n="¿Estás seguro de que deseas desvincular esta plataforma?">¿Estás seguro de que deseas desvincular esta plataforma?</p>
+          <button (click)="confirmDesvincular()">Confirmar</button>
+          <button (click)="closeConfirmModal($event)">Cancelar</button>
+        </div>
+      </div>
+
+    </div>
     <app-publicidad-derecha class="col-2 publicidades" exclusiva="true"></app-publicidad-derecha>
   </div>
 </div>
