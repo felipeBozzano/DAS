@@ -774,9 +774,9 @@
         </context-group>
         <note priority="1" from="description">No estas federado en ninguna de nuestras plataformas, para ver las series disponibles deberas federarte en alguna de ellas.</note>
       </trans-unit>
-      <trans-unit id="2401853139117461180" datatype="html">
-        <target>Welcome to Straming Studio</target>
-        <source>Bienvenido a Straming Studio</source>
+      <trans-unit id="7824900022101579691" datatype="html">
+        <target>Welcome to Streaming Studio</target>
+        <source>Bienvenido a Streaming Studio</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/main/pages/splash/splash.component.html</context>
           <context context-type="linenumber">4</context>
